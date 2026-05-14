@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Variable-Length Semantic IDs for Recommender Systems</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>Variable-Length Semantic IDs for Recommender Systems</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Kirill Khrylchenko.</p>
+<p><strong>Аффилиации:</strong> National Research University Higher School of Economics; HSE University.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>Статья предлагает заменить фиксированную длину semantic ID на <strong>variable-length semantic IDs</strong>. В большинстве работ про generative recommendation item кодируется последовательностью из одинакового числа токенов, например <code>[c1, c2, c3, c4]</code>. Автор утверждает, что это неэффективно: реальные каталоги имеют long-tail distribution, поэтому популярным item'ам достаточно короткого кода, а редким и cold item'ам нужен более длинный и выразительный код.</p>
+<p>Главная идея: semantic ID должен вести себя ближе к естественному языку. Частые сущности получают короткие обозначения, редкие - более длинные. Это соответствует Zipf's law of abbreviation и одновременно экономит token budget в sequential/generative recommender'ах.</p>
+<p>Метод формулируется как <strong>discrete variational autoencoder</strong> с Gumbel-Softmax reparameterization. Модель учится выбирать semantic tokens и длину кода <code>L <= T</code>, избегая нестабильности REINFORCE-based training, типичной для emergent communication.</p>
+
+<h2>2. Контекст: зачем semantic IDs и почему фиксированная длина плоха</h2>
+<p>В recommender systems item catalog часто содержит сотни тысяч, миллионы или миллиарды объектов. Если generative model должна предсказывать atomic item ID, возникают проблемы:</p>
+<ul>
+<li>огромный item vocabulary делает full softmax дорогим;</li>
+<li>atomic ID не несет семантики, поэтому плохо переносится на cold-start и long-tail;</li>
+<li>LLM vocabulary и item IDs находятся на разных уровнях абстракции;</li>
+<li>в autoregressive retrieval каждый item как один ID не дает естественной иерархии и partial matching.</li>
+</ul>
+<p>Semantic IDs решают часть этих проблем: item представляется sequence of low-cardinality tokens.</p>
+<pre><code>item -> semantic ID
+918273645 -> [124, 39, 876, 12]</code></pre>
+<p>Но почти все популярные методы строят IDs фиксированной длины. Это означает, что head item, который модель видит постоянно, и rare item из long tail получают одинаковое число tokens. Для автора это неестественно и неэкономно: частые item'ы можно узнавать по короткому сигналу, а длинные описания стоит тратить там, где нужна дополнительная информация.</p>
+
+<h2>3. Связь с emergent communication</h2>
+<p>Статья активно опирается на идеи emergent communication. В Lewis signaling game есть sender, receiver и объект:</p>
+<ol>
+<li>sender видит объект и отправляет дискретное сообщение;</li>
+<li>receiver должен восстановить или выбрать объект по сообщению;</li>
+<li>сообщения могут быть переменной длины;</li>
+<li>length penalty заставляет систему учить более экономные коды.</li>
+</ol>
+<p>Это почти та же структура, что и item tokenizer:</p>
+<ul>
+<li>item embedding - объект;</li>
+<li>encoder/tokenizer - sender;</li>
+<li>semantic ID - сообщение;</li>
+<li>decoder/recommender - receiver.</li>
+</ul>
+<p>Разница в том, что emergent communication часто обучается через REINFORCE, а это плохо масштабируется на большие каталоги. Автор переносит идею variable-length messages, но обучает ее через dVAE и Gumbel-Softmax.</p>
+
+<h2>4. Постановка задачи</h2>
+<p>Пусть есть item embedding <code>x in R^d</code>. Нужно получить дискретный код:</p>
+<div class="math">\[
+z = (z_1, \ldots, z_L), \qquad L \le T
+\]</div>
+<p>Где:</p>
+<ul>
+<li><code>T</code> - максимальная разрешенная длина;</li>
+<li><code>L</code> - фактическая длина semantic ID;</li>
+<li><code>z_t</code> - токен из общего vocabulary <code>V</code>;</li>
+<li>позиции после <code>L</code> считаются <code>pad</code>.</li>
+</ul>
+<p>Важная деталь: в отличие от многих hierarchical tokenization methods, статья использует <strong>shared vocabulary across positions</strong>. Один и тот же token имеет один и тот же смысл на любой позиции. Это ближе к естественному языку, где слово не меняет vocabulary в зависимости от позиции во фразе.</p>
+
+<h2>5. Probabilistic model</h2>
+<p>Автор задает generative model:</p>
+<div class="math">\[
+p(x, z, L) = p(L)\,p(z \mid L)\,p(x \mid z_{1:L})
+\]</div>
+<p>Здесь <code>L</code> - latent length variable, <code>z</code> - latent discrete message, а decoder восстанавливает item embedding только по prefix <code>z_{1:L}</code>.</p>
+<h3>5.1. Prior over symbols</h3>
+<p>Для токенов используется uniform prior:</p>
+<div class="math">\[
+p_{\mathcal V}(z_t) = \frac{1}{|\mathcal V|}
+\]</div>
+<p>Это помогает избегать collapse в маленькое подмножество токенов и поощряет более широкое использование vocabulary.</p>
+<h3>5.2. Prior over length</h3>
+<p>Для длины используется truncated geometric distribution:</p>
+<div class="math">\[
+p(L) = \frac{(1-\alpha)^{L-1}\alpha}{1-(1-\alpha)^T}
+\]</div>
+<p>В ELBO такой prior превращается в явный penalty на expected length. Чем длиннее сообщение, тем выше регуляризационная цена.</p>
+
+<h2>6. Variational inference и stopping probabilities</h2>
+<p>Истинный posterior <code>p(z, L | x)</code> intractable, поэтому вводится approximate posterior:</p>
+<div class="math">\[
+q(z, L \mid x) =
+q(L \mid x, z_{1:L})
+\prod_{t=1}^{L} q(z_t \mid z_{1:t-1}, x)
+\]</div>
+<p>Токены генерируются autoregressively. Длина моделируется через stopping probabilities:</p>
+<div class="math">\[
+q(s_l = 1 \mid x, z_{1:l})
+\]</div>
+<p>Вероятность остановиться на длине <code>l</code>:</p>
+<div class="math">\[
+q(L = l \mid x, z_{1:l}) =
+q(s_l = 1 \mid x, z_{1:l})
+\prod_{t=1}^{l-1}\left(1 - q(s_t = 1 \mid x, z_{1:t})\right)
+\]</div>
+<p>При этом автор не добавляет EOS-token в vocabulary. Length model отделен от content tokens, поэтому длина контролируется explicit prior/regularizer, а не конкурирует с обычными semantic tokens.</p>
+
+<h2>7. Objective: из чего состоит loss</h2>
+<p>Итоговый loss:</p>
+<div class="math">\[
+\mathcal L =
+\mathcal L_{\mathrm{recon}} +
+\mathcal L_{\mathrm{reg}}^{\mathrm{vocab}} +
+\mathcal L_{\mathrm{reg}}^{\mathrm{length}}
+\]</div>
+<h3>7.1. Reconstruction loss</h3>
+<p>Reconstruction считается по всем prefix lengths, взвешенным вероятностями длины:</p>
+<div class="math">\[
+\mathcal L_{\mathrm{recon}} =
+-\mathbb E_{q(z\mid x)}
+\left[
+\sum_{l=1}^{T}
+q(L=l \mid x, z_{1:l})
+\log p(x \mid z_{1:l})
+\right]
+\]</div>
+<p>В реализации length distribution для reconstruction сглаживается: <code>0.9</code> learned distribution + <code>0.1</code> uniform over prefixes. Это заставляет decoder быть полезным на разных длинах и стабилизирует training.</p>
+<h3>7.2. Vocabulary regularization</h3>
+<p>Vocabulary regularization - alive-weighted KL к uniform prior:</p>
+<div class="math">\[
+\mathcal L_{\mathrm{reg}}^{\mathrm{vocab}} =
+\mathbb E_{q(z\mid x)}
+\left[
+\sum_{l=1}^{T}
+q(L \ge l \mid x, z_{1:l})\,
+\mathrm{KL}\left(q(z_l \mid x, z_{1:l-1}) \,\Vert\, p_{\mathcal V}\right)
+\right]
+\]</div>
+<p>Если позиция с высокой вероятностью входит в сообщение, ее token distribution регуляризуется сильнее. Это помогает использовать vocabulary шире.</p>
+<h3>7.3. Length regularization</h3>
+<div class="math">\[
+\mathcal L_{\mathrm{reg}}^{\mathrm{length}} =
+\mathbb E_{q(z\mid x)}
+\left[
+\lambda\,\mathbb E_{q(L\mid x,z)}[L] -
+H\left(q(L\mid x,z)\right)
+\right]
+\]</div>
+<p>Expected length penalty стимулирует короткие коды, а entropy term предотвращает слишком ранний collapse в одну длину.</p>
+
+<h2>8. Residual encoding with soft relaxation</h2>
+<p>Классический residual quantization выбирает ближайший codeword hard assignment'ом и вычитает его из residual. Здесь используется soft differentiable аналог:</p>
+<ol>
+<li>encoder предсказывает logits по vocabulary;</li>
+<li>Gumbel-Softmax дает relaxed one-hot distribution;</li>
+<li>из codebook берется expected embedding;</li>
+<li>этот expected embedding вычитается из hidden state;</li>
+<li>модель переходит к следующему token position.</li>
+</ol>
+<p>Так сохраняется интуиция residual quantization, но обучение идет стандартным backpropagation.</p>
+
+<h2>9. Экспериментальный setup</h2>
+<h3>9.1. Датасеты</h3>
+<table>
+<thead><tr><th>Dataset</th><th>#Items</th><th>#Events</th><th>Emb. dim</th><th>Head share</th></tr></thead>
+<tbody>
+<tr><td>Yambda</td><td>268K</td><td>82M</td><td>128</td><td>0.747</td></tr>
+<tr><td>VK-LSVD</td><td>900K</td><td>95M</td><td>64</td><td>0.276</td></tr>
+<tr><td>Amazon Toys &amp; Games</td><td>305K</td><td>12M</td><td>128</td><td>0.597</td></tr>
+</tbody>
+</table>
+<p>Yambda и VK-LSVD используют last-week test split. Amazon Toys &amp; Games использует last-four-weeks test split. Для Yambda/VK-LSVD берутся likes, для Amazon positive feedback - ratings <code>&gt;= 4</code>.</p>
+<h3>9.2. Baselines</h3>
+<ul>
+<li><strong>R-KMeans</strong> - residual KMeans по item embeddings, фиксированная длина.</li>
+<li><strong>dVAE fixed-length</strong> - тот же variational подход, но без переменной длины.</li>
+<li><strong>REINFORCE-based emergent communication baseline</strong> - sender/receiver через policy gradients и EOS-token.</li>
+</ul>
+<h3>9.3. Основные hyperparameters</h3>
+<ul>
+<li>maximum semantic ID length: <code>T = 5</code>;</li>
+<li>vocabulary size: <code>4096</code>;</li>
+<li>batch size: <code>8192</code>;</li>
+<li>optimizer: AdamW, learning rate <code>1e-3</code>, weight decay <code>1e-5</code>;</li>
+<li>Gumbel temperature annealing: from <code>1</code> to <code>0.5</code> on Yambda, to <code>0.7</code> on VK-LSVD and Amazon;</li>
+<li>KL beta annealing to <code>0.002</code> during first epoch;</li>
+<li>length cost <code>lambda</code> searched in <code>[0, 12]</code>.</li>
+</ul>
+
+<h2>10. RQ1: можно ли выучить эффективные variable-length IDs</h2>
+<p>Главный результат: variable-length dVAE сохраняет reconstruction quality близко к fixed-length baselines, но существенно снижает average semantic ID length.</p>
+<table>
+<thead><tr><th>Dataset</th><th>Method</th><th>Recon</th><th>Cold recon</th><th>E_data[L]</th><th>PPL</th></tr></thead>
+<tbody>
+<tr><td>Yambda</td><td>R-KMeans</td><td>0.038</td><td>0.063</td><td>5.00</td><td>3721</td></tr>
+<tr><td>Yambda</td><td>dVAE fixed</td><td>0.025</td><td>0.054</td><td>5.00</td><td>3557</td></tr>
+<tr><td>Yambda</td><td>dVAE varlen, lambda_2</td><td>0.026</td><td>0.061</td><td>2.96</td><td>3609</td></tr>
+<tr><td>VK-LSVD</td><td>R-KMeans</td><td>0.102</td><td>0.149</td><td>5.00</td><td>4010</td></tr>
+<tr><td>VK-LSVD</td><td>dVAE varlen, lambda_2</td><td>0.155</td><td>0.176</td><td>3.45</td><td>3879</td></tr>
+<tr><td>Amazon T&amp;G</td><td>dVAE fixed</td><td>0.076</td><td>0.170</td><td>5.00</td><td>3797</td></tr>
+<tr><td>Amazon T&amp;G</td><td>dVAE varlen, lambda_2</td><td>0.071</td><td>0.167</td><td>3.01</td><td>3623</td></tr>
+</tbody>
+</table>
+<p>На Yambda средняя длина падает с 5 до 2.96 при почти неизменной reconstruction. На Amazon varlen configuration даже немного лучше fixed-length dVAE по reconstruction. VK-LSVD сложнее: dVAE уступает R-KMeans по reconstruction, но downstream recommendation показывает обратную картину.</p>
+
+<h2>11. Длина ID действительно связана с популярностью</h2>
+<p>Для Yambda автор показывает явную связь между semantic ID length и item popularity:</p>
+<table>
+<thead><tr><th>Semantic ID length</th><th>Mean popularity</th><th>Max popularity</th><th>#Items</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>2248.9</td><td>82097</td><td>7562</td></tr>
+<tr><td>2</td><td>1154.1</td><td>23034</td><td>12485</td></tr>
+<tr><td>3</td><td>292.2</td><td>10082</td><td>28421</td></tr>
+<tr><td>4</td><td>214.1</td><td>10037</td><td>80505</td></tr>
+<tr><td>5</td><td>125.4</td><td>7027</td><td>112276</td></tr>
+</tbody>
+</table>
+<p>Чем короче ID, тем выше средняя popularity. Этот pattern возникает без explicit popularity feature: модель видит head item'ы чаще, поэтому learns to encode them efficiently.</p>
+<table>
+<thead><tr><th>Dataset</th><th>Train E_catalog[L]</th><th>Train E_data[L]</th><th>Cold E_catalog[L]</th><th>Cold E_data[L]</th></tr></thead>
+<tbody>
+<tr><td>Yambda</td><td>4.15</td><td>2.96</td><td>4.53</td><td>4.40</td></tr>
+<tr><td>VK-LSVD</td><td>3.66</td><td>3.45</td><td>4.16</td><td>3.94</td></tr>
+<tr><td>Amazon T&amp;G</td><td>4.16</td><td>3.01</td><td>4.49</td><td>4.49</td></tr>
+</tbody>
+</table>
+<p>Data-weighted train length короче catalog-weighted, потому что interactions dominated by head items. У cold items длина заметно растет, что логично: когда item плохо представлен в данных, модель использует более длинное описание.</p>
+
+<h2>12. RQ2: downstream sequential recommendation</h2>
+<p>Для downstream evaluation автор обучает decoder-only Transformer для next-item prediction over semantic IDs. Важный constraint: user history ограничена fixed token budget <code>512</code>. Поэтому shorter item IDs позволяют вместить больше событий в историю пользователя.</p>
+<table>
+<thead><tr><th>Dataset</th><th>Method</th><th>Recall@100</th><th>Tokens</th><th>Events</th><th>L_cand</th><th>Coverage@100</th></tr></thead>
+<tbody>
+<tr><td>Yambda</td><td>R-KMeans</td><td>0.1637</td><td>364.8</td><td>61.49</td><td>6.00</td><td>18.2</td></tr>
+<tr><td>Yambda</td><td>dVAE fixed</td><td>0.1645</td><td>364.8</td><td>61.49</td><td>6.00</td><td>20.8</td></tr>
+<tr><td>Yambda</td><td>dVAE varlen, lambda=3</td><td><strong>0.1820</strong></td><td><strong>277.8</strong></td><td><strong>93.13</strong></td><td><strong>2.86</strong></td><td><strong>25.8</strong></td></tr>
+<tr><td>VK-LSVD</td><td>R-KMeans</td><td>0.0363</td><td>326.7</td><td>55.87</td><td>6.00</td><td>5.1</td></tr>
+<tr><td>VK-LSVD</td><td>dVAE fixed</td><td>0.0410</td><td>326.7</td><td>55.87</td><td>6.00</td><td>6.6</td></tr>
+<tr><td>VK-LSVD</td><td>dVAE varlen, lambda=3</td><td><strong>0.0459</strong></td><td><strong>291.7</strong></td><td><strong>78.24</strong></td><td><strong>3.50</strong></td><td><strong>10.3</strong></td></tr>
+</tbody>
+</table>
+<p>Это главный прикладной результат. Variable-length IDs дают больше events в том же context budget и улучшают Recall@100/Coverage@100. На Yambda лучшая varlen настройка дает +11.2% Recall@100 относительно R-KMeans, на VK-LSVD +26.5%.</p>
+
+<h2>13. RQ3: dVAE против REINFORCE</h2>
+<table>
+<thead><tr><th>Method</th><th>Recon</th><th>Cold recon</th><th>E_data[L]</th><th>PPL</th></tr></thead>
+<tbody>
+<tr><td>dVAE fixed</td><td>0.0246</td><td>0.0536</td><td>5.00</td><td>3558</td></tr>
+<tr><td>dVAE varlen</td><td>0.0294</td><td>0.0763</td><td>2.29</td><td>3564</td></tr>
+<tr><td>REINFORCE fixed</td><td>0.0259</td><td>0.0607</td><td>5.00</td><td>2720</td></tr>
+<tr><td>REINFORCE varlen</td><td>0.0528</td><td>0.1499</td><td>2.65</td><td>316</td></tr>
+</tbody>
+</table>
+<p>REINFORCE variable-length baseline сильно проседает: reconstruction хуже, cold reconstruction хуже, а PPL падает до 316 против 3564 у dVAE varlen. Это явный vocabulary collapse. Автор делает вывод, что Gumbel-Softmax dVAE - более практичный способ учить variable-length semantic IDs на масштабе recommender catalogs.</p>
+
+<h2>14. RQ4: масштабирование длины и vocabulary</h2>
+<table>
+<thead><tr><th>T</th><th>|V|</th><th>Recon</th><th>Cold recon</th><th>E_data[L]</th><th>PPL</th></tr></thead>
+<tbody>
+<tr><td>5</td><td>4096</td><td>0.0254</td><td>0.0567</td><td>3.62</td><td>3575</td></tr>
+<tr><td>20</td><td>4096</td><td>0.0177</td><td>0.0300</td><td>8.33</td><td>2733</td></tr>
+<tr><td>5</td><td>32768</td><td>0.0150</td><td>0.0544</td><td>2.79</td><td>21350</td></tr>
+</tbody>
+</table>
+<p>Увеличение maximum length улучшает reconstruction, но увеличивает average length. Увеличение vocabulary size дает особенно хороший trade-off: reconstruction улучшается, а средняя длина может снижаться, потому что один token несет больше информации.</p>
+<img src="../../assets/varlen_semantic_ids/maxlen20_ppl.png" alt="Position-wise token perplexity for variable-length dVAE with maxlen 20 on Yambda" width="640">
+<p>Position-wise perplexity для <code>maxlen=20</code> растет примерно до позиций 10-15, а затем резко падает. Это похоже на progressive refinement: средние позиции несут основную semantic нагрузку, поздние используются редко.</p>
+
+<h2>15. Сильные стороны статьи</h2>
+<ul>
+<li><strong>Правильная постановка token budget problem.</strong> В generative recommender'ах длина item code напрямую влияет на context length и decoding cost.</li>
+<li><strong>Frequency-aware coding.</strong> Короткие коды для популярных item'ов хорошо соответствуют long-tail природе recommendation data.</li>
+<li><strong>Стабильное обучение.</strong> dVAE с Gumbel-Softmax выглядит намного практичнее REINFORCE на больших каталогах.</li>
+<li><strong>Downstream evaluation.</strong> Автор проверяет не только reconstruction, но и sequential recommendation under fixed token budget.</li>
+</ul>
+
+<h2>16. Ограничения и вопросы</h2>
+<ul>
+<li><strong>Collision handling.</strong> В downstream recommender добавляется special unique identifier token, чтобы разрешать collision между semantic IDs. Это частично возвращает атомарный item ID.</li>
+<li><strong>Serving complexity.</strong> Variable-length decoding требует аккуратной обработки stopping probabilities, valid prefixes и mapping generated sequence to item.</li>
+<li><strong>Нет online A/B test.</strong> Результаты сильные, но production validation отсутствует.</li>
+<li><strong>Shared vocabulary across positions.</strong> Это красиво концептуально, но может быть менее удобно для иерархических retrieval систем с position-specific codebooks.</li>
+</ul>
+
+<h2>17. Итог</h2>
+<p>Variable-Length Semantic IDs - сильная статья про то, что semantic ID должен быть не просто дискретным кодом item'а, а <strong>эффективным кодом</strong>. В generative recommendation каждый token стоит context и compute, поэтому фиксированная длина для всех item'ов выглядит все менее оправданной.</p>
+<p>Главная ценность работы - probabilistic formulation длины как latent variable и демонстрация, что adaptive-length codes улучшают downstream recommendation при фиксированном token budget. Работа особенно полезна для generative retrieval, LLM-based recommenders и любых систем, где item language должен масштабироваться на long-tail catalogs.</p>
+</main>
+</body>
+</html>

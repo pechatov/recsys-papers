@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DIGER: Differentiable Semantic ID for Generative Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>DIGER: Differentiable Semantic ID for Generative Recommendation</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Junchen Fu, Xuri Ge, Alexandros Karatzoglou, Ioannis Arapakis, Suzan Verberne, Joemon M. Jose, Zhaochun Ren.</p>
+<p><strong>Аффилиации:</strong> University of Glasgow; Shandong University; <span class="industry">Amazon</span>; <span class="industry">Telefonica Scientific Research</span>; Leiden University.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>DIGER решает важную проблему generative recommendation: semantic ID обычно строится отдельным tokenizer'ом, а затем замораживается для downstream recommender. В результате tokenizer оптимизирует reconstruction/content loss, а recommender оптимизирует next-item prediction, но recommendation loss не может исправить сами коды.</p>
+<p>Авторы предлагают сделать semantic indexing дифференцируемым и обучать semantic IDs вместе с генеративным рекомендателем. Простая версия через straight-through estimator быстро ломается: модель рано выбирает несколько кодов, codebook перестает использоваться равномерно, и качество падает. DIGER добавляет управляемую стохастичность через Gumbel noise и постепенно снижает неопределенность, чтобы совместить раннее exploration и позднее convergence.</p>
+
+<h2>2. Почему это важно</h2>
+<p>Двухстадийный pipeline удобен инженерно, но создает objective mismatch:</p>
+<ul>
+<li>tokenizer учится кодировать content embedding, а не оптимизировать recommendation quality;</li>
+<li>ошибки tokenization наследуются генеративной моделью;</li>
+<li>semantic ID остается статическим даже если downstream loss показывает, что коды неудобны для ранжирования;</li>
+<li>наивная дифференцируемость приводит к collapse, поэтому сам факт joint training не гарантирует выигрыш.</li>
+</ul>
+
+<h2>3. Метод</h2>
+<p>DIGER сохраняет дискретную природу semantic ID в forward pass, но меняет обучение assignment'ов. Вместо детерминированного выбора ближайшего codeword в начале обучения в logits добавляется Gumbel noise. Это заставляет tokenizer исследовать разные коды и снижает риск, что несколько ранних assignment'ов захватят весь codebook.</p>
+<p>Важная деталь - uncertainty decay. Авторы рассматривают стратегии, которые постепенно уменьшают шум и переводят обучение из exploration в exploitation. Так модель сначала распределяет items по codebook более разнообразно, а затем стабилизирует semantic IDs.</p>
+
+<h2>4. Схема</h2>
+<img src="../../assets/diger/framework.png" alt="DIGER framework with differentiable semantic ID learning and uncertainty decay" width="760">
+<p>На схеме видно различие между STE и DIGER: STE фактически проводит gradient через один жестко выбранный путь, а DIGER поддерживает soft update и exploration. Это важно именно на ранних эпохах, когда codebook еще не сформировал устойчивую структуру.</p>
+
+<h2>5. Что показывают эксперименты</h2>
+<p>Авторы сравнивают DIGER с двухстадийным generative recommendation pipeline, наивным STE и сильными baseline'ами вроде TIGER, LETTER и ETEGRec. На B-Shop, I-Shop и Yelp DIGER стабильно улучшает двухстадийный вариант. Например, на B-Shop Recall@10 растет с 0.0610 до 0.0657-0.0696, а NDCG@10 - с 0.0331 до 0.0361-0.0376. Наивный STE, наоборот, резко проседает, что подтверждает проблему collapse.</p>
+<img src="../../assets/diger/diger_vs_ste.png" alt="DIGER versus STE validation NDCG and code balance" width="720">
+<p>В сравнении с SOTA DIGER дает лучшие или близкие к лучшим результаты: на B-Shop и I-Shop он выходит на top performance, на Yelp имеет лучший Recall@10 и сопоставимый NDCG@10 с LETTER.</p>
+
+<h2>6. Абляции</h2>
+<p>Самая показательная абляция - удаление Gumbel noise. На B-Shop Recall@10 падает с 0.0683 до 0.0283, то есть основная польза метода действительно в exploration, а не только в новом loss. Удаление uncertainty decay тоже ухудшает качество: без decay модель исследует коды, но хуже стабилизируется.</p>
+<p>Замена Gumbel noise на Gaussian noise работает хуже. Это логично: Gumbel ближе к categorical sampling и лучше соответствует дискретному выбору codeword.</p>
+
+<h2>7. Сильные стороны</h2>
+<ul>
+<li>Статья явно формулирует objective mismatch между tokenizer и recommender.</li>
+<li>DIGER показывает, что differentiable semantic IDs возможны, но требуют аккуратного exploration.</li>
+<li>Анализ code usage и SID drift полезен для диагностики production-tokenizer'ов.</li>
+<li>Метод хорошо ложится на текущую ветку RQ-VAE/TIGER-like архитектур.</li>
+</ul>
+
+<h2>8. Ограничения</h2>
+<ul>
+<li>Метод добавляет сложность training loop: нужно контролировать noise, decay, codebook capacity и SID length.</li>
+<li>Совместное обучение может осложнить lifecycle tokenizer'а в production, где коды часто версионируются отдельно.</li>
+<li>Эксперименты в основном offline; остается вопрос, как часто можно переобучать differentiable SID на живом каталоге.</li>
+<li>Коллизии и стабильность item-to-code mapping при частом обновлении каталога требуют отдельной проверки.</li>
+</ul>
+
+<h2>9. Связь с другими работами</h2>
+<p>DIGER естественно читать после TIGER, CoST, LETTER и ETEGRec. CoST и LETTER улучшают tokenizer objective, ETEGRec связывает tokenizer и recommender alignment losses, а DIGER делает следующий шаг: пытается пропустить recommendation gradients непосредственно в learning semantic IDs.</p>
+
+<h2>10. Вывод</h2>
+<p>DIGER - важная статья про переход от static semantic IDs к jointly optimized semantic IDs. Главная мысль: differentiability сама по себе не решает задачу, потому что дискретный codebook легко схлопывается. Нужна управляемая стохастичность, которая сначала расширяет exploration, а затем дает stable exploitation. Для практики это хороший набор диагностик: code usage, assignment drift, sensitivity to codebook size и сравнение с двухстадийным pipeline.</p>
+</main>
+</body>
+</html>

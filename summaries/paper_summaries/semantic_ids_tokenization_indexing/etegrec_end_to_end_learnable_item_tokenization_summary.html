@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ETEGRec: End-to-End Learnable Item Tokenization for Generative Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>ETEGRec: Generative Recommender with End-to-End Learnable Item Tokenization</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Enze Liu, Bowen Zheng, Cheng Ling, Lantao Hu, Han Li, Wayne Xin Zhao.</p>
+<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Kuaishou Technology</span>.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>ETEGRec предлагает end-to-end generative recommender, где item tokenizer и autoregressive recommender обучаются как связанная система. Проблема, как и в DIGER/LETTER: если tokenizer обучать отдельно, его semantic IDs могут быть удобны для reconstruction, но не оптимальны для recommendation.</p>
+<p>Вклад ETEGRec - dual encoder-decoder architecture и recommendation-oriented alignment strategy. Метод связывает representation user sequence, item tokenizer codebook и reconstructed item semantics через две alignment цели.</p>
+
+<h2>2. Архитектура</h2>
+<img src="../../assets/etegrec/framework.png" alt="ETEGRec framework with item tokenizer, generative recommender and alignment objectives" width="760">
+<p>ETEGRec состоит из двух основных компонентов:</p>
+<ul>
+<li><strong>Item tokenizer.</strong> Кодирует item в discrete token sequence и reconstructs semantic representation.</li>
+<li><strong>Generative recommender.</strong> По user history генерирует token sequence следующего item.</li>
+</ul>
+<p>Чтобы эти части не жили отдельно, авторы добавляют alignment losses между sequence-side и item-side representations.</p>
+
+<h2>3. Две alignment цели</h2>
+<ul>
+<li><strong>Sequence-item alignment (SIA).</strong> Выравнивает sequence representation с item representation в codebook space. Это помогает decoder states быть ближе к нужному item tokenization space.</li>
+<li><strong>Preference-semantic alignment (PSA).</strong> Связывает user preference representation с reconstructed semantic representation target item. Это усиливает user preference modeling.</li>
+</ul>
+<p>Дополнительно используется alternating optimization: tokenizer и recommender обновляются не хаотично одновременно, а в стабильном режиме. Авторы показывают, что без alternating training качество заметно падает.</p>
+
+<h2>4. Эксперименты</h2>
+<p>ETEGRec тестируется на Instrument, Scientific и Game. В сравнении с traditional sequential models и generative baselines он стабильно показывает лучшие результаты. Авторы отдельно отмечают, что TIGER/TIGER-SAS выигрывают у SID/CID за счет RQ-VAE-like hierarchical semantics, LETTER силен за счет collaborative/textual signals, но ETEGRec выигрывает за счет mutual enhancement tokenizer и recommender.</p>
+<p>В unseen-user analysis ETEGRec лучше TIGER и LETTER как на seen, так и на unseen users. Это важный сигнал: alignment помогает не только memorization, но и более устойчивому preference modeling.</p>
+
+<h2>5. Абляции</h2>
+<p>Удаление SIA или PSA ухудшает качество, а удаление обеих целей ухудшает сильнее. Вариант без alternating training тоже проседает, что подтверждает: end-to-end training tokenizer'а и recommender'а требует аккуратного расписания. Вариант, где берут итоговые item tokens и заново обучают recommender без end-to-end связи, тоже хуже полного ETEGRec. Значит, выигрыш не только в лучших токенах, но и в совместно выученных representations.</p>
+
+<h2>6. Сильные стороны</h2>
+<ul>
+<li>Хорошо формулирует mutual enhancement между tokenizer и recommender.</li>
+<li>Alignment losses легче стабилизировать, чем полностью differentiable discrete assignment.</li>
+<li>Alternating optimization отражает реальную сложность end-to-end обучения.</li>
+<li>Есть анализ unseen users и визуализация preference-semantic alignment.</li>
+</ul>
+
+<h2>7. Ограничения</h2>
+<ul>
+<li>End-to-end pipeline сложнее внедрять, чем offline tokenizer плюс frozen IDs.</li>
+<li>Alternating training добавляет расписание и hyperparameters.</li>
+<li>Стабильность item IDs при переобучении в production остается открытым вопросом.</li>
+<li>Метод может быть чувствителен к тому, насколько хорошо item content embeddings отражают реальные user preferences.</li>
+</ul>
+
+<h2>8. Связь с LETTER и DIGER</h2>
+<p>LETTER делает tokenizer более recommendation-aware через regularization. ETEGRec делает шаг к joint system, добавляя alignment between tokenizer and recommender. DIGER затем делает более радикальный ход: differentiable semantic ID с gradient flow через assignment. В этой линии ETEGRec - важный компромисс между modularity и end-to-end optimization.</p>
+
+<h2>9. Вывод</h2>
+<p>ETEGRec показывает, что просто построить хорошие semantic IDs недостаточно: recommender должен учиться в том же representation space, где живет tokenizer. Практический урок - проверять не только качество tokenization, но и alignment между decoder hidden states, user preferences и item semantic representations.</p>
+</main>
+</body>
+</html>

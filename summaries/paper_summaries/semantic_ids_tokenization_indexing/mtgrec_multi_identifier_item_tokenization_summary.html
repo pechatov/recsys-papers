@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MTGRec: Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>MTGRec: Pre-training Generative Recommender with Multi-Identifier Item Tokenization</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
+<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span>.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>MTGRec решает проблему one-to-one item tokenization в generative recommendation. Обычно каждому item соответствует один identifier. Это ограничивает diversity token sequence data и плохо помогает low-frequency items. Авторы предлагают использовать несколько семантически близких identifiers для одного item и превращать одну user sequence в несколько tokenized variants.</p>
+<p>Ключевой трюк: не обучать много независимых tokenizer'ов, а брать RQ-VAE checkpoints с соседних эпох. Такие checkpoints дают разные, но близкие semantic IDs, которые можно использовать как data augmentation для pre-training generative recommender.</p>
+
+<h2>2. Архитектура</h2>
+<img src="../../assets/mtgrec/framework.png" alt="MTGRec framework with multi-identifier item tokenization and curriculum pre-training" width="760">
+<p>MTGRec состоит из двух частей:</p>
+<ol>
+<li><strong>Multi-identifier item tokenization.</strong> Несколько adjacent RQ-VAE checkpoints создают несколько identifiers на item.</li>
+<li><strong>Curriculum recommender pre-training.</strong> Data groups от разных tokenizer checkpoints сэмплируются не равномерно, а по curriculum, основанному на data influence estimation.</li>
+</ol>
+<p>После pre-training модель fine-tune'ится с одним tokenizer'ом, чтобы сохранить точное item identification на inference.</p>
+
+<h2>3. Почему это помогает</h2>
+<p>Generative recommender учится на token sequences. Если у каждого item ровно один код, объем и разнообразие training sequences ограничены. Несколько identifiers создают дополнительные views на ту же behavioral sequence. Это похоже на augmentation: модель видит больше вариантов token-level выражения одного и того же user behavior.</p>
+<p>Для long-tail items это особенно полезно: редкий item получает больше экспозиции через shared tokens и соседние identifier variants.</p>
+
+<h2>4. Curriculum pre-training</h2>
+<p>Не все tokenizer checkpoints одинаково полезны. Слишком близкие checkpoints дают мало diversity, слишком далекие могут нарушить semantic relevance. MTGRec оценивает influence data group через first-order gradient approximation и динамически меняет sampling probability. Это делает pre-training менее шумным, чем простое объединение всех augmented sequences.</p>
+
+<h2>5. Эксперименты</h2>
+<p>MTGRec сравнивается с traditional sequential models и generative baselines на Instrument, Scientific и Game. Авторы показывают, что generative models обычно лучше traditional sequential models, а MTGRec consistently достигает лучшего качества. В анализе model scale MTGRec лучше использует рост глубины модели, тогда как TIGER/TIGER++ могут переобучаться при увеличении scale.</p>
+<p>Отдельный анализ по popularity groups показывает, что MTGRec особенно помогает unpopular target items. Это подтверждает основную мотивацию: multi-identifier pre-training дает больше сигнала long-tail items.</p>
+
+<h2>6. Абляции</h2>
+<ul>
+<li>Без data curriculum качество ниже, чем у полного MTGRec.</li>
+<li>Слишком малое число tokenizer checkpoints дает слабый эффект из-за недостатка diversity.</li>
+<li>Метод можно применить к другим generative recommenders с trainable tokenizer, включая TIGER и LETTER.</li>
+</ul>
+
+<h2>7. Сильные стороны</h2>
+<ul>
+<li>Идея multi-identifier проста и хорошо совместима с RQ-VAE tokenizer'ами.</li>
+<li>Pre-training augmentation не требует менять inference mapping: после fine-tuning используется один tokenizer.</li>
+<li>Метод явно направлен на scalability и long-tail.</li>
+<li>Curriculum снижает риск, что augmentation станет просто шумом.</li>
+</ul>
+
+<h2>8. Ограничения</h2>
+<ul>
+<li>Нужно хранить и управлять несколькими tokenizer checkpoints во время pre-training.</li>
+<li>Если adjacent checkpoints меняют IDs слишком сильно, semantic relevance нарушается.</li>
+<li>Метод увеличивает training cost и pipeline complexity.</li>
+<li>Inference все равно возвращается к одному tokenizer'у, поэтому часть diversity используется только как training signal.</li>
+</ul>
+
+<h2>9. Связь с Variable-Length Semantic IDs</h2>
+<p>Variable-Length Semantic IDs экономят token budget за счет разной длины кодов. MTGRec решает другой аспект: увеличивает diversity training sequences за счет нескольких кодов на item. Обе работы критикуют жесткую one-item-one-fixed-code схему, но предлагают разные способы ее смягчить.</p>
+
+<h2>10. Вывод</h2>
+<p>MTGRec полезен как практичный способ усилить generative recommender pre-training без полного пересмотра модели. Главная мысль: item identifier не обязан быть единственным на этапе обучения. Несколько близких identifiers могут работать как semantic augmentation, особенно для long-tail items и более крупных recommender backbones.</p>
+</main>
+</body>
+</html>

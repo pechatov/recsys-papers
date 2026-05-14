@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM-Based Generative Recommendation via Structured Term Identifiers</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>Unleashing the Native Recommendation Potential: LLM-Based Generative Recommendation via Structured Term Identifiers</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Zhiyang Zhang, Junda She, Kuo Cai, Bo Chen, Shiyao Wang, Xinchen Luo, Qiang Luo, Ruiming Tang, Han Li, Kun Gai, Guorui Zhou.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Inc.</span></p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>Статья предлагает отказаться от специальных Semantic ID tokens для LLM-based generative recommendation и заменить их Structured Term Identifiers, или TIDs. TID - это набор стандартизированных текстовых keywords, которые одновременно понятны LLM native vocabulary и достаточно структурированы для item grounding.</p>
+<p>Авторы называют framework GRLM. Он решает две проблемы: текстовые названия слишком шумные и провоцируют hallucination, а дискретные SIDs требуют расширять vocabulary и выравнивать новые токены с LLM. TID пытается взять лучшее из двух миров: natural-language tokens плюс контролируемая структура.</p>
+
+<h2>2. Сравнение identifier-подходов</h2>
+<img src="../../assets/structured_term_identifiers/identifier_comparison.png" alt="Comparison of textual identifiers, semantic IDs and structured Term IDs" width="760">
+<ul>
+<li><strong>Textual identifiers</strong> используют title/description, но страдают от длинных, неоднозначных и hallucinated outputs.</li>
+<li><strong>Semantic IDs</strong> компактны и удобны для constrained generation, но имеют semantic gap с LLM vocabulary.</li>
+<li><strong>Term IDs</strong> используют стандартизированные keywords: они остаются в native vocabulary LLM и легче grounded обратно к item.</li>
+</ul>
+
+<h2>3. Архитектура GRLM</h2>
+<img src="../../assets/structured_term_identifiers/grlm_framework.png" alt="GRLM framework with context-aware term generation, instruction fine-tuning and elastic identifier grounding" width="760">
+<p>GRLM состоит из трех ключевых частей:</p>
+<ol>
+<li><strong>Context-aware Term Generation.</strong> LLM генерирует TIDs из metadata item, используя похожие items как контекст, чтобы keywords были локально различимыми.</li>
+<li><strong>Integrative Instruction Fine-tuning.</strong> Модель одновременно учится internalize term identifiers и решать sequential recommendation.</li>
+<li><strong>Elastic Identifier Grounding.</strong> Сгенерированные TIDs маппятся обратно к item через direct mapping и более гибкое structural matching.</li>
+</ol>
+
+<h2>4. Главная идея TID</h2>
+<p>TID не обязан быть полным названием товара. Это скорее компактное, нормализованное описание в терминах, которые LLM уже умеет обрабатывать: category, function, style, usage, attributes. Для recommender это важно: идентификатор должен быть и discriminative, и generatable.</p>
+<p>Контекст похожих items нужен, чтобы генератор не выбирал слишком общие слова. Например, если все соседние товары "sports shoes", TID должен зафиксировать отличающие признаки, а не повторить общую категорию.</p>
+
+<h2>5. Результаты</h2>
+<p>В in-domain experiments GRLM лучше baseline'ов на Beauty, Sports и Toys. Авторы сообщают относительное улучшение Recall@5 на 7.8%, 30.2% и 14.9% относительно strongest baseline. В cross-domain setting улучшения Recall@K превышают 50% в среднем, что авторы связывают с тем, что TIDs живут в общем natural-language semantic space.</p>
+<p>Отдельно проверяется hallucination: Valid Rate@10 и Direct Hit Rate@10 превышают 99% на всех наборах. Это важный claim, потому что обычные textual identifiers часто ломаются именно на mapping generated text обратно в catalog item.</p>
+
+<h2>6. Scaling law</h2>
+<p>Авторы тестируют backbone sizes от 0.6B до 14B и показывают, что recommendation performance растет с размером модели. Это аргумент в пользу TIDs: если identifiers выражены native language terms, более крупная LLM может лучше использовать semantic reasoning и world knowledge, а не тратить capacity на alignment новых SID tokens.</p>
+
+<h2>7. Сильные стороны</h2>
+<ul>
+<li>Хорошо сформулирована проблема vocabulary gap между Semantic IDs и pretrained LLM.</li>
+<li>TID сохраняет human-readable semantics и упрощает debugging.</li>
+<li>Elastic grounding отвечает на практический риск hallucination.</li>
+<li>Cross-domain результаты показывают пользу natural-language identifier space.</li>
+</ul>
+
+<h2>8. Ограничения</h2>
+<ul>
+<li>Генерация TIDs зависит от качества metadata и LLM prompt/fine-tuning pipeline.</li>
+<li>Text terms могут быть неоднозначными: разные items могут иметь похожие keywords.</li>
+<li>Grounding layer становится критическим production-компонентом, который нужно версионировать вместе с каталогом.</li>
+<li>В отличие от компактных SIDs, TIDs могут увеличивать sequence length и decoding cost.</li>
+</ul>
+
+<h2>9. Связь с Semantic ID literature</h2>
+<p>GRLM спорит с RQ-VAE/SID линией не напрямую по tokenizer quality, а по совместимости с LLM. Если TIGER, CoST, LETTER и DIGER строят лучшее дискретное item code space, то GRLM спрашивает: зачем вводить новый code space, если можно структурировать native language space?</p>
+
+<h2>10. Вывод</h2>
+<p>Статья важна как альтернатива semantic-token подходу для LLM-native recommendation. TID выглядит особенно полезным там, где нужны cross-domain transfer, interpretability и использование pretrained knowledge. Но за это платят зависимостью от term generation, grounding и качества item metadata.</p>
+</main>
+</body>
+</html>

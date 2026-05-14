@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LETTER: Learnable Item Tokenization for Generative Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>LETTER: Learnable Item Tokenization for Generative Recommendation</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
+<p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>LETTER - learnable tokenizer для LLM-based generative recommendation. Авторы утверждают, что хорошие item identifiers должны одновременно нести hierarchical semantics, collaborative signals и быть достаточно разнообразными, чтобы не возникал code assignment bias.</p>
+<p>Метод строится вокруг RQ-VAE, но добавляет три типа regularization: semantic, collaborative и diversity. Затем LETTER можно поставить поверх разных generative recommenders, включая TIGER и LC-Rec.</p>
+
+<h2>2. Мотивация</h2>
+<p>Textual identifiers понятны LLM, но часто слишком длинные и неоднозначные. ID identifiers компактны, но не несут semantics. Codebook-based identifiers, как в TIGER, лучше, но могут плохо учитывать collaborative behavior и неравномерно использовать codebook. LETTER пытается сделать tokenizer learnable именно под recommendation, а не только под reconstruction.</p>
+<img src="../../assets/letter/overview.png" alt="Overview of LETTER for LLM-based generative recommendation" width="760">
+
+<h2>3. Три regularization цели</h2>
+<img src="../../assets/letter/method.png" alt="LETTER method with semantic, collaborative and diversity regularization" width="760">
+<ul>
+<li><strong>Semantic regularization.</strong> RQ-VAE сохраняет hierarchical semantic structure item embeddings.</li>
+<li><strong>Collaborative regularization.</strong> Contrastive alignment приближает identifiers items, которые похожи по user behavior.</li>
+<li><strong>Diversity regularization.</strong> Loss снижает code assignment bias и помогает codebook использоваться равномернее.</li>
+</ul>
+
+<h2>4. Ranking-guided generation loss</h2>
+<p>Помимо tokenizer regularization, LETTER предлагает ranking-guided generation loss. Идея: обычная token-level generation objective не всегда оптимизирует ranking. Поэтому модель усиливает различение positive item и hard negatives, регулируя temperature и делая generation более ranking-aware.</p>
+
+<h2>5. Эксперименты</h2>
+<p>LETTER тестируется на Instruments, Beauty и Yelp. В сравнении с P5-SemID, P5-CID, textual identifiers, TIGER и LC-Rec кодовые identifiers обычно лучше textual/ID approaches, а LETTER дополнительно улучшает TIGER и LC-Rec. В абляции на Instruments LETTER-TIGER улучшает TIGER по Recall@10 с 0.1058 до 0.1122, а NDCG@10 - с 0.0797 до 0.0831. На Beauty NDCG@10 растет с 0.0331 до 0.0364.</p>
+<p>Абляции показывают, что collaborative regularization и diversity regularization полезны по отдельности, но лучший вариант получается при сочетании всех regularizers и ranking-guided loss.</p>
+
+<h2>6. Что важно в статье</h2>
+<ul>
+<li>LETTER явно разделяет requirements к identifier: semantics, collaboration, diversity.</li>
+<li>Метод показывает, что tokenizer objective может быть многокомпонентным, а не только reconstruction.</li>
+<li>Diversity regularization связывает качество recommendation с балансом code usage.</li>
+<li>Подход можно инстанцировать на разных generative recommenders.</li>
+</ul>
+
+<h2>7. Ограничения</h2>
+<ul>
+<li>Больше regularizers означает больше hyperparameters и сложнее diagnosis.</li>
+<li>Collaborative regularization может закреплять popularity bias, если user behavior сильно skewed.</li>
+<li>Токены все еще строятся offline; downstream loss не обязательно напрямую обновляет tokenizer как в DIGER.</li>
+<li>В production нужно следить за стабильностью code assignment при переобучении tokenizer.</li>
+</ul>
+
+<h2>8. Связь с CoST, ETEGRec и DIGER</h2>
+<p>CoST заменяет reconstruction objective на contrastive objective. LETTER шире: оно добавляет collaborative alignment и diversity к semantic tokenizer. ETEGRec затем связывает tokenizer и recommender alignment losses end-to-end, а DIGER идет дальше к differentiable SID. LETTER удобно читать как промежуточную точку между TIGER-style RQ-VAE и более tightly coupled training.</p>
+
+<h2>9. Вывод</h2>
+<p>LETTER - сильный baseline для item tokenization. Его ценность в ясной декомпозиции: хороший semantic ID должен быть не только семантически осмысленным, но и collaborative-aware, и не должен использовать codebook с сильным bias. Для практики это означает, что tokenizer нужно оценивать не только по reconstruction, но и по code distribution, behavior alignment и downstream ranking.</p>
+</main>
+</body>
+</html>

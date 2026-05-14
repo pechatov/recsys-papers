@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ActionPiece: Contextually Tokenizing Action Sequences for Generative Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1>ActionPiece: Contextually Tokenizing Action Sequences for Generative Recommendation</h1>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Yupeng Hou, Jianmo Ni, Zhankui He, Noveen Sachdeva, Wang-Cheng Kang, Ed H. Chi, Julian McAuley, Derek Zhiyuan Cheng.</p>
+<p><strong>Аффилиации:</strong> University of California San Diego; <span class="industry">Google DeepMind</span>.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>ActionPiece переносит идею subword tokenization из NLP в generative recommendation, но применяет ее не к item IDs, а к action sequences. Главная претензия к существующим GR tokenizer'ам: они токенизируют один и тот же action одинаково во всех контекстах. В рекомендациях это плохо, потому что один товар или действие может иметь разный смысл в разных user sequences.</p>
+<p>ActionPiece делает context-aware tokenization: action представляется как set item features, а vocabulary строится через merge feature patterns по co-occurrence внутри action set и между соседними action sets.</p>
+
+<h2>2. Пример токенизации</h2>
+<img src="../../assets/actionpiece/tokenization_case.png" alt="ActionPiece tokenization process example" width="700">
+<p>В отличие от fixed SID подходов, ActionPiece может создать токены, которые покрывают не только части одного item, но и устойчивые паттерны между соседними действиями. Поэтому одинаковый action может получить разное разбиение в зависимости от surrounding context.</p>
+
+<h2>3. Как строится vocabulary</h2>
+<p>Каждый action начинается как unordered set item features. Затем алгоритм считает co-occurrence token pairs:</p>
+<ul>
+<li>внутри одного feature set;</li>
+<li>между соседними action sets;</li>
+<li>с весами, которые учитывают близость и структуру последовательности.</li>
+</ul>
+<img src="../../assets/actionpiece/cooccurrence_weights.png" alt="ActionPiece co-occurrence weighting during vocabulary construction" width="620">
+<p>Наиболее частые и полезные pairs сливаются в новые tokens, как в BPE/SentencePiece, но с учетом структуры recommendation sequence.</p>
+
+<h2>4. Set permutation regularization</h2>
+<p>Поскольку item features внутри action не упорядочены, один и тот же action set можно сегментировать несколькими способами без изменения semantics. ActionPiece использует set permutation regularization: модель видит несколько tokenization variants для той же последовательности. Это работает как data augmentation и снижает зависимость от произвольного порядка features.</p>
+
+<h2>5. Эксперименты</h2>
+<p>Авторы сравнивают ActionPiece с sequential recommendation и generative recommendation baselines на Amazon Reviews datasets. ActionPiece стабильно обгоняет baseline'ы и улучшает NDCG@10 на 6.00%-12.82% относительно лучшего baseline. Отдельный вывод: feature-based methods обычно лучше item ID-only, а generative models с sub-item semantics лучше используют item features.</p>
+<p>В абляциях авторы показывают, что выигрыш не объясняется только большим vocabulary size. Контекстные merges и set permutation regularization вносят отдельный вклад.</p>
+
+<h2>6. Что важно</h2>
+<ul>
+<li>ActionPiece сдвигает фокус с item tokenization на action-sequence tokenization.</li>
+<li>Метод учитывает контекст до обучения generative recommender, уже на уровне tokenizer.</li>
+<li>Vocabulary строится data-driven, но не игнорирует unordered nature feature sets.</li>
+<li>Это хорошая альтернатива fixed semantic ID, когда user behavior sequence несет больше смысла, чем isolated item.</li>
+</ul>
+
+<h2>7. Ограничения</h2>
+<ul>
+<li>Алгоритм vocabulary construction сложнее обычного RQ-VAE tokenizer.</li>
+<li>Нужно иметь качественные item features; raw item IDs сами по себе не раскрывают потенциал метода.</li>
+<li>Context-aware tokens могут быть менее стабильными при сильном изменении behavior distribution.</li>
+<li>Production decoding и item grounding требуют аккуратной реализации, потому что output tokens больше не соответствуют одному item напрямую.</li>
+</ul>
+
+<h2>8. Связь с Semantic ID работами</h2>
+<p>TIGER/CoST/LETTER обычно спрашивают: как токенизировать item? ActionPiece спрашивает: как токенизировать действие внутри последовательности? Это делает работу особенно полезной для sequential recommendation, где intent зависит от соседних действий.</p>
+
+<h2>9. Вывод</h2>
+<p>ActionPiece - сильная идея для generative sequential recommendation: токенизировать не item изолированно, а action в контексте. Если semantic IDs дают компактный язык объектов, ActionPiece строит язык поведенческих паттернов. Это особенно важно для длинных историй, где один и тот же item может означать разные intents.</p>
+</main>
+</body>
+</html>
