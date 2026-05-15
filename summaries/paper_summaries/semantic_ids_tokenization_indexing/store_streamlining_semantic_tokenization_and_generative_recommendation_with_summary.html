@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STORE: Streamlining Semantic Tokenization and Generative Recommendation with A Single LLM</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.08rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+.nav { margin: .5rem 0 1.2rem; }
+.note { color: var(--muted); }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.55rem; } }</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2409.07276">STORE: Streamlining Semantic Tokenization and Generative Recommendation with A Single LLM</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p><strong>Авторы:</strong> Qijiong Liu, Jieming Zhu, Lu Fan, Zhou Zhao, Xiao-Ming Wu.</p>
+<p><strong>Аффилиации:</strong> Hong Kong Polytechnic University; <span class="industry">Huawei Noah's Ark Lab</span>; Zhejiang University.</p>
+<p><strong>Первичный источник:</strong> arXiv:2409.07276v1 для статьи STORE. Важно: текущая версия arXiv v3 переименована и заменена на LAMIA, поэтому для разбора STORE использована версия v1 PDF.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>STORE предлагает упростить pipeline generative recommendation с semantic tokenization. Типичная схема TIGER-like систем состоит из нескольких независимых модулей: content embedder, quantizer вроде RQ-VAE и autoregressive recommender. STORE пытается заменить этот набор одним LLM backbone, который одновременно умеет делать semantic tokenization и generative recommendation.</p>
+<p>Ключевая формулировка: semantic tokenization превращается в <strong>text-to-token</strong> generation, а recommendation - в <strong>token-to-token</strong> generation. Чтобы не потерять связь между item text и discrete tokens, STORE добавляет <strong>token-to-text reconstruction</strong> для tokenizer stage и <strong>text-to-token auxiliary task</strong> для recommendation stage.</p>
+
+<h2>2. Контекст: почему multi-stage semantic tokenization неудобен</h2>
+<p>В generative recommendation item представляется sequence of semantic tokens. Эти tokens затем генерируются моделью как next-item identifier. Такой подход компактнее atomic item IDs и лучше переносится на long-tail/cold-start, но в классическом pipeline есть несколько слабых мест.</p>
+<ul>
+<li><strong>Embedder domain gap.</strong> Item embeddings часто берутся из frozen general-domain text encoder, который не обязательно понимает товарные, новостные или ресторанные признаки в нужном домене.</li>
+<li><strong>Quantizer fragility.</strong> RQ-VAE может страдать codebook collapse, collisions и чувствительностью к hyperparameters.</li>
+<li><strong>Disjoint optimization.</strong> Embedder, quantizer и recommender оптимизируются отдельно; knowledge не проходит свободно между ними.</li>
+<li><strong>Operational complexity.</strong> В production нужно тренировать, версионировать и обслуживать несколько моделей и mapping tables.</li>
+</ul>
+
+<h2>3. Главная идея STORE</h2>
+<p>STORE сохраняет смысл semantic tokens, но формулирует все вокруг generation tasks внутри одного LLM. Вместо "embedder -> quantizer -> recommender" предлагается unified instruction-based pipeline:</p>
+<ol>
+<li>LLM учится генерировать dense semantic tokens по item content.</li>
+<li>Непараметрический clusterer переводит dense tokens в discrete tokens.</li>
+<li>Тот же LLM backbone используется для next-item generation по token sequence.</li>
+<li>Auxiliary tasks помогают LLM понимать соответствие между text и tokens.</li>
+</ol>
+<p>Таким образом STORE не просто заменяет RQ-VAE другой quantizer, а меняет границу между tokenization и recommendation: обе задачи становятся разными instruction tasks одного generative model.</p>
+
+<h2>4. Dense tokenizer</h2>
+<p>Dense tokenizer в STORE берет item content и производит token embeddings. В v1 статье это описано как text-to-token conversion через cascaded attention mask и self-supervised tasks. Идея в том, что модель не должна просто взять frozen embedding и квантовать его; она должна адаптировать representation к recommendation domain.</p>
+<p>Важная деталь: авторы не делают сложный differentiable VQ внутри LLM. После получения dense tokens они используют более простой clusterer. Это снижает риск нестабильности RQ-VAE, хотя переносит часть ответственности на качество dense tokenizer и clustering.</p>
+
+<h2>5. Clusterer и discrete tokens</h2>
+<p>Для discretization STORE использует PCA для уменьшения размерности dense tokens и k-means для получения discrete token IDs. В paper приведены settings: 1024-dimensional representations редуцируются перед clustering, а затем discrete codes используются как item identifiers. Это проще, чем обучать RQ-VAE с residual codebooks, commitment losses и codebook updates.</p>
+<p>Плюс такого решения - простота и воспроизводимость. Минус - k-means остается offline step: если dense tokenizer меняется, token map тоже надо обновлять и синхронизировать с recommender.</p>
+
+<h2>6. Post-pretraining и instruction tuning</h2>
+<p>STORE добавляет post-pretraining tasks, чтобы LLM лучше понимала связь между item content и semantic tokens. Основные задачи:</p>
+<ul>
+<li><strong>Text-to-token.</strong> По item text сгенерировать соответствующие semantic tokens.</li>
+<li><strong>Token-to-text reconstruction.</strong> По semantic tokens восстановить item text или content signal, снижая information loss.</li>
+<li><strong>Token-to-token recommendation.</strong> По user history в token space сгенерировать next item tokens.</li>
+<li><strong>Text-token alignment.</strong> Auxiliary task во время recommendation tuning, чтобы LLM не воспринимала tokens как бессмысленные новые symbols.</li>
+</ul>
+<p>Training реализуется через instruction templates. Это важно: STORE пытается использовать сильную сторону LLM - unified generative interface - не только для recommendation, но и для tokenizer learning.</p>
+
+<h2>7. Conditional beam search</h2>
+<p>На inference STORE строит code tree, который содержит все валидные token combinations. При beam search logits невалидных branches маскируются, чтобы модель генерировала только существующие item identifiers. Это аналог constrained decoding в generative retrieval.</p>
+<p>Авторы противопоставляют conditional beam search более мягким ограничениям LC-Rec: soft constraints могут оставить path, который не соответствует реальному item; code-tree masking делает generated identifier валидным по конструкции.</p>
+
+<h2>8. Экспериментальный setup</h2>
+<p>STORE оценивается на двух real-world datasets:</p>
+<table>
+<tr><th>Dataset</th><th>Домен</th><th>Почему важен</th></tr>
+<tr><td>MIND</td><td>news recommendation</td><td>item text информативен, user histories длиннее, меньше items относительно Yelp</td></tr>
+<tr><td>Yelp</td><td>restaurant recommendation</td><td>больше items, короче истории, ниже average item appearance</td></tr>
+</table>
+<p>Baselines включают traditional sequential recommenders и LLM/recommendation baselines: SASRec, BERT4Rec, P5, TIGER, LC-Rec. Для retrieval используются Recall@1/5/10/20 и NDCG@1/5/10/20. Также есть scoring scenario с AUC и ranking-style metrics.</p>
+
+<h2>9. Основные результаты</h2>
+<p>В retrieval results semantic-code group в целом выигрывает у classic ID/text-only approaches. STORE показывает лучшие результаты среди сравниваемых baselines на MIND и Yelp. Авторы отдельно отмечают, что MIND оказывается более благоприятным: item content news titles более информативен, а catalog меньше и плотнее. Yelp сложнее из-за большего item space и меньшей частоты появления item.</p>
+<p>В scoring scenario STORE также превосходит TIGER и LC-Rec. Это важно: метод не ограничивается только exact token generation, а может использовать semantic tokens и LLM backbone для score prediction / CTR-like settings.</p>
+
+<h2>10. Абляции</h2>
+<p>Абляции в Table 4 особенно важны, потому что они проверяют не только final architecture, но и причины выигрыша:</p>
+<ul>
+<li><strong>STORE w/o dense tokenizer.</strong> Возвращает pipeline ближе к стандартной semantic tokenization через RQ-VAE. Полный STORE лучше, значит text-to-token dense tokenizer действительно полезен.</li>
+<li><strong>STORE w/o conditional beam search.</strong> Использует soft beam constraints. Качество ниже, что подтверждает важность code-tree constrained decoding.</li>
+<li><strong>STORE w/o text-token alignment task.</strong> Убирает auxiliary alignment между textual content и discrete tokens. Просадка показывает, что LLM нужно учить понимать новые semantic tokens.</li>
+</ul>
+
+<h2>11. Что важно в рисунках</h2>
+<ul>
+<li><strong>Figure 1.</strong> Показывает разницу между conventional unique identifiers и semantic identifiers: semantic codes разделяются между похожими items.</li>
+<li><strong>Figure 2.</strong> Главная схема paper: старый pipeline embedder -> quantizer -> recommender против STORE pipeline, где tokenizer и recommender опираются на один LLM.</li>
+<li><strong>Figure 3.</strong> Детализирует dense tokenizer: item content сжимается в embeddings, затем через attention mask и self-supervised tasks формируются dense tokens.</li>
+<li><strong>Figure 5.</strong> Instruction templates показывают, что STORE формулирует tokenizer и recommender tasks в одном generative interface.</li>
+<li><strong>Figure 6.</strong> Code tree для conditional beam search; это serving-critical часть, без которой generated token sequence может не соответствовать item.</li>
+</ul>
+
+<h2>12. Сильные стороны</h2>
+<ul>
+<li>STORE прямо атакует pipeline complexity, а не только improves tokenizer loss.</li>
+<li>Использование одного LLM backbone уменьшает disjoint optimization между semantic tokenization и recommendation.</li>
+<li>Text-token auxiliary tasks делают semantic tokens менее "чужими" для language model.</li>
+<li>Conditional beam search дает валидность generated identifiers.</li>
+<li>Метод применим не только к retrieval, но и к scoring/CTR-like setup.</li>
+</ul>
+
+<h2>13. Ограничения</h2>
+<ul>
+<li><strong>Не полностью end-to-end.</strong> k-means clustering остается отдельным offline step, поэтому discrete token map все равно нужно версионировать.</li>
+<li><strong>LLM cost.</strong> Единый LLM упрощает архитектуру концептуально, но может быть дороже, чем маленький tokenizer + recommender.</li>
+<li><strong>Content dependence.</strong> На доменах со слабым item text преимущества могут быть меньше, что видно по разнице MIND/Yelp.</li>
+<li><strong>Version drift.</strong> arXiv paper позднее был существенно переработан в LAMIA; для воспроизведения STORE нужно фиксировать именно v1 source.</li>
+<li><strong>Cluster count sensitivity.</strong> k-means capacity влияет на collisions и item distinguishability.</li>
+</ul>
+
+<h2>14. Как реализовать и проверять</h2>
+<ol>
+<li>Зафиксировать версию paper/source: для STORE использовать arXiv v1.</li>
+<li>Начать с TIGER/LC-Rec baseline на MIND или Yelp.</li>
+<li>Реализовать dense tokenizer как instruction task: item text -> dense token slots.</li>
+<li>Добавить token-to-text reconstruction и проверить, падает ли information loss.</li>
+<li>После clustering посчитать code utilization, collision rate, head/tail distribution и item validity.</li>
+<li>Обучить token-to-token recommender с тем же backbone и text-token alignment auxiliary task.</li>
+<li>На inference использовать code-tree constrained beam search, а не unconstrained generation.</li>
+</ol>
+
+<h2>15. Связь с соседними работами</h2>
+<table>
+<tr><th>Работа</th><th>Связь со STORE</th></tr>
+<tr><td>TIGER</td><td>классический RQ-VAE tokenizer + generative recommendation baseline</td></tr>
+<tr><td>CoST</td><td>улучшает tokenizer objective contrastive loss, но сохраняет multi-stage pipeline</td></tr>
+<tr><td>LETTER</td><td>добавляет collaborative/diversity regularization к tokenizer</td></tr>
+<tr><td>ETEGRec</td><td>связывает tokenizer и recommender через end-to-end alignment</td></tr>
+<tr><td>DIGER / UniGRec</td><td>идут дальше в сторону differentiable или soft semantic IDs</td></tr>
+<tr><td>LAMIA</td><td>поздняя переработка этой arXiv-линии: multi-aspect item palette вместо STORE unified LLM framing</td></tr>
+</table>
+
+<h2>16. Итог</h2>
+<p>STORE - важная работа про упрощение semantic tokenization pipeline. Ее главный тезис: если semantic tokens нужны LLM-рекомендателю, то их стоит учить в том же generative/instruction framework, а не получать из отдельного frozen embedder + RQ-VAE. Практически самая ценная часть - сочетание dense tokenizer, text-token alignment и conditional beam search.</p>
+<p>Для будущих исследований STORE задает хороший вопрос: можно ли сделать semantic tokenizer не отдельным preprocessing module, а частью единой LLM-native recommendation system, сохранив при этом controlled decoding, стабильные item maps и приемлемую стоимость inference.</p>
+</main>
+</body>
+</html>

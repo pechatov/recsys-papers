@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unleash the Potential of Long Semantic IDs for Generative Recommendation</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2602.13573">Unleash the Potential of Long Semantic IDs for Generative Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Ming Xia, Zhiqin Zhou, Guoxin Ma, Dongmin Huang.</p>
+
+<p><strong>Аффилиации:</strong> Southern University of Science and Technology; Nanjing University; Xi'an Jiaotong University.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>ACERec утверждает, что короткие SID удобны для sequence modeling, но недостаточно выразительны, а длинные SID выразительны, но дорогие. Framework decouples fine-grained tokenization from efficient sequential modeling: длинные semantic tokens сначала сохраняют богатую семантику, затем Attentive Token Merger сжимает их в compact latents, а Intent Token служит динамическим prediction anchor. Dual-granularity objective объединяет fine-grained token prediction и item-level semantic alignment.</p>
+
+<h2>2. Контекст</h2>
+
+<p>RQ-based методы обычно ограничивают SID длиной 3-4 токена, чтобы генерация была tractable. OPQ/PQ-like методы могут строить более длинные IDs, но часто агрегируют их rigid pooling'ом, теряя fine-grained details. ACERec пытается получить лучшее из двух миров: оставить long IDs для representation, но не заставлять Transformer работать со всей длиной напрямую.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Expressiveness-efficiency trade-off: больше tokens лучше кодируют item, но увеличивают latency и sequence length.</li>
+
+<li>Naive pooling long IDs размывает semantics и теряет order/importance разных tokens.</li>
+
+<li>User intent не всегда равен среднему по history; нужен динамический anchor для next-item prediction.</li>
+
+<li>Long SID training должен согласовывать локальные token targets и глобальную item semantics.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Attentive Token Merger (ATM) принимает длинную последовательность semantic tokens и через attention/resampling сжимает ее в k compact latent vectors. Intent Token добавляется в sequence model как learnable/dynamic anchor, который собирает пользовательский intent для предсказания. Intent-Centric Sequential Modeling затем работает с compressed latents вместо полного long SID. Holistic Candidate Scoring ускоряет inference, оценивая кандидатов целостно, а не генерируя длинную цепочку посимвольно.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Objective включает fine-grained token modeling и item-level Semantic Alignment loss \(\mathcal L_{ISA}\). Идея dual granularity: модель должна понимать детали long SID, но итоговый user intent должен быть близок к глобальной item representation. ATM учится не усреднять, а выбирать важные token-level semantics. Intent Token получает supervision как агрегатор sequence context, что улучшает особенно sparse/cold-start buckets.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Эксперименты на шести Amazon Reviews datasets: Sports, Beauty, Toys, Instruments, Office, Baby. Метрики - Recall@K/NDCG@K, с акцентом на NDCG@10. В abstract указано среднее улучшение 14.40% по NDCG@10 относительно SOTA baselines. Абляции показывают: добавление ATM повышает Recall@10 на Instruments с 0.0826 до 0.1001; Intent Token тоже дает отдельный gain; комбинация ATM+Intent Token и \(\mathcal L_{ISA}\) достигает лучших результатов, например Recall@10 около 0.1190 в приведенном fine-grained ablation.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Figure с representation paradigms важен: RQ short serial codes ограничены, PQ+pooling размывает semantics, ACERec сжимает long tokens attentively. Architecture figure показывает роль ATM и Intent Token. График NDCG@10 при разной длине m демонстрирует, что long IDs полезны, если есть правильное сжатие. Cold-start bucket plots важны: длинная семантика должна помогать именно sparse items, а не только head.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Четко формулирует trade-off length vs efficiency и предлагает не тривиальное сжатие.</li>
+
+<li>ATM лучше mean pooling, потому что сохраняет важные fine-grained tokens.</li>
+
+<li>Intent Token дает понятный механизм агрегирования user preference.</li>
+
+<li>Есть cold-start и sensitivity analyses по длине SID, ISA weight и compression ratio.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Long SID tokenizer сам по себе может быть дорогим; статья больше решает modeling/inference после tokenization.</li>
+
+<li>Дополнительные компоненты ATM/Intent Token увеличивают complexity и требуют tuning k/r.</li>
+
+<li>Holistic scoring может зависеть от candidate set; full-catalog генерация все равно требует инженерных ограничений.</li>
+
+<li>Проверки проведены на Amazon domains, без online validation.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Сначала построить long SID и сравнить raw long generation, mean pooling и ATM при одинаковом backbone.</li>
+
+<li>Подбирать compression ratio r по curve Recall/NDCG vs latency, а не только по максимальной accuracy.</li>
+
+<li>Проверить cold-start buckets: если gain есть только на head, long semantics не оправданы.</li>
+
+<li>Логировать attention weights ATM, чтобы убедиться, что модель не сводится к uniform pooling.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>ACERec дополняет Variable-Length Semantic IDs: обе работы спорят с фиксированной короткой длиной, но Variable-Length экономит частым item'ам tokens, а ACERec раскрывает потенциал длинных IDs через attentive compression. С IntRR связь в efficiency: обе работы пытаются не платить полную цену за длинную/hierarchical token sequence.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главный вывод ACERec: длинные semantic IDs не обязательно непрактичны. Если отделить representation granularity от sequence modeling granularity, длинный SID может дать richer semantics, а модель будет работать с compact intent-aware latents.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Attentive Token Merger</h3>
+
+<p>ATM является ответом ACERec на главный недостаток long IDs: если просто скормить все tokens Transformer'у, sequence becomes too long; если усреднить, теряются fine-grained distinctions. ATM делает attentive resampling, выбирая и сжимая важные token-level semantics в компактные latents.</p>
+
+<ul>
+
+<li>Long semantic tokens остаются источником rich representation.</li>
+
+<li>Compressed latents уменьшают computational cost sequence model.</li>
+
+<li>Attention weights позволяют разным item tokens иметь разный вклад.</li>
+
+<li>ATM ablation показывает значительный gain относительно baseline.</li>
+
+<li>Compression ratio r анализируется как отдельный hyperparameter.</li>
+
+</ul>
+
+<h3>13.2. Intent Token и ISA loss</h3>
+
+<ul>
+
+<li>Intent Token служит dynamic prediction anchor для user sequence.</li>
+
+<li>Он собирает preference signal, вместо того чтобы полагаться на rigid pooling history tokens.</li>
+
+<li>ISA loss согласует глобальный item-level semantic target с fine-grained token prediction.</li>
+
+<li>Dual-granularity objective предотвращает ситуацию, где модель хорошо предсказывает tokens, но плохо понимает item.</li>
+
+<li>Fine-grained ablation показывает synergy ATM + Intent Token + ISA.</li>
+
+</ul>
+
+<h3>13.3. Эксперименты и cold-start</h3>
+
+<p>ACERec тестируется на Sports, Beauty, Toys, Instruments, Office и Baby из Amazon Reviews. Средний reported gain по NDCG@10 составляет 14.40%. В supplementary анализируются cold-start buckets и распределение test items по frequency, что особенно важно для long semantic IDs.</p>
+
+<ul>
+
+<li>ATM alone повышает Recall@10 на Instruments с 0.0826 до 0.1001 в ablation discussion.</li>
+
+<li>Intent Token alone также дает substantial improvement.</li>
+
+<li>Full model с ISA достигает лучшего Recall@10 около 0.1190 в приведенном ablation example.</li>
+
+<li>Графики по длине m показывают, когда увеличение SID length перестает помогать.</li>
+
+<li>Scalability analysis изучает interplay между semantic resolution и latent capacity k.</li>
+
+</ul>
+
+<h3>13.4. Failure modes</h3>
+
+<ul>
+
+<li>Attention collapse: ATM может выбирать всегда одни и те же позиции и игнорировать tail semantics.</li>
+
+<li>Over-compression: слишком малый k уничтожает выгоду long SID.</li>
+
+<li>Under-compression: слишком большой k возвращает latency problem.</li>
+
+<li>Intent token shortcut: модель может запомнить popularity вместо user intent.</li>
+
+<li>Candidate scoring dependency: holistic scoring требует хорошего candidate pool.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2602.13573">2602.13573</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

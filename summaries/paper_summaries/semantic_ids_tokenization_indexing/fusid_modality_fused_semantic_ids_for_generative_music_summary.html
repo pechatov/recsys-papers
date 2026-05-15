@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FusID: Modality-Fused Semantic IDs for Generative Music Recommendation</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2601.08764">FusID: Modality-Fused Semantic IDs for Generative Music Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Haven Kim, Yupeng Hou, Julian McAuley.</p>
+
+<p><strong>Аффилиации:</strong> University of California San Diego.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>FusID рассматривает music recommendation как multimodal semantic ID problem. Вместо независимой tokenization текста, аудио и других modality-specific representations авторы строят fused embedding, обучают его на co-occurrence сигнале playlist continuation и затем квантуют через product quantization. Результат - semantic ID, который учитывает inter-modal interactions и избегает redundancy между модальностями.</p>
+
+<h2>2. Контекст</h2>
+
+<p>В музыке item почти всегда мультимодален: есть аудио признаки, metadata, artist/title, возможно textual tags. Если каждую модальность квантизовать отдельно, последовательность SID становится длиннее, содержит дублирующую информацию и может не отражать то, как модальности совместно определяют next-song preference. FusID предлагает сначала совместно выучить item representation, а уже потом дискретизировать.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Independent tokenization across modalities создает redundancy: разные токены повторно кодируют один и тот же сигнал.</li>
+
+<li>Late fusion плохо ловит interactions: похожие тексты при разном аудио или наоборот могут требовать разных рекомендаций.</li>
+
+<li>Generative recommender нуждается в one-to-one mapping item -> token sequence; collision разрушает grounding.</li>
+
+<li>Codebook underutilization снижает эффективную емкость SID space.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Pipeline состоит из трех частей. Multimodal fusion объединяет modality embeddings в единое continuous representation. Representation learning сближает часто совместно встречающиеся songs в playlist/co-occurrence graph, но сохраняет distinctiveness и борется с feature redundancy. Product quantization разбивает fused vector на подпространства и назначает несколько дискретных кодов, что снижает вероятность ID conflict по сравнению с одним coarse code.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Objective включает contrastive/co-occurrence компонент: item'ы, часто появляющиеся рядом в плейлистах или контекстах прослушивания, должны быть ближе в fused space. При этом нужны regularization/representation terms, чтобы embedding не схлопнулся в популярные песни. PQ затем минимизирует quantization error по подпространствам, формируя token tuple. Для генеративной части language/recommender model обучается предсказывать эти tuples для playlist continuation.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Оценка проводится на multimodal next-song recommendation benchmark. Есть два класса метрик: качество самих semantic IDs и качество downstream generative recommendation. Для recommendation используются MRR и Recall@k при k=1,5,10,20. FusID сообщает zero ID conflicts: каждый token sequence соответствует ровно одной песне. По MRR и Recall@k FusID превосходит baselines, а анализ codebook utilization показывает меньше underutilization.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Figure “Overview of Modality-Fused Semantic IDs” важен тем, что показывает правильный порядок операций: сначала fusion и representation learning, потом quantization, а не наоборот. Таблица Semantic ID Evaluation нужна для проверки collision rate и codebook usage; таблицы Generative Recommendation Evaluation показывают, что улучшение tokenizer'а действительно доходит до MRR/Recall, а не остается внутренней метрикой.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Постановка хорошо соответствует домену музыки, где single-modality IDs объективно бедны.</li>
+
+<li>Zero-conflict mapping делает SID практически пригодным для генеративного retrieval.</li>
+
+<li>Разделение tokenizer evaluation и downstream recommendation evaluation повышает надежность выводов.</li>
+
+<li>PQ естественно масштабирует capacity без чрезмерного увеличения словаря каждого уровня.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Работа сфокусирована на music/playlist continuation; перенос в e-commerce или news требует других modality signals.</li>
+
+<li>Качество сильно зависит от доступности и качества multimodal embeddings.</li>
+
+<li>Zero conflicts на benchmark не гарантируют отсутствие коллизий при резком росте каталога.</li>
+
+<li>Не раскрыт industrial online scenario: refresh, cold songs и latency остаются открытыми.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Собрать modality embeddings одинаковой granularity: track-level audio, text metadata, artist/category features.</li>
+
+<li>До quantization проверить retrieval в continuous fused space: co-play neighbors должны быть музыкально и поведенчески разумными.</li>
+
+<li>После PQ измерять conflict rate, code entropy по каждому subspace и долю dead codewords.</li>
+
+<li>Downstream проверять MRR/Recall@k против independent-modality tokenizer и text-only/audio-only baselines.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>FusID родственно CoST и ReSID по идее tokenizer-first improvement, но его ключевой axis - multimodal fusion. С MERGE/PIT его связывает preocupação о practical code usage, но FusID не строит streaming index и не делает end-to-end co-evolution. Для music recsys это аккуратный мост между multimodal representation learning и semantic ID generation.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главный вывод: для мультимодальных каталогов semantic ID должен кодировать не сумму независимых модальностей, а их взаимодействие. FusID показывает, что fused representation + product quantization может дать компактные, collision-free и downstream-полезные IDs для генеративной музыкальной рекомендации.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Почему fusion до quantization</h3>
+
+<p>FusID принципиально делает fusion до дискретизации. Если сначала построить отдельные IDs для audio, text и metadata, модель получает длинную последовательность, где разные токены могут кодировать один и тот же музыкальный сигнал. Fusion сначала формирует единое пространство, где inter-modal interactions уже учтены, и только затем PQ делает компактные tokens.</p>
+
+<ul>
+
+<li>Audio features могут различать tracks с похожими titles.</li>
+
+<li>Text metadata может различать tracks с похожим звучанием, но разными artists/genres.</li>
+
+<li>Co-occurrence в playlists добавляет collaborative signal поверх content modalities.</li>
+
+<li>Fusion снижает redundancy между modalities.</li>
+
+<li>PQ после fusion снижает collision probability без раздувания одного словаря.</li>
+
+</ul>
+
+<h3>13.2. Representation learning</h3>
+
+<ul>
+
+<li>Положительные пары берутся из co-occurring songs в playlist continuation context.</li>
+
+<li>Embedding frequently co-occurring items сближаются, что делает SID полезным для recommendation, а не только content similarity.</li>
+
+<li>Distinctiveness constraint нужен, чтобы popular songs не схлопнули пространство.</li>
+
+<li>Feature redundancy контролируется до quantization, иначе codebook тратит capacity на дубли.</li>
+
+<li>Downstream language model обучается уже на fused semantic IDs.</li>
+
+</ul>
+
+<h3>13.3. Evaluation details</h3>
+
+<p>Paper разделяет оценку на Semantic ID Evaluation и Generative Recommendation Evaluation. Это правильный дизайн: tokenizer может иметь zero collisions, но не улучшать recommendation; или наоборот, recommendation может улучшиться из-за backbone tuning, а не из-за IDs. FusID показывает оба результата.</p>
+
+<ul>
+
+<li>Semantic ID Evaluation включает conflict/collision rate и codebook utilization.</li>
+
+<li>FusID сообщает zero ID conflicts на benchmark.</li>
+
+<li>Recommendation Evaluation использует MRR и Recall@1/5/10/20.</li>
+
+<li>Сравниваются ablation variants с отключенными fusion/representation components.</li>
+
+<li>Codebook underutilization рассматривается как отдельная проблема, а не как косметическая статистика.</li>
+
+</ul>
+
+<h3>13.4. Failure modes для music domain</h3>
+
+<ul>
+
+<li>Playlist bias: co-occurrence может отражать editorial или popularity bias, а не акустическую близость.</li>
+
+<li>Cold tracks: новые песни без co-occurrence получают SID почти только из content modalities.</li>
+
+<li>Artist leakage: модель может слишком сильно группировать по artist и хуже различать разные стили одного исполнителя.</li>
+
+<li>Modality imbalance: сильный audio encoder может подавить metadata или наоборот.</li>
+
+<li>Catalog growth: zero collisions на текущем каталоге нужно переоценивать после массового добавления новых songs.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2601.08764">2601.08764</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

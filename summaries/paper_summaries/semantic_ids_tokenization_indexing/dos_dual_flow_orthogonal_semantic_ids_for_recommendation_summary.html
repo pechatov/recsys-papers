@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DOS: Dual-Flow Orthogonal Semantic IDs for Recommendation in Meituan</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2602.04460">DOS: Dual-Flow Orthogonal Semantic IDs for Recommendation in Meituan</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Junwei Yin, Senjie Kou, Changhao Li, Shuli Wang, Xue Wei, Yinqiu Huang, Yinhua Zhu, Haitao Wang, Xingxing Wang.</p>
+
+<p><strong>Аффилиации:</strong> <span class="industry">Meituan</span>.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>DOS - промышленная работа Meituan про построение semantic IDs, которые лучше согласованы с downstream generative recommendation. Авторы выделяют две причины потерь: кодбук semantic tokenizer'а живет в пространстве item content, а генератор работает в user-item interaction context; кроме того, обычная residual quantization может терять семантику из-за неудачной ориентации пространства. DOS объединяет Dual-Flow Integration и Orthogonal Residual Quantization.</p>
+
+<h2>2. Контекст</h2>
+
+<p>Semantic IDs в промышленной системе должны одновременно быть компактными, сохранять знания LLM/content encoder'а и быть удобными для генерации в конкретном продукте. В Meituan это не академическая toy-задача: статья прямо сообщает об offline экспериментах, online A/B test и deployment в мобильном приложении с сотнями миллионов пользователей.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Context gap: item codebook строится без достаточного учета user sequence и target-item generation context.</li>
+
+<li>Quantization loss: близость в исходном semantic space не гарантирует, что residual уровни оптимально сохраняют информацию.</li>
+
+<li>Прямое добавление SID как фичи должно улучшать live model без тяжелой переделки всей архитектуры.</li>
+
+<li>Нужно сохранить latency и совместимость с production ranking/retrieval stack.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Dual-Flow Integration строит две взаимосвязанные ветки: user-flow обрабатывает последовательность кликов пользователя, item-flow обрабатывает target item. Collaborative signal из взаимодействий используется для выравнивания codebook space и generation space. ORQ добавляет обучаемое ортогональное преобразование: перед residual quantization embedding вращается в такую ориентацию, где главные и остаточные компоненты лучше разделяются и меньше теряют информацию при последовательном кодировании.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Целевая функция DOS объединяет recommendation loss и quantization/alignment terms. DFI отвечает за то, чтобы SID не были только content-derived labels, а отражали реальные user-item transitions. ORQ можно понимать как поиск базиса, в котором residual quantizer менее разрушителен: после ортогонального поворота модель квантует компоненты, возвращая компактный SID, но с меньшим semantic loss. Важное свойство ортогональности - сохранение расстояний/норм, что делает преобразование менее произвольным, чем свободный MLP.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Offline сравнение включает downstream AUC и F1. В таблице performance DOS превосходит несколько baseline-вариантов: например AUC поднимается до 0.8763 против 0.8363-0.8539 у альтернатив, F1 также улучшается. Отдельно показаны Hit@10 по бизнес-категориям и ablation: удаление DFI или ORQ снижает качество. Online A/B test проводился неделю на 30% production traffic Meituan и подтверждает инкрементальный выигрыш от SID без прочих архитектурных изменений.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Figure 1 важен, потому что показывает не просто tokenizer, а dual-flow learning: user sequence и target item обрабатываются совместно, поэтому SID становится contextualized representation для генератора. Правая часть с ORQ показывает, что авторы борются не с размером codebook, а с геометрией пространства перед quantization. Таблицы AUC/F1 и Hit@10 важны как evidence, что gain переносится с общей метрики на категории бизнеса.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Редкий пример SID-работы с production deployment и online A/B test.</li>
+
+<li>Хорошо отделены две причины качества: alignment с recommendation task и качество quantization geometry.</li>
+
+<li>ORQ аккуратно ограничивает преобразование ортогональностью, снижая риск произвольного искажения embedding space.</li>
+
+<li>Ablation показывает вклад обоих компонентов.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Статья раскрывает ограниченный набор production-деталей: latency budget, catalog dynamics и refresh policy описаны кратко.</li>
+
+<li>Данные Meituan закрыты, поэтому абсолютные цифры сложно воспроизвести.</li>
+
+<li>Dual-flow обучение может быть чувствительно к distribution shift между offline logs и online traffic.</li>
+
+<li>ORQ улучшает геометрию, но не решает полностью проблему collision/long-tail coverage.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Начать с замера baseline SID как отдельной feature: AUC/F1 offline и category-level Hit@K.</li>
+
+<li>Ввести dual-flow training только если есть надежные user sequence и target item pairs; иначе DFI будет учить шум.</li>
+
+<li>Для ORQ контролировать orthogonality error и reconstruction/semantic preservation после каждого уровня quantization.</li>
+
+<li>В online rollout отделять эффект SID от остальных фичей через frozen architecture experiment.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>DOS соседствует с ReSID и CoST как работа про better quantization objective, но сильнее ориентирована на промышленный contextual alignment. С MERGE ее роднит production focus; с PIT - желание учитывать collaborative signals при построении IDs. В отличие от DIGER/UniGRec, DOS не делает акцент на полностью end-to-end soft identifiers, а строит deployable SID feature.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главный урок DOS: semantic ID для рекомендаций должен быть не просто сжатым LLM/content embedding'ом. Он должен жить в координатах задачи генерации и взаимодействий. Dual-flow alignment и ортогональное residual quantization дают прагматичный путь к такому SID без радикальной смены production stack.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Dual-Flow Integration</h3>
+
+<p>DFI в DOS нужен для того, чтобы semantic ID перестал быть только функцией target item. В генеративной рекомендации item code должен быть удобен для предсказания из user history, поэтому user-flow и item-flow обучаются совместно. Это особенно важно в Meituan, где одна и та же семантика товара или услуги может иметь разный recommendation meaning в разных пользовательских контекстах.</p>
+
+<ul>
+
+<li>User-flow кодирует последовательность кликов и формирует contextual collaborative signal.</li>
+
+<li>Item-flow кодирует target item и его semantic representation.</li>
+
+<li>Alignment между потоками уменьшает gap между codebook space и generation space.</li>
+
+<li>SID после DFI можно использовать как incremental feature в downstream ranker/retriever.</li>
+
+<li>DFI ablation показывает, что без контекстного alignment ORQ alone недостаточен.</li>
+
+</ul>
+
+<h3>13.2. Orthogonal Residual Quantization</h3>
+
+<p>ORQ исходит из того, что residual quantization чувствителен к ориентации embedding space. Если главные информационные направления плохо согласованы с residual decomposition, последовательная квантизация теряет смысл уже на ранних уровнях. Ортогональный поворот сохраняет геометрию, но меняет basis так, чтобы residual levels лучше разделяли primary и residual semantics.</p>
+
+<ul>
+
+<li>Ортогональность ограничивает transformation и снижает риск произвольного distortion.</li>
+
+<li>Первый уровень SID должен нести наиболее важную семантическую массу.</li>
+
+<li>Последующие уровни должны кодировать residual information, а не шум после плохого первого split.</li>
+
+<li>В таблицах ORQ дает вклад как в AUC, так и в F1.</li>
+
+<li>Метод применим к LLM-derived embeddings, где исходное пространство не оптимизировано под quantization.</li>
+
+</ul>
+
+<h3>13.3. Offline и online evidence</h3>
+
+<ul>
+
+<li>Основная offline таблица показывает AUC 0.8763 у DOS против 0.8363-0.8539 у сравниваемых вариантов.</li>
+
+<li>Вторая таблица подтверждает gain при другом наборе baseline settings: DOS снова достигает AUC 0.8763.</li>
+
+<li>Hit@10 по business category нужен, чтобы исключить ситуацию, когда средний gain приходит из одной крупной категории.</li>
+
+<li>Online A/B test длился одну неделю и использовал 30% production traffic Meituan.</li>
+
+<li>Авторы подчеркивают deployment в Meituan mobile application, то есть SID прошел не только offline benchmark.</li>
+
+</ul>
+
+<h3>13.4. Production notes</h3>
+
+<ul>
+
+<li>DOS полезен как additive SID feature: его можно внедрять без полной замены модели.</li>
+
+<li>Нужно мониторить drift между LLM semantic space и user interaction space после обновления каталога.</li>
+
+<li>ORQ matrix должна версионироваться вместе с codebook; иначе старые SIDs станут несовместимыми.</li>
+
+<li>Category-level метрики должны входить в rollout gate, потому что food/local services имеют сильную heterogeneity.</li>
+
+<li>Если online traffic меняется, DFI может начать переобучаться на recent popularity, поэтому нужен temporal validation.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2602.04460">2602.04460</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

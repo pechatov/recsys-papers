@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GenRec: A Preference-Oriented Generative Framework for Large-Scale
+Recommendation</title>
+<style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px
+24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px
+solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2604.14878">GenRec: A Preference-Oriented Generative Framework for Large-Scale Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Yanyan Zou, Junbo Qi, Lunsong Huang, Yu Li, Kewei Xu,
+Jiahao Gao, Binglei Zhao, Xuanhua Yang, Sulong Xu,
+Shengjie Li.</p>
+<p>
+<strong>Аффилиации:</strong> <span class="industry">JD.com</span>; Waseda
+University.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>GenRec строит large-scale генеративный recommender вокруг
+semantic IDs, page-wise supervised fine-tuning и RL
+alignment. Главное отличие от TIGER-style next-item generation:
+модель оптимизируют не только на
+попадание в следующий item, но и на preference-oriented reward,
+который лучше связан с
+бизнес-целью.</p>
+<h2>Контекст</h2>
+<p>LLM/decoder-only модели привлекательны для recommendation, но
+длинные
+SID-последовательности увеличивают prefilling cost, а
+teacher-forcing next-token objective может не
+совпадать с click/conversion preference. В больших каталогах
+также критичны invalid SID
+hallucinations.</p>
+<h2>Проблема</h2>
+<p>Стандартное SFT учит воспроизводить один target item
+или sequence, но не умеет
+выбирать из множества приемлемых рекомендаций
+те, которые максимизируют
+preference reward. RL без ограничений может reward-hack'ить:
+повышать SIM reward, ухудшая HR@50 или
+генерируя невалидные коды.</p>
+<h2>Метод / архитектура</h2>
+<p>Items квантуются в semantic IDs. Чтобы снизить
+стоимость длинных кодов, GenRec вводит
+Linear Token Merger: embeddings токенов item SID конкатенируются и
+проецируются в один latent vector
+на prefilling side, а служебные токены вроде <code>&lt;sep&gt;</code>
+остаются отдельно.
+Обучение включает user-centric page-wise NTP SFT и RL phase на базе
+GRPO-SR с gating mechanism.</p>
+<h2>Objective / алгоритм</h2>
+<p>SFT objective сравнивает next-item и next-sequence formulations; page-wise
+NTP ускоряет сходимость,
+потому что обучает модель на странице рекомендаций,
+а не только на одиночном
+target. RL использует reward metrics на similarity/preference score
+<code>r^SIM</code> и gate, который защищает
+от reward hacking: модель должна улучшать reward, не
+разрушая валидность и hit-rate.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Для SFT используются HR@1/10/50, NDCG@10/50 и Hallucination Rate.
+Авторы сравнивают RQ-VAE и RQ-KMeans
+tokenization, task formulation, model scaling и loss curves. В RL часть
+добавляется Reward@K; полный GRPO-SR
+показывает крупнейший относительный gain на Reward@1
+(+18.01%), но ablation без gate
+демонстрирует, почему reward-only оптимизация опасна:
+могут падать HR@50 и HaR.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Figure architecture показывает SID quantization и Linear Token Merger.
+Таблица tokenization quality
+сравнивает entropy слоев RQ-VAE/RQ-KMeans. Таблицы next-item vs
+next-sequence, task formulation и model scaling
+показывают компромисс качества, hallucination и
+размера модели. Online A/B table
+связывает RL alignment с click-conversion misalignment.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Работа соединяет SID-based GR с современным RL alignment,
+а не ограничивается supervised
+generation.</li>
+<li>Token Merger атакует реальный bottleneck prefilling.</li>
+<li>Hallucination Rate явно включен в метрики.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Reward design зависит от внутреннего preference/SIM scorer. RL
+stage сложнее воспроизводить и
+потенциально нестабилен. Внешним исследователям
+трудно проверить online A/B
+details и industrial-scale serving assumptions.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Нужны валидный SID trie, page-level training examples, scorer для
+reward и отдельный мониторинг HaR.
+Запускать следует по этапам: tokenizer quality, SFT без merger,
+SFT с merger, затем RL с gate.
+Проверять не только HR/NDCG, но и invalid SID, reward hacking signs,
+diversity, latency и conversion-correlated offline
+metrics.</p>
+<h2>Связь с соседними работами</h2>
+<p>GenRec близок к Spotify GLIDE и TokenRec по использованию
+LLM-like generation, но сильнее
+фокусируется на preference alignment. С RecoChain его связывает
+идея совместить retrieval/ranking,
+а с Snapchat - практическая проблема валидности и
+полезности SID в production.</p>
+<h2>Semantic ID tokenization construction</h2>
+<p>Статья сравнивает RQ-VAE и RQ-KMeans как способы
+построения semantic IDs.</p>
+<p>Для production важны не только HR/NDCG downstream, но и entropy
+слоев codebook.</p>
+<p>Низкая entropy первого слоя означает, что слишком
+много items попадают в один coarse
+bucket.</p>
+<p>Низкая entropy последнего слоя означает, что
+fine-grained discrimination не
+используется.</p>
+<p>GenRec поэтому рассматривает tokenization quality как
+отдельный этап перед SFT.</p>
+<p>Это похоже на Snapchat design choice: uniqueness и entropy являются
+диагностикой, но итоговый
+критерий - recommendation performance.</p>
+<h2>Linear Token Merger</h2>
+<p>SID item обычно состоит из нескольких tokens.</p>
+<p>Если история пользователя содержит много items,
+prefilling sequence быстро растет.</p>
+<p>Linear Token Merger берет embeddings SID-токенов одного item,
+конкатенирует их и проецирует
+в единый latent vector.</p>
+<p>Тем самым item занимает меньше позиций в prefilling
+part.</p>
+<p>Служебные tokens не сжимаются, чтобы не смешивать
+control structure с item representation.</p>
+<p>Практический смысл: merger снижает memory/latency pressure
+без отказа от compositional SID.</p>
+<h2>User-centric page-wise NTP SFT</h2>
+<p>Обычный next-item NTP учит модель предсказывать один
+следующий объект.</p>
+<p>Page-wise formulation ближе к recommender interface: пользователь
+видит страницу
+рекомендаций.</p>
+<p>Модель учится генерировать sequence items page-wise,
+учитывая user-centric preference context.</p>
+<p>В loss curves авторы показывают, что page-wise NTP сходится
+быстрее, чем vanilla NTP.</p>
+<p>Это также уменьшает mismatch между training target и serving
+output.</p>
+<h2>RL alignment: GRPO-SR and gating</h2>
+<p>После SFT GenRec применяет RL alignment.</p>
+<p>Reward связан с similarity/preference metric <code>r^SIM</code>.</p>
+<p>GRPO-SR оптимизирует generated recommendations относительно
+reward, а не только likelihood historical
+item.</p>
+<p>Gating mechanism <code>G</code> нужен как ограничитель.</p>
+<p>Без gate модель может exploit reward: выбирать items с
+высоким SIM, но ухудшать HR@50 или
+повышать hallucination.</p>
+<p>В таблице RL авторы прямо интерпретируют drop без
+<code>G</code> как reward hacking.</p>
+<h2>Hallucination Rate и scaling</h2>
+<p>HaR - доля invalid SIDs в generated results.</p>
+<p>Это обязательная метрика для SID-based LLM recommender.</p>
+<p>Высокий HR@K бесполезен, если модель часто
+генерирует коды, которых нет в item
+catalog.</p>
+<p>Более крупные модели дают меньший SFT loss, но gains
+имеют diminishing returns после 3B.</p>
+<p>Это означает, что сначала нужно оптимизировать
+tokenizer, merger и decoding, а не сразу
+масштабировать backbone.</p>
+<h2>Failure modes и проверка</h2>
+<p>Первый failure mode - invalid SID hallucination.</p>
+<p>Второй - reward hacking в RL phase.</p>
+<p>Третий - over-compression Token Merger: если проекция слишком
+мала, теряется fine-grained SID
+information.</p>
+<p>Четвертый - page-wise exposure bias: модель может учиться
+порядку страницы из логов
+старой системы.</p>
+<p>Пятый - scorer mismatch: <code>r^SIM</code> может не совпасть с
+clicks/conversions.</p>
+<ol>
+<li>Сначала обучить tokenizer и зафиксировать SID
+vocabulary.</li>
+<li>Проверить entropy L1/L3 и invalid mapping.</li>
+<li>Обучить SFT с обычными SID tokens и с Token Merger.</li>
+<li>Сравнить HR/NDCG/HaR при одинаковом decoding budget.</li>
+<li>Запускать RL только после стабильного SFT
+baseline.</li>
+<li>В RL dashboard держать reward, HR@50, HaR и diversity одновременно.</li>
+</ol>
+<h2>Итог</h2>
+<p>GenRec показывает, что следующий шаг SID-based recommendation
+- это не только лучшие semantic
+tokens, но и выравнивание генератора с preference metrics.
+Без такого alignment модель может
+быть хорошим next-token predictor, но слабым recommender.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2604.14878">arXiv:2604.14878</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

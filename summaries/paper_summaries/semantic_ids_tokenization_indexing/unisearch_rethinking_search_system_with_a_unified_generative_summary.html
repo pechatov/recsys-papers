@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>UniSearch: Rethinking Search System with a Unified Generative Architecture</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,89 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2509.06887">UniSearch: Rethinking Search System with a Unified Generative Architecture</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Jiahui Chen, Xiaoze Jiang, Zhibo Wang, Quanzhi Zhu, Feng Hu, Zhiheng Qin, Enyun Yu, Zhixin Zhai, Xiaobo Guo, Kefeng Wang, Jingshan Lv, Yupeng Huang, Han Li и др.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>; Independent.</p>
+  <p><strong>Индустрия:</strong> Kuaishou live and short-video search.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2509.06887.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>UniSearch replaces cascaded search with unified generative architecture.</li>
+  <li>Search Generator and Video Encoder are trained jointly.</li>
+  <li>Search Preference Optimization aligns generation with online feedback.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Traditional search has recall/pre-rank/rank cascade.</li>
+  <li>Existing generative systems often tokenize items separately from generator training.</li>
+  <li>Kuaishou search needs low-latency serving over live and billion-scale video pools.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Two-stage tokenizer/generator creates objective mismatch.</li>
+  <li>Invalid semantic ID paths are common without constrained decoding.</li>
+  <li>Online user preference is not fully captured by offline CE.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Search Generator uses BART-like encoder-decoder.</li>
+  <li>Video Encoder uses BERT-like model over multimodal/text/visual/statistical features.</li>
+  <li>VQ-VAE discretizes item embeddings into k-level SID.</li>
+  <li>Trie service constrains decoding to valid paths; deployment uses TensorRT and KV-cache.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для UniSearch: Rethinking Search System with a Unified Generative Architecture качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Residual contrastive learning aligns query and item residual components.</li>
+  <li>Coarse-to-fine strategy structures learning difficulty.</li>
+  <li>SPO uses reward system plus clicks/likes/downloads/watch time.</li>
+  <li>KL-like stability prevents catastrophic deviation.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для UniSearch: Rethinking Search System with a Unified Generative Architecture качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Live dataset: ~80M user search sessions from July 9-23 2025.</li>
+  <li>Train July 9-22, test July 23.</li>
+  <li>Live pool ~500K, short-video pool ~1B.</li>
+  <li>Online 7-day A/B on 10% traffic.</li>
+  <li>Live: +3.31% TPC, +0.202% CTR, CQR/PFC down.</li>
+  <li>Video: +0.213% VPD, +0.993% PVD, -0.602% CQR, +0.830% LPC.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для UniSearch: Rethinking Search System with a Unified Generative Architecture качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Architecture comparison figure: cascaded, existing generative, UniSearch.</li>
+  <li>Model figure: Search Generator + Video Encoder + online SPO.</li>
+  <li>Trie figure shows valid path rate from 51.3% to 99.8%.</li>
+  <li>Online analysis decomposes TPC gains: 65.06% long-tail queries, 58.73% new users.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Plain model weakest.</li>
+  <li>Coarse-to-fine improves recall/ranking but can cause path collapse.</li>
+  <li>RCL improves token complementarity and MRR.</li>
+  <li>Full UniSearch combines CF and RCL for best results.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Strongest production evidence among papers.</li>
+  <li>Joint tokenization/generation directly attacks objective mismatch.</li>
+  <li>Includes serving details, not just model metrics.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Point-wise beam generation limits list diversity.</li>
+  <li>Complex online system required.</li>
+  <li>Private data and reward definitions limit reproducibility.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +143,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Point-wise beam generation limits list diversity.</li>
+  <li>Специфично для этой статьи: Complex online system required.</li>
+  <li>Специфично для этой статьи: Private data and reward definitions limit reproducibility.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Related to FORGE and CRS in industrial SID search.</li>
+  <li>Differs by end-to-end co-training of tokenizer and generator.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>UniSearch shows how generative search can replace cascade in production.</li>
+  <li>The crucial piece is joint optimization plus valid-path serving.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

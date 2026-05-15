@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <title>Generative Flow Network for Listwise Recommendation</title>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -28,34 +28,34 @@ th { background: var(--soft); text-align: left; }
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2504.04400">Pre-training Generative Recommender with Multi-Identifier Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2306.02239">Generative Flow Network for Listwise Recommendation</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
 <blockquote>
-<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span> Poisson Lab.</p>
-<p><strong>Первичный источник:</strong> arXiv:2504.04400.</p>
+<p><strong>Авторы:</strong> Shuchang Liu, Qingpeng Cai, Zhankui He, Bowen Sun, Julian McAuley, Dong Zheng, Peng Jiang, Kun Gai.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>; University of California San Diego; Peking University; Unaffiliated.</p>
+<p><strong>Первичный источник:</strong> arXiv:2306.02239; DOI 10.1145/3580305.3599364.</p>
 </blockquote>
 <h2>коротко</h2>
-<p>MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.</p>
+<p>GFN4Rec applies Generative Flow Networks to generate diverse high-quality recommendation lists instead of ranking items independently.</p>
 <p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
 <ul>
-<li>Breaks strict one-item-one-identifier training assumption.</li>
-<li>Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.</li>
-<li>Turns one user sequence into multiple token sequences.</li>
-<li>Uses data influence estimation for curriculum sampling.</li>
-<li>Fine-tunes with single tokenizer for unambiguous inference.</li>
+<li>Models a whole slate/list as a generated trajectory.</li>
+<li>Aligns list generation probability with list reward.</li>
+<li>Uses log-scale reward matching for diversity.</li>
+<li>Targets online exploration and offline listwise quality.</li>
+<li>Validated on simulated online environments and real-world datasets.</li>
 </ul>
 <h2>контекст</h2>
 <p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
 <p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
+<tr><td>Task</td><td>listwise recommendation / reranking</td></tr>
+<tr><td>Action space</td><td>combinatorial slate generation</td></tr>
+<tr><td>Core idea</td><td>probability flow on generation tree</td></tr>
 </table>
 <h2>проблема</h2>
-<p>A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.</p>
+<p>Pointwise top-k ranking ignores intra-list item interactions. Cross-entropy generative methods can collapse to low-diversity high-frequency slates.</p>
 <p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
 <ul>
 <li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
@@ -68,78 +68,77 @@ th { background: var(--soft); text-align: left; }
 <p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
 <p>Архитектурная идея раскрывается через следующие элементы.</p>
 <ul>
-<li>RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.</li>
-<li>Adjacent final checkpoints as semantically relevant tokenizers.</li>
-<li>Multiple tokenized datasets/groups from same interaction sequences.</li>
-<li>Influence estimator based on validation gradient and training gradient.</li>
-<li>Dynamic sampler over tokenizer data groups.</li>
-<li>Final fine-tuning on one tokenizer for serving.</li>
+<li>Autoregressive item selection model.</li>
+<li>Generation tree: root-to-leaf path corresponds to full list.</li>
+<li>Forward flow/probability assigned to partial lists.</li>
+<li>Listwise reward at leaves.</li>
+<li>Bias factors for stabilizing skewed probability scales.</li>
 </ul>
 <h2>objective/алгоритм</h2>
 <p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
 <p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
 <ul>
-<li>RQ-VAE loss: reconstruction plus residual quantization commitment terms.</li>
-<li>Generative recommender NLL over target tokens.</li>
-<li>Data influence estimates validation loss change using first-order Taylor approximation.</li>
-<li>Curriculum updates sampling probabilities of groups.</li>
-<li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
+<li>Flow matching loss aligns generated list probability with reward.</li>
+<li>Log reward scale gives non-top lists meaningful probability mass.</li>
+<li>Reward can aggregate multi-behavior feedback.</li>
+<li>Policy learns exploration distribution, not just deterministic ranking.</li>
+<li>Offline and online simulation objectives are separated.</li>
 </ul>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
+<tr><td>Venue/source</td><td>KDD 2023, arXiv v4</td></tr>
+<tr><td>Datasets</td><td>two real-world datasets used for simulated online and offline evaluation</td></tr>
+<tr><td>Baselines</td><td>strong listwise/reranking/generative methods</td></tr>
+<tr><td>Metrics</td><td>quality plus diversity/exploration measures</td></tr>
+<tr><td>Claim</td><td>better diversity-quality trade-off during active exploration</td></tr>
 </table>
 <h2>рисунки/таблицы</h2>
 <p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
 <p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
 <ul>
-<li>Framework figure: adjacent checkpoints and curriculum sampler.</li>
-<li>Main result table across three Amazon datasets.</li>
-<li>Ablation table on Instrument and Scientific.</li>
-<li>Sensitivity to number of tokenizers n.</li>
-<li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
+<li>Generation tree diagram.</li>
+<li>Flow matching explanation.</li>
+<li>Online simulation results.</li>
+<li>Offline evaluation tables.</li>
+<li>Diversity versus reward comparisons.</li>
 </ul>
 <h2>сильные стороны</h2>
 <p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li>Optimizes slate distribution directly.</li>
+<li>Naturally encourages diversity.</li>
+<li>Relevant for exploration-heavy feeds.</li>
+<li>Can be combined with existing candidate generation.</li>
+<li>Formal connection to GFlowNet theory.</li>
 </ul>
 <h2>ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li>Reward design is hard in real products.</li>
+<li>Large candidate sets need pruning.</li>
+<li>Training sensitive to reward scale.</li>
+<li>Business constraints must be added via masks/rules.</li>
+<li>Not about semantic item IDs directly.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
 <p>Ниже — минимальный набор проверок перед доверием к результату.</p>
 <ul>
-<li>Save final n RQ-VAE checkpoints.</li>
-<li>Verify adjacent checkpoint IDs are semantically close, not random.</li>
-<li>Create separate tokenized sequence groups.</li>
-<li>Implement influence-based sampler and compare uniform sampling.</li>
-<li>Run fine-tune with selected single tokenizer.</li>
-<li>Measure performance versus n and tokenizer checkpoint choice.</li>
+<li>Start in reranking with limited candidate set C.</li>
+<li>Define list reward including diversity/business constraints.</li>
+<li>Mask repeated items and invalid slates.</li>
+<li>Compare against pointwise sort and listwise rerankers.</li>
+<li>Measure coverage, novelty and regret.</li>
+<li>Run online-safe exploration guardrails.</li>
 </ul>
 <h2>связь</h2>
 <p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.</p>
+<p>GFN4Rec broadens “generative recommendation” from next-item token generation to list distribution generation.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
 <tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
@@ -149,7 +148,7 @@ th { background: var(--soft); text-align: left; }
 <tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
 </table>
 <h2>итог</h2>
-<p>MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.</p>
+<p>GFN4Rec is valuable when the bottleneck is slate utility and exploration, not item tokenization.</p>
 <p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
 <ul>
 <li>Хороший кандидат для controlled offline reproduction.</li>

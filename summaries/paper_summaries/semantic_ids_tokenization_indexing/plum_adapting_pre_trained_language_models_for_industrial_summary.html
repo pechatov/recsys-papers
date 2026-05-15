@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,86 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2510.07784">PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Ruining He, Lukasz Heldt, Lichan Hong, Raghunandan Keshavan, Shifan Mao, Nikhil Mehta, Zhengyang Su, Alicia Tsai, Yueqi Wang, Shao-Chuan Wang, Xinyang Yi, Lexi Baugher, Baykal Cakici, Ed Chi, Cristos Goodrow, Ningren Han, He Ma, Romer Rosales, Abby Van Soest, Devansh Tandon, Su-Lin Wu и др.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Google DeepMind</span>; <span class="industry">YouTube</span>.</p>
+  <p><strong>Индустрия:</strong> YouTube candidate generation на миллиардном видеокаталоге.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2510.07784.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>PLUM адаптирует pretrained LLM к industrial generative recommendation.</li>
+  <li>Pipeline: Semantic IDs, continued pre-training, task-specific SFT для generative retrieval.</li>
+  <li>Фреймворк уже используется в YouTube для long-form и short-form recommendations.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>YouTube retrieval обычно опирается на large embedding models и multi-stage serving.</li>
+  <li>LLM sequence modeling может заменить часть candidate generation, если научить ее item space.</li>
+  <li>Semantic IDs становятся интерфейсом между видео-каталогом и language model.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Pretrained LLM не знает динамический YouTube corpus.</li>
+  <li>Fine-tuning без CPT может плохо освоить доменные co-occurrences.</li>
+  <li>Serving миллиардов пользователей требует constrained generation, latency engineering и continuous monitoring.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Item tokenizer строит Semantic IDs для videos.</li>
+  <li>CPT обучает модель на domain-specific sequence data.</li>
+  <li>SFT target - SID tokens next watch.</li>
+  <li>Prompt включает watch history, user features и context video features.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Autoregressive loss применяется к target SID sequence.</li>
+  <li>CPT может использовать sequences без instruction overhead, чтобы модель быстро освоила SID structure.</li>
+  <li>Scaling study проверяет Gemini-1.5 MoE family: 110M, 370M, 900M, 3B activated parameters.</li>
+  <li>Inference methods адаптированы к production launch.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Dataset: production YouTube surface для next-watch recommendation.</li>
+  <li>Corpus содержит миллиарды videos.</li>
+  <li>Train: 7 continuous days from July 2025; evaluation: Day 8.</li>
+  <li>Experiments conducted with 1024 Google v6e TPUs; 4 trainers по 256 TPUs.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Framework figures раскрывают PLUM stages.</li>
+  <li>Scaling plots связывают loss/retrieval metric/model size/compute.</li>
+  <li>CPT ablations показывают, зачем нужна доменная адаптация.</li>
+  <li>Production notes обсуждают online A/B сравнение с LEM-based retrieval.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Без CPT модель хуже адаптируется к SID distribution.</li>
+  <li>Semantic ID enhancements нужны для quality/freshness.</li>
+  <li>Scaling дает не только lower loss, но и retrieval metric improvements до определенного compute-optimal point.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Редкий full-stack industrial generative recommendation paper.</li>
+  <li>Покрывает training, scaling, inference и production rollout.</li>
+  <li>Дает реалистичный масштаб: billions of videos, 100 recent watches, 1536 input tokens.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Многие детали production data и online metrics закрыты.</li>
+  <li>Метод требует огромной compute infrastructure.</li>
+  <li>Риски: invalid IDs, stale IDs, popularity bias, serving latency.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +140,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Многие детали production data и online metrics закрыты.</li>
+  <li>Специфично для этой статьи: Метод требует огромной compute infrastructure.</li>
+  <li>Специфично для этой статьи: Риски: invalid IDs, stale IDs, popularity bias, serving latency.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Связан с Better Generalization with Semantic IDs как следующий YouTube-scale шаг.</li>
+  <li>Связан с FORGE и UniSearch через production SID serving.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>PLUM показывает, что LLM для recommendation требует доменного pretraining, а не только prompt engineering.</li>
+  <li>Semantic IDs превращают каталог в язык, но production успех зависит от всей системы.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

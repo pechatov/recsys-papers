@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,85 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://doi.org/10.1145/3746252.3761136">Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Bo Xu, Yicen Tian, Xiaokun Zhang, Erchen Yu, Dailin Li, Linlin Zong, Hongfei Lin.</p>
+  <p><strong>Аффилиации:</strong> Dalian University of Technology; City University of Hong Kong.</p>
+  <p><strong>Индустрия:</strong> <span class="industry">academic document retrieval / QA</span>; прямой индустриальной аффилиации нет.</p>
+  <p><strong>Первичный источник:</strong> DOI/CIKM metadata и full-text page on ResearchGate; ACM DOI directly not available.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>GRAM-RL строит multi-layer natural-language document identifiers.</li>
+  <li>Layers: summary, keyword, pseudo-query.</li>
+  <li>GRPO-based RL оптимизирует identifiers под query-document interaction.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Generative retrieval зависит от качества DocID.</li>
+  <li>Numeric IDs несемантичны; title identifiers неполны.</li>
+  <li>Natural-language identifiers должны быть одновременно descriptive и discriminative.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Identifier quality limited.</li>
+  <li>Query-document interaction insufficient.</li>
+  <li>Single-view retrieval misses complementary semantics.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Prompt-driven multi-task SFT генерирует summary/keyword/pseudo-query.</li>
+  <li>Multi-view ranking fusion объединяет title, body и generated identifiers.</li>
+  <li>GRPO optimization использует dense similarity reward.</li>
+  <li>Difficulty-aware negatives include hard, medium, easy.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>CE loss обучает generation target identifiers.</li>
+  <li>HRF fusion uses position decay, view-specific weights, paragraph frequency.</li>
+  <li>GRPO uses normalized relative advantage and KL to reference policy.</li>
+  <li>Reward groups compare generated identifiers for same query.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Datasets: NQ and TriviaQA.</li>
+  <li>Metrics: R@1, R@5, R@10, MRR@10.</li>
+  <li>NQ GRAM-RL: R@1 0.495, R@5 0.687, R@10 0.736, MRR@10 0.576.</li>
+  <li>TriviaQA: R@1 0.600, R@5 0.752, R@10 0.792, MRR@10 0.665.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Figure 1 architecture with SFT and GRPO branches.</li>
+  <li>Table 2 compares BM25, DPR, BGE, SEAL, MINDER, DGR, LTRGR.</li>
+  <li>Ablations should isolate layers, fusion and RL.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Removing pseudo-query should hurt latent intent coverage.</li>
+  <li>Removing fusion loses complementary views.</li>
+  <li>Removing RL leaves identifiers descriptive but less interaction-aware.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Good decomposition of DocID into semantic granularities.</li>
+  <li>RL objective aligns identifier with retrieval, not only document summary.</li>
+  <li>Negative sampling taxonomy is practical.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Document retrieval differs from item recommendation.</li>
+  <li>Natural-language identifiers cost more than compact SID.</li>
+  <li>RL reward design can overfit benchmark negatives.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +139,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Document retrieval differs from item recommendation.</li>
+  <li>Специфично для этой статьи: Natural-language identifiers cost more than compact SID.</li>
+  <li>Специфично для этой статьи: RL reward design can overfit benchmark negatives.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Useful for semantic IDs as multi-view identifier design.</li>
+  <li>Related to UniSearch/CRS through RL alignment.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>Identifiers should be optimized for retrieval interaction.</li>
+  <li>Summary+keyword+pseudo-query is a practical multi-layer template.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

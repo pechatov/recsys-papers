@@ -1,0 +1,632 @@
+[
+  {
+    "start": "1",
+    "title": "Differentiable Semantic ID for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2601.19711",
+    "year": "2026",
+    "affiliations": "Amazon; Telefonica Scientific Research; University of Glasgow; Shandong University; Leiden University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/diger_differentiable_semantic_id_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/diger_differentiable_semantic_id_summary.html"
+  },
+  {
+    "start": "2",
+    "title": "DOS: Dual-Flow Orthogonal Semantic IDs for Recommendation in Meituan",
+    "url": "https://arxiv.org/abs/2602.04460",
+    "year": "2026",
+    "affiliations": "Meituan",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/dos_dual_flow_orthogonal_semantic_ids_for_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/dos_dual_flow_orthogonal_semantic_ids_for_recommendation_summary.html"
+  },
+  {
+    "start": "3",
+    "title": "Efficient Optimization of Hierarchical Identifiers for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2512.18434",
+    "year": "2026",
+    "affiliations": "University of Amsterdam",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/efficient_optimization_of_hierarchical_identifiers_for_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/efficient_optimization_of_hierarchical_identifiers_for_generative_recommendation_summary.html"
+  },
+  {
+    "start": "4",
+    "title": "From IDs to Semantics: A Generative Framework for Cross-Domain Recommendation with Adaptive Semantic Tokenization",
+    "url": "https://doi.org/10.1609/aaai.v40i17.38508",
+    "year": "2026",
+    "affiliations": "Xi’an Jiaotong-Liverpool University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/from_ids_to_semantics_a_generative_framework_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/from_ids_to_semantics_a_generative_framework_for_summary.html"
+  },
+  {
+    "start": "5",
+    "title": "FusID: Modality-Fused Semantic IDs for Generative Music Recommendation",
+    "url": "https://arxiv.org/abs/2601.08764",
+    "year": "2026",
+    "affiliations": "University of California San Diego",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/fusid_modality_fused_semantic_ids_for_generative_music_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/fusid_modality_fused_semantic_ids_for_generative_music_summary.html"
+  },
+  {
+    "start": "6",
+    "title": "IntRR: A Framework for Integrating SID Redistribution and Length Reduction",
+    "url": "https://arxiv.org/abs/2602.20704",
+    "year": "2026",
+    "affiliations": "AMAP, Alibaba Group; Beihang University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/intrr_a_framework_for_integrating_sid_redistribution_and_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/intrr_a_framework_for_integrating_sid_redistribution_and_summary.html"
+  },
+  {
+    "start": "7",
+    "title": "MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation",
+    "url": "https://arxiv.org/abs/2601.20199",
+    "year": "2026",
+    "affiliations": "ByteDance; National University of Singapore",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/merge_next_generation_item_indexing_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/merge_next_generation_item_indexing_summary.html"
+  },
+  {
+    "start": "8",
+    "title": "MoMoREC: A Multi-agent Motivation Generation Framework for Residual Semantic ID-Aware Recommendation",
+    "url": "https://doi.org/10.1609/aaai.v40i19.38623",
+    "year": "2026",
+    "affiliations": "Alibaba Group (United States); Xi'an Jiaotong University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/momorec_a_multi_agent_motivation_generation_framework_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/momorec_a_multi_agent_motivation_generation_framework_for_summary.html"
+  },
+  {
+    "start": "9",
+    "title": "PIT: A Dynamic Personalized Item Tokenizer for End-to-End Generative Recommendation",
+    "url": "https://arxiv.org/abs/2602.08530",
+    "year": "2026",
+    "affiliations": "Kuaishou Technology; Beijing University of Posts and Telecommunications; Institute of Computing Technology, Chinese Academy of Sciences",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/pit_a_dynamic_personalized_item_tokenizer_for_end_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/pit_a_dynamic_personalized_item_tokenizer_for_end_summary.html"
+  },
+  {
+    "start": "10",
+    "title": "Reasoning over Semantic IDs Enhances Generative Recommendation",
+    "url": "https://arxiv.org/abs/2603.23183",
+    "year": "2026",
+    "affiliations": "Tencent Inc; National University of Singapore; University of Science and Technology of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/reasoning_over_semantic_ids_enhances_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/reasoning_over_semantic_ids_enhances_generative_recommendation_summary.html"
+  },
+  {
+    "start": "11",
+    "title": "Rethinking Generative Recommender Tokenizer: Recsys-Native Encoding and Semantic Quantization Beyond LLMs",
+    "url": "https://arxiv.org/abs/2602.02338",
+    "year": "2026",
+    "affiliations": "Shopee Pte. Ltd.; Central South University; Nanyang Technological University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/rethinking_generative_recommender_tokenizer_recsys_native_encoding_and_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/rethinking_generative_recommender_tokenizer_recsys_native_encoding_and_summary.html"
+  },
+  {
+    "start": "12",
+    "title": "UniGRec: Unified Generative Recommendation with Soft Identifiers for End-to-End Optimization",
+    "url": "https://arxiv.org/abs/2601.17438",
+    "year": "2026",
+    "affiliations": "University of Science and Technology of China; National University of Singapore; The Chinese University of Hong Kong",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/unigrec_unified_generative_recommendation_with_soft_identifiers_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/unigrec_unified_generative_recommendation_with_soft_identifiers_for_summary.html"
+  },
+  {
+    "start": "13",
+    "title": "Unleash the Potential of Long Semantic IDs for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2602.13573",
+    "year": "2026",
+    "affiliations": "Southern University of Science and Technology; Nanjing University; Xi’an Jiaotong University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/unleash_the_potential_of_long_semantic_ids_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/unleash_the_potential_of_long_semantic_ids_for_summary.html"
+  },
+  {
+    "start": "14",
+    "title": "Unleashing the Native Recommendation Potential: LLM-Based Generative Recommendation via Structured Term Identifiers",
+    "url": "https://arxiv.org/abs/2601.06798",
+    "year": "2026",
+    "affiliations": "Kuaishou Inc",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/unleashing_native_recommendation_structured_term_identifiers_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/unleashing_native_recommendation_structured_term_identifiers_summary.html"
+  },
+  {
+    "start": "15",
+    "title": "Variable-Length Semantic IDs for Recommender Systems",
+    "url": "https://arxiv.org/abs/2602.16375",
+    "year": "2026",
+    "affiliations": "National Research University Higher School of Economics; HSE University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/variable_length_semantic_ids_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/variable_length_semantic_ids_summary.html"
+  },
+  {
+    "start": "16",
+    "title": "When Text-as-Vision Meets Semantic IDs in Generative Recommendation: An Empirical Study",
+    "url": "https://arxiv.org/abs/2601.14697",
+    "year": "2026",
+    "affiliations": "The University of Queensland; City University of Hong Kong; Griffith University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/when_text_as_vision_meets_semantic_ids_in_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/when_text_as_vision_meets_semantic_ids_in_summary.html"
+  },
+  {
+    "start": "17",
+    "title": "Beyond Static Collision Handling: Adaptive Semantic ID Learning for Multimodal Recommendation at Industrial Scale",
+    "url": "https://arxiv.org/abs/2604.23522",
+    "year": "2026",
+    "affiliations": "Kuaishou Technology; University of Electronic Science and Technology of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/beyond_static_collision_handling_adaptive_semantic_id_learning_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/beyond_static_collision_handling_adaptive_semantic_id_learning_summary.html"
+  },
+  {
+    "start": "18",
+    "title": "Deploying Semantic ID-based Generative Retrieval for Large-Scale Podcast Discovery at Spotify",
+    "url": "https://arxiv.org/abs/2603.17540",
+    "year": "2026",
+    "affiliations": "Spotify",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/deploying_semantic_id_based_generative_retrieval_for_large_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/deploying_semantic_id_based_generative_retrieval_for_large_summary.html"
+  },
+  {
+    "start": "19",
+    "title": "GenRec: A Preference-Oriented Generative Framework for Large-Scale Recommendation",
+    "url": "https://arxiv.org/abs/2604.14878",
+    "year": "2026",
+    "affiliations": "JD.com; Waseda University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/genrec_a_preference_oriented_generative_framework_for_large_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/genrec_a_preference_oriented_generative_framework_for_large_summary.html"
+  },
+  {
+    "start": "20",
+    "title": "GLASS: A Generative Recommender for Long-sequence Modeling via SID-Tier and Semantic Search",
+    "url": "https://arxiv.org/abs/2602.05663",
+    "year": "2026",
+    "affiliations": "Kuaishou Inc; Tsinghua University; BUPT",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/glass_a_generative_recommender_for_long_sequence_modeling_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/glass_a_generative_recommender_for_long_sequence_modeling_summary.html"
+  },
+  {
+    "start": "21",
+    "title": "Harmonizing Generative Retrieval and Ranking in Chain-of-Recommendation",
+    "url": "https://arxiv.org/abs/2604.25787",
+    "year": "2026",
+    "affiliations": "Kuaishou Technology; NJUST",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/harmonizing_generative_retrieval_and_ranking_in_chain_of_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/harmonizing_generative_retrieval_and_ranking_in_chain_of_summary.html"
+  },
+  {
+    "start": "22",
+    "title": "Mitigating Collaborative Semantic ID Staleness in Generative Retrieval",
+    "url": "https://arxiv.org/abs/2604.13273",
+    "year": "2026",
+    "affiliations": "AI VK; VK AI; ITMO University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/mitigating_collaborative_semantic_id_staleness_in_generative_retrieval_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/mitigating_collaborative_semantic_id_staleness_in_generative_retrieval_summary.html"
+  },
+  {
+    "start": "23",
+    "title": "Multimodal Generative Retrieval Model with Staged Pretraining for Food Delivery on Meituan",
+    "url": "https://arxiv.org/abs/2602.06654",
+    "year": "2026",
+    "affiliations": "Meituan; BUPT",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/multimodal_generative_retrieval_model_with_staged_pretraining_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/multimodal_generative_retrieval_model_with_staged_pretraining_for_summary.html"
+  },
+  {
+    "start": "24",
+    "title": "Semantic IDs for Recommender Systems at Snapchat: Use Cases, Technical Challenges, and Design Choices",
+    "url": "https://arxiv.org/abs/2604.03949",
+    "year": "2026",
+    "affiliations": "Snap Inc",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_recommender_systems_at_snapchat_use_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_recommender_systems_at_snapchat_use_summary.html"
+  },
+  {
+    "start": "25",
+    "title": "SID-Coord: Coordinating Semantic IDs for ID-based Ranking in Short-Video Search",
+    "url": "https://arxiv.org/abs/2604.10471",
+    "year": "2026",
+    "affiliations": "Kuaishou Technology",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/sid_coord_coordinating_semantic_ids_for_id_based_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/sid_coord_coordinating_semantic_ids_for_id_based_summary.html"
+  },
+  {
+    "start": "26",
+    "title": "DimeRec: A Unified Framework for Enhanced Sequential Recommendation via Generative Diffusion Models",
+    "url": "https://arxiv.org/abs/2408.12153",
+    "year": "2025",
+    "affiliations": "Kuaishou; Alibaba; University of Science and Technology of China; Sun Yat-sen University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/dimerec_a_unified_framework_for_enhanced_sequential_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/dimerec_a_unified_framework_for_enhanced_sequential_recommendation_summary.html"
+  },
+  {
+    "start": "27",
+    "title": "TokenRec: Learning to Tokenize ID for LLM-Based Generative Recommendations",
+    "url": "https://doi.org/10.1109/tkde.2025.3599265",
+    "year": "2025",
+    "affiliations": "Hong Kong Polytechnic University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/tokenrec_learning_to_tokenize_id_for_llm_based_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/tokenrec_learning_to_tokenize_id_for_llm_based_summary.html"
+  },
+  {
+    "start": "28",
+    "title": "Generative Next POI Recommendation with Semantic ID",
+    "url": "https://doi.org/10.1145/3711896.3736981",
+    "year": "2025",
+    "affiliations": "University of Electronic Science and Technology of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generative_next_poi_recommendation_with_semantic_id_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generative_next_poi_recommendation_with_semantic_id_summary.html"
+  },
+  {
+    "start": "29",
+    "title": "Enhancing Embedding Representation Stability in Recommendation Systems with Semantic ID",
+    "url": "https://arxiv.org/abs/2504.02137",
+    "year": "2025",
+    "affiliations": "AI at Meta; Columbia University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/enhancing_embedding_representation_stability_semantic_id_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/enhancing_embedding_representation_stability_semantic_id_summary.html"
+  },
+  {
+    "start": "30",
+    "title": "Generating Long Semantic IDs in Parallel for Recommendation",
+    "url": "https://doi.org/10.1145/3711896.3736979",
+    "year": "2025",
+    "affiliations": "Meta",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generating_long_semantic_ids_in_parallel_for_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generating_long_semantic_ids_in_parallel_for_recommendation_summary.html"
+  },
+  {
+    "start": "31",
+    "title": "Order-agnostic Identifier for Large Language Model-based Generative Recommendation",
+    "url": "https://doi.org/10.1145/3726302.3730053",
+    "year": "2025",
+    "affiliations": "National University of Singapore; University of Science and Technology of China; Alpha Omega Alpha Medical Honor Society; Menlo School",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/order_agnostic_identifier_for_large_language_model_based_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/order_agnostic_identifier_for_large_language_model_based_summary.html"
+  },
+  {
+    "start": "32",
+    "title": "DAS: Dual-Aligned Semantic IDs Empowered Industrial Recommender System",
+    "url": "https://arxiv.org/abs/2508.10584",
+    "year": "2025",
+    "affiliations": "Kuaishou Technology",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/das_dual_aligned_semantic_ids_empowered_industrial_recommender_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/das_dual_aligned_semantic_ids_empowered_industrial_recommender_summary.html"
+  },
+  {
+    "start": "33",
+    "title": "LLM-Aligned Geographic Item Tokenization for Local-Life Recommendation",
+    "url": "https://arxiv.org/abs/2511.14221",
+    "year": "2025",
+    "affiliations": "Kuaishou Technology",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/llm_aligned_geographic_item_tokenization_for_local_life_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/llm_aligned_geographic_item_tokenization_for_local_life_summary.html"
+  },
+  {
+    "start": "34",
+    "title": "MMQ: Multimodal Mixture-of-Quantization Tokenization for Semantic ID Generation and User Behavioral Adaptation",
+    "url": "https://arxiv.org/abs/2508.15281",
+    "year": "2025",
+    "affiliations": "Alibaba Group; Peking University; BUAA; Wuhan University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/mmq_multimodal_mixture_of_quantization_tokenization_for_semantic_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/mmq_multimodal_mixture_of_quantization_tokenization_for_semantic_summary.html"
+  },
+  {
+    "start": "35",
+    "title": "Semantic IDs for Joint Generative Search and Recommendation",
+    "url": "https://arxiv.org/abs/2508.10478",
+    "year": "2025",
+    "affiliations": "Spotify",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_joint_generative_search_and_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_joint_generative_search_and_recommendation_summary.html"
+  },
+  {
+    "start": "36",
+    "title": "Semantic IDs for Music Recommendation",
+    "url": "https://arxiv.org/abs/2507.18800",
+    "year": "2025",
+    "affiliations": "Spotify; SiriusXM Radio",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_music_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_music_recommendation_summary.html"
+  },
+  {
+    "start": "37",
+    "title": "Towards Large Generative Recommendation: A Tokenization Perspective",
+    "url": "https://doi.org/10.1145/3746252.3761451",
+    "year": "2025",
+    "affiliations": "University of California San Diego; University of Science and Technology of China; National University of Singapore",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/towards_large_generative_recommendation_a_tokenization_perspective_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/towards_large_generative_recommendation_a_tokenization_perspective_summary.html"
+  },
+  {
+    "start": "38",
+    "title": "CoFiRec: Coarse-to-Fine Tokenization for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2511.22707",
+    "year": "2025",
+    "affiliations": "Meta; UIUC; UC San Diego; University of Illinois Urbana-Champaign; University of California San Diego",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/cofirec_coarse_to_fine_tokenization_for_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/cofirec_coarse_to_fine_tokenization_for_generative_recommendation_summary.html"
+  },
+  {
+    "start": "39",
+    "title": "The Best of the Two Worlds: Harmonizing Semantic and Hash IDs for Sequential Recommendation",
+    "url": "https://arxiv.org/abs/2512.10388",
+    "year": "2025",
+    "affiliations": "Xi’an Jiaotong University &amp; City University of Hong Kong; Independent Researcher",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/the_best_of_the_two_worlds_harmonizing_semantic_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/the_best_of_the_two_worlds_harmonizing_semantic_summary.html"
+  },
+  {
+    "start": "40",
+    "title": "Unified Semantic and ID Representation Learning for Deep Recommenders",
+    "url": "https://arxiv.org/abs/2502.16474",
+    "year": "2025",
+    "affiliations": "Meta AI; University of Illinois Urbana-Champaign; University of Illinois at Urbana-Champaign",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/unified_semantic_and_id_representation_learning_for_deep_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/unified_semantic_and_id_representation_learning_for_deep_summary.html"
+  },
+  {
+    "start": "41",
+    "title": "A Simple Contrastive Framework Of Item Tokenization For Generative Recommendation",
+    "url": "https://arxiv.org/abs/2506.16683",
+    "year": "2025",
+    "affiliations": "Alibaba",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/a_simple_contrastive_framework_of_item_tokenization_for_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/a_simple_contrastive_framework_of_item_tokenization_for_summary.html"
+  },
+  {
+    "start": "42",
+    "title": "CAT-ID$^2$: Category-Tree Integrated Document Identifier Learning for Generative Retrieval In E-commerce",
+    "url": "https://arxiv.org/abs/2511.01461",
+    "year": "2025",
+    "affiliations": "Meituan; Beihang University; Chinese Academy of Sciences",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/cat_id2_category_tree_integrated_document_identifier_learning_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/cat_id2_category_tree_integrated_document_identifier_learning_summary.html"
+  },
+  {
+    "start": "43",
+    "title": "Entity-Aware Generative Retrieval for Personalized Contexts",
+    "url": "https://doi.org/10.1145/3746252.3761211",
+    "year": "2025",
+    "affiliations": "Samsung Electronics; Seoul National University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/entity_aware_generative_retrieval_for_personalized_contexts_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/entity_aware_generative_retrieval_for_personalized_contexts_summary.html"
+  },
+  {
+    "start": "44",
+    "title": "FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets",
+    "url": "https://arxiv.org/abs/2509.20904",
+    "year": "2025",
+    "affiliations": "Alibaba Group; Taobao; Zhejiang University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/forge_forming_semantic_identifiers_for_generative_retrieval_in_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/forge_forming_semantic_identifiers_for_generative_retrieval_in_summary.html"
+  },
+  {
+    "start": "45",
+    "title": "GenSAR: Unifying Balanced Search and Recommendation with Generative Retrieval",
+    "url": "https://arxiv.org/abs/2504.05730",
+    "year": "2025",
+    "affiliations": "Kuaishou Technology; Renmin University of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/gensar_unifying_balanced_search_and_recommendation_with_generative_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/gensar_unifying_balanced_search_and_recommendation_with_generative_summary.html"
+  },
+  {
+    "start": "46",
+    "title": "GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization",
+    "url": "https://arxiv.org/abs/2507.14758",
+    "year": "2025",
+    "affiliations": "Walmart Global Tech",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/grace_generative_recommendation_via_journey_aware_sparse_attention_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/grace_generative_recommendation_via_journey_aware_sparse_attention_summary.html"
+  },
+  {
+    "start": "47",
+    "title": "PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations",
+    "url": "https://arxiv.org/abs/2510.07784",
+    "year": "2025",
+    "affiliations": "Google DeepMind; YouTube",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/plum_adapting_pre_trained_language_models_for_industrial_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/plum_adapting_pre_trained_language_models_for_industrial_summary.html"
+  },
+  {
+    "start": "48",
+    "title": "Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation",
+    "url": "https://arxiv.org/abs/2408.06883",
+    "year": "2025",
+    "affiliations": "Spotify",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/prompt_to_slate_diffusion_models_for_prompt_conditioned_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/prompt_to_slate_diffusion_models_for_prompt_conditioned_summary.html"
+  },
+  {
+    "start": "49",
+    "title": "Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers",
+    "url": "https://doi.org/10.1145/3746252.3761136",
+    "year": "2025",
+    "affiliations": "Dalian University of Technology; City University of Hong Kong",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/reinforcement_learning_driven_generative_retrieval_with_semantic_aligned_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/reinforcement_learning_driven_generative_retrieval_with_semantic_aligned_summary.html"
+  },
+  {
+    "start": "50",
+    "title": "STORE: Semantic Tokenization, Orthogonal Rotation and Efficient Attention for Scaling Up Ranking Models",
+    "url": "https://arxiv.org/abs/2511.18805",
+    "year": "2025",
+    "affiliations": "Alibaba Group; Wuhan University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/store_semantic_tokenization_orthogonal_rotation_and_efficient_attention_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/store_semantic_tokenization_orthogonal_rotation_and_efficient_attention_summary.html"
+  },
+  {
+    "start": "51",
+    "title": "Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce",
+    "url": "https://arxiv.org/abs/2510.16925",
+    "year": "2025",
+    "affiliations": "Kuaishou Technology; University of Science and Technology of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/towards_context_aware_reasoning_enhanced_generative_searching_in_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/towards_context_aware_reasoning_enhanced_generative_searching_in_summary.html"
+  },
+  {
+    "start": "52",
+    "title": "UniSearch: Rethinking Search System with a Unified Generative Architecture",
+    "url": "https://arxiv.org/abs/2509.06887",
+    "year": "2025",
+    "affiliations": "Kuaishou Technology",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/unisearch_rethinking_search_system_with_a_unified_generative_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/unisearch_rethinking_search_system_with_a_unified_generative_summary.html"
+  },
+  {
+    "start": "53",
+    "title": "Learnable Item Tokenization for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2405.07314",
+    "year": "2024",
+    "affiliations": "National University of Singapore",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/letter_learnable_item_tokenization_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/letter_learnable_item_tokenization_summary.html"
+  },
+  {
+    "start": "54",
+    "title": "Better Generalization With Semantic Ids: A Case Study In Ranking For Recommendations",
+    "url": "https://arxiv.org/abs/2306.08121",
+    "year": "2024",
+    "affiliations": "Google (United States)",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/better_generalization_with_semantic_ids_a_case_study_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/better_generalization_with_semantic_ids_a_case_study_summary.html"
+  },
+  {
+    "start": "55",
+    "title": "Generative News Recommendation",
+    "url": "https://arxiv.org/abs/2403.03424",
+    "year": "2024",
+    "affiliations": "University of Electronic Science and Technology of China; Shandong University; Renmin University of China; Leiden University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generative_news_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generative_news_recommendation_summary.html"
+  },
+  {
+    "start": "56",
+    "title": "Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other?",
+    "url": "https://arxiv.org/abs/2410.16823",
+    "year": "2024",
+    "affiliations": "Spotify; Signify",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/bridging_search_and_recommendation_in_generative_retrieval_does_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/bridging_search_and_recommendation_in_generative_retrieval_does_summary.html"
+  },
+  {
+    "start": "57",
+    "title": "CoST: Contrastive Quantization based Semantic Tokenization for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2404.14774",
+    "year": "2024",
+    "affiliations": "Huawei Technologies (China); University Town of Shenzhen; Tsinghua University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/cost_contrastive_quantization_semantic_tokenization_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/cost_contrastive_quantization_semantic_tokenization_summary.html"
+  },
+  {
+    "start": "58",
+    "title": "Generative Recommender with End-to-End Learnable Item Tokenization",
+    "url": "https://arxiv.org/abs/2409.05546",
+    "year": "2024",
+    "affiliations": "Kuaishou Technology; Kuaishou (China); Renmin University of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/etegrec_end_to_end_learnable_item_tokenization_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/etegrec_end_to_end_learnable_item_tokenization_summary.html"
+  },
+  {
+    "start": "59",
+    "title": "Learning Category Trees for ID-Based Recommendation: Exploring the Power of Differentiable Vector Quantization",
+    "url": "https://arxiv.org/abs/2308.16761",
+    "year": "2024",
+    "affiliations": "Hong Kong Polytechnic University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/learning_category_trees_for_id_based_recommendation_exploring_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/learning_category_trees_for_id_based_recommendation_exploring_summary.html"
+  },
+  {
+    "start": "60",
+    "title": "ASI++: Towards Distributionally Balanced End-to-End Generative Retrieval",
+    "url": "https://arxiv.org/abs/2405.14280",
+    "year": "2024",
+    "affiliations": "Microsoft AI; Peking University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/asi_towards_distributionally_balanced_end_to_end_generative_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/asi_towards_distributionally_balanced_end_to_end_generative_summary.html"
+  },
+  {
+    "start": "61",
+    "title": "Enhancing Item Tokenization for Generative Recommendation through Self-Improvement",
+    "url": "https://arxiv.org/abs/2412.17171",
+    "year": "2024",
+    "affiliations": "The University of Texas at Austin",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/enhancing_item_tokenization_for_generative_recommendation_through_self_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/enhancing_item_tokenization_for_generative_recommendation_through_self_summary.html"
+  },
+  {
+    "start": "62",
+    "title": "Towards Scalable Semantic Representation for Recommendation",
+    "url": "https://arxiv.org/abs/2410.09560",
+    "year": "2024",
+    "affiliations": "Tencent Inc; Tsinghua University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/towards_scalable_semantic_representation_for_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/towards_scalable_semantic_representation_for_recommendation_summary.html"
+  },
+  {
+    "start": "63",
+    "title": "Actions Speak Louder than Words: Trillion-Parameter Sequential Transducers for Generative Recommendations",
+    "url": "https://arxiv.org/abs/2402.17152",
+    "year": "2024",
+    "affiliations": "Meta",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/actions_speak_louder_than_words_trillion_parameter_sequential_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/actions_speak_louder_than_words_trillion_parameter_sequential_summary.html"
+  },
+  {
+    "start": "64",
+    "title": "Generative Flow Network for Listwise Recommendation",
+    "url": "https://arxiv.org/abs/2306.02239",
+    "year": "2023",
+    "affiliations": "Kuaishou Technology; University of California San Diego; Peking University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generative_flow_network_for_listwise_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generative_flow_network_for_listwise_recommendation_summary.html"
+  },
+  {
+    "start": "65",
+    "title": "Generate What You Prefer: Reshaping Sequential Recommendation via Guided Diffusion",
+    "url": "https://arxiv.org/abs/2310.20453",
+    "year": "2023",
+    "affiliations": "University of Science and Technology of China; Hong Kong Polytechnic University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generate_what_you_prefer_reshaping_sequential_recommendation_via_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generate_what_you_prefer_reshaping_sequential_recommendation_via_summary.html"
+  },
+  {
+    "start": "66",
+    "title": "Generative Recommendation with Semantic IDs: A Practitioner's Handbook",
+    "url": "https://arxiv.org/abs/2507.22224",
+    "year": "2025",
+    "affiliations": "Snap Inc.",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/generative_recommendation_with_semantic_ids_a_practitioner_s_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/generative_recommendation_with_semantic_ids_a_practitioner_s_summary.html"
+  },
+  {
+    "start": "67",
+    "title": "Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale",
+    "url": "https://arxiv.org/abs/2603.00632",
+    "year": "2026",
+    "affiliations": "Kuaishou",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/stop_treating_collisions_equally_qualification_aware_semantic_id_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/stop_treating_collisions_equally_qualification_aware_semantic_id_summary.html"
+  },
+  {
+    "start": "68",
+    "title": "STORE: Streamlining Semantic Tokenization and Generative Recommendation with A Single LLM",
+    "url": "https://arxiv.org/abs/2409.07276",
+    "year": "2024",
+    "affiliations": "Huawei Noah’s Ark Lab; Hong Kong Polytechnic University; Zhejiang University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/store_streamlining_semantic_tokenization_and_generative_recommendation_with_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/store_streamlining_semantic_tokenization_and_generative_recommendation_with_summary.html"
+  },
+  {
+    "start": "69",
+    "title": "Understanding Generative Recommendation with Semantic IDs from a Model-scaling View",
+    "url": "https://arxiv.org/abs/2509.25522",
+    "year": "2025",
+    "affiliations": "Snap Inc.; Michigan State University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/understanding_generative_recommendation_with_semantic_ids_from_a_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/understanding_generative_recommendation_with_semantic_ids_from_a_summary.html"
+  },
+  {
+    "start": "70",
+    "title": "Pre-training Generative Recommender with Multi-Identifier Item Tokenization",
+    "url": "https://arxiv.org/abs/2504.04400",
+    "year": "2025",
+    "affiliations": "Huawei; Renmin University of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/mtgrec_multi_identifier_item_tokenization_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/mtgrec_multi_identifier_item_tokenization_summary.html"
+  }
+]

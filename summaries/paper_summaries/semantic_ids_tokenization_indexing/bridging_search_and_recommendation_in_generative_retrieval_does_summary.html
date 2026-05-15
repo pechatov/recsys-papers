@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other?</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,83 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2410.16823">Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other?</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Gustavo Penha, Ali Vardasbi, Enrico Palumbo, Marco de Nadai, Hugues Bouchard.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Spotify</span>; Signify.</p>
+  <p><strong>Индустрия:</strong> music/podcast search and recommendation.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2410.16823.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>The paper studies whether joint generative search+recommendation helps.</li>
+  <li>Two hypotheses: H1 popularity regularization and H2 latent representation regularization.</li>
+  <li>It is diagnostic research rather than a new SOTA tokenizer.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Search and recommendation share item catalogs on Spotify/YouTube/Netflix-like platforms.</li>
+  <li>Generative retrieval can use one model with task prompts.</li>
+  <li>But tasks have different distributions and biases.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Joint training may help or hurt depending on overlap and distribution.</li>
+  <li>Popularity bias appears in latent item representations.</li>
+  <li>Content-based and collaborative signals may regularize each other.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Task-specific prompts: query -> item IDs for search, history -> item IDs for recommendation.</li>
+  <li>Single-task models are compared with joint model.</li>
+  <li>Simulations control popularity KL and query/co-occurrence matching.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other? качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Autoregressive ID generation objective.</li>
+  <li>Simulation S1 tests H1 by varying KL divergence of popularity distributions.</li>
+  <li>Simulation S2/S3 test H2 by varying matching queries and relevant pairs.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other? качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Real datasets: MPD, MovieLens-derived ML, Podcasts from Spotify logs 2023-07 to 2023-10.</li>
+  <li>Podcasts: 84% search items appear in recommendation data; 30% recommendation items appear in search data.</li>
+  <li>Baselines include Pop_R, Pop_S, SASRec, BERT4Rec, DiffRec, BM25, bi-encoder.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other? качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Motivation table illustrates H1/H2.</li>
+  <li>t-SNE figure shows joint model clusters item embeddings better.</li>
+  <li>Main result tables separate recommendation and search.</li>
+  <li>Popularity removal and redundancy analyses probe mechanisms.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Joint training helps more when task distributions are related but not identical.</li>
+  <li>High co-occurrence/relevant-pair overlap supports H2.</li>
+  <li>Removing popularity bias reduces effectiveness and supports H1.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Excellent diagnostic framing.</li>
+  <li>Explains when unified generative IR is justified.</li>
+  <li>Avoids overclaiming against non-generative baselines.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Not a production deployment paper.</li>
+  <li>Benefits depend on item overlap and distribution compatibility.</li>
+  <li>ID strategy is not the main contribution.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +137,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Not a production deployment paper.</li>
+  <li>Специфично для этой статьи: Benefits depend on item overlap and distribution compatibility.</li>
+  <li>Специфично для этой статьи: ID strategy is not the main contribution.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Provides theory/context for GenSAR and UniSearch.</li>
+  <li>Complements identifier-design papers by studying task interaction.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>One task helps the other only under structural compatibility.</li>
+  <li>Search contributes content signals; recommendation contributes collaborative signals.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

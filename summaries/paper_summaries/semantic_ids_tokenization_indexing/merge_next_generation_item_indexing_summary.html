@@ -1,21 +1,21 @@
 <!doctype html>
+
 <html lang="ru">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation</title>
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']],
-        processEscapes: true
-      },
-      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
-    };
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
 main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
@@ -37,317 +37,193 @@ th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align:
 th { background: var(--soft); text-align: left; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 .math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
 </head>
+
 <body>
+
 <main>
-<h1>MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation</h1>
+
+<h1><a href="https://arxiv.org/abs/2601.20199">MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
 <p>Подробное саммари статьи:</p>
+
 <blockquote>
+
 <p><strong>Авторы:</strong> Jing Yan, Yimeng Bai, Zongyu Liu, Yahui Liu, Junwei Wang, Jingze Huang, Haoda Li, Sihao Ding, Shaohui Ruan, Yang Zhang.</p>
+
 <p><strong>Аффилиации:</strong> <span class="industry">ByteDance</span>; National University of Singapore.</p>
+
 </blockquote>
 
-<h2>1. Коротко: о чем статья</h2>
-<p>MERGE предлагает заменить классический VQ-based item indexing на динамическую streaming-native парадигму. Вместо фиксированного codebook'а, куда каждый item принудительно назначается ближайшему centroid'у, MERGE строит clusters from scratch, проверяет качество assignment по threshold, создает новые clusters из unmatched items, мониторит occupancy и затем объединяет fine clusters в coarse hierarchical index.</p>
-<p>Главная критика статьи: Vector Quantization плохо подходит для industrial streaming recommendation, где item distribution сильно skewed, постоянно меняется, а feedback loops могут усиливать ошибки. VQ forced assignment приводит к трем проблемам:</p>
-<ol>
-<li><strong>Accuracy.</strong> Item может быть слабо похож на назначенный cluster.</li>
-<li><strong>Uniformity.</strong> Cluster sizes становятся сильно несбалансированными.</li>
-<li><strong>Separation.</strong> Cluster embeddings плохо отделены друг от друга, что делает assignments нестабильными.</li>
-</ol>
-<p>MERGE показывает улучшения offline по этим трем измерениям и online в A/B test внутри Trinity-style retrieval pipeline.</p>
+<h2>1. Коротко</h2>
 
-<h2>2. Контекст: что такое item indexing</h2>
-<p>Item indexing, или item tokenization, отображает item embeddings в компактные дискретные представления:</p>
-<div class="math">\[
-f(\mathbf e_i) \rightarrow [c^1, c^2, \ldots, c^L]
-\]</div>
-<p>Такой индекс нужен в двух типах систем:</p>
+<p>MERGE предлагает заменить forced-assignment VQ indexing на streaming-native кластеризацию. В VQ каждый item обязан попасть в ближайший centroid, даже если similarity низкая; это создает неточные, несбалансированные и плохо разделенные clusters. MERGE строит clusters from scratch: item принимается только выше threshold, unmatched items формируют новые clusters через union-find, occupancy мониторится в реальном времени, а затем fine clusters объединяются в coarse hierarchical index.</p>
+
+<h2>2. Контекст</h2>
+
+<p>Item indexing нужен и классическому retrieval, и generative recommendation. В industrial short-video/streaming catalogs distribution skewed и non-stationary: новые items приходят постоянно, популярность меняется, feedback loops усиливают ошибки. Статичный VQ codebook плохо переносит такую динамику, потому что не умеет отказаться от плохого assignment и не контролирует occupancy.</p>
+
+<h2>3. Проблема</h2>
+
 <ul>
-<li><strong>traditional retrieval</strong>: индекс позволяет быстро доставать candidates из огромного каталога;</li>
-<li><strong>generative recommendation</strong>: индекс становится token space, где recommender генерирует item как sequence of tokens.</li>
-</ul>
-<p>В traditional retrieval часто достаточно одного или двух уровней clusters, где множество item'ов делят один cluster. В generative recommendation длина обычно больше, например 3-4 tokens, и часто в конец добавляется unique token, чтобы обеспечить one-to-one mapping между generated sequence и item.</p>
+<li>Accuracy: item может быть назначен cluster'у с низкой cosine similarity.</li>
 
-<h2>3. Почему VQ плохо работает в streaming recommendation</h2>
-<p>Single-layer VQ задает codebook фиксированного размера:</p>
-<div class="math">\[
-\mathcal C = \{\mathbf c_k\}_{k=1}^{K}
-\]</div>
-<p>Каждый item embedding <code>e_i</code> назначается ближайшему codeword:</p>
-<div class="math">\[
-c^1 = \arg\max_k \operatorname{sim}(\mathbf e_i, \mathbf c_k)
-\]</div>
-<p>Проблема в слове "назначается": VQ обычно не имеет права отказать item'у в плохом assignment. Даже если ближайший cluster все равно далек, item будет куда-то помещен.</p>
-<p>В industrial stream это приводит к:</p>
-<ul>
-<li>clusters, в которых item'ы слабо похожи на cluster center;</li>
-<li>гигантским clusters в популярных областях или вокруг noisy long-tail;</li>
-<li>слишком похожим codewords, между которыми item может перескакивать при небольших обновлениях embedding'а;</li>
-<li>нестабильному retrieval behavior из-за feedback loops.</li>
-</ul>
-<p>Авторы сообщают, что для single-layer VQ средняя item-to-cluster cosine similarity около <strong>0.6</strong>, а average inter-cluster cosine similarity превышает <strong>0.5</strong>. Для production indexing это плохой сигнал: clusters одновременно неточные и плохо разделенные.</p>
+<li>Uniformity: одни clusters становятся огромными, другие почти пустыми.</li>
 
-<h2>4. Общая идея MERGE</h2>
-<p>MERGE строится вокруг трех механизмов:</p>
-<ol>
-<li><strong>Dynamic cluster construction</strong>: item назначается cluster'у только если similarity выше threshold; иначе он участвует в создании новых clusters.</li>
-<li><strong>Real-time occupancy monitoring</strong>: clusters с плохой occupancy reset'ятся, чтобы поддерживать баланс и освобождать capacity.</li>
-<li><strong>Fine-to-coarse merging</strong>: стабильные fine-grained clusters объединяются в coarse codebook, образуя hierarchical index.</li>
-</ol>
-<img src="../../assets/merge/framework.png" alt="Overview of the MERGE framework" width="760">
-<p>В отличие от VQ, MERGE не начинает с заранее заданного числа clusters. Codebook size динамически меняется по мере обработки stream.</p>
+<li>Separation: cluster centers близки друг к другу, item mappings нестабильны.</li>
 
-<h2>5. Dynamic Cluster Construction</h2>
-<p>На каждом update step MERGE получает batch items <code>B</code>. Каждый item представлен <strong>64-dimensional collaborative embedding</strong>, полученным из retriever model. Codebook <code>Q = {q_k}_{k=1..K}</code> изначально пуст и постепенно развивается.</p>
-<p>Чтобы batch был менее noisy, авторы используют tag-based batch formation: все item'ы в batch имеют один prior tag из 100 multimodal categories. Это ускоряет convergence и делает cluster formation стабильнее.</p>
-
-<h3>5.1. Step 1: Similarity computation</h3>
-<p>Для каждого item embedding <code>e_i</code> считается cosine similarity ко всем existing codewords:</p>
-<div class="math">\[
-k_i^{\ast} = \arg\max_k \operatorname{sim}(\mathbf e_i, \mathbf q_k),
-\qquad
-s_i^{\ast} = \max_k \operatorname{sim}(\mathbf e_i, \mathbf q_k)
-\]</div>
-<p>Cosine similarity выбран потому, что он хорошо работает эмпирически и удобно задает threshold в диапазоне от -1 до 1.</p>
-
-<h3>5.2. Step 2: Matching decision</h3>
-<p>Если best similarity выше threshold <code>tau</code>, item успешно matched:</p>
-<div class="math">\[
-\mathcal B^+ = \{ i \in \mathcal B \mid s_i^{\ast} \ge \tau \},
-\qquad
-\mathcal B^- = \{ i \in \mathcal B \mid s_i^{\ast} < \tau \}
-\]</div>
-<p>Это один из ключевых отличий от VQ. MERGE имеет явное множество failed-to-match items и не делает blind assignment.</p>
-
-<h3>5.3. Step 3: Cluster update через EMA</h3>
-<p>Для каждого cluster <code>q_k</code> хранятся две EMA variables:</p>
-<ul>
-<li><code>S_k</code> - EMA суммы embeddings, назначенных cluster'у;</li>
-<li><code>N_k</code> - EMA количества item'ов в cluster.</li>
-</ul>
-<div class="math">\[
-\mathbf S_k \leftarrow \gamma \mathbf S_k +
-(1-\gamma)\sum_{i\in\mathcal B_k^+}\mathbf e_i
-\]</div>
-<div class="math">\[
-N_k \leftarrow \gamma N_k + (1-\gamma)|\mathcal B_k^+|,
-\qquad
-\mathbf q_k \leftarrow \frac{\mathbf S_k}{N_k}
-\]</div>
-<p>EMA позволяет cluster embedding адаптироваться к новым данным, но не дергаться слишком резко.</p>
-
-<h3>5.4. Step 4: Cluster extension через Union-Find</h3>
-<p>Items из <code>B-</code> не были похожи на existing clusters. MERGE пытается сформировать из них новые clusters. Для этого:</p>
-<ol>
-<li>считаются pairwise similarities между failed items;</li>
-<li>пары с similarity выше <code>tau'</code> соединяются;</li>
-<li>Union-Find строит connected components;</li>
-<li>component становится valid cluster, если ее size не меньше <code>m</code>;</li>
-<li>cluster embedding получается mean-pooling'ом embeddings внутри component.</li>
-</ol>
-<div class="math">\[
-\mathcal U = \operatorname{UF}(\mathcal B^-, \tau'),
-\qquad
-\mathcal U^{\mathrm{valid}} =
-\{\mathbf u \in \mathcal U \mid \operatorname{size}(\mathbf u) \ge m\}
-\]</div>
-<p>Поскольку эти clusters создаются из items, которые не matched к existing codewords, они естественно отделены от старого codebook'а.</p>
-
-<h3>5.5. Step 5: Fill-Then-Append и item recycling</h3>
-<p>Valid clusters добавляются в codebook через Fill-Then-Append operator:</p>
-<ol>
-<li>сначала заполняются reset/zeroed slots в <code>Q</code>;</li>
-<li>если valid clusters больше, чем свободных slots, оставшиеся append'ятся в конец;</li>
-<li>items, которые не образовали valid cluster, возвращаются в data queue.</li>
-</ol>
-<p>Recycling важен для long tail: одиночный rare item не создает шумный cluster сразу, но может дождаться похожих item'ов в будущих batches.</p>
-
-<h2>6. Real-Time Occupancy Monitoring</h2>
-<p>MERGE отслеживает occupancy каждого cluster через EMA-count <code>N_k</code>. Cluster может быть в одном из трех статусов:</p>
-<div class="math">\[
-\operatorname{status}(\mathbf q_k)=
-\begin{cases}
-\mathrm{underfilled}, & N_k < \varepsilon_1, \\
-\mathrm{growing}, & \varepsilon_1 \le N_k < \varepsilon_2, \\
-\mathrm{stable}, & N_k \ge \varepsilon_2.
-\end{cases}
-\]</div>
-<p>Stable clusters сохраняются. Underfilled clusters reset'ятся: embedding и EMA variables обнуляются, а связанные item mappings очищаются. Growing clusters получают monitoring window <code>M</code>; если за <code>M</code> steps они не становятся stable, их тоже reset'ят.</p>
-<p>Это решает две production-проблемы:</p>
-<ul>
-<li>codebook не засоряется мелкими неустойчивыми clusters;</li>
-<li>capacity переиспользуется для новых patterns в stream.</li>
+<li>Streaming update: fixed codebook не отражает появление новых семантических областей.</li>
 </ul>
 
-<h2>7. Fine-to-Coarse Merging</h2>
-<p>MERGE строит hierarchical index <code>{P, Q}</code>, где <code>Q</code> - fine-grained codebook, а <code>P</code> - coarse-grained codebook.</p>
-<h3>7.1. Merging</h3>
-<p>Для пары prototypes <code>p_x</code> и <code>p_y</code> задается affinity:</p>
-<div class="math">\[
-w(\mathbf p_x, \mathbf p_y) =
-\operatorname{sim}(\mathbf p_x, \mathbf p_y) -
-\lambda \min(N_x, N_y)
-\]</div>
-<p>Вторая часть штрафует merge крупных clusters и тем самым поддерживает uniformity. Пара с максимальным affinity объединяется count-weighted average:</p>
-<div class="math">\[
-\mathbf p_{xy} =
-\frac{N_x\mathbf p_x + N_y\mathbf p_y}{N_x + N_y}
-\]</div>
-<h3>7.2. Pruning и reconnection</h3>
-<p>После merge для prototypes внутри merged cluster считается silhouette coefficient. Плохо вписывающиеся prototypes удаляются. Затем pruned prototypes и unmerged prototypes возвращаются в merge process. Процесс повторяется до достижения target number of coarse clusters.</p>
-<p>В статье используется два уровня <code>{P, Q}</code>, хотя идею можно рекурсивно применять дальше.</p>
+<h2>4. Метод и архитектура</h2>
 
-<h2>8. Implementation details</h2>
-<p>Из appendix:</p>
+<p>MERGE обрабатывает batch items с collaborative embeddings. Для каждого item ищется ближайший cluster и similarity. Если similarity выше threshold tau, cluster обновляется через EMA; если ниже, item попадает в unmatched set. В unmatched set строится graph по pairwise similarities выше tau', connected components через union-find становятся candidate clusters, если их размер не меньше m. Fill-Then-Append сначала заполняет reset slots, потом расширяет codebook, а одиночные unmatched items recycle'ятся.</p>
+<img src="../../assets/merge/framework.png" alt="MERGE framework" width="760">
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Objective не записан как один differentiable loss; это online indexing algorithm с несколькими invariants: item-to-cluster similarity должна быть высокой, occupancy - в рабочем диапазоне, cluster-to-cluster similarity - низкой. EMA-переменные S_k и N_k сглаживают обновления. Occupancy monitoring делит clusters на underfilled, growing и stable; underfilled/growing-too-long slots reset'ятся. Fine-to-coarse merging строит hierarchy для efficient retrieval.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Offline evaluation измеряет три свойства: I2C cosine similarity для accuracy, cluster size distribution для uniformity и C2C cosine similarity для separation. MERGE превосходит VQ по всем трем. Online A/B test внутри Trinity-style serving pipeline показывает положительные relative changes по core metrics, включая Average Active Days и Average Active Hours, а single-path metrics подтверждают вклад index path. Case study демонстрирует более тематически согласованные retrieved videos.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<img src="../../assets/merge/Accuracy_VQ_MERGE_revise.png" alt="MERGE accuracy comparison" width="720">
+<p>Рисунки Accuracy/Uniformity/Separation - центральные: они переводят спор о “лучшей кластеризации” в измеримые production properties. Serving figure показывает, как index вставляется в Trinity pipeline, а case study полезен как qualitative sanity check: retrieved items должны быть не только метриками похожи, но и визуально/тематически согласованы.</p>
+<img src="../../assets/merge/serving.png" alt="MERGE serving pipeline" width="720">
+
+<h2>8. Сильные стороны</h2>
+
 <ul>
-<li>item embeddings: 64-dimensional collaborative embeddings from retriever;</li>
-<li>batch size: <code>20,480</code>;</li>
-<li>после convergence fine-grained codebook содержит десятки тысяч valid clusters;</li>
-<li>cluster assignment threshold <code>tau = 0.88</code>;</li>
-<li>EMA decay <code>gamma = 0.9993</code>;</li>
-<li>Union-Find threshold <code>tau' = 0.83</code>;</li>
-<li>large-cluster penalty <code>lambda = 0.01</code>;</li>
-<li>monitoring window <code>M = 80</code>;</li>
-<li>minimum valid cluster size <code>m = 4</code>;</li>
-<li>occupancy thresholds <code>epsilon_1 = 0.25</code>, <code>epsilon_2 = 0.2644</code>.</li>
+<li>Сильная production-мотивация: streaming, skew, occupancy и online A/B.</li>
+
+<li>Отказ от forced assignment решает корневую проблему VQ в non-stationary catalog.</li>
+
+<li>Union-Find cluster creation и recycling просты и масштабируемы.</li>
+
+<li>Индексу задаются понятные health metrics, которые можно мониторить онлайн.</li>
 </ul>
 
-<h2>9. Offline evaluation</h2>
-<p>Авторы оценивают MERGE на platform-specific industrial streaming data, а не на публичных датасетах. Объем candidates - порядка сотен миллионов. Stream строится так, что candidates подаются sequentially с equal probability; это лучше подходит для обучения item indexing, чем popularity-biased impression stream.</p>
-<p>Baseline - <strong>StreamingVQ</strong>, который в статье далее называется просто VQ. Это single-codebook VQ method, уже validated at scale.</p>
+<h2>9. Ограничения</h2>
 
-<h3>9.1. Accuracy: item-to-cluster similarity</h3>
-<p>Метрика: cosine similarity между item embedding и assigned cluster embedding, <strong>I2C CosSim</strong>. MERGE получает среднее около <strong>0.9</strong>, VQ - около <strong>0.6</strong>.</p>
-<p>Интерпретация: VQ часто назначает item'ы в плохо подходящие clusters, потому что forced assignment неизбежен. MERGE назначает item к existing cluster только при достаточной confidence.</p>
-<img src="../../assets/merge/Accuracy_VQ_MERGE_revise.png" alt="MERGE vs VQ accuracy: item-to-cluster cosine similarity distributions" width="720">
-
-<h3>9.2. Uniformity: cluster size balance</h3>
-<p>MERGE дает более равномерное распределение cluster sizes. В статье приводится характерное сравнение:</p>
 <ul>
-<li>largest MERGE cluster: около <strong>17,500</strong> items;</li>
-<li>largest VQ cluster: около <strong>40,000</strong> items.</li>
-</ul>
-<p>Дополнительный анализ по VV buckets показывает, что VQ склонен слипать low-VV videos, тогда как MERGE распределяет их равномернее. Это важный production-effect: long-tail candidates получают больше шансов быть retrieved.</p>
-<img src="../../assets/merge/Uniformity_VQ_revise.png" alt="VQ uniformity: cluster sizes and VV bucket distribution" width="720">
-<img src="../../assets/merge/Uniformity_MERGE_revise.png" alt="MERGE uniformity: cluster sizes and VV bucket distribution" width="720">
+<li>Метод зависит от качества collaborative embeddings и tag-based batch formation.</li>
 
-<h3>9.3. Separation: cluster-to-cluster similarity</h3>
-<p>Метрика: pairwise cosine similarity между cluster embeddings, <strong>C2C CosSim</strong>. MERGE дает distribution с mean около нуля. У VQ mean около <strong>0.6</strong>.</p>
-<p>Это значит, что MERGE clusters лучше отделены друг от друга. Для streaming system это снижает assignment instability: если два codewords почти одинаковые, item может легко перескочить между ними при небольшом perturbation embedding'а.</p>
-<img src="../../assets/merge/Separation_VQ_MERGE_revise.png" alt="MERGE vs VQ separation: cluster-to-cluster cosine similarity distributions" width="720">
+<li>Thresholds tau/tau', m, EMA gamma и occupancy bounds требуют настройки под поток.</li>
 
-<h2>10. Online deployment</h2>
-<p>MERGE внедряется в Trinity-style pipeline. Оригинальная Trinity использует VQ для two-level clustering и строит statistical interest histograms пользователя. Авторы заменяют VQ-based indexing на MERGE.</p>
-<p>Serving pipeline:</p>
-<ol>
-<li>извлекается long-term behavior sequence пользователя;</li>
-<li>по item-cluster mapping строится histogram of cluster distributions;</li>
-<li>выбираются top/ranked clusters согласно retrieval strategy;</li>
-<li>по cluster-item mapping достаются candidate videos;</li>
-<li>candidates идут в reranker, pre-ranking, ranking и последующие stages.</li>
-</ol>
-<img src="../../assets/merge/serving.png" alt="MERGE serving pipeline with bidirectional cluster-item mapping" width="720">
+<li>Dynamic codebook усложняет backward compatibility item mappings.</li>
 
-<h2>11. A/B test: core metrics</h2>
-<p>A/B test длился одну неделю. Control group использовала Trinity with VQ, treatment group - Trinity with MERGE. Масштаб - миллионы пользователей. Все core engagement gains статистически значимы на 5% level.</p>
-<table>
-<thead><tr><th>Aspect</th><th>Metric</th><th>Relative change</th></tr></thead>
-<tbody>
-<tr><td>Engagement</td><td>AAD</td><td>+0.0081%</td></tr>
-<tr><td>Engagement</td><td>AAH</td><td>+0.0546%</td></tr>
-<tr><td>Engagement</td><td>WatchTime</td><td>+0.1006%</td></tr>
-<tr><td>VV stratification</td><td>(0, 1k]</td><td>+1.49%</td></tr>
-<tr><td>VV stratification</td><td>(1k, 5k]</td><td>+11.07%</td></tr>
-<tr><td>VV stratification</td><td>(5k, 10k]</td><td>+11.87%</td></tr>
-<tr><td>VV stratification</td><td>(10k, 100k]</td><td>+2.25%</td></tr>
-<tr><td>VV stratification</td><td>(100k, infinity)</td><td>-2.65%</td></tr>
-<tr><td>Freshness</td><td>(0, 2h]</td><td>+0.59%</td></tr>
-<tr><td>Freshness</td><td>(2h, 12h]</td><td>+7.64%</td></tr>
-<tr><td>Freshness</td><td>(12h, 24h]</td><td>-0.29%</td></tr>
-<tr><td>Freshness</td><td>(24h, 72h]</td><td>-1.88%</td></tr>
-<tr><td>Diversity</td><td>TagNum</td><td>+0.22%</td></tr>
-<tr><td>Diversity</td><td>TagGini</td><td>-0.03%</td></tr>
-</tbody>
-</table>
-<p>Engagement gains в процентах выглядят небольшими, но для системы с billions of daily users даже такие сдвиги практически значимы. Более содержательный сигнал - перераспределение exposure: MERGE увеличивает показы low/mid-VV контента и fresh content в bucket 2-12h.</p>
-
-<h2>12. A/B test: single-path metrics</h2>
-<p>Авторы отдельно анализируют один Trinity retrieval path, чтобы понять, как MERGE влияет на candidates, пришедшие именно из этого пути.</p>
-<table>
-<thead><tr><th>Aspect</th><th>Metric</th><th>Relative change</th></tr></thead>
-<tbody>
-<tr><td>Survivability</td><td>Pass-Through Rate</td><td>+45.04%</td></tr>
-<tr><td>Contribution</td><td>Output Ratio</td><td>+85.99%</td></tr>
-<tr><td>Contribution</td><td>Unique Output Ratio</td><td>+26.36%</td></tr>
-<tr><td>Action</td><td>Staytime</td><td>+9.84%</td></tr>
-<tr><td>Action</td><td>Like</td><td>+8.78%</td></tr>
-<tr><td>Action</td><td>Follow</td><td>+17.32%</td></tr>
-<tr><td>Action</td><td>Share</td><td>+7.65%</td></tr>
-<tr><td>Action</td><td>Comment</td><td>+39.43%</td></tr>
-</tbody>
-</table>
-<p>Эта таблица показывает сильный локальный эффект: candidates из MERGE path чаще переживают downstream ranking, сильнее представлены в final output и вызывают больше user actions.</p>
-
-<h2>13. Case study</h2>
-<p>Авторы берут примерно 1000 candidate videos для request, затем hard tag-based search фильтрует их до примерно 100 videos общей темы. После этого сравнивается, в какие clusters попадают videos при MERGE и VQ. Используются темы вроде <em>Traditional Sports</em> и <em>Movies TV Works</em>.</p>
-<p>MERGE группирует semantically coherent videos компактнее: baseball videos попадают к baseball, equestrian к equestrian, sci-fi к sci-fi, shounen к shounen. VQ чаще фрагментирует похожие videos по разным clusters или смешивает разные темы.</p>
-<img src="../../assets/merge/case.png" alt="Case study comparing MERGE and VQ cluster assignments" width="720">
-
-<h2>14. Почему MERGE работает</h2>
-<p>В терминах трех проблем VQ:</p>
-<ul>
-<li><strong>Accuracy.</strong> Threshold-based assignment не допускает слабых item-cluster matches. EMA update держит cluster embedding близко к текущим members.</li>
-<li><strong>Uniformity.</strong> Occupancy monitoring reset'ит underfilled/growing clusters и предотвращает extreme skew.</li>
-<li><strong>Separation.</strong> New clusters создаются из items, которые не matched к старым clusters, поэтому они естественно добавляют новые distinct regions.</li>
-<li><strong>Lower error accumulation.</strong> Fine-to-coarse merging строит hierarchy из уже стабильных fine clusters, а не через residual quantization с накоплением ошибок.</li>
+<li>Работа больше про indexing, чем про end-to-end generative SID training.</li>
 </ul>
 
-<h2>15. Сильные стороны статьи</h2>
+<h2>10. Как реализовать и проверять</h2>
+
 <ul>
-<li><strong>Production-oriented formulation.</strong> Accuracy, uniformity и separation - понятные operational metrics, которые реально можно мониторить.</li>
-<li><strong>Streaming-native design.</strong> EMA, recycling, occupancy monitoring и dynamic cluster creation естественно подходят для non-stationary catalogs.</li>
-<li><strong>Online validation.</strong> Есть A/B test, а не только offline retrieval/reconstruction metrics.</li>
-<li><strong>Хорошая критика VQ.</strong> Статья показывает, что проблема не только в размере codebook'а, а в самой forced-assignment paradigm.</li>
+<li>Внедрять через shadow index: считать I2C, C2C, occupancy и overlap с текущим retrieval без влияния на traffic.</li>
+
+<li>Настроить reset policy аккуратно: слишком агрессивный reset даст churn, слишком мягкий оставит dead clusters.</li>
+
+<li>Сохранять audit trail item -> cluster over time и измерять prefix churn.</li>
+
+<li>Для generative use-case построить mapping fine/coarse clusters -> token sequence и проверить valid generation rate.</li>
 </ul>
 
-<h2>16. Ограничения и вопросы</h2>
+<h2>11. Связь с соседними работами</h2>
+
+<p>MERGE соседствует с Efficient Optimization of Hierarchical Identifiers как indexing-first работа. От DOS/PIT/IntRR ее отличает то, что она начинается с streaming cluster health, а не с recommendation loss. Для semantic ID литературы MERGE важна как напоминание: codebook utilization и cluster separation - production constraints, а не только красивые визуализации.</p>
+
+<h2>12. Итог</h2>
+
+<p>MERGE показывает, что в больших streaming recommender'ах fixed VQ paradigm может быть неверной инженерной абстракцией. Лучше иметь индекс, который умеет отказать плохому assignment, создать новый cluster и переработать occupancy, чем насильно втиснуть поток items в заранее заданный codebook.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Dynamic cluster construction</h3>
+
+<p>MERGE заменяет forced assignment явной проверкой качества match. Это маленькое алгоритмическое изменение сильно меняет поведение индекса: item может не попасть никуда, если ближайший cluster плохой. Такие unmatched items становятся сырьем для новых clusters, а не шумом внутри старых clusters.</p>
+
 <ul>
-<li><strong>Нет публичного dataset.</strong> Industrial focus понятен, но независимая воспроизводимость ограничена.</li>
-<li><strong>Метод сложнее VQ.</strong> Нужно поддерживать thresholds, reset states, recycling queue, Union-Find clustering, merge/prune/reconnect.</li>
-<li><strong>Много domain-specific эвристик.</strong> Tag-based batching, thresholds и occupancy windows могут требовать серьезной настройки в другом домене.</li>
-<li><strong>Пока не generative retrieval.</strong> Авторы прямо пишут, что текущее применение ограничено traditional retrieval, а использование MERGE для generative retrieval - future work.</li>
+
+<li>Для каждого item считается nearest cluster и cosine similarity.</li>
+
+<li>Matched set обновляет existing clusters через EMA.</li>
+
+<li>Unmatched set обрабатывается через pairwise similarities и union-find.</li>
+
+<li>Connected component становится cluster только если size не меньше m.</li>
+
+<li>Неиспользованные unmatched items recycle'ятся в будущие batches.</li>
+
 </ul>
 
-<h2>17. Связь с semantic IDs и generative recommendation</h2>
-<p>Хотя MERGE тестируется в traditional retrieval, его идеи напрямую релевантны semantic IDs:</p>
+<h3>13.2. Occupancy monitoring</h3>
+
 <ul>
-<li>fine clusters можно использовать как semantic tokens;</li>
-<li>coarse-to-fine structure можно превратить в hierarchical item ID;</li>
-<li>occupancy и separation metrics можно использовать как diagnostics для tokenizer quality;</li>
-<li>dynamic cluster creation особенно важен для fresh/cold items в streaming catalogs.</li>
+
+<li>Каждый cluster хранит EMA-count N_k.</li>
+
+<li>Underfilled clusters reset'ятся, освобождая capacity.</li>
+
+<li>Growing clusters получают monitoring window M.</li>
+
+<li>Stable clusters сохраняются и участвуют в fine-to-coarse merging.</li>
+
+<li>Fill-Then-Append сначала использует reset slots, а уже потом расширяет codebook.</li>
+
 </ul>
-<p>Потенциальный hybrid:</p>
-<pre><code>coarse MERGE cluster token
-  + fine MERGE cluster token
-  + residual semantic tokens
-  + optional unique disambiguation token</code></pre>
-<p>Такой подход мог бы соединить production stability MERGE с generative retrieval tokenization.</p>
 
-<h2>18. Практические выводы</h2>
-<ol>
-<li><strong>Forced assignment - слабое место VQ.</strong> В streaming recommendation важно иметь право не назначать item в плохой cluster.</li>
-<li><strong>Cluster quality нужно мерить отдельно.</strong> I2C similarity, occupancy distribution и C2C similarity дают раннюю диагностику проблем, которые downstream metrics покажут позднее.</li>
-<li><strong>Long-tail exposure начинается на уровне индекса.</strong> Если indexing слипает low-VV items, ranking stage может не получить нормальных candidates.</li>
-<li><strong>Freshness требует dynamic codebook.</strong> Статичный или медленно адаптирующийся VQ плохо подходит для быстро меняющегося item stream.</li>
-<li><strong>Production item tokenization - это lifecycle problem.</strong> Нужно не только выучить codebook, но и поддерживать его в живом состоянии.</li>
-</ol>
+<h3>13.3. Offline, online и serving</h3>
 
-<h2>19. Итог</h2>
-<p>MERGE - сильная industrial paper про то, что item indexing для large-scale streaming recommendation должен быть динамическим, occupancy-aware и separation-aware. Ее главный вклад - не новая loss function для semantic tokenizer, а новая инженерная и алгоритмическая парадигма: clusters нужно не просто оптимизировать как fixed codebook, а создавать, мониторить, удалять, переиспользовать и объединять по мере жизни каталога.</p>
-<p>Статья особенно полезна тем, кто строит retrieval/tokenization для production recommender'ов: она дает понятный набор проблем VQ, конкретный streaming design и online evidence, что улучшение качества индекса действительно проходит через весь recommendation stack до user metrics.</p>
+<p>MERGE оценивается не только через recommendation metrics, но и через health properties самого индекса. Это важно для production: плохой индекс может иногда давать приемлемый offline Recall, но быть нестабильным, несбалансированным и плохо обновляемым.</p>
+
+<ul>
+
+<li>I2C CosSim измеряет accuracy item-to-cluster assignments.</li>
+
+<li>Cluster size distribution и VV bucket CDF измеряют uniformity.</li>
+
+<li>C2C CosSim измеряет separation между clusters.</li>
+
+<li>Online A/B в Trinity-style pipeline показывает gains по AAD и AAH.</li>
+
+<li>Single-path metrics показывают, что улучшение связано именно с MERGE retrieval path.</li>
+
+</ul>
+
+<h3>13.4. Failure modes и tuning</h3>
+
+<ul>
+
+<li>Threshold tau слишком высокий: слишком много unmatched items, index expansion и delayed coverage.</li>
+
+<li>Threshold tau слишком низкий: MERGE деградирует к forced VQ assignment.</li>
+
+<li>EMA gamma слишком большой: clusters медленно адаптируются к stream drift.</li>
+
+<li>EMA gamma слишком малый: centers становятся noisy и mappings дергаются.</li>
+
+<li>Tag-based batching может закрепить prior taxonomy bias, если tags плохо отражают actual viewing behavior.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2601.20199">2601.20199</a>.</li>
+</ul>
+
 </main>
+
 </body>
+
 </html>

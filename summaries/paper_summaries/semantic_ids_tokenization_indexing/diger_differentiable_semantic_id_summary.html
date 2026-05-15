@@ -1,14 +1,25 @@
 <!doctype html>
+
 <html lang="ru">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DIGER: Differentiable Semantic ID for Generative Recommendation</title>
-  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+  <title>Differentiable Semantic ID for Generative Recommendation</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
 main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
 h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
 h2 { font-size: 1.45rem; }
 h3 { font-size: 1.15rem; }
@@ -17,75 +28,201 @@ a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset:
 ul, ol { padding-left: 1.55rem; }
 li { margin: .3rem 0; }
 blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
 p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
 img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
 th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
 th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
 </head>
+
 <body>
+
 <main>
-<h1>DIGER: Differentiable Semantic ID for Generative Recommendation</h1>
+
+<h1><a href="https://arxiv.org/abs/2601.19711">Differentiable Semantic ID for Generative Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
 <p>Подробное саммари статьи:</p>
+
 <blockquote>
+
 <p><strong>Авторы:</strong> Junchen Fu, Xuri Ge, Alexandros Karatzoglou, Ioannis Arapakis, Suzan Verberne, Joemon M. Jose, Zhaochun Ren.</p>
+
 <p><strong>Аффилиации:</strong> University of Glasgow; Shandong University; <span class="industry">Amazon</span>; <span class="industry">Telefonica Scientific Research</span>; Leiden University.</p>
+
 </blockquote>
 
-<h2>1. Коротко: о чем статья</h2>
-<p>DIGER решает важную проблему generative recommendation: semantic ID обычно строится отдельным tokenizer'ом, а затем замораживается для downstream recommender. В результате tokenizer оптимизирует reconstruction/content loss, а recommender оптимизирует next-item prediction, но recommendation loss не может исправить сами коды.</p>
-<p>Авторы предлагают сделать semantic indexing дифференцируемым и обучать semantic IDs вместе с генеративным рекомендателем. Простая версия через straight-through estimator быстро ломается: модель рано выбирает несколько кодов, codebook перестает использоваться равномерно, и качество падает. DIGER добавляет управляемую стохастичность через Gumbel noise и постепенно снижает неопределенность, чтобы совместить раннее exploration и позднее convergence.</p>
+<h2>1. Коротко</h2>
 
-<h2>2. Почему это важно</h2>
-<p>Двухстадийный pipeline удобен инженерно, но создает objective mismatch:</p>
+<p>DIGER делает semantic ID не замороженным артефактом предварительного tokenizer'а, а обучаемой частью генеративного рекомендателя. Авторы показывают, что простая дифференцируемость через straight-through estimator быстро приводит к codebook collapse: ранние hard-assignment решения захватывают несколько кодов, остальные почти не используются, и downstream recommendation loss уже не может восстановить баланс. Решение DIGER - Differentiable Semantic ID with Exploratory Learning: в assignment logits добавляется Gumbel noise, а затем шум постепенно убывает через uncertainty decay.</p>
+
+<h2>2. Контекст</h2>
+
+<p>В TIGER-подобных системах item сначала кодируется RQ-VAE или похожим quantizer'ом в последовательность токенов, после чего Transformer учится генерировать эти токены по истории пользователя. Такая схема практична, но tokenizer оптимизируется по reconstruction/content objective, а recommender - по next-item objective. DIGER рассматривает этот разрыв как центральную причину потери качества: semantic IDs могут быть хорошими с точки зрения восстановления embedding'а, но неудобными для генерации и ранжирования.</p>
+
+<h2>3. Проблема</h2>
+
 <ul>
-<li>tokenizer учится кодировать content embedding, а не оптимизировать recommendation quality;</li>
-<li>ошибки tokenization наследуются генеративной моделью;</li>
-<li>semantic ID остается статическим даже если downstream loss показывает, что коды неудобны для ранжирования;</li>
-<li>наивная дифференцируемость приводит к collapse, поэтому сам факт joint training не гарантирует выигрыш.</li>
+<li>Objective mismatch: recommendation loss не влияет на item-to-code mapping, если SID заранее построены и заморожены.</li>
+
+<li>Наивный STE делает forward дискретным и backward дифференцируемым, но early deterministic assignment снижает entropy распределения кодов.</li>
+
+<li>Codebook collapse особенно опасен в многоуровневом SID: если верхние уровни плохо используют capacity, дальнейшая генерация получает бедный префиксный space.</li>
+
+<li>Production-риск состоит не только в offline accuracy, но и в нестабильном SID drift при переобучении.</li>
 </ul>
 
-<h2>3. Метод</h2>
-<p>DIGER сохраняет дискретную природу semantic ID в forward pass, но меняет обучение assignment'ов. Вместо детерминированного выбора ближайшего codeword в начале обучения в logits добавляется Gumbel noise. Это заставляет tokenizer исследовать разные коды и снижает риск, что несколько ранних assignment'ов захватят весь codebook.</p>
-<p>Важная деталь - uncertainty decay. Авторы рассматривают стратегии, которые постепенно уменьшают шум и переводят обучение из exploration в exploitation. Так модель сначала распределяет items по codebook более разнообразно, а затем стабилизирует semantic IDs.</p>
+<h2>4. Метод и архитектура</h2>
 
-<h2>4. Схема</h2>
-<img src="../../assets/diger/framework.png" alt="DIGER framework with differentiable semantic ID learning and uncertainty decay" width="760">
-<p>На схеме видно различие между STE и DIGER: STE фактически проводит gradient через один жестко выбранный путь, а DIGER поддерживает soft update и exploration. Это важно именно на ранних эпохах, когда codebook еще не сформировал устойчивую структуру.</p>
+<p>DIGER сохраняет hard semantic IDs для forward/inference, но меняет обучение assignment'ов. Для item representation считаются similarity logits к codebook entries; перед выбором кода добавляется Gumbel noise. В backward используется soft probability distribution, поэтому несколько кодов получают градиентный сигнал, а не только победивший codeword. Поверх этого вводятся две стратегии decay: SDUD ориентируется на уровень неопределенности/разброса, FrqUD учитывает частотность использования кодов и ослабляет exploration по мере стабилизации.</p>
 
-<h2>5. Что показывают эксперименты</h2>
-<p>Авторы сравнивают DIGER с двухстадийным generative recommendation pipeline, наивным STE и сильными baseline'ами вроде TIGER, LETTER и ETEGRec. На B-Shop, I-Shop и Yelp DIGER стабильно улучшает двухстадийный вариант. Например, на B-Shop Recall@10 растет с 0.0610 до 0.0657-0.0696, а NDCG@10 - с 0.0331 до 0.0361-0.0376. Наивный STE, наоборот, резко проседает, что подтверждает проблему collapse.</p>
-<img src="../../assets/diger/diger_vs_ste.png" alt="DIGER versus STE validation NDCG and code balance" width="720">
-<p>В сравнении с SOTA DIGER дает лучшие или близкие к лучшим результаты: на B-Shop и I-Shop он выходит на top performance, на Yelp имеет лучший Recall@10 и сопоставимый NDCG@10 с LETTER.</p>
+<h2>5. Objective и алгоритм</h2>
 
-<h2>6. Абляции</h2>
-<p>Самая показательная абляция - удаление Gumbel noise. На B-Shop Recall@10 падает с 0.0683 до 0.0283, то есть основная польза метода действительно в exploration, а не только в новом loss. Удаление uncertainty decay тоже ухудшает качество: без decay модель исследует коды, но хуже стабилизируется.</p>
-<p>Замена Gumbel noise на Gaussian noise работает хуже. Это логично: Gumbel ближе к categorical sampling и лучше соответствует дискретному выбору codeword.</p>
+<p>Алгоритмически DIGER можно читать как exploration-exploitation schedule для дискретного indexing. Ранняя фаза максимизирует разнообразие кодов и предотвращает premature commitment; поздняя фаза приближает training к inference, где SID должны быть детерминированными. Loss объединяет recommendation objective авторегрессионной модели, quantization/indexing terms и механизм управляемого шума. Важная инженерная деталь: hard path сохраняет lookup-совместимость с обычным beam search и prefix tree.</p>
 
-<h2>7. Сильные стороны</h2>
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Эксперименты проведены на B-Shop, I-Shop и Yelp. Сравниваются двухстадийный pipeline, STE-вариант и DIGER, а также сильные baselines вроде TIGER, LETTER и ETEGRec. На B-Shop двухстадийная схема дает Recall@10 около 0.0610 и NDCG@10 около 0.0331, тогда как DIGER-варианты поднимают их примерно до 0.0657-0.0696 и 0.0361-0.0376. Абляция без Gumbel noise резко проседает, что подтверждает: выигрыш не просто от joint training, а от контролируемого exploration.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<img src="../../assets/diger/framework.png" alt="DIGER framework" width="760">
+<p>Главный рисунок полезен тем, что разделяет tokenizer и recommender как кирпичника и строителя: рекомендационный loss должен влиять на производство кирпичей, а не только на способ их укладки. Рисунок STE vs DIGER показывает одновременно validation NDCG и code balance; именно баланс codebook'а является ранним diagnostic signal, а не второстепенной статистикой.</p>
+<img src="../../assets/diger/diger_vs_ste.png" alt="DIGER versus STE" width="720">
+
+<h2>8. Сильные стороны</h2>
+
 <ul>
-<li>Статья явно формулирует objective mismatch между tokenizer и recommender.</li>
-<li>DIGER показывает, что differentiable semantic IDs возможны, но требуют аккуратного exploration.</li>
-<li>Анализ code usage и SID drift полезен для диагностики production-tokenizer'ов.</li>
-<li>Метод хорошо ложится на текущую ветку RQ-VAE/TIGER-like архитектур.</li>
+<li>Четко формулирует objective mismatch между tokenizer и recommender.</li>
+
+<li>Показывает, почему наивная дифференцируемость может быть хуже замороженного tokenizer'а.</li>
+
+<li>Дает практически полезные diagnostics: code usage, SID drift, capacity sensitivity, early-stop behavior.</li>
+
+<li>Метод можно встроить в существующий RQ-VAE/TIGER-like pipeline без изменения inference API.</li>
 </ul>
 
-<h2>8. Ограничения</h2>
+<h2>9. Ограничения</h2>
+
 <ul>
-<li>Метод добавляет сложность training loop: нужно контролировать noise, decay, codebook capacity и SID length.</li>
-<li>Совместное обучение может осложнить lifecycle tokenizer'а в production, где коды часто версионируются отдельно.</li>
-<li>Эксперименты в основном offline; остается вопрос, как часто можно переобучать differentiable SID на живом каталоге.</li>
-<li>Коллизии и стабильность item-to-code mapping при частом обновлении каталога требуют отдельной проверки.</li>
+<li>Joint training усложняет версионирование SID и rollout в production.</li>
+
+<li>Нужно подбирать schedule шума, codebook size и длину SID; плохая настройка снова ведет к collapse или drift.</li>
+
+<li>Работа в основном offline; онлайн-стоимость frequent SID updates остается открытым вопросом.</li>
+
+<li>Не решена полностью проблема cold-start item'ов, для которых recommendation gradient еще слабый.</li>
 </ul>
 
-<h2>9. Связь с другими работами</h2>
-<p>DIGER естественно читать после TIGER, CoST, LETTER и ETEGRec. CoST и LETTER улучшают tokenizer objective, ETEGRec связывает tokenizer и recommender alignment losses, а DIGER делает следующий шаг: пытается пропустить recommendation gradients непосредственно в learning semantic IDs.</p>
+<h2>10. Как реализовать и проверять</h2>
 
-<h2>10. Вывод</h2>
-<p>DIGER - важная статья про переход от static semantic IDs к jointly optimized semantic IDs. Главная мысль: differentiability сама по себе не решает задачу, потому что дискретный codebook легко схлопывается. Нужна управляемая стохастичность, которая сначала расширяет exploration, а затем дает stable exploitation. Для практики это хороший набор диагностик: code usage, assignment drift, sensitivity to codebook size и сравнение с двухстадийным pipeline.</p>
+<ul>
+<li>Логировать usage entropy по каждому уровню codebook и fraction dead codes на каждой эпохе.</li>
+
+<li>Сравнивать three-way setup: frozen SID, STE, DIGER; без STE baseline нельзя доказать пользу exploration.</li>
+
+<li>Проверять SID drift: какая доля items меняет код между checkpoints и меняются ли верхние уровни.</li>
+
+<li>В inference использовать тот же hard mapping, что и в production, а soft path оставлять только для обучения.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>DIGER близок к UniGRec и PIT как работа про end-to-end/joint optimization, но делает акцент на stochastic exploration. CoST и ReSID меняют tokenizer objective, MERGE меняет production indexing paradigm, а DIGER отвечает на вопрос: как пустить downstream gradients в SID и не схлопнуть codebook.</p>
+
+<h2>12. Итог</h2>
+
+<p>DIGER важен как предупреждение: differentiable semantic IDs не являются бесплатным улучшением. Чтобы recommendation loss действительно помог tokenizer'у, нужно сохранить дискретность inference, но на раннем обучении дать codebook'у исследовать пространство. Для практики статья задает хороший minimum viable checklist для joint SID learning.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. DRIL как центральный компонент</h3>
+
+<p>DRIL, Differentiable Semantic ID with Exploratory Learning, является не косметическим добавлением к RQ-style tokenizer, а основной причиной устойчивости DIGER. Авторы показывают, что hard assignment в начале обучения слишком рано делает модель уверенной в нескольких codewords. После этого gradients идут через ограниченное подмножество кодов, и даже если recommendation loss дальше улучшается, codebook уже плохо исследован.</p>
+
+<ul>
+
+<li>Forward pass остается дискретным: item получает конкретный code index на каждом quantization level.</li>
+
+<li>Backward pass использует softened probabilities, поэтому соседние candidate codes также получают learning signal.</li>
+
+<li>Gumbel noise добавляется именно к assignment logits, а не к item embedding; это делает stochasticity categorical-aware.</li>
+
+<li>Exploration важнее всего на ранних эпохах, когда codebook entries еще не имеют устойчивой специализации.</li>
+
+<li>Позднее noise должен снижаться, иначе inference-time hard IDs будут расходиться с train-time behavior.</li>
+
+</ul>
+
+<h3>13.2. Uncertainty decay strategies</h3>
+
+<p>В paper рассматриваются две стратегии decay. SDUD управляет неопределенностью через статистику распределения assignment, а FrqUD использует частотную информацию по использованию кодов. Обе стратегии решают одну задачу: не дать exploration остаться вечным шумом и не дать exploitation начаться слишком рано.</p>
+
+<ul>
+
+<li>Если decay слишком быстрый, DIGER вырождается в STE-like режим и получает collapse risk.</li>
+
+<li>Если decay слишком медленный, модель видит много train-time вариантов SID, но inference получает один hard path.</li>
+
+<li>Frequency-aware вариант особенно полезен для codewords, которые долго остаются недоиспользованными.</li>
+
+<li>Авторы анализируют SID drift: насколько меняется assignment item'ов между эпохами.</li>
+
+<li>Code usage visualizations по слоям показывают, что равномерность нужно смотреть отдельно для каждого quantization level.</li>
+
+</ul>
+
+<h3>13.3. Экспериментальные выводы</h3>
+
+<ul>
+
+<li>Сравнение с frozen two-stage pipeline отвечает на вопрос, полезно ли вообще пускать recommendation gradients в tokenizer.</li>
+
+<li>Сравнение со STE отвечает на более тонкий вопрос: достаточно ли одной дифференцируемости без exploration.</li>
+
+<li>На B-Shop ablation без Gumbel noise падает до уровня, который практически подтверждает collapse hypothesis.</li>
+
+<li>На Yelp DIGER сохраняет конкурентность с LETTER, что важно, потому что Yelp имеет другую природу item semantics, чем e-commerce.</li>
+
+<li>Capacity analysis по K и m показывает, что больший codebook не лечит плохую exploration автоматически.</li>
+
+</ul>
+
+<h3>13.4. Практические failure modes</h3>
+
+<ul>
+
+<li>Dead codewords: часть codebook never selected, особенно на верхних уровнях SID.</li>
+
+<li>Prefix monopoly: несколько верхних codes захватывают большинство popular items, а нижние levels вынуждены различать слишком много объектов.</li>
+
+<li>SID churn: при joint training item mappings продолжают меняться после того, как recommender уже начал под них адаптироваться.</li>
+
+<li>Train-serving mismatch: stochastic training path улучшает loss, но hard inference path хуже, если decay не доведен до deterministic regime.</li>
+
+<li>Versioning conflict: production системе сложно обновлять item-to-SID mapping чаще, чем recommender deployment cycle.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2601.19711">2601.19711</a>.</li>
+</ul>
+
 </main>
+
 </body>
+
 </html>

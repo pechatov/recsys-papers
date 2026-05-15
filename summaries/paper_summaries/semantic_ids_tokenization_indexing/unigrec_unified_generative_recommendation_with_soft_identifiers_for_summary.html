@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UniGRec: Unified Generative Recommendation with Soft Identifiers for End-to-End Optimization</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2601.17438">UniGRec: Unified Generative Recommendation with Soft Identifiers for End-to-End Optimization</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Jialei Li, Yang Zhang, Yimeng Bai, Shuai Zhu, Ziqi Xue, Xiaoyan Zhao, Dingxian Wang, Frank Yang, Andrew Rabinovich, Xiangnan He.</p>
+
+<p><strong>Аффилиации:</strong> University of Science and Technology of China; National University of Singapore; The Chinese University of Hong Kong; <span class="industry">Upwork</span>.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>UniGRec объединяет tokenizer и recommender через soft identifiers, чтобы вся система обучалась end-to-end под recommendation objective. Авторы выделяют три проблемы такого подхода: soft-to-hard mismatch между training и inference, identifier collapse из-за неравномерного code usage и недостаток collaborative signal, если учить только fine-grained token semantics. Решения: Annealed Inference Alignment, Codeword Uniformity Regularization и Dual Collaborative Distillation.</p>
+
+<h2>2. Контекст</h2>
+
+<p>Двухстадийные generative recommenders замораживают tokenizer; alternating methods обновляют tokenizer и recommender асинхронно. UniGRec предлагает более прямой путь: во время обучения item identifier представлен soft distribution по codewords, через который проходят градиенты recommendation loss. На inference soft identifiers должны стать hard code sequence, поэтому нужен annealing.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Training-inference discrepancy: soft mixture полезна для backprop, но serving требует дискретный SID.</li>
+
+<li>Codeword collapse: end-to-end optimization может выбрать малое число удобных кодов.</li>
+
+<li>Collaborative signal deficiency: token-level semantics не всегда отражают user-item interaction structure.</li>
+
+<li>Production-friendly mapping требует collision control и стабильного hard identifier в конце обучения.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Annealed Inference Alignment постепенно снижает temperature/softness, чтобы training trajectory приближалась к hard inference. Codeword Uniformity Regularization штрафует дисбаланс использования codewords и поддерживает diversity. Dual Collaborative Distillation использует lightweight teacher model, который передает collaborative priors и tokenizer'у, и recommender'у: один distillation path помогает identifier learning, другой - sequence prediction.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Общий loss включает recommendation cross-entropy/autoregressive objective, AIA alignment terms, uniformity regularization и distillation losses. Soft identifier на каждом уровне является differentiable mixture of codeword embeddings. По мере annealing distribution становится sharp; к концу можно взять argmax-коды для обычного decoding. Uniformity loss работает как anti-collapse constraint, а teacher distillation добавляет signal на item/user level, которого нет в чистом token prediction.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Эксперименты на Upwork, Amazon Beauty и Amazon Pet. Метрики: Recall@5/10, NDCG@5/10. UniGRec превосходит Caser, GRU4Rec, SASRec, BERT4Rec, HGN, TIGER, LETTER, EAGER, OneRec, ETEG-Rec, DiscRec-T. Например на Upwork UniGRec достигает Recall@10 0.0967 и NDCG@10 0.0499; на Beauty Recall@10 0.0825 и NDCG@10 0.0457; на Pet Recall@10 0.0701 и NDCG@10 0.0389. Ablation на Beauty подтверждает вклад AIA, CUR и DCD.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Figure с comparison training paradigms полезен как карта: staged, alternating и true end-to-end joint training. Framework figure показывает soft identifiers как мост tokenizer-recommender. Collision rate curves при разных temperature schedules важны для выбора annealing: слишком быстрый hardening может схлопнуть коды, слишком медленный оставит mismatch. Codeword usage visualization показывает, работает ли uniformity regularization.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Цельная end-to-end формулировка с явными механизмами против трех главных failure modes.</li>
+
+<li>Сильная таблица baseline comparisons на публичных и production-like данных Upwork.</li>
+
+<li>Soft identifiers позволяют recommendation loss влиять на tokenizer без STE-only нестабильности.</li>
+
+<li>Teacher distillation добавляет collaborative signal, не требуя тяжелого LLM.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Soft identifier training дороже и сложнее staged tokenizer.</li>
+
+<li>Нужно тщательно подбирать annealing schedule и uniformity weight.</li>
+
+<li>Teacher model становится дополнительной зависимостью; плохой teacher ограничит ceiling.</li>
+
+<li>Production rollout требует freezing hard identifiers и контроля drift после joint training.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Перед training выбрать target hard SID format и проверить, что soft-to-hard conversion дает valid unique mappings.</li>
+
+<li>Логировать collision rate, code entropy и recommendation metrics вместе, а не по отдельности.</li>
+
+<li>Запустить ablation AIA/CUR/DCD на одном dataset перед масштабированием.</li>
+
+<li>После annealing провести final hard-ID fine-tuning/evaluation без soft path, чтобы оценить реальный inference mode.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>UniGRec очень близок к DIGER: обе работы делают tokenizer differentiable, но DIGER фокусируется на Gumbel exploration против collapse, а UniGRec - на soft identifiers, annealing и distillation. С PIT его роднит co-optimization, но PIT добавляет dynamic beam index для evolving mappings. С ReSID связь в том, что обе критикуют decoupled tokenizer, но ReSID не делает LLM/end-to-end soft identifiers обязательными.</p>
+
+<h2>12. Итог</h2>
+
+<p>UniGRec - одна из наиболее прямых попыток сделать semantic ID частью единой recommendation objective. Практический вывод: soft identifiers дают градиентный мост, но без annealing, uniformity и collaborative distillation мост быстро превращается в mismatch или collapse.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Soft identifiers</h3>
+
+<p>Soft identifier в UniGRec - это differentiable distribution over codewords. Он позволяет recommendation loss проходить в tokenizer, но создает soft-to-hard gap. Поэтому paper не ограничивается soft assignments, а вводит annealing и регуляризацию, чтобы к концу обучения получить пригодные hard identifiers.</p>
+
+<ul>
+
+<li>Soft path используется для gradient flow.</li>
+
+<li>Hard path нужен для actual inference и item lookup.</li>
+
+<li>Temperature schedule управляет sharpness distribution.</li>
+
+<li>Collision rate отслеживается во время training.</li>
+
+<li>Identifier evolution analysis показывает, какие layers меняются сильнее.</li>
+
+</ul>
+
+<h3>13.2. Три защитных механизма</h3>
+
+<ul>
+
+<li>Annealed Inference Alignment уменьшает discrepancy между soft training и hard inference.</li>
+
+<li>Codeword Uniformity Regularization предотвращает collapse и повышает entropy code usage.</li>
+
+<li>Dual Collaborative Distillation переносит collaborative priors от lightweight teacher.</li>
+
+<li>Один distillation signal помогает tokenizer, другой помогает recommender.</li>
+
+<li>Без этих механизмов end-to-end training легко становится нестабильным.</li>
+
+</ul>
+
+<h3>13.3. Экспериментальные детали</h3>
+
+<p>UniGRec оценивается на Upwork, Beauty и Pet. Upwork является production-like freelancing dataset: users - employers, items - freelancers, interactions - hiring events. Это расширяет проверку за пределы Amazon product recommendation.</p>
+
+<ul>
+
+<li>На Upwork UniGRec достигает Recall@10 0.0967 и NDCG@10 0.0499.</li>
+
+<li>На Beauty достигает Recall@10 0.0825 и NDCG@10 0.0457.</li>
+
+<li>На Pet достигает Recall@10 0.0701 и NDCG@10 0.0389.</li>
+
+<li>Baselines включают TIGER, LETTER, EAGER, OneRec, ETEG-Rec и DiscRec-T.</li>
+
+<li>Visualization codebook embeddings/codeword usage показывает, что CUR действительно повышает равномерность.</li>
+
+</ul>
+
+<h3>13.4. Failure modes</h3>
+
+<ul>
+
+<li>Annealing too fast: преждевременный hard assignment и collapse.</li>
+
+<li>Annealing too slow: хорошая train loss, но плохой hard inference.</li>
+
+<li>Uniformity over-regularization: code usage ровный, но semantic grouping ухудшается.</li>
+
+<li>Teacher limitation: DCD не может передать collaborative signal лучше teacher model.</li>
+
+<li>Identifier churn: end-to-end updates меняют item codes и требуют versioning.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2601.17438">2601.17438</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

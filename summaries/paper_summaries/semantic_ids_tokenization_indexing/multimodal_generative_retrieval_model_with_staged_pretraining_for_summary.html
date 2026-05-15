@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multimodal Generative Retrieval Model with Staged Pretraining for Food Delivery on
+Meituan</title>
+<style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px
+24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px
+solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2602.06654">Multimodal Generative Retrieval Model with Staged Pretraining for Food Delivery on Meituan</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Boyu Chen, Tai Guo, Weiyu Cui, Yuqing Li, Xingxing Wang,
+Chuan Shi, Cheng Yang.</p>
+<p>
+<strong>Аффилиации:</strong> <span class="industry">Meituan</span>; BUPT.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>SMGR - multimodal generative retrieval для food delivery search/recommendation.
+Статья утверждает, что
+совместное обучение всех модальностей
+нестабильно, поэтому предлагает staged
+pretraining: сначала получить качественные multimodal
+embeddings, затем превратить их в
+semantic IDs и дообучить модель под downstream retrieval.</p>
+<h2>Контекст</h2>
+<p>В food delivery item содержит название блюда/ресторана,
+изображение, категорию,
+локальный geo context и query-click logs. Для online serving большие
+dense embeddings дороги, а semantic IDs
+позволяют сжать multimodal информацию в дискретные
+коды, пригодные для generative
+retrieval.</p>
+<h2>Проблема</h2>
+<p>Наивная joint optimization разных objectives может
+конфликтовать: image/text/query losses тянут
+representation в разные стороны. Авторы показывают loss
+trends и сравнение с random image
+embeddings, чтобы обосновать staged training: порядок
+обучения модальностей важен.</p>
+<h2>Метод / архитектура</h2>
+<p>Pipeline состоит из трех компонентов. Staged Pretraining
+строит multimodal item embeddings в
+заданном порядке objectives. Semantic IDs Generation применяет
+RQ-VAE к high-dimensional embeddings, получая
+дискретные SIDs. Semantic IDs Utilization fine-tune'ит модель на
+downstream tasks, используя modality-specific
+или fused SIDs.</p>
+<h2>Objective / алгоритм</h2>
+<p>Pretraining оптимизирует несколько задач для
+item/query/image/text alignment. RQ-VAE переводит
+continuous embedding в codebook indices. Downstream adaptation использует
+prompt/task templates: модель учится
+генерировать/использовать SIDs для query-to-item retrieval в
+локальном geo space. Важно, что
+SIDs не просто compress, а становятся интерфейсом между
+multimodal representation и retrieval.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Оценка строится на click logs food delivery. FAISS используется
+для ускорения recall computation,
+а matching ограничивается тем же <code>geo_hash</code>, что
+отражает реальное поведение
+пользователей. Метрики: Recall@5/10/20 и NDCG@5/10/20, 10
+повторов, paired t-test. Main results
+сравнивают query types/datasets; отдельные RQ проверяют
+training order, modality utilization, downstream task
+adaptation и week-long online A/B.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Figure с loss trends показывает конфликт joint objectives.
+Главная схема фиксирует три
+этапа SMGR. Таблица main results дает retrieval performance по query
+types. Ablation tables сравнивают Joint,
+Random и разные Order variants; отдельные таблицы
+проверяют item-only, image-text, item-image, item-text
+SIDs и fine-tuning tasks. Case study с query "Peking Duck" показывает
+качественную разницу top-2
+выдачи.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Промышленный сценарий с geo constraints и online A/B.</li>
+<li>Сильный акцент на training order, а не только на
+архитектуру.</li>
+<li>Мультимодальность проверяется через ablations, а
+не заявляется
+декларативно.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Данные и часть production details внутренние. Staged pretraining
+усложняет pipeline и требует
+регулярной переоценки при смене домена.
+Результаты могут зависеть от
+локальной структуры food delivery: geo_hash constraints и query mix
+не универсальны.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Практический план: зафиксировать query/item logs,
+обучить unimodal baselines, затем staged
+multimodal encoder, затем RQ-VAE tokenizer. Проверять нужно Recall/NDCG
+по query type и geo buckets, SID
+collision/uniqueness, влияние каждой модальности, latency
+ANN/retrieval и online order/GMV metrics. Для
+контроля обязательно сравнить с random image embedding и
+joint training.</p>
+<h2>Связь с соседними работами</h2>
+<p>SMGR близок к OCR-text paper по вопросу "какую
+модальность квантизовать", но вместо
+text-as-vision изучает staged multimodal pretraining. С AdaSID и Snapchat его
+связывает industrial SID deployment, а
+с GLASS - использование semantic search/serving constraints.</p>
+<h2>Pretraining objectives и конфликт joint optimization</h2>
+<p>Авторы показывают, что разные objectives в multimodal
+retrieval не всегда совместимы.</p>
+<p>Image-text alignment, query-item matching и downstream retrieval могут
+давать разные gradients.</p>
+<p>При joint training один objective может улучшаться за счет
+другого.</p>
+<p>Figure с loss trends показывает такую нестабильность.</p>
+<p>Staged pretraining задает порядок, в котором representation
+сначала получает базовую
+multimodal структуру, а затем адаптируется к retrieval.</p>
+<p>В таблицах Order variants показывают, что порядок
+стадий влияет на Recall/NDCG.</p>
+<h2>RQ-VAE details</h2>
+<p>High-dimensional multimodal embeddings переводятся в SIDs через
+RQ-VAE.</p>
+<p>Residual quantization последовательно квантует остаток
+после предыдущего codebook.</p>
+<p>Так item получает compositional code, который компактнее
+dense vector.</p>
+<p>Appendix содержит детали RQ-VAE и hyperparameters.</p>
+<p>Главный production мотив: дискретные SIDs легче
+хранить, передавать и
+использовать в generative retrieval, чем большие embeddings.</p>
+<h2>Semantic IDs utilization</h2>
+<p>После tokenization модель fine-tune'ится под downstream task.</p>
+<p>Авторы сравнивают item-only, image-text, item-image и item-text
+variants.</p>
+<p>Это отвечает на вопрос, какие modality-specific SIDs
+реально нужны.</p>
+<p>Если image modality дает gain только после staged pretraining,
+значит простой image feature не
+является гарантией улучшения.</p>
+<p>Fine-tuning task variants показывают, что downstream adaptation не
+менее важна, чем pretraining.</p>
+<h2>Evaluation protocol details</h2>
+<p>Кандидаты и queries embed'ятся отдельно.</p>
+<p>FAISS используется для ускорения recall computation.</p>
+<p>Для данного <code>geo_hash</code> query matching ограничивается
+candidates из того же
+<code>geo_hash</code>.</p>
+<p>Это принципиально для food delivery: пользователь
+физически не может заказать
+любой item из глобального каталога.</p>
+<p>Каждый эксперимент повторяется 10 раз.</p>
+<p>Significance проверяется paired t-test с <code>p &lt; 0.05</code>.</p>
+<h2>Online A/B и case study</h2>
+<p>Week-long online A/B проверяет, переходит ли offline retrieval gain
+в product metrics.</p>
+<p>Case study с query "Peking Duck" иллюстрирует semantic retrieval: baseline
+Joint-Que2search и SMGR возвращают
+разные top-2 items.</p>
+<p>Такие examples важны для food domain, где визуально
+похожие блюда могут отличаться
+по региону, ресторану и цене.</p>
+<p>Но case study нельзя считать доказательством; оно
+служит sanity check к quantitative tables.</p>
+<h2>Failure modes</h2>
+<p>Первый failure mode - stale images или плохое качество food
+photos.</p>
+<p>Второй - geo constraint слишком жесткий и скрывает
+релевантные substitutes.</p>
+<p>Третий - staged order подобран под Meituan logs и не
+переносится напрямую.</p>
+<p>Четвертый - RQ-VAE collisions между похожими dishes из
+разных ресторанов.</p>
+<p>Пятый - online serving drift из-за сезонности и локальных
+акций.</p>
+<h2>Implementation notes</h2>
+<ol>
+<li>Разделить pipelines для embedding pretraining, SID generation и
+downstream fine-tuning.</li>
+<li>Версионировать staged order и checkpoints каждого
+этапа.</li>
+<li>Проверить random image embedding baseline, чтобы доказать
+пользу визуальной
+модальности.</li>
+<li>Считать metrics отдельно по query type и geo buckets.</li>
+<li>Добавить offline FAISS recall и online business metrics.</li>
+<li>Контролировать SID collisions внутри популярных food
+categories.</li>
+</ol>
+<h2>Итог</h2>
+<p>Главный урок Meituan: качество SID начинается до
+quantization. Если multimodal embedding обучен
+в неправильном порядке, дискретные коды будут
+сжимать конфликтное
+пространство; staged pretraining делает SIDs пригодными для
+реального food delivery retrieval.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2602.06654">arXiv:2602.06654</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

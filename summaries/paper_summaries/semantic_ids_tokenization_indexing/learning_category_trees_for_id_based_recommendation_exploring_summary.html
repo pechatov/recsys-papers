@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <title>Learning Category Trees for ID-Based Recommendation: Exploring the Power of Differentiable Vector Quantization</title>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -28,34 +28,34 @@ th { background: var(--soft); text-align: left; }
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2504.04400">Pre-training Generative Recommender with Multi-Identifier Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2308.16761">Learning Category Trees for ID-Based Recommendation: Exploring the Power of Differentiable Vector Quantization</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
 <blockquote>
-<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span> Poisson Lab.</p>
-<p><strong>Первичный источник:</strong> arXiv:2504.04400.</p>
+<p><strong>Авторы:</strong> Qijiong Liu, Lu Fan, Jiaren Xiao, Jieming Zhu, Xiao-Ming Wu.</p>
+<p><strong>Аффилиации:</strong> Hong Kong Polytechnic University; <span class="industry">Huawei Noah's Ark Lab</span>.</p>
+<p><strong>Первичный источник:</strong> arXiv:2308.16761; DOI 10.1145/3589334.3645484.</p>
 </blockquote>
 <h2>коротко</h2>
-<p>MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.</p>
+<p>CAGE учит category trees для ID-only recommendation через cascaded differentiable vector quantization, без item text или готовых категорий.</p>
 <p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
 <ul>
-<li>Breaks strict one-item-one-identifier training assumption.</li>
-<li>Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.</li>
-<li>Turns one user sequence into multiple token sequences.</li>
-<li>Uses data influence estimation for curriculum sampling.</li>
-<li>Fine-tunes with single tokenizer for unambiguous inference.</li>
+<li>Работает как pluggable module для sequential и non-sequential recommenders.</li>
+<li>Строит fine-to-coarse category path через cascaded codebooks.</li>
+<li>Использует STE для nearest-neighbor quantization.</li>
+<li>Проверен на list completion, CF и CTR prediction.</li>
+<li>Заявлен lift до 21.41% over SOTA в list completion scenarios.</li>
 </ul>
 <h2>контекст</h2>
 <p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
 <p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
+<tr><td>Задачи</td><td>list completion, collaborative filtering, CTR prediction</td></tr>
+<tr><td>Данные</td><td>Zhihu, Spotify, Goodreads, Amazon subsets, MovieLens, MIND</td></tr>
+<tr><td>Выход</td><td>category-aware entity embedding, не generative SID</td></tr>
 </table>
 <h2>проблема</h2>
-<p>A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.</p>
+<p>В ID-only данных нет надежной category information; обычная VQ требует meaningful embeddings, но ID embeddings в начале обучения случайны.</p>
 <p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
 <ul>
 <li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
@@ -68,78 +68,78 @@ th { background: var(--soft); text-align: left; }
 <p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
 <p>Архитектурная идея раскрывается через следующие элементы.</p>
 <ul>
-<li>RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.</li>
-<li>Adjacent final checkpoints as semantically relevant tokenizers.</li>
-<li>Multiple tokenized datasets/groups from same interaction sequences.</li>
-<li>Influence estimator based on validation gradient and training gradient.</li>
-<li>Dynamic sampler over tokenizer data groups.</li>
-<li>Final fine-tuning on one tokenizer for serving.</li>
+<li>Cascaded quantizers Q(1)...Q(H) с decreasing granularity.</li>
+<li>Nearest neighbor links between entity/codebook layers.</li>
+<li>Code fusion: average pooling multi-level codes.</li>
+<li>Residual connection: z = e + alpha c_bar.</li>
+<li>Tree backpropagation через straight-through estimator.</li>
+<li>Separate user CAGE and item CAGE для non-sequential settings.</li>
 </ul>
 <h2>objective/алгоритм</h2>
 <p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
 <p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
 <ul>
-<li>RQ-VAE loss: reconstruction plus residual quantization commitment terms.</li>
-<li>Generative recommender NLL over target tokens.</li>
-<li>Data influence estimates validation loss change using first-order Taylor approximation.</li>
-<li>Curriculum updates sampling probabilities of groups.</li>
-<li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
+<li>Quantization loss: sum ||sg[c_prev] - c_i||^2.</li>
+<li>Commitment loss: sum ||c_prev - sg[c_i]||^2.</li>
+<li>CAGE loss: L_quant + beta L_commit.</li>
+<li>Recommendation loss берется из downstream model.</li>
+<li>Total training co-evolves entity embeddings and codebooks.</li>
 </ul>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
+<tr><td>List completion</td><td>Zhihu, Spotify, Goodreads; baselines Caser, GRU4Rec, SASRec, BERT4Rec, CAR, FANS</td></tr>
+<tr><td>CF</td><td>Amazon Toys, Kindle, Phones, Grocery, MovieLens 1M; BPRMF, NeuMF, CFKG, LightGCN</td></tr>
+<tr><td>CTR</td><td>MIND small, MovieLens 100K; DeepFM, DCN, FiBiNET, FinalMLP</td></tr>
+<tr><td>Metrics</td><td>NDCG@5/10, HR@5/10 and CTR metrics</td></tr>
+<tr><td>Ablation</td><td>number of layers, entries, user/item CAGE, alpha/beta/omega weights</td></tr>
 </table>
 <h2>рисунки/таблицы</h2>
 <p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
 <p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
 <ul>
-<li>Framework figure: adjacent checkpoints and curriculum sampler.</li>
-<li>Main result table across three Amazon datasets.</li>
-<li>Ablation table on Instrument and Scientific.</li>
-<li>Sensitivity to number of tokenizers n.</li>
-<li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
+<li>Illustration figure: learned category tree from ID embeddings.</li>
+<li>VQ comparison figure: three-stage VQ versus end-to-end CAGE.</li>
+<li>Completion/CF/CTR tables: broad validation.</li>
+<li>Layer/entry table: two-level trees often outperform one-level variants.</li>
+<li>Hyperparameter plots: omega_q and beta are especially important.</li>
 </ul>
 <h2>сильные стороны</h2>
 <p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li>Works without content features.</li>
+<li>Applies to many recommender families.</li>
+<li>Learns hierarchy aligned to downstream objective.</li>
+<li>Can improve sparse entity representations.</li>
+<li>Simple residual fusion makes integration cheap.</li>
 </ul>
 <h2>ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li>Learned categories may be non-interpretable.</li>
+<li>Hyperparameters H/K/alpha/beta matter a lot.</li>
+<li>No guarantee of stable taxonomy across retraining.</li>
+<li>Cold-start with no interactions is not solved.</li>
+<li>Not a direct generative retrieval method.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
 <p>Ниже — минимальный набор проверок перед доверием к результату.</p>
 <ul>
-<li>Save final n RQ-VAE checkpoints.</li>
-<li>Verify adjacent checkpoint IDs are semantically close, not random.</li>
-<li>Create separate tokenized sequence groups.</li>
-<li>Implement influence-based sampler and compare uniform sampling.</li>
-<li>Run fine-tune with selected single tokenizer.</li>
-<li>Measure performance versus n and tokenizer checkpoint choice.</li>
+<li>Wrap item/user embedding lookup with CAGE module.</li>
+<li>Track codebook occupancy by layer.</li>
+<li>Measure assignment churn across epochs.</li>
+<li>Run ablation one-layer versus two/three-layer.</li>
+<li>Check whether learned categories correlate with known labels where available.</li>
+<li>Tune alpha and beta per dataset.</li>
 </ul>
 <h2>связь</h2>
 <p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.</p>
+<p>CAGE is a predecessor to semantic ID thinking: it shows differentiable VQ can create useful discrete structure even from IDs.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
 <tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
@@ -149,7 +149,7 @@ th { background: var(--soft); text-align: left; }
 <tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
 </table>
 <h2>итог</h2>
-<p>MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.</p>
+<p>CAGE is best read as a representation augmentation paper, not a full GR paper. It is valuable because it removes the assumption that side content must exist before discrete hierarchy can help.</p>
 <p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
 <ul>
 <li>Хороший кандидат для controlled offline reproduction.</li>

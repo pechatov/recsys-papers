@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <title>ASI++: Towards Distributionally Balanced End-to-End Generative Retrieval</title>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -28,34 +28,34 @@ th { background: var(--soft); text-align: left; }
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2504.04400">Pre-training Generative Recommender with Multi-Identifier Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2405.14280">ASI++: Towards Distributionally Balanced End-to-End Generative Retrieval</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
 <blockquote>
-<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span> Poisson Lab.</p>
-<p><strong>Первичный источник:</strong> arXiv:2504.04400.</p>
+<p><strong>Авторы:</strong> Yuxuan Liu, Tianchi Yang, Zihan Zhang, Minghui Song, Haizhen Huang, Weiwei Deng, Feng Sun, Qi Zhang.</p>
+<p><strong>Аффилиации:</strong> Peking University; <span class="industry">Microsoft AI</span>.</p>
+<p><strong>Первичный источник:</strong> arXiv:2405.14280.</p>
 </blockquote>
 <h2>коротко</h2>
-<p>MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.</p>
+<p>ASI++ improves fully end-to-end generative retrieval by making learned document ID assignments distributionally balanced and information-consistent.</p>
 <p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
 <ul>
-<li>Breaks strict one-item-one-identifier training assumption.</li>
-<li>Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.</li>
-<li>Turns one user sequence into multiple token sequences.</li>
-<li>Uses data influence estimation for curriculum sampling.</li>
-<li>Fine-tunes with single tokenizer for unambiguous inference.</li>
+<li>Targets end-to-end ID assignment rather than pre-defined IDs.</li>
+<li>Adds distributionally balanced criterion for ID space utilization.</li>
+<li>Adds representation bottleneck criterion before indexing.</li>
+<li>Adds information consistency criterion.</li>
+<li>Compares neural quantization, differentiable PQ and RQ modules.</li>
 </ul>
 <h2>контекст</h2>
 <p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
 <p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
+<tr><td>Domain</td><td>document retrieval, but highly relevant to item semantic IDs</td></tr>
+<tr><td>Base</td><td>ASI fully end-to-end semantic indexing module</td></tr>
+<tr><td>Pain point</td><td>long-tail causes dense and empty ID regions</td></tr>
 </table>
 <h2>проблема</h2>
-<p>A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.</p>
+<p>Vanilla end-to-end indexing can collapse into unbalanced ID usage: some IDs point to many documents, others to none, hurting fine-grained retrieval.</p>
 <p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
 <ul>
 <li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
@@ -68,78 +68,78 @@ th { background: var(--soft); text-align: left; }
 <p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
 <p>Архитектурная идея раскрывается через следующие элементы.</p>
 <ul>
-<li>RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.</li>
-<li>Adjacent final checkpoints as semantically relevant tokenizers.</li>
-<li>Multiple tokenized datasets/groups from same interaction sequences.</li>
-<li>Influence estimator based on validation gradient and training gradient.</li>
-<li>Dynamic sampler over tokenizer data groups.</li>
-<li>Final fine-tuning on one tokenizer for serving.</li>
+<li>Query/document encoder-decoder generative retrieval framework.</li>
+<li>Semantic indexing module maps documents to discrete numeric IDs.</li>
+<li>Distribution balance regularizer over assignment space.</li>
+<li>Representation bottleneck enhancement for dense representations.</li>
+<li>Information consistency coupling representation and ID assignment.</li>
+<li>Alternative indexing module structures: MLP/NQ, PQ, RQ.</li>
 </ul>
 <h2>objective/алгоритм</h2>
 <p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
 <p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
 <ul>
-<li>RQ-VAE loss: reconstruction plus residual quantization commitment terms.</li>
-<li>Generative recommender NLL over target tokens.</li>
-<li>Data influence estimates validation loss change using first-order Taylor approximation.</li>
-<li>Curriculum updates sampling probabilities of groups.</li>
-<li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
+<li>Retrieval generation loss for query-to-ID decoding.</li>
+<li>Balance criterion spreads assignments across ID space.</li>
+<li>Bottleneck criterion improves dense representations before quantization.</li>
+<li>Information consistency objective links representation and assigned IDs.</li>
+<li>Joint optimization over indexing and retrieval modules.</li>
 </ul>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
+<tr><td>Datasets</td><td>public retrieval datasets and industrial datasets</td></tr>
+<tr><td>Baselines</td><td>predefined ID methods and vanilla ASI variants</td></tr>
+<tr><td>Metrics</td><td>retrieval quality plus assignment balance diagnostics</td></tr>
+<tr><td>Modules</td><td>neural quantization, product quantization, residual quantization</td></tr>
+<tr><td>Core result</td><td>better retrieval performance and more balanced ID assignment</td></tr>
 </table>
 <h2>рисунки/таблицы</h2>
 <p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
 <p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
 <ul>
-<li>Framework figure: adjacent checkpoints and curriculum sampler.</li>
-<li>Main result table across three Amazon datasets.</li>
-<li>Ablation table on Instrument and Scientific.</li>
-<li>Sensitivity to number of tokenizers n.</li>
-<li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
+<li>Framework diagram: end-to-end semantic indexing inside generative retrieval.</li>
+<li>ID distribution plots: dense/sparse intervals and balance improvement.</li>
+<li>Module comparison table: NQ/PQ/RQ semantic indexing.</li>
+<li>Main retrieval table: public plus industrial evaluation.</li>
+<li>Ablation table: balance, bottleneck, consistency criteria.</li>
 </ul>
 <h2>сильные стороны</h2>
 <p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li>Turns occupancy into an explicit objective.</li>
+<li>Useful diagnostic lens for any SID system.</li>
+<li>Addresses long-tail ID imbalance directly.</li>
+<li>Explores multiple quantization structures.</li>
+<li>Bridges information theory and practical retrieval.</li>
 </ul>
 <h2>ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li>Not originally focused on sequential recommendation.</li>
+<li>Uniformity can conflict with natural semantic density.</li>
+<li>Industrial dataset details may be hard to reproduce.</li>
+<li>Balance metric choice affects behavior.</li>
+<li>Requires careful interaction with collision handling.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
 <p>Ниже — минимальный набор проверок перед доверием к результату.</p>
 <ul>
-<li>Save final n RQ-VAE checkpoints.</li>
-<li>Verify adjacent checkpoint IDs are semantically close, not random.</li>
-<li>Create separate tokenized sequence groups.</li>
-<li>Implement influence-based sampler and compare uniform sampling.</li>
-<li>Run fine-tune with selected single tokenizer.</li>
-<li>Measure performance versus n and tokenizer checkpoint choice.</li>
+<li>Add ID occupancy histograms to every SID experiment.</li>
+<li>Measure empty IDs, overloaded IDs and Gini/entropy of assignments.</li>
+<li>Run balance criterion ablation.</li>
+<li>Evaluate head/tail retrieval separately.</li>
+<li>Compare PQ/RQ/NQ under same ID budget.</li>
+<li>Check whether balance hurts semantic locality.</li>
 </ul>
 <h2>связь</h2>
 <p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.</p>
+<p>ASI++ is conceptually close to QuaSID: both say raw IDs are not enough; their distribution and collision semantics matter.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
 <tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
@@ -149,7 +149,7 @@ th { background: var(--soft); text-align: left; }
 <tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
 </table>
 <h2>итог</h2>
-<p>MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.</p>
+<p>ASI++ is most useful as a design principle: learned IDs need distributional regularization, otherwise end-to-end training may look successful while wasting large parts of the identifier space.</p>
 <p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
 <ul>
 <li>Хороший кандидат для controlled offline reproduction.</li>

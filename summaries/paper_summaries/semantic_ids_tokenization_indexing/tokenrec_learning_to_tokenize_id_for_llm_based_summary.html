@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TokenRec: Learning to Tokenize ID for LLM-Based Generative Recommendations</title>
+  <style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px
+24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px
+solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://doi.org/10.1109/tkde.2025.3599265">TokenRec: Learning to Tokenize ID for LLM-Based Generative Recommendations</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p><strong>Авторы:</strong> Haohao Qu, Wenqi Fan, Zihuai Zhao, Qing Li.</p>
+<p><strong>Аффилиации:</strong> Hong Kong Polytechnic University.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>TokenRec предлагает токенизировать user IDs и item IDs в
+LLM-compatible discrete tokens.</p>
+<p>Вместо текстового описания item или случайного ID
+модель использует collaborative
+filtering representations.</p>
+<p>Эти representations квантуются Masked Vector-Quantized Tokenizer,
+чтобы перенести high-order collaborative
+knowledge в токены, понятные generative recommender'у.</p>
+<p>Второй вклад - efficient generative retrieval без дорогого
+autoregressive beam search для каждого
+пользователя.</p>
+<h2>Контекст</h2>
+<p>LLM-based recommender systems часто пытаются представить
+users/items текстом.</p>
+<p>Но текст не всегда содержит collaborative сигнал: кто
+вместе слушает, покупает
+или смотрит объекты.</p>
+<p>Atomic IDs несут collaborative knowledge через embedding tables, но не
+совместимы с LLM vocabulary и плохо
+обобщают unseen users/items.</p>
+<p>TokenRec занимает промежуточную позицию: сначала
+учит CF representations, затем
+переводит их в discrete tokens.</p>
+<h2>Проблема</h2>
+<p>Есть две ключевые проблемы.</p>
+<p>Первая - как закодировать collaborative knowledge в
+дискретные токены, не потеряв
+high-order user-item structure.</p>
+<p>Вторая - как делать top-K recommendation эффективно.</p>
+<p>Обычные LLM generation methods используют autoregressive decoding и
+beam search, что дорого при
+массовом serving.</p>
+<h2>Метод / архитектура</h2>
+<p>TokenRec состоит из ID tokenization и generative retrieval paradigm.</p>
+<p>Masked Vector-Quantized Tokenizers строятся отдельно для users и
+items.</p>
+<p>Сначала CF encoder учит latent representations из user-item
+graph/interactions.</p>
+<p>Затем часть latent dimensions маскируется, что
+заставляет tokenizer восстанавливать и
+дискретизировать robust collaborative signal.</p>
+<p>Vector quantization разбивает representation на sub-codebooks.</p>
+<p>Каждый user/item получает несколько discrete tokens.</p>
+<h2>Objective / алгоритм</h2>
+<p>Tokenizer objective сочетает reconstruction collaborative representation и
+vector quantization regularization.</p>
+<p>Masking ratio <code>rho</code> управляет тем, сколько
+информации скрывается во время
+tokenization.</p>
+<p>Количество sub-codebooks <code>K</code> и число tokens/codewords
+<code>J</code> задают емкость discrete
+space.</p>
+<p>После tokenization recommendation формулируется как matching user
+tokens и item tokens.</p>
+<p>Efficient retrieval stage избегает полного autoregressive item-by-item
+decoding.</p>
+<p>Это важное отличие от TIGER-style beam search.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Датасеты: LastFM, ML1M, Amazon Beauty и Amazon Clothing.</p>
+<p>Метрики: HR@10/20/30 и NDCG@10/20/30.</p>
+<p>TokenRec сравнивается с traditional recommenders и LLM-based methods.</p>
+<p>В LastFM TokenRec превосходит strongest baselines в среднем на
+19.08% по HR@20 и 9.09% по NDCG@20.</p>
+<p>Generalizability evaluation проверяет seen/unseen users.</p>
+<p>Для P5 и POD наблюдается падение более 40% HR@20/NDCG@20
+на unseen users.</p>
+<p>TIGER падает меньше, около 6.10% HR@20, благодаря item-side
+semantic IDs.</p>
+<p>TokenRec нацелен на generalizable user/item tokenization за счет
+collaborative tokens.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Intro figure сравнивает ID tokenization methods для LLM-based
+recommendation.</p>
+<p>Main framework figure показывает MQ-Tokenizer и retrieval module.</p>
+<p>Inference figure подчеркивает efficiency и поддержку new
+users/items.</p>
+<p>Таблицы результатов разделены на LastFM/ML1M и
+Beauty/Clothing.</p>
+<p>Ablation table показывает вклад tokenization components.</p>
+<p>Hyperparameter figures проверяют masking ratio <code>rho</code>, число
+sub-codebooks <code>K</code> и codewords
+<code>J</code>.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Токенизируются и users, и items, а не только item
+catalog.</li>
+<li>Источник токенов - collaborative representations, а не только
+text/content.</li>
+<li>Отдельно рассматриваются efficiency и generalizability.</li>
+<li>Есть hyperparameter analysis для masking и codebook design.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Collaborative tokens зависят от качества CF encoder.</p>
+<p>Для cold-start items без interactions TokenRec слабее content-based SID
+methods, если не добавить side
+information.</p>
+<p>Discrete collaborative tokens могут устаревать при temporal drift,
+как в работе про SID staleness.</p>
+<p>LLM compatibility не означает, что pretrained language knowledge
+напрямую понимает эти tokens без
+grounding.</p>
+<h2>Как реализовать / проверять</h2>
+<ol>
+<li>Обучить CF encoder на user-item interactions.</li>
+<li>Сохранить user/item latent representations.</li>
+<li>Обучить Masked VQ tokenizer с разными <code>rho</code>, <code>K</code>
+и <code>J</code>.</li>
+<li>Проверить utilization codebooks и reconstruction quality.</li>
+<li>Оценить HR/NDCG на seen и unseen users/items.</li>
+<li>Измерить inference time per user для Top-20/Top-K recommendation.</li>
+</ol>
+<h2>Production notes</h2>
+<p>Для serving нужно версионировать tokenizers и mappings
+users/items→tokens.</p>
+<p>Новые users/items требуют online или periodic token assignment.</p>
+<p>Если токены используются в LLM prompt, нужен guard
+против invalid token combinations.</p>
+<p>Если используется efficient retrieval без beam search, нужно
+проверить recall ceiling
+относительно exact top-K.</p>
+<h2>Failure modes</h2>
+<p>Первый failure mode - codebook collapse.</p>
+<p>Второй - masking ratio слишком высокий, tokenizer теряет
+collaborative signal.</p>
+<p>Третий - masking ratio слишком низкий, tokens переобучаются
+и хуже generalize.</p>
+<p>Четвертый - unseen users без достаточного interaction
+context.</p>
+<p>Пятый - temporal drift collaborative tokens.</p>
+<h2>Связь с соседними работами</h2>
+<p>TokenRec отличается от TIGER/RQ-VAE тем, что строит ID tokens
+из collaborative knowledge.</p>
+<p>С Spotify GLIDE и GenRec его связывает LLM-based recommendation, но
+TokenRec больше занят tokenizer/retrieval
+efficiency.</p>
+<p>С VK staleness paper связь в lifecycle collaborative tokenization: collaborative
+SIDs сильны, но требуют refresh
+strategy.</p>
+<h2>Итог</h2>
+<p>TokenRec отвечает на вопрос, как дать LLM recommender'у не
+только язык и item text, но и
+collaborative structure.</p>
+<p>Его практическая ценность в совместной
+токенизации users/items и снижении inference
+cost относительно autoregressive beam generation.</p>
+<h2>Источники</h2>
+<ul>
+<li>DOI/IEEE: <a href="https://doi.org/10.1109/tkde.2025.3599265">10.1109/TKDE.2025.3599265</a>.</li>
+<li>Доступный полный препринт: <a href="https://arxiv.org/abs/2406.10450">arXiv:2406.10450</a>,
+source/PDF.</li>
+</ul>
+</main>
+</body>
+</html>

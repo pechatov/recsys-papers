@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAS: Dual-Aligned Semantic IDs Empowered Industrial Recommender System</title>
+  <style>
+  :root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+  h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+  h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.15rem; }
+  p { margin: .75rem 0; }
+  a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+  ul, ol { padding-left: 1.55rem; }
+  li { margin: .3rem 0; }
+  blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+  p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+  img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+  .nav { margin: .75rem 0 1.25rem; }
+  .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+  .note { color: var(--muted); }
+  @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+  </style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2508.10584">DAS: Dual-Aligned Semantic IDs Empowered Industrial Recommender System</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p><strong>Авторы:</strong> Wencai Ye, Mingjie Sun, Shaoyun Shi, Peng Wang, Wenjin Wu, Peng Jiang.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>.</p>
+<p><strong>Индустрия:</strong> <span class="industry">Kuaishou advertising recommendation</span></p>
+<p><strong>Первичные источники:</strong> arXiv:2508.10584 HTML/PDF.</p>
+</blockquote>
+
+<h2>Коротко</h2>
+<p>DAS строит aligned semantic IDs для пользователей и рекламы в one-stage режиме: quantization и alignment оптимизируются вместе.</p>
+<p>Разбор ниже фокусируется на том, что именно добавляет paper к семейству Semantic ID/tokenization методов.</p>
+<p>Отдельно отмечены данные, метрики, ablations и production notes, если они раскрыты в источнике.</p>
+
+<h2>Контекст</h2>
+<p>Kuaishou использует MLLM embeddings, но raw semantic quantization плохо совпадает с collaborative objectives CTR/generative RS.</p>
+<p>В этой линии работ tokenization становится частью модели: она определяет, какие items делят параметры, какие ошибки возможны при генерации и как каталог обновляется.</p>
+<p>Поэтому оценивать надо не только final NDCG/Recall, но и code utilization, invalid generation, cold-start behavior и serving cost.</p>
+
+<h2>Проблема</h2>
+<p>Главная проблема paper формулируется как несовпадение удобного identifier space и реального downstream objective.</p>
+<ul>
+<li>Raw IDs сильны для memorization, но плохо переносят знания на новые или редкие items.</li>
+<li>Pure semantic IDs помогают sharing, но могут смешивать items, которые различны для бизнес-метрики.</li>
+<li>Tokenization без domain constraints часто создает коды, которые трудно интерпретировать и сопровождать.</li>
+<li>Generative decoding должен возвращать валидные catalog items, а не произвольные token combinations.</li>
+<li>Offline aggregate metrics скрывают провалы на cold-start, tail, geography/category или task-specific slices.</li>
+<li>Serving требует отдельного контроля latency, индексов, codebook refresh и feature-store compatibility.</li>
+</ul>
+
+<h2>Метод/архитектура</h2>
+<p>Компоненты, заявленные в paper:</p>
+<ul>
+<li>Full DAS в Table 1: AUC 0.8061, UAUC 0.7764, GAUC 0.7448 против CTR baseline 0.8037/0.7736/0.7422.</li>
+<li>MDAM ablation: removing dual u2i/i2i-u2u/co-i2i-u2u all hurts AUC/UAUC/GAUC.</li>
+<li>Online A/B: 10% traffic, 40M+ users, multi-week; eCPM +3.48% overall, +8.98% cold-start; discriminative features +2.69% eCPM.</li>
+<li>Identifier строится как learned discrete representation, а не как произвольная строка.</li>
+<li>Метод меняет, какие items sharing embedding/code parameters.</li>
+<li>Важное инженерное следствие: tokenizer становится artifact, который надо версионировать и мониторить.</li>
+<li>Для production или large-scale setup нужна стратегия обновления кодов при изменении каталога.</li>
+</ul>
+
+<h2>Objective/алгоритм</h2>
+<p>Objective и алгоритм связывают construction of IDs с downstream task.</p>
+<ul>
+<li>Loss/constraint design задает inductive bias tokenizer-а.</li>
+<li>Если есть alignment loss, он должен улучшать downstream signal, не разрушая semantic grouping.</li>
+<li>Если есть hierarchy/category/geography constraint, его надо проверять на collapse и over-constraining.</li>
+<li>Если используется autoregressive decoding, нужно контролировать ошибки ранних токенов.</li>
+<li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
+<li>MLLM embedding dims: ads 256, users 1024; RQ-VAE: 3 codebooks, 512 codes per codebook, code embedding dim 32.</li>
+</ul>
+
+<h2>Эксперименты</h2>
+<p>Экспериментальная конкретика из paper:</p>
+<ul>
+<li>1.8B user-ad samples, ~100M users, 8M ads; generative task использует 15-day sequences length 10 и ~50M users.</li>
+<li>AUC/UAUC/GAUC для CTR; HitRate@K и NDCG@K для generative task.</li>
+<li>DAS is deployed across Kuaishou advertising scenarios serving over 400M DAU.</li>
+<li>Важно читать ablation не как список чисел, а как проверку: какой constraint действительно нужен, а какой сам по себе ухудшает модель.</li>
+<li>Для внутренних datasets переносимость ограничена; зато такие эксперименты лучше показывают serving и business constraints.</li>
+</ul>
+
+<h2>Рисунки/таблицы</h2>
+<p>Что смотреть в рисунках и таблицах paper.</p>
+<ul>
+<li>Overview figure показывает, где именно SID/tokenizer входит в recommender pipeline.</li>
+<li>Dataset/statistics table задает масштаб и sparsity; без него нельзя судить о применимости.</li>
+<li>Overall performance table показывает aggregate gain, но его надо дополнять slices.</li>
+<li>Ablation table показывает, какие components несут основной вклад.</li>
+<li>Visualization/case-study figures полезны для диагностики semantic/category/geographic consistency.</li>
+<li>Online/production table, если есть, важнее небольших offline gains.</li>
+</ul>
+
+<h2>Сильные стороны</h2>
+<p>Сильные стороны с практической точки зрения.</p>
+<ul>
+<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
+<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
+<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
+<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
+<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
+<li>Для industrial papers ценны масштабы данных и online checks.</li>
+</ul>
+
+<h2>Ограничения</h2>
+<p>Ограничения и риски.</p>
+<ul>
+<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
+<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
+<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
+<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
+<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
+<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
+<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
+<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+</ul>
+
+<h2>Как реализовать/проверять</h2>
+<p>Практический план внедрения/проверки.</p>
+<ul>
+<li>Сначала воспроизвести baseline ID-only и SID-only.</li>
+<li>Добавить предложенный tokenizer/alignment/constraint как отдельный artifact.</li>
+<li>Сравнивать aggregate metrics и slices: head/tail, cold/warm, geography/category/task.</li>
+<li>Проверять code utilization: perplexity, entropy, top-code concentration, unused codes.</li>
+<li>Проверять examples of collisions вручную: похожи ли items с одинаковым prefix/code.</li>
+<li>Для generative setup логировать invalid ID rate и generated-but-filtered candidates.</li>
+<li>Для online rollout начинать с candidate augmentation или shadow scoring.</li>
+<li>Сделать rollback plan на прежний tokenizer/version.</li>
+<li>Зафиксировать версию tokenizer-а, vocabulary/codebook sizes, seed, дату обучения и покрытие каталога.</li>
+<li>Логировать invalid/generated-not-in-catalog rate отдельно от Recall/NDCG, потому что генеративная модель может улучшать ranking среди валидных, но терять кандидатов на этапе декодирования.</li>
+<li>Делать slice-анализ по popularity bucket, item age, cold-start cohort и длине пользовательской истории.</li>
+<li>Сравнивать не только с SID-only baseline, но и с ID-only/hybrid baseline: в production ID memorization часто остается сильным сигналом.</li>
+<li>Проверять распределение кодов: entropy/perplexity, долю неиспользуемых кодов, top-code concentration и collision examples.</li>
+<li>В online rollout начинать с shadow features или candidate sidecar, чтобы отделить эффект tokenizer-а от эффекта retriever/ranker.</li>
+</ul>
+
+<h2>Связь</h2>
+<p>Связь с соседними работами.</p>
+<ul>
+<li>Работа находится в общей оси Semantic ID как learned interface между item catalog и model.</li>
+<li>С Meta stability paper ее связывает вопрос representation stability.</li>
+<li>С RPG/SETRec ее связывает вопрос формы identifier и decoding efficiency.</li>
+<li>С CoFiRec/CAT-ID2 ее связывает использование структуры: hierarchy, category, geography или task-specific decomposition.</li>
+<li>С Unified/Harmonizing papers ее связывает компромисс semantic sharing vs exact ID memorization.</li>
+</ul>
+
+<h2>Итог</h2>
+<p>Итоговый вывод.</p>
+<ul>
+<li>Главный урок: качество Semantic ID определяется не только quantizer-ом, но и тем, с каким downstream signal он выровнен.</li>
+<li>Хороший SID должен быть валидным, компактным, обновляемым, диагностируемым и полезным на нужных slices.</li>
+<li>Без проверки code utilization, cold-start/tail и serving constraints offline gain легко переоценить.</li>
+</ul>
+</main>
+</body>
+</html>

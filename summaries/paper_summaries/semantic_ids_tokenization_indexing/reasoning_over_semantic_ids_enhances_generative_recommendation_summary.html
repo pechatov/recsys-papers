@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reasoning over Semantic IDs Enhances Generative Recommendation</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2603.23183">Reasoning over Semantic IDs Enhances Generative Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Yingzhi He, Yan Sun, Junfei Tan, Yuxin Chen, Xiaoyu Kong, Chunxu Shen, Xiang Wang, An Zhang, Tat-Seng Chua.</p>
+
+<p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; <span class="industry">Tencent Inc.</span>.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>SIDReasoner исследует, как заставить LLM рассуждать над semantic IDs, которые сами по себе не являются native language tokens. Framework двухстадийный: сначала усиливается SID-language alignment через multi-task training на enriched SID-centered corpus, сгенерированном teacher model; затем outcome-driven reinforcement optimization улучшает reasoning trajectories без явных human reasoning annotations.</p>
+
+<h2>2. Контекст</h2>
+
+<p>SID-based generative recommendation делает decoding эффективным, но itemic tokens выглядят для LLM как искусственные коды. С другой стороны, LLM reasoning может улучшить последовательные рекомендации, объяснимость и перенос. Возникает gap: reasoning over natural language развит, а reasoning over SID требует grounding каждого itemic token в семантические и поведенческие контексты.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Itemic SID tokens не имеют встроенного смысла в LLM vocabulary.</li>
+
+<li>Recommendation reasoning трудно supervised-обучать: нет больших наборов правильных reasoning traces.</li>
+
+<li>Text-only recommendation страдает от grounding и decoding inefficiency, а SID-only - от слабой интерпретируемости.</li>
+
+<li>Нужно усилить reasoning, не разрушив compact SID decoding.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Stage 1 - Enriched SID-Language Alignment. Teacher model синтезирует корпус вокруг SID: item descriptions, attributes, behavioral context, alignment tasks. Модель обучается связывать SID с языковыми описаниями и recommendation contexts. Stage 2 - Reinforced Reasoning Enhancement: outcome-driven optimization по результату рекомендации направляет модель к полезным reasoning paths; явные разметки reasoning не требуются.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Objective alignment stage объединяет multi-task losses для разных форматов: восстановление/понимание SID, описание item, контекстные задачи и recommendation-oriented prompts. Reinforcement stage оптимизирует reward, связанный с правильностью recommendation outcome, а не с совпадением chain-of-thought. Это важно: для SID reasoning важен не “красивый” текст рассуждения, а траектория, которая приводит к правильному item/SID.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Эксперименты на трех Amazon23 datasets: Video Games, Office Products, Industrial and Scientific. Метрики включают стандартные Recall/NDCG для generative recommendation, а также model study/ablation. SIDReasoner превосходит base SID-based LLM recommender; ablation показывает вклад SID-language alignment и reinforced reasoning. Дополнительно анализируются interpretability и cross-domain generalization, что важно для тезиса о transferable reasoning.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Рисунки/таблицы с alignment task formats и prompts важны для воспроизводимости: без них трудно понять, каким именно способом SID получают языковой grounding. Performance tables отвечают на RQ1, ablation - на RQ2, model study - на RQ3. Appendix dataset statistics фиксирует размеры Amazon subsets, а prompt examples показывают, что enrichment corpus является полноценной частью метода, а не мелкой preprocessing деталью.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Поднимает новый вопрос: не только как строить SID, но и как над ними рассуждать.</li>
+
+<li>Использует teacher-generated corpus вместо дорогих human reasoning annotations.</li>
+
+<li>Outcome-driven RL хорошо соответствует recommendation objective.</li>
+
+<li>Обещает не только accuracy, но и interpretability/cross-domain transfer.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Synthetic enrichment зависит от teacher model и может переносить bias/ошибки.</li>
+
+<li>Reasoning traces трудно объективно оценить; reward может улучшать outcome без истинной интерпретируемости.</li>
+
+<li>LLM-based training дороже классических SID recommenders.</li>
+
+<li>Публичные эксперименты на трех Amazon subsets не доказывают production latency applicability.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Сначала построить SID-language probes: может ли модель по SID восстановить title/category/attributes и наоборот.</li>
+
+<li>Сравнить base, alignment-only, RL-only и full SIDReasoner.</li>
+
+<li>Проверять reward hacking: улучшает ли RL Recall, не ухудшая valid SID generation.</li>
+
+<li>Для интерпретируемости вручную audit'ить sampled reasoning на head/tail и cross-domain cases.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>SIDReasoner дополняет Structured Term Identifiers и GenCDR: те делают identifiers более language/domain-compatible, а SIDReasoner учит LLM reasoning поверх уже существующих SIDs. С CoST/ReSID/DOS связь косвенная: лучшие tokenizer'ы дают более осмысленное SID space, на котором reasoning должно быть легче.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главная идея статьи: compact SID decoding и LLM reasoning не должны быть взаимоисключающими. Если усилить grounding между SID и языком, а затем оптимизировать reasoning по recommendation outcome, semantic IDs могут стать объектом рассуждения, а не только техническими кодами для beam search.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Enriched SID-language alignment</h3>
+
+<p>Первый этап SIDReasoner делает SID не просто special tokens, а grounded symbols. Teacher model синтезирует SID-centered corpus, где itemic identifiers появляются в разных языковых и поведенческих контекстах. Это позволяет student model связывать SID с attributes, user intent и recommendation scenes.</p>
+
+<ul>
+
+<li>Alignment tasks включают преобразования между item text и SID representation.</li>
+
+<li>Corpus enrichment добавляет semantic context вокруг otherwise opaque IDs.</li>
+
+<li>Multi-task training снижает зависимость от одного prompt format.</li>
+
+<li>Grounding нужен до RL, иначе reward optimization будет работать по бессмысленным tokens.</li>
+
+<li>Appendix с prompts является ключевой частью воспроизводимости.</li>
+
+</ul>
+
+<h3>13.2. Reinforced reasoning enhancement</h3>
+
+<ul>
+
+<li>RL stage оптимизирует recommendation outcome, а не human-written reasoning trace.</li>
+
+<li>Это снижает потребность в explicit reasoning annotations.</li>
+
+<li>Reward должен поощрять trajectories, приводящие к правильному item/SID.</li>
+
+<li>Reasoning может быть полезен для interpretability, но его качество нужно audit'ить отдельно.</li>
+
+<li>Outcome-driven setup ближе к реальной задаче: пользователь видит рекомендацию, а не chain-of-thought.</li>
+
+</ul>
+
+<h3>13.3. Эксперименты</h3>
+
+<p>Данные берутся из Amazon23: Video Games, Office Products, Industrial and Scientific. Это домены с богатой textual metadata, где SID-language alignment имеет смысл. Baselines включают SID-based generative recommenders и reasoning/LLM variants; RQ1 смотрит performance comparison, RQ2 - ablation, RQ3 - model study.</p>
+
+<ul>
+
+<li>Metrics - Recall и NDCG на top-K recommendation.</li>
+
+<li>Alignment-only variant проверяет вклад первого этапа.</li>
+
+<li>RL-only или no-RL variant показывает, нужен ли reinforced reasoning сверх grounding.</li>
+
+<li>Cross-domain generalization заявлена как дополнительное преимущество reasoning-enhanced setup.</li>
+
+<li>Interpretability analysis нужно читать осторожно: plausible explanation не всегда causal explanation.</li>
+
+</ul>
+
+<h3>13.4. Failure modes</h3>
+
+<ul>
+
+<li>Teacher bias: synthetic corpus наследует ошибки и предпочтения teacher model.</li>
+
+<li>Reward hacking: model может улучшать top-K, генерируя шаблонные reasoning patterns.</li>
+
+<li>SID ambiguity: если tokenizer плохо разделяет items, reasoning не восстановит потерянную информацию.</li>
+
+<li>Latency overhead: reasoning-enhanced LLM дороже классического SID decoder.</li>
+
+<li>Evaluation gap: offline Recall/NDCG не доказывает, что explanations полезны пользователю.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2603.23183">2603.23183</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

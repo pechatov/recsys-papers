@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <title>Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale</title>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -28,34 +28,34 @@ th { background: var(--soft); text-align: left; }
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2504.04400">Pre-training Generative Recommender with Multi-Identifier Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2603.00632">Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
 <blockquote>
-<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span> Poisson Lab.</p>
-<p><strong>Первичный источник:</strong> arXiv:2504.04400.</p>
+<p><strong>Авторы:</strong> Zheng Hu, Yuxin Chen, Yongsen Pan, Xu Yuan, Yuting Yin, Daoyuan Wang, Boyang Xia, Zefei Luo, Hongyang Wang, Songhao Ni, Dongxu Liang, Jun Wang, Shimin Cai, Tao Zhou, Fuji Ren, Wenwu Ou.</p>
+<p><strong>Аффилиации:</strong> University of Electronic Science and Technology of China; <span class="industry">Kuaishou Technology</span>.</p>
+<p><strong>Первичный источник:</strong> arXiv:2603.00632.</p>
 </blockquote>
 <h2>коротко</h2>
-<p>MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.</p>
+<p>QuaSID argues that SID collisions are heterogeneous and should be handled according to qualification and severity, not uniformly.</p>
 <p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
 <ul>
-<li>Breaks strict one-item-one-identifier training assumption.</li>
-<li>Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.</li>
-<li>Turns one user sequence into multiple token sequences.</li>
-<li>Uses data influence estimation for curriculum sampling.</li>
-<li>Fine-tunes with single tokenizer for unambiguous inference.</li>
+<li>Distinguishes harmful conflicts from benign redundancy.</li>
+<li>Uses qualification-aware conflict pair selection.</li>
+<li>Scales repulsion by collision severity.</li>
+<li>Targets industrial-scale multimodal item SID learning.</li>
+<li>Includes deployment-oriented figures and weighting ablations.</li>
 </ul>
 <h2>контекст</h2>
 <p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
 <p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
+<tr><td>Scale</td><td>industrial recommendation at Kuaishou</td></tr>
+<tr><td>Input</td><td>multimodal item features</td></tr>
+<tr><td>Problem</td><td>compact SID space creates collisions</td></tr>
 </table>
 <h2>проблема</h2>
-<p>A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.</p>
+<p>Uniformly repelling every collision wastes capacity on benign collisions and may underweight truly harmful semantic entanglement.</p>
 <p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
 <ul>
 <li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
@@ -68,78 +68,77 @@ th { background: var(--soft); text-align: left; }
 <p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
 <p>Архитектурная идея раскрывается через следующие элементы.</p>
 <ul>
-<li>RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.</li>
-<li>Adjacent final checkpoints as semantically relevant tokenizers.</li>
-<li>Multiple tokenized datasets/groups from same interaction sequences.</li>
-<li>Influence estimator based on validation gradient and training gradient.</li>
-<li>Dynamic sampler over tokenizer data groups.</li>
-<li>Final fine-tuning on one tokenizer for serving.</li>
+<li>Collision qualification module.</li>
+<li>Severity-aware weighting.</li>
+<li>Selective contrastive/repulsive SID learning.</li>
+<li>Framework around multimodal item features.</li>
+<li>Deployment pipeline for SID usage.</li>
 </ul>
 <h2>objective/алгоритм</h2>
 <p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
 <p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
 <ul>
-<li>RQ-VAE loss: reconstruction plus residual quantization commitment terms.</li>
-<li>Generative recommender NLL over target tokens.</li>
-<li>Data influence estimates validation loss change using first-order Taylor approximation.</li>
-<li>Curriculum updates sampling probabilities of groups.</li>
-<li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
+<li>Base tokenization/recommendation loss.</li>
+<li>Qualified conflict pair repulsion.</li>
+<li>Severity-weighted contrastive term.</li>
+<li>Partial/full weighting variants in ablation.</li>
+<li>Collision metrics alongside recommendation metrics.</li>
 </ul>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
+<tr><td>Datasets</td><td>industrial-scale Kuaishou settings plus offline analyses</td></tr>
+<tr><td>Figures</td><td>collision case, framework, deployment</td></tr>
+<tr><td>Ablations</td><td>partial_weight, full_weight, cl_weight variants visible in source assets</td></tr>
+<tr><td>Metrics</td><td>recommendation quality and collision quality</td></tr>
+<tr><td>Core claim</td><td>qualified collisions improve large-scale SID learning</td></tr>
 </table>
 <h2>рисунки/таблицы</h2>
 <p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
 <p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
 <ul>
-<li>Framework figure: adjacent checkpoints and curriculum sampler.</li>
-<li>Main result table across three Amazon datasets.</li>
-<li>Ablation table on Instrument and Scientific.</li>
-<li>Sensitivity to number of tokenizers n.</li>
-<li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
+<li>Collision case figure: not all collisions are equal.</li>
+<li>Framework figure: qualification plus severity weighting.</li>
+<li>Deployment figure: production SID pipeline.</li>
+<li>Weighting plots: partial/full/contrastive weight behavior.</li>
+<li>Result tables: offline/industrial effectiveness.</li>
 </ul>
 <h2>сильные стороны</h2>
 <p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li>Production-realistic collision framing.</li>
+<li>Avoids over-penalizing semantically close items.</li>
+<li>Adds diagnostics beyond collision count.</li>
+<li>Compatible with multimodal SID pipelines.</li>
+<li>Useful for billion-scale catalogs where no-collision is unrealistic.</li>
 </ul>
 <h2>ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li>Qualification signal may be platform-specific.</li>
+<li>Wrong severity labels can harm representation.</li>
+<li>Future arXiv paper needs independent reproduction.</li>
+<li>More complex pair sampling and training pipeline.</li>
+<li>Requires detailed collision audit infrastructure.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
 <p>Ниже — минимальный набор проверок перед доверием к результату.</p>
 <ul>
-<li>Save final n RQ-VAE checkpoints.</li>
-<li>Verify adjacent checkpoint IDs are semantically close, not random.</li>
-<li>Create separate tokenized sequence groups.</li>
-<li>Implement influence-based sampler and compare uniform sampling.</li>
-<li>Run fine-tune with selected single tokenizer.</li>
-<li>Measure performance versus n and tokenizer checkpoint choice.</li>
+<li>Compute exact SID collisions and prefix collisions.</li>
+<li>Label collision groups by semantic distance and downstream error.</li>
+<li>Sample conflict pairs rather than all collision pairs.</li>
+<li>Tune repulsion weights by severity.</li>
+<li>Check benign collision preservation.</li>
+<li>Track SID churn and serving compatibility.</li>
 </ul>
 <h2>связь</h2>
 <p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.</p>
+<p>QuaSID complements ASI++: ASI++ balances assignment distribution, while QuaSID asks which collisions are actually bad.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
 <tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
@@ -149,7 +148,7 @@ th { background: var(--soft); text-align: left; }
 <tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
 </table>
 <h2>итог</h2>
-<p>MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.</p>
+<p>QuaSID is a mature industrial take: at scale, the goal is not zero collisions, but qualified collision management.</p>
 <p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
 <ul>
 <li>Хороший кандидат для controlled offline reproduction.</li>

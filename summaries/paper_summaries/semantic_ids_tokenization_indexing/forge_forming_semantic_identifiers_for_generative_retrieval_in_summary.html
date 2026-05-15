@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,87 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2509.20904">FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Kairui Fu, Tao Zhang, Shuwen Xiao, Ziyang Wang, Xinming Zhang, Chenchi Zhang, Yuliang Yan, Junjun Zheng, Yu Li, Zhihong Chen, Jian Wu, Xiangheng Kong, Shengyu Zhang, Kun Kuang, Yuning Jiang, Bo Zheng.</p>
+  <p><strong>Аффилиации:</strong> Zhejiang University; <span class="industry">Alibaba Group / Taobao</span>.</p>
+  <p><strong>Индустрия:</strong> industrial e-commerce retrieval/search с multimodal item features и real user behavior logs.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2509.20904.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>FORGE является industrial benchmark и набором практик для semantic identifiers в generative retrieval.</li>
+  <li>Работа изучает SID quality, codebook utilization, collisions, multimodal features, collaborative i2i relations и online adaptation.</li>
+  <li>Главная ценность - масштаб и production-oriented анализ, а не только новый loss.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Generative retrieval декодирует SID целевого товара вместо ANN search по dense vector.</li>
+  <li>На маленьких Amazon/MovieLens datasets многие проблемы не видны: industrial catalog меняется ежедневно, а user sequences длиннее.</li>
+  <li>FORGE строит данные вокруг recommendation и search задач с реальной платформы и 40 млн sampled items в день.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>RQ-VAE может давать semantic IDs с плохой фактической utilization.</li>
+  <li>Collision handling критичен: один SID может соответствовать многим товарам, что разрушает точность генерации.</li>
+  <li>Feature fidelity не всегда коррелирует с retrieval effectiveness, поэтому нужны отдельные SID-quality метрики.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Базовый tokenizer использует multimodal item features, включая image/text fusion через CN-CLIP-like features.</li>
+  <li>RQ-VAE строит multi-level residual codewords; основной practical setup исследует трехуровневые SID.</li>
+  <li>Collaborative signals добавляются через i2i relationships и item-side information: seller, price, category и richer co-occurrence.</li>
+  <li>Post-processing контролирует collisions через KNN-based ограничения, например меньше 25, 10 или 5 items per SID.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>SID generation оптимизируется reconstruction/quantization loss и alignment с collaborative relations.</li>
+  <li>Generative retrieval objective - autoregressive prediction target SID по sequence of historical behavior SIDs и, для search, query keywords.</li>
+  <li>Offline continued pretraining на последних 7 днях interactions помогает LLM адаптироваться к обновленным SID.</li>
+  <li>Оценка SID включает HitRate, Embedding HitRate, Gini coefficient, utilization, style/homogeneous consistency и production metrics вроде transaction count.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Данные разделены на S1/S2/S3: S1 четыре дня warm-up, S2/S3 по три дня, после каждой стадии 100K samples для evaluation.</li>
+  <li>Generative models: T5-Base и Qwen2.5-0.5B; history length до 100, max source length 1024, target length 256.</li>
+  <li>T5-Base обучается 4 epochs, total batch 1280 на 16 PPU-ZW810E GPUs; learning rate 2e-4.</li>
+  <li>Ablations показывают связь collision avoidance и HR@20/100/500/1000.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Dataset tables описывают sequence data, item info и task formats.</li>
+  <li>Ablation tables сравнивают no-collision, base, KNN-10, KNN-5 и merge.</li>
+  <li>Codebook structure tables проверяют 2-level, 3-level, 4-level и неодинаковые sizes вроде 1024_4096_32768.</li>
+  <li>Quantization comparison показывает Random, Multiple-VQ, RQ-Kmeans, RQ-VAE base и optimized variants.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>No post-processing collision strategy снижает retrieval.</li>
+  <li>Intentional merge, ухудшающий fairness, резко снижает performance и подтверждает роль utilization.</li>
+  <li>2-level SIDs слишком грубые, 4-level дороже и дают малый выигрыш; 3-level - лучший compromise.</li>
+  <li>Random SID дает сильное падение HR@1000, Multiple-VQ страдает от decoupled codewords.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Показывает реальные operational knobs для SID: fairness, utilization, collision cap, layout, adaptation.</li>
+  <li>Не полагается на одну offline метрику и явно показывает, какие метрики коррелируют с retrieval.</li>
+  <li>Описывает training/inference formats, что делает работу полезной для воспроизведения pipeline.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Часть данных анонимизирована и защищена privacy constraints; полная воспроизводимость ограничена.</li>
+  <li>Выводы завязаны на e-commerce с частыми homogeneous/style duplicates.</li>
+  <li>Инфраструктурная сложность высока: tokenizer, LLM, online updates и SID mapping должны обновляться согласованно.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +141,20 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Часть данных анонимизирована и защищена privacy constraints; полная воспроизводимость ограничена.</li>
+  <li>Специфично для этой статьи: Выводы завязаны на e-commerce с частыми homogeneous/style duplicates.</li>
+  <li>Специфично для этой статьи: Инфраструктурная сложность высока: tokenizer, LLM, online updates и SID mapping должны обновляться согласованно.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>FORGE дополняет LETTER и CoST: те предлагают objectives, а FORGE показывает industrial evaluation.</li>
+  <li>Связан с UniSearch/PLUM через practical SID serving.</li>
+  <li>Работа полезна как чеклист для любой промышленной системы semantic ID retrieval.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>FORGE говорит: SID качество - это distribution engineering, а не только reconstruction.</li>
+  <li>Лучший practical recipe включает collision control, collaborative signals, utilization monitoring и continued pretraining при drift.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

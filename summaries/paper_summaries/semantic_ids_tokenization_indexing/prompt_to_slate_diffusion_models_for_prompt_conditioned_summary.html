@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,86 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2408.06883">Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Federico Tomasi, Francesco Fabbri, Justin Carter, Elias Kalomiris, Mounia Lalmas, Zhenwen Dai.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Spotify</span>.</p>
+  <p><strong>Индустрия:</strong> prompt-conditioned playlist/slate generation и e-commerce bundles.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2408.06883.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>DMSG генерирует целый slate по natural language prompt.</li>
+  <li>Вместо autoregressive SID используется continuous diffusion over concatenated item embeddings.</li>
+  <li>Подходит для editorial/cold-start settings, где нет персональной истории.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Slate recommendation требует coherence между itemами, а не только individual relevance.</li>
+  <li>Playlists и bundles имеют higher-order structure.</li>
+  <li>Prompt-conditioned generation должен давать несколько валидных diverse answers.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Комбинаторный slate space огромен.</li>
+  <li>Retrieval baselines плохо моделируют joint distribution.</li>
+  <li>Diffusion inference может быть дорогим без DDIM/latency optimization.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Item sequence кодируется fixed encoder в continuous latent space.</li>
+  <li>Text encoder дает condition vector.</li>
+  <li>Diffusion transformer с cross-attention предсказывает noise.</li>
+  <li>Nearest-neighbor rounding превращает latent vectors обратно в catalog items.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Forward process добавляет Gaussian noise.</li>
+  <li>Reverse process обучается denoising objective.</li>
+  <li>DDIM позволяет использовать fewer steps на inference.</li>
+  <li>Multiple samples одного prompt дают diversity/freshness.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Datasets: Spotify MPD subset 100K playlists и Amazon Bundle 11K items/5,444 bundles.</li>
+  <li>Metrics: NDCGSim, MAPSim, BertScore, CategorySim.</li>
+  <li>Curated: до +17% NDCGSim и +12.9% MAPSim над BM25.</li>
+  <li>Online: NVIDIA L4, 50 diffusion steps, P99 150 ms против 500 ms baseline.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Training/inference overview DMSG.</li>
+  <li>Transformer details figure.</li>
+  <li>Tables compare baselines on Curated/MPD/Bundle.</li>
+  <li>Exposure/freshness plots показывают diversity.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Post-processing влияет на MPD quality.</li>
+  <li>BM25 может выигрывать по NDCGSim на MPD, но DMSG лучше по MAPSim/BertScore.</li>
+  <li>Freshness/overlap analysis показывает stochastic benefit.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Моделирует slate целиком.</li>
+  <li>Естественно генерирует diverse alternatives.</li>
+  <li>Поддерживает dynamic catalogs через обновление mapping/decoder.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Зависит от item embeddings и rounding.</li>
+  <li>Similarity metrics не полностью заменяют user satisfaction.</li>
+  <li>Diffusion steps дают latency trade-off.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +140,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Зависит от item embeddings и rounding.</li>
+  <li>Специфично для этой статьи: Similarity metrics не полностью заменяют user satisfaction.</li>
+  <li>Специфично для этой статьи: Diffusion steps дают latency trade-off.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Контрастирует с SID autoregressive retrieval.</li>
+  <li>Близок к generative recommendation как output-level генерация slate, а не item ID.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>Для slate задач diffusion может быть лучше autoregressive ID generation.</li>
+  <li>Главная идея - учить joint distribution of slates conditioned on prompt.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

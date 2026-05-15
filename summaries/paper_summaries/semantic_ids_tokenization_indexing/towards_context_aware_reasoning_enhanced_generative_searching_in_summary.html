@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,86 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2510.16925">Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Zhiding Liu, Ben Chen, Mingyue Cheng, Enhong Chen, Li Li, Chenyi Lei, Wenwu Ou, Han Li, Kun Gai.</p>
+  <p><strong>Аффилиации:</strong> University of Science and Technology of China; <span class="industry">Kuaishou Technology</span>.</p>
+  <p><strong>Индустрия:</strong> e-commerce search-based recommendation.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2510.16925.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>CRS adds explicit reasoning to generative e-commerce search.</li>
+  <li>Context is serialized as JSON/text and aligned with SID prediction.</li>
+  <li>Self-evolving post-training alternates SFT and RL; R-GRPO fixes ranking bias.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>Queries are noisy/incomplete; context includes history, clicks, non-clicks, geography and time.</li>
+  <li>LLMs can reason over structured context if domain aligned.</li>
+  <li>Search output is ranked list, not one answer.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Reasoning trajectories are scarce.</li>
+  <li>Distilling large LLM can introduce data-prior and model-capacity bias.</li>
+  <li>Standard GRPO ignores list quality when top-1 wrong.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Context representation includes user profile, historical queries, clicked/non-clicked items and current query metadata.</li>
+  <li>Item context includes title, price, brand, category and GMV.</li>
+  <li>Alignment includes context reconstruction and Context2SID prediction.</li>
+  <li>Self-evolving loop trains on hard wrong cases with RL then consolidates solved trajectories with SFT.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Rewards cover reasoning structure, reasoning length, prediction accuracy and validity.</li>
+  <li>R-GRPO decouples reasoning rollout and beam search over items.</li>
+  <li>Rank-aware weighted reward summarizes full beam list.</li>
+  <li>Constrained prefix trie ensures valid SID generation.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Datasets: All-100K, All-50K, Fashion-27K from Kuaishou logs.</li>
+  <li>10 most recent interactions retained per user.</li>
+  <li>Metrics: HR@1/5/10 and NDCG@1/5/10.</li>
+  <li>CRS improves 3-11% on large datasets and up to 47% on Fashion-27K.</li>
+  <li>Self-evolving improves NDCG@10 up to 39.02% and 21.21% over initial SFT.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Framework figure: representation/alignment, self-evolving, R-GRPO, inference.</li>
+  <li>Tables: dataset stats, main results, R-GRPO vs GRPO, scaling.</li>
+  <li>Case study shows reasoning trajectory and notes possible repetition/inconsistency.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>R-GRPO outperforms GRPO across RL iterations.</li>
+  <li>Larger backbones 1.7B/4B improve Fashion-27K.</li>
+  <li>Cold-start group gains show value of reasoning with limited context.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Addresses ranking objective mismatch directly.</li>
+  <li>Uses practical JSON context instead of complex feature engineering.</li>
+  <li>Good failure analysis around distillation bias.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Reasoning adds latency.</li>
+  <li>Generated reasoning may repeat or contradict itself.</li>
+  <li>Private logs limit reproducibility.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +140,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Reasoning adds latency.</li>
+  <li>Специфично для этой статьи: Generated reasoning may repeat or contradict itself.</li>
+  <li>Специфично для этой статьи: Private logs limit reproducibility.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Related to UniSearch and GenSAR.</li>
+  <li>Adds reasoning/RL layer over semantic ID generation.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>CRS shows that context-aware search needs rank-aware reasoning.</li>
+  <li>For e-commerce, top-1-only RL is the wrong abstraction.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyond Static Collision Handling: Adaptive Semantic ID Learning for Multimodal Recommendation at Industrial Scale</title>
+<style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px 24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2604.23522">Beyond Static Collision Handling: Adaptive Semantic ID Learning for Multimodal Recommendation at Industrial Scale</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Yongsen Pan, Yuxin Chen, Zheng Hu, Xu Yuan, Daoyuan Wang, Yuting Yin, Songhao Ni, Hongyang Wang, Jun Wang,
+Fuji Ren, Wenwu Ou.</p>
+<p>
+<strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>; University of Electronic Science and Technology of
+China.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>AdaSID решает проблему collision в semantic IDs: разные items получают одинаковые или
+почти неразличимые дискретные коды. Авторы предлагают не жестко
+отталкивать все пересечения, а адаптивно решать, какие overlap'ы допустимы
+семантически, а какие вредят recommender'у.</p>
+<h2>Контекст</h2>
+<p>В мультимодальном e-commerce item представлен текстом, изображением и collaborative
+сигналами. SID должен быть компактным для retrieval/ranking и одновременно
+семантически честным. Статические penalties за overlap часто слишком грубы: похожие
+items можно частично делить, но плотные регионы и популярные кластеры требуют
+сильного разведения.</p>
+<h2>Проблема</h2>
+<p>Collision handling в предшествующих методах обычно фиксирован: одинаковое правило
+для всех overlap'ов и всех этапов обучения. Это конфликтует с реальным catalog space,
+где часть совпадений отражает полезное semantic sharing, а часть создает ambiguity для
+downstream top-k.</p>
+<h2>Метод / архитектура</h2>
+<p>AdaSID строится вокруг collaborative trigger-target pairs и quantized item representations. Framework добавляет
+две стадии regulation. Stage 1, semantic-adaptive overlap relaxation, оценивает совместимость overlap'а и
+ослабляет repulsion для допустимых совпадений. Stage 2 распределяет оставшееся
+давление: load-adaptive collision strengthening усиливает регионы с высокой collision load, а
+progress-adaptive objective rebalancing меняет вес регуляризации по ходу обучения.</p>
+<h2>Objective / алгоритм</h2>
+<p>Общий objective объединяет recommendation-oriented loss и overlap regulation. Важная деталь: penalty не
+является глобальной константой. Он зависит от семантической близости item pairs,
+локальной загрузки discrete bucket'ов и training progress. Так SID learning остается направленным
+на recommendation, а не превращается в механическое максимальное разделение всех
+объектов.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Offline проверка идет на Amazon Toys и Beauty через одинаковый downstream TIGER backbone; метрики
+Recall@3/5 и NDCG@3/5. AdaSID дает около 4.5% среднего улучшения над сильными tokenizer baselines.
+На Toys Recall@3 растет с 0.0195 до 0.0214, NDCG@3 с 0.0164 до 0.0175; на Beauty особенно заметен NDCG@3.
+Промышленная проверка на Kuaishou e-commerce включает онлайн A/B: авторы сообщают +0.98%
+GMV, а также AUC gains в ranking evaluation.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Figure 1 объясняет отличие static regulation от AdaSID. Figure 2 показывает полный pipeline с
+двумя adaptive stages. Таблица offline performance сравнивает tokenizer'ы; таблица industrial validation
+связывает SID-качество с бизнес-метриками. SID-space landscape визуализирует entropy,
+average/min perplexity и top-1 load ratio, что полезнее одной collision rate.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Метод признает, что не все коллизии одинаково плохи.</li>
+<li>Есть и offline, и online industrial validation.</li>
+<li>Оценка SID-space включает utilization/diversity, а не только Recall.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Метод требует дополнительных сигналов для semantic compatibility и аккуратной
+настройки pressure schedule. В статье много промышленного контекста Kuaishou; перенос на
+каталоги без multimodal/collaborative pair structure потребует адаптации. Online gains не
+раскрывают все детали traffic split и serving constraints.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Начать стоит с baseline RQ-VAE/RQ-KMeans tokenizer и логирования overlap groups. Затем добавить
+semantic qualification: для каждой collision пары считать совместимость по multimodal/collaborative
+embedding. Проверять надо Recall/NDCG, entropy SID sequences, min perplexity по слоям, top-1 load и
+распределение collision load. В ranking production отдельно тестируется AUC на head/tail и latency
+tokenizer refresh.</p>
+<h2>Связь с соседними работами</h2>
+<p>CoST атакует reconstruction objective contrastive-loss'ом, AdaSID атакует collision regulation. GLASS и SID-Coord
+используют SID внутри ranking/retrieval, а AdaSID улучшает сами IDs. Со Snapchat paper
+пересекается в теме: uniqueness не всегда единственный критерий SID, важна
+применимость в downstream системе.</p>
+<h2>Формализация collision и overlap</h2>
+<p>Collision в статье понимается шире, чем полное совпадение всей
+SID-последовательности.</p>
+<p>В discrete semantic space вредными могут быть и prefix-overlaps, и confusable local assignments.</p>
+<p>Это особенно важно для autoregressive GR: ранний token SID задает крупный semantic region.</p>
+<p>Если два разных target items постоянно конкурируют за один и тот же prefix, модель
+получает неоднозначный supervision.</p>
+<p>Однако полное устранение overlap'ов тоже неправильно.</p>
+<p>Близкие варианты одного товара или семантически совместимые items должны
+иметь право на partial sharing.</p>
+<p>AdaSID поэтому разделяет observed overlap на admissible sharing и harmful ambiguity.</p>
+<h2>Stage One: semantic-adaptive overlap relaxation</h2>
+<p>Первая стадия решает, нужно ли вообще отталкивать пару items.</p>
+<p>Для observed overlap вычисляется semantic compatibility.</p>
+<p>Если items совместимы, repulsion для этого overlap ослабляется.</p>
+<p>Если compatibility низкая, overlap считается harmful и продолжает получать pressure.</p>
+<p>Важный инженерный смысл: модель не тратит capacity на искусственное
+разделение естественных групп.</p>
+<p>Это уменьшает риск over-fragmentation, когда SID space становится уникальным, но теряет
+обобщающую способность.</p>
+<h2>Stage Two: adaptive pressure allocation</h2>
+<p>Вторая стадия распределяет оставшееся давление неравномерно.</p>
+<p>Load-adaptive strengthening усиливает repulsion в дискретных регионах, где collision load высок.</p>
+<p>Progress-adaptive rebalancing меняет силу objectives по мере обучения.</p>
+<p>На ранних этапах полезно не перегружать tokenizer жесткими constraints, пока representation
+еще не стабилизировался.</p>
+<p>На поздних этапах можно сильнее разводить harmful overlaps.</p>
+<p>Так AdaSID пытается избежать двух крайностей: early collapse и late under-regularization.</p>
+<h2>SID-space diagnostics</h2>
+<p>Статья явно отделяет recommendation metrics от статистик token space.</p>
+<p><strong>SID Entropy</strong> показывает разнообразие полных SID sequences.</p>
+<p><strong>Average Perplexity</strong> показывает среднюю utilization codebook layers.</p>
+<p><strong>Minimum Perplexity</strong> важна как worst-layer metric: один мертвый слой может
+ограничить всю емкость SID.</p>
+<p><strong>Mean Top-1 Load Ratio</strong> измеряет доминирование самого популярного code в
+каждом слое.</p>
+<p>Хороший tokenizer должен двигаться к высокой entropy/perplexity и низкой dominant-code
+concentration.</p>
+<h2>Ablation conclusions</h2>
+<p>Ablation table показывает, что обе adaptive стадии нужны.</p>
+<p>Без semantic relaxation модель переотталкивает допустимые overlap'ы и теряет semantic
+sharing.</p>
+<p>Без load-adaptive pressure остаются перегруженные local buckets.</p>
+<p>Без progress-adaptive balancing training менее стабилен, потому что один и тот же penalty
+действует одинаково в начале и конце.</p>
+<p>Практический вывод: collision handling должен быть и semantic-aware, и training-aware.</p>
+<h2>Industrial validation notes</h2>
+<p>В Kuaishou e-commerce AdaSID проверяется не только как standalone tokenizer.</p>
+<p>SID используется в short-video retrieval model и в ranking evaluation.</p>
+<p>Online A/B на десятках миллионов пользователей показывает statistically significant gains.</p>
+<p>GMV +0.98% выглядит небольшим числом, но для e-commerce это значимый production effect.</p>
+<p>Отдельные AUC gains в ranking подтверждают, что SID полезен не только на retrieval stage.</p>
+<h2>Failure modes</h2>
+<p>Если semantic compatibility scorer плохой, AdaSID может сохранить вредные collisions.</p>
+<p>Если scorer слишком строгий, метод деградирует к static repulsion.</p>
+<p>Если каталог быстро меняется, collision load statistics устаревают между retraining cycles.</p>
+<p>Если codebook capacity слишком мала, adaptive regulation не спасет от неизбежных collisions.</p>
+<p>Если downstream model insensitive к SID quality, offline SID-space improvements могут не перейти в Recall/NDCG.</p>
+<h2>Implementation notes</h2>
+<ol>
+<li>Логировать collisions не только full SID, но и prefix-level overlaps.</li>
+<li>Считать semantic compatibility на тех же multimodal embeddings, что участвуют в tokenizer.</li>
+<li>Вести moving statistics collision load по codebook regions.</li>
+<li>Разделить loss weights для recommendation objective и regulation objectives.</li>
+<li>Сохранять checkpoints SID tokenizer и downstream retriever вместе, иначе трудно расследовать
+regressions.</li>
+<li>Добавить dashboards по entropy, perplexity, top-1 load и head-tail Recall.</li>
+</ol>
+<h2>Итог</h2>
+<p>AdaSID делает collision handling recommendation-aware: разрешает полезное semantic sharing и усиливает
+давление там, где ambiguity реально мешает. Это один из более практичных шагов от
+академической tokenization к промышленной SID-инфраструктуре.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2604.23522">arXiv:2604.23522</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

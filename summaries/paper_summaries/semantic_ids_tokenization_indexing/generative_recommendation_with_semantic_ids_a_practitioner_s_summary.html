@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pre-training Generative Recommender with Multi-Identifier Item Tokenization</title>
+  <title>Generative Recommendation with Semantic IDs: A Practitioner's Handbook</title>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -28,34 +28,34 @@ th { background: var(--soft); text-align: left; }
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2504.04400">Pre-training Generative Recommender with Multi-Identifier Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2507.22224">Generative Recommendation with Semantic IDs: A Practitioner&#x27;s Handbook</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
 <blockquote>
-<p><strong>Авторы:</strong> Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Huawei</span> Poisson Lab.</p>
-<p><strong>Первичный источник:</strong> arXiv:2504.04400.</p>
+<p><strong>Авторы:</strong> Clark Mingxuan Ju, Liam Collins, Leonardo Neves, Bhuvesh Kumar, Louis Yufeng Wang, Tong Zhao, Neil Shah.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Snap Inc.</span>.</p>
+<p><strong>Первичный источник:</strong> arXiv:2507.22224.</p>
 </blockquote>
 <h2>коротко</h2>
-<p>MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.</p>
+<p>The handbook introduces GRID, a modular open-source framework for benchmarking Generative Recommendation with Semantic IDs.</p>
 <p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
 <ul>
-<li>Breaks strict one-item-one-identifier training assumption.</li>
-<li>Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.</li>
-<li>Turns one user sequence into multiple token sequences.</li>
-<li>Uses data influence estimation for curriculum sampling.</li>
-<li>Fine-tunes with single tokenizer for unambiguous inference.</li>
+<li>Focus is reproducibility and component ablation, not a single new tokenizer.</li>
+<li>GRID modularizes modality encoder, tokenizer, GR model, decoding and evaluation.</li>
+<li>Shows overlooked architecture/training choices strongly affect performance.</li>
+<li>Useful for fair comparison of SID papers.</li>
+<li>Open-source repo is stated in paper.</li>
 </ul>
 <h2>контекст</h2>
 <p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
 <p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
+<tr><td>Framework</td><td>GRID</td></tr>
+<tr><td>Purpose</td><td>component swapping and robust benchmarking</td></tr>
+<tr><td>Audience</td><td>practitioners building SID-GR pipelines</td></tr>
 </table>
 <h2>проблема</h2>
-<p>A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.</p>
+<p>Existing SID-GR papers vary in preprocessing, tokenizer, beam search, collision handling and backbone choices, making direct comparisons unreliable.</p>
 <p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
 <ul>
 <li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
@@ -68,78 +68,77 @@ th { background: var(--soft); text-align: left; }
 <p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
 <p>Архитектурная идея раскрывается через следующие элементы.</p>
 <ul>
-<li>RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.</li>
-<li>Adjacent final checkpoints as semantically relevant tokenizers.</li>
-<li>Multiple tokenized datasets/groups from same interaction sequences.</li>
-<li>Influence estimator based on validation gradient and training gradient.</li>
-<li>Dynamic sampler over tokenizer data groups.</li>
-<li>Final fine-tuning on one tokenizer for serving.</li>
+<li>Modality encoder abstraction.</li>
+<li>Quantization tokenizer abstraction: RQ-VAE, VQ-VAE, residual k-means style options.</li>
+<li>Sequential generative recommender module.</li>
+<li>Constrained decoding / SID-to-item mapping.</li>
+<li>Benchmark configs and ablation harness.</li>
 </ul>
 <h2>objective/алгоритм</h2>
 <p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
 <p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
 <ul>
-<li>RQ-VAE loss: reconstruction plus residual quantization commitment terms.</li>
-<li>Generative recommender NLL over target tokens.</li>
-<li>Data influence estimates validation loss change using first-order Taylor approximation.</li>
-<li>Curriculum updates sampling probabilities of groups.</li>
-<li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
+<li>Autoregressive SID prediction objective.</li>
+<li>Tokenizer-specific reconstruction/quantization losses.</li>
+<li>Training strategies and architectural choices as experimental variables.</li>
+<li>Evaluation standardization across public benchmarks.</li>
+<li>Collision and decoding policies made explicit.</li>
 </ul>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
+<tr><td>Datasets</td><td>public GR/SID benchmarks in GRID experiments</td></tr>
+<tr><td>Tables</td><td>SID method taxonomy and GR architecture taxonomy</td></tr>
+<tr><td>Ablations</td><td>architecture components, training strategies, tokenizer decisions</td></tr>
+<tr><td>Output</td><td>practitioner guidance and open-source framework</td></tr>
+<tr><td>Key claim</td><td>small implementation choices can dominate reported differences</td></tr>
 </table>
 <h2>рисунки/таблицы</h2>
 <p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
 <p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
 <ul>
-<li>Framework figure: adjacent checkpoints and curriculum sampler.</li>
-<li>Main result table across three Amazon datasets.</li>
-<li>Ablation table on Instrument and Scientific.</li>
-<li>Sensitivity to number of tokenizers n.</li>
-<li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
+<li>Figure 1: GR with SID pipeline.</li>
+<li>Framework diagram: GRID modules.</li>
+<li>Tables comparing SID and GR techniques.</li>
+<li>Ablation tables over architecture choices.</li>
+<li>Benchmark result tables under unified setup.</li>
 </ul>
 <h2>сильные стороны</h2>
 <p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li>Improves experimental hygiene.</li>
+<li>Reduces reimplementation burden.</li>
+<li>Makes baselines stronger and fairer.</li>
+<li>Encourages component-level diagnosis.</li>
+<li>Useful before proposing new SID methods.</li>
 </ul>
 <h2>ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li>Framework does not solve SID bottleneck itself.</li>
+<li>Public datasets may not match production scale.</li>
+<li>Performance depends on maintained code quality.</li>
+<li>Some industrial constraints remain outside benchmark.</li>
+<li>Open-source configs can still be misused if preprocessing differs.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
 <p>Ниже — минимальный набор проверок перед доверием к результату.</p>
 <ul>
-<li>Save final n RQ-VAE checkpoints.</li>
-<li>Verify adjacent checkpoint IDs are semantically close, not random.</li>
-<li>Create separate tokenized sequence groups.</li>
-<li>Implement influence-based sampler and compare uniform sampling.</li>
-<li>Run fine-tune with selected single tokenizer.</li>
-<li>Measure performance versus n and tokenizer checkpoint choice.</li>
+<li>Use GRID baseline before claiming novelty.</li>
+<li>Freeze dataset preprocessing and split.</li>
+<li>Report tokenizer, beam and collision details.</li>
+<li>Run multiple seeds.</li>
+<li>Compare against TIGER++/LETTER-style strong baselines.</li>
+<li>Publish configs with SID map statistics.</li>
 </ul>
 <h2>связь</h2>
 <p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.</p>
+<p>The handbook is infrastructure for the rest of the literature: CoST, ETEGRec, MTGRec and future tokenizers should be evaluated in a GRID-like controlled harness.</p>
 <table>
 <tr><th>Аспект</th><th>Что важно</th></tr>
 <tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
@@ -149,7 +148,7 @@ th { background: var(--soft); text-align: left; }
 <tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
 </table>
 <h2>итог</h2>
-<p>MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.</p>
+<p>This is the practical checklist paper. Its main contribution is making SID-GR less artisanal and easier to debug.</p>
 <p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
 <ul>
 <li>Хороший кандидат для controlled offline reproduction.</li>

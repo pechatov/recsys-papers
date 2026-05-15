@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLASS: A Generative Recommender for Long-sequence Modeling via SID-Tier and
+Semantic Search</title>
+<style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px
+24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px
+solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2602.05663">GLASS: A Generative Recommender for Long-sequence Modeling via SID-Tier and Semantic Search</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Shiteng Cao, Junda She, Ji Liu, Bin Zeng, Chengcheng Guo,
+Kuo Cai, Qiang Luo, Ruiming Tang, Han Li, Kun Gai,
+Zhiheng Li, Cheng Yang.</p>
+<p>
+<strong>Аффилиации:</strong> <span class="industry">Kuaishou Inc.</span>;
+Tsinghua University; BUPT.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>GLASS улучшает generative recommender для длинных
+пользовательских
+последовательностей. Два основных блока: SID-Tier,
+который учитывает tiered/prefix nature
+semantic IDs, и Semantic Hard Search, который помогает decoding и
+mid/late token prediction.</p>
+<h2>Контекст</h2>
+<p>TIGER-подобные модели страдают от длинных histories:
+sequence length растет в токенах, а
+ошибка на раннем SID token ломает весь item. При этом
+первый токен semantic ID часто
+задает coarse bucket, а последующие уточняют item.
+Стандартный Transformer не всегда явно
+использует эту иерархию.</p>
+<h2>Проблема</h2>
+<p>Для long-sequence recommendation нужно одновременно
+сохранить long-term interest и точно
+генерировать SID. Наивная генерация всех токенов
+равноправно недооценивает
+prefix dependency: если coarse token неверен, следующие почти
+бесполезны. Также возникает
+sparsity: редкие items плохо представлены в SID sequence
+training.</p>
+<h2>Метод / архитектура</h2>
+<p>SID-Tier перестраивает modeling around SID levels: coarse-to-fine tokens
+получают специальное
+внимание и gating. Semantic Hard Search добавляет semantic
+retrieval/search на этапе генерации, чтобы
+использовать близость в item embedding/SID space. Sparsity-aware
+augmentation включает codebook resizing и
+semantic neighbor augmentation для редких регионов.</p>
+<h2>Objective / алгоритм</h2>
+<p>Модель обучается как SID-based generative recommender, но inference
+дополняется semantic search.
+Алгоритм декодирует prefix, оценивает gate/sequence length,
+затем применяет hard search среди
+семантически допустимых candidates. Это снижает
+зависимость от чистого autoregressive
+beam и помогает восстановить кандидатов, если
+поздние SID-токены менее
+уверенные.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Датасеты: Taobao-MM и KuaiRec. Метрики: Hit@K и NDCG@K. В ablation
+авторы показывают, что SIDTier
+поднимает Recall@5 примерно с 0.0702 до 0.0842, а
+совместный Tiger+SIDTier+SHS улучшает
+Recall@10/NDCG@10. Codebook resizing дает пик Recall@10 около 0.13 в
+описанном эксперименте. Также
+анализируется average gate value vs retrieved sequence length.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Главная схема показывает GLASS framework. Таблица
+статистики фиксирует Taobao-MM и
+KuaiRec после preprocessing. Network configuration разделяет SID-based и
+ID-based настройки. Overall performance
+table сравнивает GLASS с baselines, а ablation figures раскладывают
+вклад SIDTier, SHS, CR и semantic neighbor
+augmentation.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Метод явно использует иерархию semantic IDs.</li>
+<li>Комбинирует генерацию с semantic search, что
+практичнее для long sequence.</li>
+<li>Есть анализ gating и sparsity augmentation.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Сложность системы выше, чем у чистого TIGER:
+появляется search component и
+дополнительные hyperparameters. Результаты завязаны на
+качество SID tokenizer и на
+доступность semantic neighbor structure. Online A/B в исходнике не
+является основной
+раскрытой частью.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Начать с baseline TIGER на тех же SIDs, затем добавить
+SID-level attention/gating и только после
+этого Semantic Hard Search. Нужно логировать accuracy по
+позициям SID, prefix ceiling, gate value, Recall/NDCG
+и latency search. Для tail-items отдельно проверять effect codebook
+resizing и neighbor augmentation.</p>
+<h2>Связь с соседними работами</h2>
+<p>GLASS дополняет variable-length SID и Spotify GLIDE: все три
+работают с token budget/длинными
+последовательностями, но GLASS фокусируется на
+tier-aware generation. С RecoChain его роднит
+идея добавить post-generation search/ranking вместо чистой
+генерации.</p>
+<h2>SID-Tier: зачем нужна tier-aware модель</h2>
+<p>Semantic ID обычно имеет coarse-to-fine структуру.</p>
+<p>Первый token выбирает крупный semantic cluster.</p>
+<p>Следующие tokens уточняют subcluster и конкретный item.</p>
+<p>Vanilla Transformer видит эти tokens как обычную последовательность.</p>
+<p>SID-Tier вводит inductive bias: уровни SID не равноправны.</p>
+<p>Если ошибка возникает на первом уровне,
+дальнейшее уточнение почти не
+спасает item retrieval.</p>
+<p>GLASS анализирует accuracy и probability по уровням:
+<code>acc_1</code>, <code>P_1</code>, <code>acc_2</code>,
+<code>P_2</code>.</p>
+<h2>Semantic Hard Search</h2>
+<p>SHS дополняет autoregressive decoding semantic search.</p>
+<p>Если prefix указывает на semantic region, не обязательно
+полагаться только на
+следующий generated token.</p>
+<p>Можно использовать hard search по semantic neighbors и valid
+candidates.</p>
+<p>Это особенно полезно для mid-to-late stages sequence
+generation.</p>
+<p>В ablation авторы отмечают, что Tiger+SIDTier+SHS поднимает
+<code>acc_2</code> и <code>P_2</code>.</p>
+<p>Результат - лучшая Recall@10 и NDCG@10.</p>
+<h2>Sparsity-aware augmentation</h2>
+<p>Long-tail items плохо обучаются, потому что у них мало
+behavioral signal.</p>
+<p>GLASS использует Codebook Resizing и Semantic Neighbor Augmentation.</p>
+<p>Codebook Resizing меняет емкость discrete space, чтобы
+уменьшить перегрузку bucket'ов.</p>
+<p>Semantic Neighbor Augmentation добавляет соседние items как
+дополнительные training signals.</p>
+<p>В ablation CR дает сильный прирост ranking capability.</p>
+<p>Комбинация SIDTier+SHS+CR достигает peak Recall@10 около 0.13
+в описании авторов.</p>
+<h2>Gating mechanism и setup</h2>
+<p>Gate регулирует, сколько токенов или какой retrieved
+sequence length использовать во
+время inference.</p>
+<p>Figure с average gate value сравнивает configurations <code>[128,128,128]</code>
+и <code>[64,128,128]</code>.</p>
+<p>Если gate слишком мал, модель возвращает coarse
+candidates.</p>
+<p>Если gate слишком велик, latency растет и ошибки
+поздних tokens могут ухудшить
+precision.</p>
+<p>Taobao-MM и KuaiRec используются как основные
+датасеты.</p>
+<p>Метрики Hit@K и NDCG@K отражают top-k retrieval/ranking quality.</p>
+<h2>Failure modes и проверка</h2>
+<p>Первый failure mode - неверный coarse SID token.</p>
+<p>Второй - semantic search возвращает близкий, но уже
+просмотренный или недоступный
+item.</p>
+<p>Третий - neighbor augmentation усиливает popularity bias, если
+neighbors берутся из head clusters.</p>
+<p>Четвертый - codebook resizing может улучшить Recall@10, но
+ухудшить stability SID vocabulary.</p>
+<p>Пятый - gate miscalibration на редких histories.</p>
+<ol>
+<li>Считать per-level SID prediction accuracy.</li>
+<li>Добавить prefix-validity constraints в beam/search.</li>
+<li>Построить semantic neighbor index offline.</li>
+<li>Сравнить vanilla TIGER, TIGER+SIDTier, TIGER+SHS и полный GLASS.</li>
+<li>Отдельно оценивать head/tail и short/long histories.</li>
+<li>Логировать latency semantic search и долю fallback cases.</li>
+</ol>
+<h2>Итог</h2>
+<p>GLASS показывает, что semantic ID - это не плоская
+строка токенов. Если model и decoding
+учитывают coarse-to-fine структуру, long-sequence generative
+recommendation становится устойчивее и
+точнее.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2602.05663">arXiv:2602.05663</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

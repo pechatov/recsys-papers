@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmonizing Generative Retrieval and Ranking in Chain-of-Recommendation</title>
+<style>:root{--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}body{margin:0;color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:40px
+24px
+72px}h1{margin-top:0;font-size:2rem;line-height:1.25;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem;margin:1.55em
+0 .55em}a{color:var(--link)}blockquote{margin:1rem 0;padding:.65rem 1rem;background:var(--soft);border-left:4px
+solid
+var(--border);color:var(--muted)}li{margin:.3rem 0}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}code{background:var(--soft);padding:.12rem
+.28rem;border-radius:4px}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2604.25787">Harmonizing Generative Retrieval and Ranking in Chain-of-Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Yu Liu, Jiangxia Cao.</p>
+<p>
+<strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>;
+NJUST.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>RecoChain объединяет generative retrieval и ranking в одной
+chain-of-recommendation
+последовательности. Модель сначала генерирует
+next-item semantic ID, затем получает
+candidate-aware subsequence и оценивает ranking score, вместо того
+чтобы держать retriever и ranker
+полностью раздельно.</p>
+<h2>Контекст</h2>
+<p>Классический промышленный stack retrieve-then-rank
+эффективен, но обучается
+фрагментированно: retrieval оптимизирует candidate recall,
+ranking - click/utility. Generative retrieval
+обещает end-to-end item generation, но часто не имеет
+сильного ranking signal для кандидатов
+внутри beam.</p>
+<h2>Проблема</h2>
+<p>Если генерировать только SIDs, модель хорошо
+достает кандидатов, но порядок
+внутри top-k может быть слабым. Если отдельно
+ранжировать, возникает mismatch
+между representations и training objectives. RecoChain хочет, чтобы
+один sequence model видел и
+генерацию, и candidate-aware scoring.</p>
+<h2>Метод / архитектура</h2>
+<p>Item tokenizer строит semantic IDs. Sequence model получает history,
+генерирует SID кандидата, а
+затем формирует candidate-aware subsequence, где candidate tokens
+становятся входом для reranking head.
+Inference: beam search достает candidates, затем тот же model
+оценивает click probability/ranking score и
+переупорядочивает выдачу.</p>
+<h2>Objective / алгоритм</h2>
+<p>Training token organization состоит из двух шагов: next-item SID
+generation и последующий ranking-score
+prediction на candidate-aware tokens. Это chain: output retrieval stage
+становится условием ranking stage. Objective
+сочетает generative likelihood и ranking loss, что должно
+уменьшить разрыв между recall и order
+quality.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Авторы варьируют beam size, input sequence length и retrieval length.
+Метрики: Recall@5/10 и NDCG@5/10 до и
+после reranking. При beam size 10 reranking дает небольшой Recall@5
+gain +0.27%, при beam 40 gain растет до
++1.08%, а NDCG@10 gain до +0.65%. Длинная входная история
+уменьшает добавочную пользу
+reranking: Recall@5 gain падает с +3.14% при sequence length 32 до +0.92%
+при 128.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Figure 1 показывает классический two-stage retrieval-then-ranking,
+Figure 2 - организацию RecoChain
+tokens. Таблицы beam size, sequence length и retrieval length важны как
+sensitivity analysis: они показывают,
+что reranking полезнее, когда candidate pool шире и retrieval stage
+оставляет пространство для
+переупорядочивания.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Работа явно связывает generation и ranking в одном sequence
+pipeline.</li>
+<li>Анализирует не только overall metrics, но и beam/retrieval
+length sensitivity.</li>
+<li>Подход естественно встраивается поверх SID-based
+candidate generation.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Вклад reranking местами умеренный и зависит от
+beam/candidate quality. Если retriever уже
+очень точен или candidate pool узкий, эффект ограничен.
+Статья не раскрывает full
+industrial online validation.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Нужен валидный SID tokenizer, beam generator и reranking head над
+candidate-aware tokens. Проверять
+следует paired metrics до/после rerank, invalid SID rate, latency
+увеличения chain, calibration ranking score и
+зависимость gains от beam size. В production важно сохранить
+fallback на обычный ranker.</p>
+<h2>Связь с соседними работами</h2>
+<p>RecoChain близок к GenRec по стремлению выйти за
+пределы next-token SFT. В отличие от GLASS,
+где semantic search помогает retrieval, RecoChain добавляет ranking
+stage внутри той же модели. С
+SID-Coord пересекается по идее согласовать semantic signal с
+ranking quality.</p>
+<h2>Training token organization</h2>
+<p>Главная техническая идея статьи - организация
+sequence так, чтобы retrieval и ranking
+стали соседними задачами.</p>
+<p>Сначала модель получает user behavior sequence и
+генерирует semantic ID следующего item.</p>
+<p>Затем candidate-aware subsequence добавляется как
+продолжение input.</p>
+<p>На этом continuation модель оценивает ranking score или click
+probability.</p>
+<p>Так generated candidate становится условием для reranking
+head.</p>
+<p>Это отличается от схемы, где ranker является
+отдельной моделью с отдельными
+features.</p>
+<h2>Item tokenizer и architecture</h2>
+<p>Tokenizer должен обеспечить валидный mapping SID→item.</p>
+<p>Если несколько items делят SID, reranking stage может
+частично разрешить ambiguity.</p>
+<p>Но слишком высокая collision rate ухудшит candidate generation
+еще до reranking.</p>
+<p>Ranking head использует hidden states после candidate segment.</p>
+<p>Это позволяет передать retrieval uncertainty в ranking
+representation.</p>
+<p>Нужно аккуратно маскировать attention, чтобы training
+не дал leakage target information.</p>
+<h2>Inference procedure</h2>
+<p>Inference состоит из двух шагов.</p>
+<p>Первый: beam search генерирует candidate SIDs.</p>
+<p>Второй: для каждого candidate строится candidate-aware
+subsequence, и reranking head оценивает click
+probability.</p>
+<p>Затем candidates сортируются по ranking score.</p>
+<p>Это повышает latency относительно чистого generation,
+но может улучшить ordering при
+широком beam.</p>
+<h2>Sensitivity conclusions</h2>
+<p>Beam size управляет шириной candidate pool.</p>
+<p>При beam 10 reranking почти нечего исправлять, поэтому
+Recall@5 gain всего +0.27%.</p>
+<p>При beam 40 pool шире, и Recall@5 gain растет до +1.08%.</p>
+<p>NDCG@10 gain также растет до +0.65%.</p>
+<p>При sequence length 32 reranking gain по Recall@5 составляет +3.14%.</p>
+<p>При sequence length 128 gain падает до +0.92%.</p>
+<p>Интерпретация: длинная история уже дает retriever'у
+больше контекста, поэтому
+ranking head добавляет меньше.</p>
+<h2>Failure modes и implementation notes</h2>
+<p>Первый failure mode - candidate starvation: если beam не достал
+релевантный item, reranker не
+поможет.</p>
+<p>Второй - reranker overfits на generated candidates и плохо
+калибруется на distribution shift.</p>
+<p>Третий - latency multiplication: reranking каждого candidate
+дорог.</p>
+<p>Четвертый - exposure bias от старой системы в ranking
+labels.</p>
+<p>Пятый - attention leakage при неправильной организации
+training sequence.</p>
+<ol>
+<li>Сначала валидировать standalone generative retrieval.</li>
+<li>Добавить candidate-aware segment и ranking head.</li>
+<li>Сравнить metrics до и после reranking при разных beam
+sizes.</li>
+<li>Измерять calibration click probability.</li>
+<li>Отдельно логировать Recall ceiling candidate pool.</li>
+<li>Проверять latency на p50/p95 и возможность batch scoring
+candidates.</li>
+</ol>
+<h2>Итог</h2>
+<p>RecoChain - прагматичный мост между generative retrieval и
+ranking. Он не отменяет two-stage
+логику, а делает ее последовательной и обучаемой
+внутри SID-aware model.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2604.25787">arXiv:2604.25787</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

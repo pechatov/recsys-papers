@@ -4,85 +4,165 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Enhancing Embedding Representation Stability in Recommendation Systems with Semantic ID</title>
-  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
-h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
-h2 { font-size: 1.45rem; }
-h3 { font-size: 1.15rem; }
-p { margin: .75rem 0; }
-a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
-ul, ol { padding-left: 1.55rem; }
-li { margin: .3rem 0; }
-blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
-p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
-img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
-.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+  <style>
+  :root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+  h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+  h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.15rem; }
+  p { margin: .75rem 0; }
+  a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+  ul, ol { padding-left: 1.55rem; }
+  li { margin: .3rem 0; }
+  blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+  p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+  img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+  .nav { margin: .75rem 0 1.25rem; }
+  .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+  .note { color: var(--muted); }
+  @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+  </style>
 </head>
 <body>
 <main>
-<h1>Enhancing Embedding Representation Stability in Recommendation Systems with Semantic ID</h1>
-<p>Подробное саммари статьи:</p>
+<h1><a href="https://arxiv.org/abs/2504.02137">Enhancing Embedding Representation Stability in Recommendation Systems with Semantic ID</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <blockquote>
 <p><strong>Авторы:</strong> Carolina Zheng, Minhui Huang, Dmitrii Pedchenko, Kaushik Rangadurai, Siyu Wang, Gaby Nahum, Jie Lei, Yang Yang, Tao Liu, Zutian Luo, Xiaohan Wei, Dinesh Ramasamy, Jiyan Yang, Yiping Han, Lin Yang, Hangjun Xu, Rong Jin, Shuang Yang.</p>
 <p><strong>Аффилиации:</strong> Columbia University; <span class="industry">AI at Meta</span>.</p>
+<p><strong>Индустрия:</strong> <span class="industry">Meta Ads / industrial ranking</span></p>
+<p><strong>Первичные источники:</strong> arXiv:2504.02137 HTML/PDF.</p>
 </blockquote>
 
-<h2>1. Коротко: о чем статья</h2>
-<p>Это production-oriented работа Meta про Semantic ID не как generative retrieval identifier, а как более стабильную замену random hashing для sparse features в ads ranking. Главная проблема: raw item IDs в крупной рекламной системе имеют огромную cardinality, сильный skew и быстро меняются. Hashing экономит память, но создает случайные коллизии и нестабильные embedding rows.</p>
-<p>Авторы предлагают Semantic ID prefix ngram - parameterization, где item получает hierarchical RQ-VAE semantic ID, а embedding table использует префиксы и n-grams этих кодов. Коллизии становятся не случайными, а семантически осмысленными: похожие объявления могут делить часть параметров.</p>
+<h2>Коротко</h2>
+<p>Meta рассматривает Semantic ID как стабильную sparse representation для ads ranking, а не только как identifier для generative retrieval.</p>
+<p>Основной тезис: random hashing неизбежно создает случайные коллизии, а Semantic ID позволяет делать parameter sharing семантически осмысленным.</p>
+<p>Работа полезна тем, что разбирает production проблемы item cardinality, impression skew, ID drift, serving и A/B variance.</p>
 
-<h2>2. Какие проблемы решаются</h2>
+<h2>Контекст</h2>
+<p>В рекламном ranking item/raw ad ID быстро меняется: часть объявлений исчезает, новые объявления появляются каждый день, а head items получают непропорционально много impressions.</p>
+<p>Embedding table ограничена по памяти, поэтому крупные ID-признаки часто хешируются; при этом один row может агрегировать градиенты от несвязанных объявлений.</p>
+<p>Авторы используют Content Understanding embeddings из Meta ads stack: CU-модели предобучены на CC100 и дообучены на внутренних ads data.</p>
+
+<h2>Проблема</h2>
+<p>Статья формулирует проблему как representation stability: нужно, чтобы embedding row сохранял близкий смысл во времени и между похожими объявлениями.</p>
 <ul>
-<li><strong>Item cardinality.</strong> Каталог больше допустимой embedding table, поэтому неизбежны collisions.</li>
-<li><strong>Impression skew.</strong> Небольшая доля head items получает большую часть показов, tail items почти не обучаются.</li>
-<li><strong>ID drifting.</strong> Старые объявления быстро исчезают, новые появляются каждый день, и embedding row меняет смысл.</li>
-<li><strong>Random hash pollution.</strong> Несвязанные items делят одну строку таблицы и дают противоречивые gradient updates.</li>
+<li>Высокая cardinality item/ad IDs превышает разумный размер embedding table.</li>
+<li>Top 0.1% items дают около 25% impressions; следующие 5.5% дают еще около 50%; tail 94.4% items получает оставшиеся 25%.</li>
+<li>ID drift жесткий: по Figure 3 половина исходного корпуса перестает быть active уже примерно через 6 дней.</li>
+<li>Random hash pollution смешивает unrelated items и создает noisy updates.</li>
+<li>Individual embeddings хорошо запоминают head, но плохо помогают new/cold items.</li>
+<li>Нужно внедрение в уже существующий sparse-feature ranking pipeline, без полной замены production модели.</li>
 </ul>
 
-<h2>3. Как строится Semantic ID</h2>
-<p>В основе - RQ-VAE поверх content embeddings объявлений. Item получает последовательность cluster codes, например несколько уровней от coarse к fine. В отличие от raw ID, такой код должен быть стабильнее во времени: новое объявление с похожим content попадет в близкий semantic prefix и сможет использовать уже обученные параметры.</p>
-<img src="../../assets/semantic_stability/rqvae.png" alt="RQ-VAE model used to create Semantic ID" width="620">
-
-<h2>4. Prefix-ngram parameterization</h2>
-<p>Обычный Semantic ID можно маппить в embedding table по-разному: целиком, по префиксам, по отдельным токенам или n-grams. Авторы показывают, что prefix-ngram лучше использует иерархическую структуру. Чем больше глубина prefix-ngram и cardinality RQ-VAE, тем лучше normalized entropy в offline experiments.</p>
-<p>Интуиция простая: если items разделяют coarse prefix, модель может transfer learning между ними; если нужно fine distinction, используются более длинные n-grams.</p>
-
-<h2>5. Почему это работает для skew и drift</h2>
-<p>В Meta ads top 0.1% items дают около 25% impressions, следующие 5.5% - еще 50%, а 94.4% tail items дают оставшиеся 25%. Random hashing плохо помогает tail: tail item делит строку с произвольными neighbors. Semantic ID делает sharing осмысленным: tail item может делить prefix с head или torso item той же семантики.</p>
-<p>При ID drift логика похожая. Если старое объявление исчезло, а новое рекламирует похожий продукт, raw ID полностью новый, но semantic prefix может совпасть или быть близким. Это снижает representation shift.</p>
-
-<h2>6. Production serving</h2>
-<img src="../../assets/semantic_stability/serving_pipeline.png" alt="Semantic ID serving pipeline in Meta ads ranking" width="760">
-<p>Production pipeline разделяет тяжелую часть и serving. RQ-VAE обучается offline на content embeddings за несколько месяцев. На этапе создания объявления content understanding model производит embedding, RQ-VAE считает Semantic ID, значение сохраняется в Entity Data Store. На serving-запросах raw ID и user history обогащаются semantic features и передаются в ranking model.</p>
-
-<h2>7. Результаты</h2>
-<p>Авторы сообщают, что Semantic ID prefix-ngram улучшает offline ranking metrics относительно random hashing и original Semantic ID parameterization. В production Semantic ID features работают в Meta Ads Recommendation System больше года и входят в число top sparse features по feature importance.</p>
-<p>Для flagship ads ranking model авторы создали шесть sparse и одну sequential feature из text, image и video content embeddings. По их отчету, Semantic ID features дали около 0.15% gain на top-line online metric. Для такой оптимизированной ads-системы это существенный production-сигнал.</p>
-<img src="../../assets/semantic_stability/click_loss_rate.png" alt="Click loss rate reduction from Semantic ID" width="700">
-
-<h2>8. Сильные стороны</h2>
+<h2>Метод/архитектура</h2>
+<p>Ключевой объект - RQ-VAE Semantic ID, построенный поверх content embedding объявления. Код имеет иерархические уровни: coarse части кода описывают общую семантику, более глубокие части уточняют item.</p>
+<p>Затем Semantic ID превращается в sparse features через token parameterization. Авторы сравнивают trigram, fourgram, all bigrams и prefix-ngram; лучший вывод paper - использовать hierarchy-aware prefix-ngram.</p>
 <ul>
-<li>Работа фокусируется на stability, skew и drift, а не только на offline Recall.</li>
-<li>Есть описание productionization: offline RQ-VAE, Entity Data Store, feature generation, ranking serving.</li>
-<li>Semantic ID используется как drop-in sparse feature, без полного перехода на generative retrieval.</li>
-<li>Prefix-ngram parameterization хорошо объясняет, как превратить hierarchy в embedding-table sharing.</li>
+<li>Offline RQ-VAE обучается на ad IDs и content embeddings за последние три месяца.</li>
+<li>Production RQ-VAE затем замораживается и используется при ad creation/feature generation.</li>
+<li>Prefix-ngram parameterization маппит разные гранулярности Semantic ID в embedding rows.</li>
+<li>Если cardinality parameterization больше таблицы, применяется modulo hash, но collisions уже происходят внутри semantic tuple space.</li>
+<li>Для production авторы используют prefix-5gram design.</li>
+<li>Semantic features строятся как для target item, так и для user engagement histories.</li>
+<li>Serving pipeline: CU model -> RQ-VAE -> Entity Data Store -> feature generation -> ads ranking model.</li>
+</ul>
+<img src="../../assets/semantic_stability/rqvae.png" alt="RQ-VAE для Semantic ID">
+<img src="../../assets/semantic_stability/serving_pipeline.png" alt="Semantic ID serving pipeline">
+
+<h2>Objective/алгоритм</h2>
+<p>Loss RQ-VAE отвечает за квантование content embedding, а downstream objective ranking модели измеряется normalized entropy / click prediction quality. Смысл работы не в новом supervised loss, а в выборе parameterization, которая лучше переносит обучение между items.</p>
+<ul>
+<li>Normalized Entropy используется как главная offline ranking metric: меньше лучше.</li>
+<li>Prefix-ngram выигрывает у trigram/fourgram/all-bigrams, потому что использует все уровни иерархии.</li>
+<li>Увеличение глубины prefix-ngram улучшает NE.</li>
+<li>Увеличение cardinality RQ-VAE также улучшает NE, пока serving/memory это выдерживает.</li>
+<li>Для user history анализируются attention metrics: attention на первый source token, padding attention, entropy и token self-attention.</li>
+<li>Semantic ID модели имеют более низкие entropy/padding/self-attention и больше внимания к signal tokens.</li>
 </ul>
 
-<h2>9. Ограничения</h2>
+<h2>Эксперименты</h2>
+<p>Paper содержит offline experiments, segment analysis, representation-space analysis, user-history modeling и productionization.</p>
 <ul>
-<li>Большая часть метрик и данных internal, поэтому воспроизводимость ограничена.</li>
-<li>Работа не решает constrained decoding или item generation; это ranking/use-as-feature сценарий.</li>
-<li>Semantic ID зависит от качества content embeddings и периодичности offline RQ-VAE retraining.</li>
-<li>Нужно внимательно версионировать Semantic ID, иначе feature drift переедет из raw ID space в semantic ID space.</li>
+<li>Baselines: individual embeddings, random hashing, Semantic ID.</li>
+<li>Table 3 показывает, что Semantic ID помогает tail и new items относительно random hashing / individual embeddings.</li>
+<li>Для distribution shift sensitivity Semantic ID и individual embeddings стабильнее random hashing на all items.</li>
+<li>Online A/B mutation test заменяет item в recommendation set на item с тем же Semantic ID prefix и измеряет click loss rate.</li>
+<li>Figure 5 показывает: чем глубже prefix, тем меньше click loss rate, то есть prediction similarity коррелирует с semantic similarity.</li>
+<li>В production Semantic ID features используются в Meta Ads Recommendation System больше года.</li>
+<li>Авторы сообщают 6 sparse features и 1 sequential feature из text/image/video content embeddings.</li>
+<li>Для flagship ads ranking model reported top-line online gain около 0.15%.</li>
 </ul>
 
-<h2>10. Вывод</h2>
-<p>Эта статья полезна как production counterpart к TIGER/CoST/LETTER. Она показывает, что Semantic ID ценен не только как output token для generative recommender, но и как стабильная sparse representation для ranking models. Главный урок: хорошие коллизии лучше случайных коллизий, если они отражают content semantics и помогают переносить знание между head, torso и tail items.</p>
+<h2>Рисунки/таблицы</h2>
+<p>Рисунки важны не как decoration, а как аргументы о production viability.</p>
+<ul>
+<li>Figure с RQ-VAE показывает источник discrete hierarchy.</li>
+<li>Figure serving pipeline показывает, что тяжелое квантование не лежит на hot path ranking.</li>
+<li>Figure click loss reduction подтверждает monotonic связь prefix depth и semantic/prediction similarity.</li>
+<li>Table token parameterization фиксирует практическое отличие prefix-ngram от flat n-grams.</li>
+<li>Table attention metrics показывает, что Semantic ID меняет поведение aggregation modules в history modeling.</li>
+</ul>
+
+<h2>Сильные стороны</h2>
+<p>Работа сильна именно industrial деталями.</p>
+<ul>
+<li>Фокус на stability/skew/drift, а не только на benchmark Recall.</li>
+<li>Совместимость с existing ads ranking sparse modules.</li>
+<li>Ясный production lifecycle: offline training, frozen checkpoint, Entity Data Store, online feature join.</li>
+<li>A/B sanity check semantic similarity через controlled item mutation.</li>
+<li>Обсуждение A/A variance и random hashing как источника нестабильности.</li>
+</ul>
+
+<h2>Ограничения</h2>
+<p>Ограничения в основном связаны с закрытым production контекстом.</p>
+<ul>
+<li>Данные internal, поэтому точная репликация невозможна.</li>
+<li>CU encoder и ads taxonomies могут сильно влиять на результат.</li>
+<li>Нет решения задачи generative constrained decoding.</li>
+<li>Версионирование RQ-VAE становится production dependency.</li>
+<li>Modulo hash поверх semantic tuples все еще может давать collisions, просто менее случайные.</li>
+<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
+<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
+<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+</ul>
+
+<h2>Как реализовать/проверять</h2>
+<p>Для внедрения статья дает достаточно конкретный план.</p>
+<ul>
+<li>Собрать content embeddings за стабильное окно, например последние 1-3 месяца.</li>
+<li>Обучить RQ-VAE и зафиксировать codebook sizes/depth.</li>
+<li>Сгенерировать full SID и набор prefix-ngram features.</li>
+<li>В ranking model сравнить random hash, full SID, prefix-only, prefix-ngram.</li>
+<li>Отдельно смотреть head/torso/tail и new-item cohorts.</li>
+<li>Перед online rollout сделать mutation test: замены внутри prefix должны давать меньший loss, чем random replacements.</li>
+<li>Зафиксировать версию tokenizer-а, vocabulary/codebook sizes, seed, дату обучения и покрытие каталога.</li>
+<li>Логировать invalid/generated-not-in-catalog rate отдельно от Recall/NDCG, потому что генеративная модель может улучшать ranking среди валидных, но терять кандидатов на этапе декодирования.</li>
+<li>Делать slice-анализ по popularity bucket, item age, cold-start cohort и длине пользовательской истории.</li>
+<li>Сравнивать не только с SID-only baseline, но и с ID-only/hybrid baseline: в production ID memorization часто остается сильным сигналом.</li>
+<li>Проверять распределение кодов: entropy/perplexity, долю неиспользуемых кодов, top-code concentration и collision examples.</li>
+<li>В online rollout начинать с shadow features или candidate sidecar, чтобы отделить эффект tokenizer-а от эффекта retriever/ranker.</li>
+</ul>
+
+<h2>Связь</h2>
+<p>Эта работа связывает Semantic ID research с классическим ranking.</p>
+<ul>
+<li>Ближе всего к Unified Semantic+ID и Harmonizing SID/HID: все три не требуют полного отказа от ID features.</li>
+<li>Отличается от TIGER/RPG/SETRec тем, что SID не обязательно генерируется моделью как output.</li>
+<li>Служит production аргументом в пользу semantic collisions вместо random collisions.</li>
+</ul>
+
+<h2>Итог</h2>
+<p>Главный вывод прост: если collisions неизбежны, надо управлять их смыслом.</p>
+<ul>
+<li>Semantic ID полезен как feature-store primitive.</li>
+<li>Prefix-ngram - практичный способ превратить иерархический код в parameter sharing.</li>
+<li>Для ads ranking ценность SID проявляется в tail transfer, drift robustness и более стабильном serving behavior.</li>
+</ul>
 </main>
 </body>
 </html>

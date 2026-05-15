@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Efficient Optimization of Hierarchical Identifiers for Generative Recommendation</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
+</head>
+
+<body>
+
+<main>
+
+<h1><a href="https://arxiv.org/abs/2512.18434">Efficient Optimization of Hierarchical Identifiers for Generative Recommendation</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
+<p>Подробное саммари статьи:</p>
+
+<blockquote>
+
+<p><strong>Авторы:</strong> Federica Valeau, Odysseas Boufalis, Polytimi Gkotsi, Joshua Rosenthal, David Vos.</p>
+
+<p><strong>Аффилиации:</strong> University of Amsterdam.</p>
+
+</blockquote>
+
+<h2>1. Коротко</h2>
+
+<p>Статья является reproducibility/optimization study для SEATER - генеративного retrieval с balanced tree-structured item identifiers. Авторы подтверждают качество SEATER, но показывают, что построение дерева через constrained k-means становится узким местом при росте каталога. Основной вклад - greedy и hybrid tree construction algorithms, которые резко сокращают время построения дерева при небольшой или нулевой потере retrieval quality.</p>
+
+<h2>2. Контекст</h2>
+
+<p>В tree-based generative recommendation item кодируется путем от корня к листу: каждый уровень дерева становится токеном identifier'а. Это снижает decoding complexity по сравнению с flat item vocabulary и дает иерархическую структуру. Но дерево нужно строить по item embeddings, и если этот шаг медленный, retraining/refresh каталога становится непрактичным.</p>
+
+<h2>3. Проблема</h2>
+
+<ul>
+<li>Original SEATER использует constrained clustering для balanced tree, но масштабирование tree construction может быть нелинейным.</li>
+
+<li>Identifier quality зависит от дерева: плохие верхние splits ухудшают все последующие token predictions.</li>
+
+<li>Нужно ускорить construction, не разрушив баланс и semantic coherence leaf groups.</li>
+
+<li>Репликация осложняется отсутствием части preprocessing code, поэтому авторы восстанавливают setup через перепроверку и correspondence.</li>
+</ul>
+
+<h2>4. Метод и архитектура</h2>
+
+<p>Авторы сравнивают original tree construction, greedy clustering и hybrid method. Greedy variant использует Faiss-based approximate nearest-neighbor search и минимизирует build time. Hybrid метод применяет greedy на верхних уровнях, где число items велико, а когда размер подзадачи падает ниже порога примерно 2000 items, переключается на более точное constrained clustering. Идея проста: expensive precision нужна внизу дерева, а наверху важнее быстро получить разумные крупные partitions.</p>
+
+<h2>5. Objective и алгоритм</h2>
+
+<p>Objective остается SEATER-like: item identifiers задаются balanced tree, а generative model обучается предсказывать путь/identifier. Оптимизация статьи находится не в loss recommender'а, а в алгоритме построения identifier structure. Complexity сравнивается через число items N, branching factor k, beam width b, embedding dimension d и длину identifier L. Hybrid algorithm балансирует два objective: минимизировать construction time и удержать retrieval metrics.</p>
+
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Датасеты включают Yelp, News, Books и Yambda. Метрики: NDCG@20/50, Hit@20/50, Recall@20/50, а также wall-clock tree construction time. На Yambda и других наборах SEATER подтверждает преимущества над sequential baselines. Greedy сокращает время построения до менее 2% original на крупнейшем item collection, но может немного уступать по качеству. Hybrid обычно достигает качества original, а на крупнейшем наборе даже улучшает его, при времени около 5-8% original.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<p>Таблица сложности важна, потому что показывает, что bottleneck у tree identifiers не только в inference beam search, но и в offline construction. Таблицы результатов полезны тем, что отделяют model quality от tree build time: можно видеть, где greedy acceptable, а где hybrid дает лучший trade-off. Графики времени показывают нелинейный рост original constrained method и практическую ценность переключения на hybrid.</p>
+
+<h2>8. Сильные стороны</h2>
+
+<ul>
+<li>Очень практичная постановка: ускорение preprocessing/index construction без смены recommender architecture.</li>
+
+<li>Репликация SEATER повышает доверие к выводам и выделяет реальный bottleneck.</li>
+
+<li>Hybrid method интуитивен и легко переносится в production batch pipelines.</li>
+
+<li>Метрики качества и времени рассматриваются вместе, а не как отдельные эксперименты.</li>
+</ul>
+
+<h2>9. Ограничения</h2>
+
+<ul>
+<li>Работа оптимизирует construction, но не решает динамическое обновление дерева для streaming catalog.</li>
+
+<li>Качество зависит от pretrained SASRec/item embeddings, которые используются для построения дерева.</li>
+
+<li>Greedy может ухудшать качество на некоторых наборах; нужен dataset-specific threshold.</li>
+
+<li>Нет online evaluation, поэтому влияние быстрых rebuilds на production freshness остается гипотезой.</li>
+</ul>
+
+<h2>10. Как реализовать и проверять</h2>
+
+<ul>
+<li>Сначала воспроизвести original tree на малом каталоге и зафиксировать metrics/time.</li>
+
+<li>Добавить greedy верхние уровни и измерять balance, leaf occupancy и semantic purity.</li>
+
+<li>Для hybrid подобрать threshold по wall-clock/quality curve, а не только по одному validation score.</li>
+
+<li>В production хранить версию дерева и mapping item -> path; проверять, сколько активных items меняет prefix при rebuild.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>Эта статья отличается от RQ-VAE/SID работ тем, что identifier строится как дерево, а не как codebook residual/product quantization. Она ближе к MERGE по engineering-фокусу на indexing, но MERGE ориентирован на streaming clusters, а здесь фокус на efficient offline hierarchical identifiers. Для generative recommendation это полезная альтернатива semantic tokenization через quantizers.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главный вывод: hierarchical identifiers могут быть качественными, но их offline construction нельзя игнорировать. Hybrid tree construction - прагматичный способ сохранить качество SEATER и сделать rebuild достаточно дешевым для больших каталогов.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Что именно ускоряется</h3>
+
+<p>Авторы не меняют саму идею SEATER, где item identifier является путем в balanced tree. Их вклад находится в construction step: как быстро построить дерево по item embeddings. Это важное различие, потому что inference complexity tree-based методов часто обсуждается подробно, а offline cost построения дерева недооценивается.</p>
+
+<ul>
+
+<li>Original SEATER использует constrained k-means, чтобы получить сбалансированные ветви.</li>
+
+<li>Constrained clustering становится expensive, когда число items на верхних уровнях велико.</li>
+
+<li>Greedy construction заменяет дорогой шаг approximate nearest-neighbor machinery.</li>
+
+<li>Hybrid construction использует greedy наверху и более точную кластеризацию внизу.</li>
+
+<li>Порог 2000 items выбран как практический balance между quality и build time.</li>
+
+</ul>
+
+<h3>13.2. Datasets и reproducibility</h3>
+
+<ul>
+
+<li>Yelp использует user-business interactions и стандартные splits из LightGCN ecosystem.</li>
+
+<li>Books берется из Amazon review dataset.</li>
+
+<li>Yambda добавляет крупный музыкальный сценарий и проверяет масштабирование на большем item collection.</li>
+
+<li>Авторы явно указывают, что часть preprocessing пришлось реконструировать по авторской переписке.</li>
+
+<li>Baselines включают GRU4Rec, SASRec и BERT4Rec, чтобы отделить эффект tree identifier от sequence backbone.</li>
+
+</ul>
+
+<h3>13.3. Метрики качества и времени</h3>
+
+<p>Работа полезна тем, что не выбирает только лучший Recall/NDCG. Она одновременно смотрит NDCG@20/50, Hit@20/50, Recall@20/50 и construction time. Это позволяет увидеть, где greedy метод слишком агрессивен, а где hybrid дает почти бесплатное ускорение.</p>
+
+<ul>
+
+<li>На крупнейших settings greedy может сократить время до менее 2% original.</li>
+
+<li>Hybrid обычно держит качество original и уменьшает время до 5-8% original.</li>
+
+<li>На Yambda hybrid способен улучшить quality относительно original, вероятно из-за другого bias верхних splits.</li>
+
+<li>Training time считается отдельно от tree construction time, что важно для честного сравнения.</li>
+
+<li>Results reported over 3 seeds, поэтому таблица показывает не только single lucky run.</li>
+
+</ul>
+
+<h3>13.4. Failure modes hierarchical identifiers</h3>
+
+<ul>
+
+<li>Top-level bad split: ошибка на верхнем уровне блокирует все downstream candidate paths.</li>
+
+<li>Imbalanced leaves: beam search тратит capacity неравномерно и хуже покрывает long tail.</li>
+
+<li>Embedding dependency: если SASRec embeddings плохо отражают item similarity, дерево будет плохим независимо от clustering speed.</li>
+
+<li>Rebuild churn: ускоренное построение может провоцировать частые rebuilds, но item paths при этом меняются.</li>
+
+<li>Cold-start insertion: paper оптимизирует batch construction, но не полностью решает online insertion нового item в существующее дерево.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2512.18434">2512.18434</a>.</li>
+</ul>
+
+</main>
+
+</body>
+
+</html>

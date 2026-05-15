@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When Text-as-Vision Meets Semantic IDs in Generative Recommendation: An Empirical Study</title>
+  <style>:root{color-scheme:light;--fg:#1f2933;--muted:#65758b;--border:#d8dee9;--bg:#fff;--soft:#f6f8fb;--link:#0b66c3;--industry:#0f766e;--industry-bg:#e6fffb;--industry-border:#99f6e4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.62
+-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{max-width:980px;margin:0 auto;padding:40px 24px
+72px}h1,h2,h3{line-height:1.25;margin:1.55em 0 .55em}h1{margin-top:0;font-size:2rem;border-bottom:1px solid
+var(--border);padding-bottom:.55rem}h2{font-size:1.35rem}p{margin:.75rem 0}a{color:var(--link)}ul,ol{padding-left:1.55rem}li{margin:.3rem
+0}blockquote{margin:1rem 0;padding:.65rem 1rem;color:var(--muted);background:var(--soft);border-left:4px solid
+var(--border)}code{background:var(--soft);padding:.12rem .28rem;border-radius:4px}.industry{display:inline-block;color:var(--industry);background:var(--industry-bg);border:1px
+solid var(--industry-border);border-radius:4px;padding:0 .25rem;font-weight:600}table{border-collapse:collapse;width:100%;margin:1rem
+0}th,td{border:1px solid var(--border);padding:.45rem .6rem;vertical-align:top}th{background:var(--soft)}@media(max-width:640px){main{padding:24px
+16px 56px}body{font-size:15px}h1{font-size:1.65rem}}</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2601.14697">When Text-as-Vision Meets Semantic IDs in Generative Recommendation: An Empirical Study</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p>
+<strong>Авторы:</strong> Shutong Qiao, Wei Yuan, Tong Chen, Xiangyu Zhao, Quoc Viet Hung Nguyen, Hongzhi Yin.</p>
+<p>
+<strong>Аффилиации:</strong> The University of Queensland; City University of Hong Kong; Griffith University.</p>
+</blockquote>
+<h2>Коротко</h2>
+<p>Статья проверяет необычную гипотезу для generative recommendation: если item text сначала
+отрендерить как изображение и пропустить через OCR/vision encoder, то получившееся
+<em>OCR-text</em> representation может лучше подходить для построения semantic IDs, чем
+стандартный text embedding. Это не новый retriever, а эмпирическое исследование входных
+модальностей для TIGER/LETTER-подобного pipeline.</p>
+<h2>Контекст</h2>
+<p>Semantic ID-based GR обычно строит item-коды из текстовых описаний, изображений или их
+fusion. Текстовые encoder'ы хорошо читают свободный язык, но товарные описания
+часто являются списками атрибутов, размеров, брендов и технических
+признаков. Авторы показывают, что визуальное представление текста иногда
+образует более гладкую геометрию и лучше согласуется с image embeddings.</p>
+<h2>Проблема</h2>
+<p>Вопрос статьи: какая модальность должна быть источником semantic IDs, если item
+имеет и текст, и изображение? Наивное предположение "текст надо кодировать
+text encoder'ом" оказывается не всегда оптимальным. Особенно это заметно на
+категориях, где описание похоже на табличный набор атрибутов, а не на
+естественный абзац.</p>
+<h2>Метод / архитектура</h2>
+<p>Pipeline сохраняет стандартную схему: item content encoding, multimodal fusion, token generation через
+RQ-VAE/RQ-KMeans и autoregressive generation semantic IDs. Отличие в том, что текстовая часть
+заменяется OCR-text: описание рендерится в картинку, затем кодируется
+OCR/vision-language encoder'ом. Авторы сравнивают unimodal <code>T</code> vs <code>O</code>, early fusion <code>T+I</code>
+vs <code>O+I</code>, а также несколько late-fusion стратегий.</p>
+<h2>Objective / алгоритм</h2>
+<p>Цель не меняет loss генеративного recommender'а: модель по истории semantic IDs
+генерирует next-item SID, а качество измеряется Recall/NDCG. Алгоритмический вклад
+находится до обучения GR: подобрать representation space, в котором tokenization дает более
+полезную дискретизацию. OCR-text выступает как drop-in replacement для text embedding.</p>
+<h2>Эксперименты и метрики</h2>
+<p>Используются Amazon-подобные домены Scientific, Luxury, Instruments и Arts. Метрики: Recall@5/10/20 и
+NDCG@5/10/20, leave-one-out split, beam search 20. В unimodal TIGER OCR-text превосходит обычный text на
+большинстве наборов. В multimodal early fusion на Scientific замена <code>T+I</code> на <code>O+I</code>
+дает рост TIGER Recall@5 с 0.0531 до 0.0600 и NDCG@5 с 0.0378 до 0.0426. В late fusion улучшения наиболее
+стабильны для стратегий B/C; на Arts эффект слабее или почти нейтрален.</p>
+<h2>Рисунки / таблицы</h2>
+<p>Figure 1 визуализирует геометрию embeddings: OCR-text ближе к image manifold, обычный text более
+дисперсен и анизотропен. Figure 3 фиксирует общий Semantic ID GR pipeline. Таблицы и
+графики RQ1-RQ3 показывают, что эффект зависит от датасета, fusion-стратегии и OCR
+backbone; robustness section показывает, что разные OCR encoders дают близкие Recall@10 на Instruments.</p>
+<h2>Сильные стороны</h2>
+<ul>
+<li>Работа аккуратно изолирует источник улучшения: меняется representation для
+tokenization, а не весь recommender.</li>
+<li>Проверены unimodal, early-fusion и late-fusion варианты, поэтому вывод не привязан к одной
+архитектуре.</li>
+<li>Есть анализ датасетной специфики: OCR-text особенно полезен для attribute-centric
+descriptions.</li>
+</ul>
+<h2>Ограничения</h2>
+<p>Метод добавляет preprocessing cost: нужно рендерить текст и запускать OCR/vision encoder. Он
+может быть бесполезен для богатого естественного текста и языков/шрифтов,
+плохо покрытых OCR model. Статья эмпирическая: она не доказывает, что OCR-text всегда
+лучше, а показывает условия, где он выигрывает.</p>
+<h2>Как реализовать / проверять</h2>
+<p>Нужно зафиксировать baseline tokenizer и downstream TIGER/LETTER, затем заменить только text
+encoder на OCR-text encoder. Проверять стоит: качество semantic ID, collision rate, Recall/NDCG, latency offline
+preprocessing и устойчивость к разрешению рендера. Для production важен cache OCR embeddings и
+fallback на обычный text embedding.</p>
+<h2>Связь с соседними работами</h2>
+<p>Работа дополняет CoST, AdaSID и SID-Coord: те улучшают objective/использование SID, а здесь
+исследуется, какие исходные embeddings стоит квантизовать. Для Meituan/Snapchat-подобных
+multimodal систем вывод практичен: modality choice может быть не менее важен, чем форма
+codebook.</p>
+<h2>Детали постановки Semantic ID learning</h2>
+<p>Авторы описывают общий pipeline как три независимых выбора.</p>
+<p>Первый выбор - item content encoder.</p>
+<p>Здесь сравниваются обычный text encoder, image encoder и OCR-text encoder.</p>
+<p>Второй выбор - способ fusion между модальностями.</p>
+<p>В статье рассматриваются early fusion и несколько late-fusion вариантов.</p>
+<p>Третий выбор - token generation, то есть перевод continuous item representation в semantic IDs.</p>
+<p>Эта декомпозиция полезна практически: если качество упало, можно отдельно
+проверить encoder, fusion и tokenizer.</p>
+<p>В unimodal setup OCR-text заменяет standard text embeddings без изменения остального retrieval
+pipeline.</p>
+<p>В multimodal setup OCR-text используется в парах <code>O+I</code>, где <code>O</code> - OCR-text representation, а
+<code>I</code> - item image embedding.</p>
+<p>Сравнение с <code>T+I</code> показывает, дает ли визуальное кодирование текста
+дополнительное выравнивание с изображениями.</p>
+<h2>Почему OCR-text может работать лучше</h2>
+<p>Интуиция статьи не в том, что OCR понимает текст лучше языковой модели.</p>
+<p>Скорее, OCR/vision encoder видит текст как визуальный layout с повторяющимися
+атрибутами, короткими фразами, числами и категориальными признаками.</p>
+<p>Для e-commerce descriptions это часто ближе к реальному item signal, чем к свободному
+языку.</p>
+<p>Обычный text encoder может создавать anisotropic space, где похожие attribute lists оказываются
+разнесены сильнее, чем нужно для quantization.</p>
+<p>OCR-text embeddings, по наблюдению авторов, образуют более гладкие manifolds и лучше
+согласуются с image embeddings.</p>
+<p>Это важно именно для semantic ID: quantizer дискретизирует геометрию embedding space,
+поэтому ошибки геометрии превращаются в ошибки code assignment.</p>
+<h2>Экспериментальные варианты fusion</h2>
+<p>Early fusion объединяет модальности до token generation.</p>
+<p>Это простой сценарий: один fused embedding квантуется в один SID.</p>
+<p>Late fusion сохраняет отдельные representations и объединяет их на уровне semantic IDs или
+model input.</p>
+<p>Авторы проверяют несколько late-fusion стратегий, потому что разные домены
+требуют разного баланса image/text.</p>
+<p>На Scientific и Instruments OCR-text дает наиболее заметные gains.</p>
+<p>На Luxury gains устойчивые, но меньше.</p>
+<p>На Arts эффект минимальный: descriptions более free-form, поэтому text encoder уже достаточно
+хорош.</p>
+<h2>Robustness: OCR backbone и resolution</h2>
+<p>В robustness section проверяются разные OCR encoders.</p>
+<p>На Instruments результаты близки: Recall@10 у разных OCR encoders находится в узком
+диапазоне около 0.0961-0.0970.</p>
+<p>Это важный практический вывод: эффект не выглядит артефактом одного
+конкретного OCR backbone.</p>
+<p>Также проверяется rendering resolution 256 vs 1024.</p>
+<p>Resolution влияет на качество распознавания мелких атрибутов, но слишком
+высокий resolution увеличивает preprocessing cost.</p>
+<p>Для production это означает, что OCR-text можно кэшировать offline, а resolution выбирать по
+latency/storage budget.</p>
+<h2>Failure modes</h2>
+<p>Первый failure mode - описание не attribute-centric.</p>
+<p>Если текст похож на нормальный абзац, text encoder может быть сильнее OCR-text.</p>
+<p>Второй failure mode - плохой rendering template.</p>
+<p>Если текст обрезается, переносится хаотично или содержит слишком мелкий
+шрифт, OCR-text embedding будет шумным.</p>
+<p>Третий failure mode - language/domain mismatch OCR encoder'а.</p>
+<p>Четвертый - late fusion может переусилить image-like signals и потерять редкие textual
+attributes.</p>
+<h2>Практический чеклист воспроизведения</h2>
+<ol>
+<li>Зафиксировать downstream backbone: TIGER или LETTER.</li>
+<li>Сгенерировать стандартные text embeddings для всех items.</li>
+<li>Сгенерировать изображения текста одинаковым template: font, width, padding, line wrap.</li>
+<li>Прогнать OCR/vision encoder и сохранить OCR-text embeddings.</li>
+<li>Построить SIDs отдельно для <code>T</code>, <code>O</code>, <code>T+I</code> и <code>O+I</code>.</li>
+<li>Обучить downstream GR с одинаковым split и beam size.</li>
+<li>Сравнить Recall/NDCG, collision rate и distribution of SID prefixes.</li>
+<li>Повторить на разных categories, потому что эффект зависит от структуры
+descriptions.</li>
+</ol>
+<h2>Что проверять сверх метрик Recall/NDCG</h2>
+<p>Нужно смотреть intra-cluster semantic consistency: похожи ли items внутри одного prefix bucket.</p>
+<p>Нужно смотреть cross-modal alignment: насколько OCR-text embedding ближе к image embedding для того
+же item, чем к соседним items.</p>
+<p>Нужно смотреть utilization codebook'ов: OCR-text может улучшить geometry, но вызвать collapse в
+отдельных tokens.</p>
+<p>Нужно смотреть invalid generated SID rate, особенно если late fusion увеличивает длину или
+сложность token sequence.</p>
+<p>Нужно считать preprocessing cost на миллион items, потому что OCR-text - offline-heavy подход.</p>
+<h2>Итог</h2>
+<p>Главный вывод: "text as text" не является очевидным оптимумом для semantic IDs. Если
+описание товара структурное и визуально-атрибутивное, OCR-text может дать более
+полезное пространство для дискретизации и генеративного retrieval.</p>
+<h2>Источники</h2>
+<ul>
+<li>
+<a href="https://arxiv.org/abs/2601.14697">arXiv:2601.14697</a>, PDF/source.</li>
+</ul>
+</main>
+</body>
+</html>

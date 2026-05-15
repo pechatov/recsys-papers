@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>Entity-Aware Generative Retrieval for Personalized Contexts</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,84 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://doi.org/10.1145/3746252.3761211">Entity-Aware Generative Retrieval for Personalized Contexts</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Jihyeong Jeon, Jiwon Lee, Cheol Ryu, U. Kang.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Samsung Electronics</span>; Seoul National University.</p>
+  <p><strong>Индустрия:</strong> персональный поиск, цифровая память и ассистенты, где запросы содержат приватные имена, места и временные ссылки.</p>
+  <p><strong>Первичный источник:</strong> DOI/ACM metadata и страница Seoul National University Pure; полный ACM PDF напрямую не был доступен.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>PEARL переносит generative retrieval в personalized information retrieval, где query содержит неоднозначные персональные сущности.</li>
+  <li>Метод усиливает генератор entity annotation, span-level regularization, prefix-based contrastive learning и context diversification.</li>
+  <li>Цель не просто найти похожий текст, а разрешить персональные references вроде nickname, family relation, private location или temporal cue.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>PIR отличается от web search тем, что правильный ответ зависит от частного пользовательского контекста.</li>
+  <li>Dense retriever может сопоставить общую семантику, но не понять, что конкретный nickname в одном профиле означает человека, а в другом место.</li>
+  <li>Generative retrieval полезен, потому что может напрямую генерировать passage identifier, но без entity bias он тоже страдает от lexical sensitivity.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Слова в query и passage могут лексически расходиться, хотя referent один и тот же.</li>
+  <li>Похожие entity spans создают hard negatives: два документа имеют похожую структуру, но различаются конкретной персональной сущностью.</li>
+  <li>Zero-shot evaluation особенно трудна, потому что тестовые имена и private references не встречались в train.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Entity-aware annotation добавляет теги сущностей к query и passage: person, location, event, time и другие роли.</li>
+  <li>Span-level regularization снижает зависимость от конкретной surface form и заставляет учитывать surrounding context.</li>
+  <li>Prefix-based contrastive learning использует структуру identifiers: похожие prefix paths дают естественные hard negatives.</li>
+  <li>Context diversification делает synthetic variations через transposition/замены однотипных entities, чтобы модель видела разные формулировки одного намерения.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Entity-Aware Generative Retrieval for Personalized Contexts качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Базовый generative retriever обучается генерировать identifier правильного passage.</li>
+  <li>Дополнительный contrastive objective притягивает query к позитивному passage identifier representation и отталкивает prefix-close negatives.</li>
+  <li>Регуляризация entity span ограничивает слишком большую массу внимания/градиента на одном mention.</li>
+  <li>Diversification расширяет train distribution без ручной разметки каждого персонального варианта.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Entity-Aware Generative Retrieval for Personalized Contexts качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Оценка включает существующий PIR dataset и новый synthetic benchmark PAIR.</li>
+  <li>Метрики из источника: Hits@1 и MRR@10; основной режим заявлен как zero-shot evaluation.</li>
+  <li>PEARL достигает state-of-the-art на этих метриках и стабильно лучше strong sparse/dense/generative baselines.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Entity-Aware Generative Retrieval for Personalized Contexts качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Пример entity annotation показывает, как обычный запрос превращается в structured query с entity roles.</li>
+  <li>Prefix contrastive figure иллюстрирует позитивные и hard-negative documents в trie/identifier space.</li>
+  <li>Ablation table должна подтверждать вклад annotation, prefix contrastive learning и diversification.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Без entity annotation модель должна сильнее путать homonymous/private mentions.</li>
+  <li>Без prefix contrastive learning уменьшается способность различать структурно похожие, но разные passages.</li>
+  <li>Без diversification ухудшается перенос на paraphrase и unseen personal references.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Работа явно формулирует PIR как задачу разрешения персональных entities, а не как обычный semantic matching.</li>
+  <li>Метод дает понятные рычаги для диагностики: entity spans, prefix negatives, diversified contexts.</li>
+  <li>Подход совместим с любым seq2seq generative retriever, если есть identifier space.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Полный текст DOI не удалось получить напрямую, поэтому часть деталей недоступна.</li>
+  <li>Синтетический PAIR может не покрывать реальные privacy, sparsity и user-memory drift.</li>
+  <li>Метод зависит от качества entity annotation и от того, насколько корректно entity roles отражают персональный контекст.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +138,20 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Полный текст DOI не удалось получить напрямую, поэтому часть деталей недоступна.</li>
+  <li>Специфично для этой статьи: Синтетический PAIR может не покрывать реальные privacy, sparsity и user-memory drift.</li>
+  <li>Специфично для этой статьи: Метод зависит от качества entity annotation и от того, насколько корректно entity roles отражают персональный контекст.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Связан с generative document retrieval и с semantic ID recommendation через идею prefix-aware hard negatives.</li>
+  <li>В отличие от item-tokenization работ, PEARL работает с passage identifiers и персональными entities.</li>
+  <li>Идея span regularization может быть перенесена на товары с брендами, локациями и temporal campaigns.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>Главный вывод: personalized generative retrieval требует entity-aware структуры.</li>
+  <li>Semantic/generative identifier сам по себе не решает ambiguity; нужны роли сущностей и hard negatives на уровне prefix.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

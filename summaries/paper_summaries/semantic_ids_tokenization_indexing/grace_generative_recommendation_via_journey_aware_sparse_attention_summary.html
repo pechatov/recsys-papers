@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learnable Item Tokenization for Generative Recommendation</title>
+  <title>GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization</title>
   <style>
     :root {
       color-scheme: light;
@@ -40,86 +40,85 @@
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2405.07314">Learnable Item Tokenization for Generative Recommendation</a></h1>
+<h1><a href="https://arxiv.org/abs/2507.14758">GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization</a></h1>
 <p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <section class="meta">
-  <p><strong>Авторы:</strong> Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.</p>
-  <p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; The Hong Kong Polytechnic University.</p>
-  <p><strong>Индустрия:</strong> <span class="industry">academic LLM-based recommendation</span>; no direct industry affiliation.</p>
-  <p><strong>Первичный источник:</strong> arXiv source 2405.07314.</p>
+  <p><strong>Авторы:</strong> Luyi Ma, Wanjia Sherry Zhang, Kai Zhao, Abhishek Kulkarni, Lalitesh Morishetti, Anjana Ganesh, Ashish Ranjan, Aashika Padmanabhan, Jianpeng Xu, Jason Cho, Praveen Kanumala, Kaushiki Nag, Sumit Dutta, Kamiya Motwani, Malay Patel, Evren Korpeoglu, Sushant Kumar, Kannan Achan.</p>
+  <p><strong>Аффилиации:</strong> <span class="industry">Walmart Global Tech</span>.</p>
+  <p><strong>Индустрия:</strong> multi-behavior e-commerce recommendation.</p>
+  <p><strong>Первичный источник:</strong> arXiv source 2507.14758.</p>
 </section>
 <h2>Коротко</h2>
 <ul>
-  <li>LETTER proposes learnable tokenizer for generative recommendation.</li>
-  <li>It combines semantic regularization, collaborative regularization and diversity regularization.</li>
-  <li>It is instantiated on TIGER and LC-Rec with ranking-guided generation loss.</li>
+  <li>GRACE добавляет к semantic IDs явные Chain-of-Thought атрибуты товара.</li>
+  <li>Вторая часть метода - Journey-Aware Sparse Attention для длинных multi-behavior histories.</li>
+  <li>Цель - сделать генеративную рекомендацию интерпретируемой и дешевле по attention cost.</li>
 </ul>
 <h2>Контекст</h2>
 <ul>
-  <li>TIGER-style IDs from text miss collaborative signals.</li>
-  <li>Code assignment can be highly imbalanced.</li>
-  <li>Generative recommender needs identifiers that are semantic, collaborative and diverse.</li>
+  <li>TIGER кодирует item-level text, но не behavior context.</li>
+  <li>Retail histories включают click, add-to-cart, like, remove и другие действия.</li>
+  <li>Product knowledge graph содержит category, brand, price и hierarchy, которые можно использовать как reasoning path.</li>
 </ul>
 <h2>Проблема</h2>
 <ul>
-  <li>Misalignment between semantic similarity and CF similarity.</li>
-  <li>Code assignment bias and generation bias.</li>
-  <li>Hard negatives not sufficiently suppressed by vanilla CE.</li>
+  <li>Semantic tokenization без explicit attributes может терять determinism и business semantics.</li>
+  <li>Полный attention по длинной токенизированной истории квадратично дорог.</li>
+  <li>Модель должна видеть multi-scale interests: current journey, past journeys и compressed long history.</li>
 </ul>
 <h2>Метод/архитектура</h2>
 <ul>
-  <li>RQ-VAE provides hierarchical semantic identifier.</li>
-  <li>CF regularization aligns quantized embeddings with LightGCN-like item embeddings.</li>
-  <li>Diversity loss spreads code embeddings and smooths code usage.</li>
-  <li>Generator vocabulary is extended with LETTER codes.</li>
+  <li>Hybrid tokenization объединяет CoT tokens из product knowledge graph и semantic IDs.</li>
+  <li>CoT path идет coarse-to-fine: category, brand, price, item-level details.</li>
+  <li>JSA состоит из compression attention, intra-journey, inter-journey и current-journey attention.</li>
+  <li>Sparse pattern отражает структуру shopping journey, а не является случайным pruning.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Objective/алгоритм</h2>
 <ul>
-  <li>L_LETTER = L_Sem + alpha L_CF + beta L_Div.</li>
-  <li>Ranking-guided generation loss is linked to one-way partial AUC.</li>
-  <li>Temperature/hard-negative handling improves top-K Recall/NDCG.</li>
-  <li>Inference maps generated code sequence back to item.</li>
+  <li>Objective остается next interaction/item token generation.</li>
+  <li>Attention mask задает, какие сегменты истории могут взаимодействовать.</li>
+  <li>CoT tokens добавляют deterministic feature path, semantic IDs сохраняют dense semantic compression.</li>
+  <li>JSA уменьшает число pairwise attention operations на длинных sequences.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Эксперименты</h2>
 <ul>
-  <li>Datasets: three widely used recommendation datasets in paper.</li>
-  <li>Metrics: Recall@5/10 and NDCG@5/10.</li>
-  <li>LETTER-TIGER and LETTER-LC-Rec improve over base models.</li>
-  <li>Training tokenizer: AdamW, lr 1e-3, batch 1024, 20k epochs.</li>
+  <li>Datasets собраны с Walmart.com для Home и Electronics.</li>
+  <li>Behaviors: click, add-to-cart, like, remove-from-cart.</li>
+  <li>Abstract сообщает до +106.9% HR@10 и +106.7% NDCG@10 на Home.</li>
+  <li>На Electronics заявлен +22.1% HR@10 и до 48% reduction attention computation.</li>
 </ul>
 <h3>Что важно при чтении</h3>
-<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Learnable Item Tokenization for Generative Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
+<p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
 <h2>Рисунки/таблицы</h2>
 <ul>
-  <li>Overview figure of LETTER.</li>
-  <li>Misalignment figure for item identifiers and collaborative signals.</li>
-  <li>Code assignment bias/generation bias figures.</li>
-  <li>Ablation table on LETTER-TIGER.</li>
+  <li>Figure 1 сравнивает existing generative recommendation structures.</li>
+  <li>Framework figure показывает hybrid tokenization снизу и JSA сверху.</li>
+  <li>Таблицы должны отделять вклад CoT tokenization, JSA и behavior modeling.</li>
 </ul>
 <h2>Ablation conclusions</h2>
 <ul>
-  <li>Semantic only < semantic+CF < semantic+CF+diversity < full with ranking loss.</li>
-  <li>Diversity regularization makes code embeddings more uniform.</li>
-  <li>LETTER code similarity better matches CF-neighbor items.</li>
+  <li>Без CoT токенов теряется explicit product reasoning.</li>
+  <li>Без JSA full attention дороже и хуже моделирует long journeys.</li>
+  <li>Ablation behavior types должен показать, какие actions важнее для next-item generation.</li>
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Clear requirements for ideal identifier.</li>
-  <li>Combines content and collaborative signals elegantly.</li>
-  <li>Reusable as tokenizer in multiple generative recommenders.</li>
+  <li>Очень сильная domain fit для e-commerce с богатим catalog metadata.</li>
+  <li>Sparse attention привязан к пользовательскому пути и поэтому интерпретируем.</li>
+  <li>Метод одновременно улучшает качество и compute.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Needs pretrained CF model.</li>
-  <li>Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Very long tokenizer training may be expensive.</li>
+  <li>Нужен качественный product knowledge graph.</li>
+  <li>CoT tokens увеличивают sequence length и требуют аккуратного budget.</li>
+  <li>В доменах без атрибутов или с шумными ценами/брендами эффект может упасть.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>
@@ -140,19 +139,19 @@
   <li>Popularity bias: модель учится генерировать frequent IDs и выглядит хорошо на aggregate, но теряет novelty и tail coverage.</li>
   <li>Evaluation leakage: если ID/tokenizer обучался на будущем каталоге или post-training видел target-like сигналы, offline gain завышен.</li>
   <li>Serving mismatch: offline beam шире и медленнее production beam, поэтому качество не переносится напрямую.</li>
-  <li>Специфично для этой статьи: Needs pretrained CF model.</li>
-  <li>Специфично для этой статьи: Hyperparameters alpha/beta/temperature matter.</li>
-  <li>Специфично для этой статьи: Very long tokenizer training may be expensive.</li>
+  <li>Специфично для этой статьи: Нужен качественный product knowledge graph.</li>
+  <li>Специфично для этой статьи: CoT tokens увеличивают sequence length и требуют аккуратного budget.</li>
+  <li>Специфично для этой статьи: В доменах без атрибутов или с шумными ценами/брендами эффект может упасть.</li>
 </ul>
 <h2>Связь</h2>
 <ul>
-  <li>Foundation for FORGE/GenSAR style collaborative SID.</li>
-  <li>Comparable motivation to CoST but with explicit CF alignment.</li>
+  <li>Связан со structured term identifiers и STORE.</li>
+  <li>Отличается от LETTER/FORGE тем, что кодирует не только item, но и journey-level attention.</li>
 </ul>
 <h2>Итог</h2>
 <ul>
-  <li>LETTER makes tokenization retrieval/recommendation-aware.</li>
-  <li>Good SID is not just compressed text embedding.</li>
+  <li>GRACE показывает, что SID в retail должен быть behavior-aware.</li>
+  <li>Для production long-history recommendation важны и токены, и attention topology.</li>
 </ul>
 <h2>Минимальный план воспроизведения</h2>
 <table>

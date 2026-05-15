@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order-agnostic Identifier for Large Language Model-based Generative Recommendation</title>
+  <style>
+  :root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+  h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+  h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.15rem; }
+  p { margin: .75rem 0; }
+  a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+  ul, ol { padding-left: 1.55rem; }
+  li { margin: .3rem 0; }
+  blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+  p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+  img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+  .nav { margin: .75rem 0 1.25rem; }
+  .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+  .note { color: var(--muted); }
+  @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+  </style>
+</head>
+<body>
+<main>
+<h1><a href="https://doi.org/10.1145/3726302.3730053">Order-agnostic Identifier for Large Language Model-based Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<blockquote>
+<p><strong>Авторы:</strong> Xinyu Lin, Haihan Shi, Wenjie Wang, Fuli Feng, Qifan Wang, See-Kiong Ng, Tat-Seng Chua.</p>
+<p><strong>Аффилиации:</strong> National University of Singapore; University of Science and Technology of China; <span class="industry">Meta AI</span>.</p>
+<p><strong>Индустрия:</strong> <span class="industry">LLM-based generative recommendation</span></p>
+<p><strong>Первичные источники:</strong> ACM DOI landing возвращал HTTP 403; использована открытая первичная версия arXiv:2502.10833 и arXiv HTML/PDF.</p>
+</blockquote>
+
+<h2>Коротко</h2>
+<p>SETRec вводит set identifier: item описывается множеством токенов без искусственного порядка.</p>
+<p>Identifier объединяет CF tokens и semantic tokens, поэтому должен работать и для warm memorization, и для cold generalization.</p>
+<p>Модель генерирует несколько token slots одновременно через query-guided generation и sparse attention mask.</p>
+
+<h2>Контекст</h2>
+<p>LLM-based GenRec должен представить item так, чтобы LLM мог читать историю и генерировать next item.</p>
+<p>Sequence identifiers страдают от local optima beam search; single-token identifiers слишком бедны.</p>
+<p>Paper формулирует два принципа: multi-dimensional item information и order-agnostic identifiers without token dependency.</p>
+
+<h2>Проблема</h2>
+<p>Ниже - конкретные failure modes, которые paper пытается закрыть.</p>
+<ul>
+<li>Порядок токенов в SID часто является артефактом tokenizer-а.</li>
+<li>Beam search закрепляет ранние ошибки и ухудшает generation efficiency.</li>
+<li>Single token ID не содержит достаточно semantic/CF dimensions.</li>
+<li>Semantic-only IDs хуже на warm items, CF-only IDs хуже на cold items.</li>
+<li>LLM vocabulary и external recommendation tokens плохо согласованы.</li>
+</ul>
+
+<h2>Метод/архитектура</h2>
+<p>Архитектура важна тем, как она меняет форму item identifier, а не только backbone.</p>
+<ul>
+<li>Order-agnostic item tokenization строит CF tokenizer и semantic tokenizer.</li>
+<li>CF tokens отражают collaborative filtering patterns.</li>
+<li>Semantic tokens отражают text/content semantics.</li>
+<li>Set identifier объединяет multi-dimensional tokens без порядка.</li>
+<li>Sparse attention mask не позволяет токенам одного item identifier создавать ложные autoregressive dependencies.</li>
+<li>Query-guided generation вводит независимые query slots для simultaneous token generation.</li>
+<li>Instantiation выполнена на T5 и Qwen, включая Qwen-1.5B/3B/7B analysis.</li>
+</ul>
+
+<h2>Objective/алгоритм</h2>
+<p>Objective/decoding design определяет, какие ошибки модель может делать на inference.</p>
+<ul>
+<li>Training objective учит LLM предсказывать набор токенов next item, а не строку в фиксированном порядке.</li>
+<li>Sparse attention отделяет dependencies между user actions от dependencies внутри identifier.</li>
+<li>During inference ranking использует CF score и semantic score; paper анализирует strength semantics parameter.</li>
+<li>Set matching сопоставляет с catalog items, у которых есть соответствующие token sets.</li>
+<li>Order-agnostic design уменьшает число LLM calls относительно token-sequence identifiers.</li>
+<li>Semantic strength sweep показывает, что semantic score особенно важен для cold items.</li>
+</ul>
+
+<h2>Эксперименты</h2>
+<p>Экспериментальный блок полезен тем, что проверяет не только общий Recall/NDCG, но и efficiency/cold-start/ablation slices.</p>
+<ul>
+<li>Datasets: Toys, Beauty, Sports, Steam в setup paper.</li>
+<li>Metrics: Recall@5/10, NDCG@5/10; отдельно All/Warm/Cold users/items; inference time on single NVIDIA RTX A5000.</li>
+<li>Baselines: DreamRec, E4SRec, BIGRec, IDGenRec, CID, SemID, TIGER, LETTER.</li>
+<li>Table 1: SETRec on T5 consistently beats baselines; on Toys R@10 0.0189 vs second-best 0.0117, inference 60s vs hundreds/thousands for sequence methods.</li>
+<li>Table 2: Qwen-1.5B results on Toys/Beauty show SETRec remains best while token-sequence methods become less competitive.</li>
+<li>Paper reports average speedups over token-sequence identifiers: 15x Toys, 11x Beauty, 18x Sports, 8x Steam.</li>
+<li>Table 3: scaling Qwen from 1.5B to 7B improves cold SETRec R@10 on Toys from 0.0883 to 0.1016, while warm improvements are not monotonic.</li>
+<li>Ablations evaluate query-guided generation, sparse attention, CF/semantic token contributions, item group analysis, semantic strength and hyperparameters.</li>
+</ul>
+
+<h2>Рисунки/таблицы</h2>
+<p>Рисунки и таблицы здесь читаются как диагностические инструменты.</p>
+<ul>
+<li>Figure for SETRec architecture explains set tokenization and simultaneous generation.</li>
+<li>Table 1 and 2 are central: they include quality and inference time, not only ranking metrics.</li>
+<li>Table 3 is important because it separates warm/cold scalability.</li>
+<li>Figure 8 semantic strength shows why semantic score matters for cold items.</li>
+<li>Item group analysis checks popularity buckets rather than reporting only aggregate gain.</li>
+</ul>
+
+<h2>Сильные стороны</h2>
+<p>Сильные стороны ниже выделены с точки зрения внедрения и воспроизводимости.</p>
+<ul>
+<li>Clear design principles for item identifiers.</li>
+<li>Combines CF and semantic information instead of choosing one.</li>
+<li>Efficiency claim backed by inference-time columns.</li>
+<li>Tests both encoder-decoder and decoder-only LLM backbones.</li>
+<li>Cold-start analysis is stronger than in many SID papers.</li>
+</ul>
+
+<h2>Ограничения</h2>
+<p>Ограничения важны для production transfer.</p>
+<ul>
+<li>Set matching can complicate constrained decoding and catalog lookup.</li>
+<li>External tokens may still be poorly aligned with pretrained LLM vocabulary.</li>
+<li>Large LLM serving is heavy even if token generation is simultaneous.</li>
+<li>Warm-item scalability is limited: larger Qwen does not automatically improve CF understanding.</li>
+<li>If token slots are not truly independent, order-agnostic assumption may hide useful structure.</li>
+<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
+<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
+<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+</ul>
+
+<h2>Как реализовать/проверять</h2>
+<p>Практический план проверки.</p>
+<ul>
+<li>Reproduce with T5 first before Qwen to isolate identifier effects.</li>
+<li>Create CF and semantic tokenizers separately and run ablations without each side.</li>
+<li>Test permutation invariance by shuffling identifier tokens.</li>
+<li>Measure inference time over all users, not per-step only.</li>
+<li>Tune semantic-strength parameter separately for cold/warm slices.</li>
+<li>Log catalog-match failures and ambiguous set collisions.</li>
+<li>Зафиксировать версию tokenizer-а, vocabulary/codebook sizes, seed, дату обучения и покрытие каталога.</li>
+<li>Логировать invalid/generated-not-in-catalog rate отдельно от Recall/NDCG, потому что генеративная модель может улучшать ranking среди валидных, но терять кандидатов на этапе декодирования.</li>
+<li>Делать slice-анализ по popularity bucket, item age, cold-start cohort и длине пользовательской истории.</li>
+<li>Сравнивать не только с SID-only baseline, но и с ID-only/hybrid baseline: в production ID memorization часто остается сильным сигналом.</li>
+<li>Проверять распределение кодов: entropy/perplexity, долю неиспользуемых кодов, top-code concentration и collision examples.</li>
+<li>В online rollout начинать с shadow features или candidate sidecar, чтобы отделить эффект tokenizer-а от эффекта retriever/ranker.</li>
+</ul>
+
+<h2>Связь</h2>
+<p>Связь с остальной подборкой Semantic ID/tokenization papers.</p>
+<ul>
+<li>Conceptually parallel to RPG: both remove left-to-right dependency.</li>
+<li>Contrasts with CoFiRec: CoFiRec makes order meaningful, SETRec removes it.</li>
+<li>Complements Unified Semantic+ID by doing hybrid CF/semantic design inside LLM identifiers.</li>
+</ul>
+
+<h2>Итог</h2>
+<p>Короткий вывод.</p>
+<ul>
+<li>SETRec is a strong argument that item ID should be a set of independent evidence channels when token order is artificial.</li>
+<li>Главная практическая идея: simultaneous generation может сделать LLM-GenRec менее непригодным для serving.</li>
+<li>Но production внедрение потребует надежного set-to-item index и careful cold/warm balancing.</li>
+</ul>
+</main>
+</body>
+</html>

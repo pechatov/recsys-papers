@@ -1,14 +1,25 @@
 <!doctype html>
+
 <html lang="ru">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLM-Based Generative Recommendation via Structured Term Identifiers</title>
-  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+  <title>Unleashing the Native Recommendation Potential: LLM-Based Generative Recommendation via Structured Term Identifiers</title>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
 main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
 h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
 h2 { font-size: 1.45rem; }
 h3 { font-size: 1.15rem; }
@@ -17,74 +28,217 @@ a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset:
 ul, ol { padding-left: 1.55rem; }
 li { margin: .3rem 0; }
 blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
 p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
 img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+
 </head>
+
 <body>
+
 <main>
-<h1>Unleashing the Native Recommendation Potential: LLM-Based Generative Recommendation via Structured Term Identifiers</h1>
+
+<h1><a href="https://arxiv.org/abs/2601.06798">Unleashing the Native Recommendation Potential: LLM-Based Generative Recommendation via Structured Term Identifiers</a></h1>
+
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+
 <p>Подробное саммари статьи:</p>
+
 <blockquote>
+
 <p><strong>Авторы:</strong> Zhiyang Zhang, Junda She, Kuo Cai, Bo Chen, Shiyao Wang, Xinchen Luo, Qiang Luo, Ruiming Tang, Han Li, Kun Gai, Guorui Zhou.</p>
-<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Inc.</span></p>
+
+<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Inc.</span>.</p>
+
 </blockquote>
 
-<h2>1. Коротко: о чем статья</h2>
-<p>Статья предлагает отказаться от специальных Semantic ID tokens для LLM-based generative recommendation и заменить их Structured Term Identifiers, или TIDs. TID - это набор стандартизированных текстовых keywords, которые одновременно понятны LLM native vocabulary и достаточно структурированы для item grounding.</p>
-<p>Авторы называют framework GRLM. Он решает две проблемы: текстовые названия слишком шумные и провоцируют hallucination, а дискретные SIDs требуют расширять vocabulary и выравнивать новые токены с LLM. TID пытается взять лучшее из двух миров: natural-language tokens плюс контролируемая структура.</p>
+<h2>1. Коротко</h2>
 
-<h2>2. Сравнение identifier-подходов</h2>
-<img src="../../assets/structured_term_identifiers/identifier_comparison.png" alt="Comparison of textual identifiers, semantic IDs and structured Term IDs" width="760">
+<p>GRLM вводит Structured Term Identifiers (TIDs) как альтернативу SID и raw text identifiers. TID - набор стандартизированных, семантически богатых textual keywords, которые остаются в native vocabulary LLM. Framework включает Context-aware Term Generation для создания согласованных terms, Integrative Instruction Fine-tuning для совместного обучения term internalization и sequential recommendation, а также Elastic Identifier Grounding для устойчивого mapping generated terms -> items.</p>
+
+<h2>2. Контекст</h2>
+
+<p>LLM-based generative recommendation сталкивается с двумя крайностями. Если генерировать свободный текст или item titles, появляется огромный output space и hallucination. Если использовать discrete Semantic IDs, появляется semantic gap с native LLM vocabulary и требуется costly vocabulary expansion/alignment. TID пытается занять середину: identifiers текстовые и стандартизированные, но достаточно структурированные для grounding.</p>
+
+<h2>3. Проблема</h2>
+
 <ul>
-<li><strong>Textual identifiers</strong> используют title/description, но страдают от длинных, неоднозначных и hallucinated outputs.</li>
-<li><strong>Semantic IDs</strong> компактны и удобны для constrained generation, но имеют semantic gap с LLM vocabulary.</li>
-<li><strong>Term IDs</strong> используют стандартизированные keywords: они остаются в native vocabulary LLM и легче grounded обратно к item.</li>
+<li>Raw text identifiers слишком разнообразны: synonyms, spelling variants и hallucinated phrases усложняют lookup.</li>
+
+<li>SID tokens компактны, но для LLM они искусственные и требуют alignment training.</li>
+
+<li>Нужно, чтобы identifier был и semantically meaningful, и locally discriminative.</li>
+
+<li>Generated identifier должен robustly мапиться на item даже при minor term mismatch.</li>
 </ul>
 
-<h2>3. Архитектура GRLM</h2>
-<img src="../../assets/structured_term_identifiers/grlm_framework.png" alt="GRLM framework with context-aware term generation, instruction fine-tuning and elastic identifier grounding" width="760">
-<p>GRLM состоит из трех ключевых частей:</p>
-<ol>
-<li><strong>Context-aware Term Generation.</strong> LLM генерирует TIDs из metadata item, используя похожие items как контекст, чтобы keywords были локально различимыми.</li>
-<li><strong>Integrative Instruction Fine-tuning.</strong> Модель одновременно учится internalize term identifiers и решать sequential recommendation.</li>
-<li><strong>Elastic Identifier Grounding.</strong> Сгенерированные TIDs маппятся обратно к item через direct mapping и более гибкое structural matching.</li>
-</ol>
+<h2>4. Метод и архитектура</h2>
 
-<h2>4. Главная идея TID</h2>
-<p>TID не обязан быть полным названием товара. Это скорее компактное, нормализованное описание в терминах, которые LLM уже умеет обрабатывать: category, function, style, usage, attributes. Для recommender это важно: идентификатор должен быть и discriminative, и generatable.</p>
-<p>Контекст похожих items нужен, чтобы генератор не выбирал слишком общие слова. Например, если все соседние товары "sports shoes", TID должен зафиксировать отличающие признаки, а не повторить общую категорию.</p>
+<p>Context-aware Term Generation превращает metadata item'а в standardized TIDs с учетом global consistency и local discriminability. Integrative Instruction Fine-tuning объединяет задачи term internalization и sequential recommendation, чтобы LLM не только видел terms, но и использовал их как item identifiers. Elastic Identifier Grounding включает exact и fuzzy grounding: generated term set сопоставляется с candidate item identifiers даже при неполном совпадении.</p>
+<img src="../../assets/structured_term_identifiers/grlm_framework.png" alt="GRLM framework" width="760">
 
-<h2>5. Результаты</h2>
-<p>В in-domain experiments GRLM лучше baseline'ов на Beauty, Sports и Toys. Авторы сообщают относительное улучшение Recall@5 на 7.8%, 30.2% и 14.9% относительно strongest baseline. В cross-domain setting улучшения Recall@K превышают 50% в среднем, что авторы связывают с тем, что TIDs живут в общем natural-language semantic space.</p>
-<p>Отдельно проверяется hallucination: Valid Rate@10 и Direct Hit Rate@10 превышают 99% на всех наборах. Это важный claim, потому что обычные textual identifiers часто ломаются именно на mapping generated text обратно в catalog item.</p>
+<h2>5. Objective и алгоритм</h2>
 
-<h2>6. Scaling law</h2>
-<p>Авторы тестируют backbone sizes от 0.6B до 14B и показывают, что recommendation performance растет с размером модели. Это аргумент в пользу TIDs: если identifiers выражены native language terms, более крупная LLM может лучше использовать semantic reasoning и world knowledge, а не тратить capacity на alignment новых SID tokens.</p>
+<p>Objective instruction tuning строится на нескольких форматах: модель учится понимать TIDs, связывать их с item metadata и генерировать следующий item через term identifiers. Grounding objective не является обычным softmax по item IDs; после генерации terms применяется matching function. Fuzzy grounding использует token/term overlap и similarity, чтобы повысить valid hit rate. Важная идея: LLM остается в своем словаре, а item catalog получает контролируемый standardized layer.</p>
 
-<h2>7. Сильные стороны</h2>
+<h2>6. Эксперименты и метрики</h2>
+
+<p>Эксперименты включают in-domain datasets Beauty, Sports, Toys и cross-domain pairs Sports-Clothing, Phones-Electronics. Метрики: Recall@5/10, NDCG@5/10, valid rate и direct hit rate. В in-domain таблице GRLM улучшает best baseline: например на Beauty Recall@10 0.0846 и NDCG@10 0.0506; на Sports Recall@10 0.0539 и NDCG@10 0.0313; на Toys Recall@10 0.0942 и NDCG@10 0.0561. Cross-domain gains особенно крупные, местами improvement превышает 50-100% по Recall@5/10. Hallucination analysis показывает высокий valid/direct hit rate.</p>
+
+<h2>7. Что важно в рисунках и таблицах</h2>
+
+<img src="../../assets/structured_term_identifiers/identifier_comparison.png" alt="Identifier comparison" width="760">
+<p>Figure identifier comparison важен как вся мотивация статьи: TID сохраняет LLM-native textual form, но более контролируем, чем free text. GRLM framework figure показывает, где CTG, instruction tuning и EIG соединяются. Таблицы in-domain/cross-domain демонстрируют, что TID помогает не только на одном домене. Таблица valid/direct hit rate критична: для textual identifiers качество recommendation бессмысленно без reliable grounding.</p>
+
+<h2>8. Сильные стороны</h2>
+
 <ul>
-<li>Хорошо сформулирована проблема vocabulary gap между Semantic IDs и pretrained LLM.</li>
-<li>TID сохраняет human-readable semantics и упрощает debugging.</li>
-<li>Elastic grounding отвечает на практический риск hallucination.</li>
-<li>Cross-domain результаты показывают пользу natural-language identifier space.</li>
+<li>Элегантно обходит semantic gap между artificial SID tokens и LLM vocabulary.</li>
+
+<li>Стандартизация terms снижает hallucination относительно free text identifiers.</li>
+
+<li>Elastic grounding делает систему терпимой к частичным/вариативным генерациям.</li>
+
+<li>Сильные результаты в cross-domain setting, где language-native identifiers особенно полезны.</li>
 </ul>
 
-<h2>8. Ограничения</h2>
+<h2>9. Ограничения</h2>
+
 <ul>
-<li>Генерация TIDs зависит от качества metadata и LLM prompt/fine-tuning pipeline.</li>
-<li>Text terms могут быть неоднозначными: разные items могут иметь похожие keywords.</li>
-<li>Grounding layer становится критическим production-компонентом, который нужно версионировать вместе с каталогом.</li>
-<li>В отличие от компактных SIDs, TIDs могут увеличивать sequence length и decoding cost.</li>
+<li>TID generation зависит от качества metadata и prompt/model, создающих standardized terms.</li>
+
+<li>Textual grounding может стать дорогим при очень большом каталоге без хорошего индексирования terms.</li>
+
+<li>Fuzzy grounding повышает recall, но может внести ambiguous matches между похожими items.</li>
+
+<li>Structured terms могут раскрывать чувствительные атрибуты, если metadata содержит privacy-risk fields.</li>
 </ul>
 
-<h2>9. Связь с Semantic ID literature</h2>
-<p>GRLM спорит с RQ-VAE/SID линией не напрямую по tokenizer quality, а по совместимости с LLM. Если TIGER, CoST, LETTER и DIGER строят лучшее дискретное item code space, то GRLM спрашивает: зачем вводить новый code space, если можно структурировать native language space?</p>
+<h2>10. Как реализовать и проверять</h2>
 
-<h2>10. Вывод</h2>
-<p>Статья важна как альтернатива semantic-token подходу для LLM-native recommendation. TID выглядит особенно полезным там, где нужны cross-domain transfer, interpretability и использование pretrained knowledge. Но за это платят зависимостью от term generation, grounding и качества item metadata.</p>
+<ul>
+<li>Создать vocabulary/ontology constraints для CTG: запрещенные terms, нормализация брендов, categories, synonyms.</li>
+
+<li>Измерять не только Recall/NDCG, но и valid rate, direct hit rate, ambiguous grounding rate.</li>
+
+<li>Сравнить exact-only и elastic grounding, чтобы понять цену fuzzy matching.</li>
+
+<li>Для production построить inverted index term -> items и кешировать frequent generated TID sets.</li>
+</ul>
+
+<h2>11. Связь с соседними работами</h2>
+
+<p>GRLM связан с SIDReasoner и GenCDR через language alignment: все три пытаются сделать identifiers понятнее LLM. В отличие от RQ/PQ tokenizers, GRLM не пытается сжать embedding в искусственные codewords; он строит standardized textual layer. С MoMoREC его роднит использование LLM semantics, но MoMoREC возвращается к residual categorical IDs для классических моделей, а GRLM остается LLM-generative.</p>
+
+<h2>12. Итог</h2>
+
+<p>Главный вывод: для LLM-based generative recommendation идентификатор не обязан быть ни raw title, ни искусственным SID. Structured Term Identifier может быть достаточно native для LLM, достаточно стандартным для grounding и достаточно выразительным для cross-domain recommendation.</p>
+
+
+<h2>13. Детальный разбор механизмов статьи</h2>
+
+<h3>13.1. Context-aware Term Generation</h3>
+
+<p>CTG превращает raw metadata в standardized Term IDs. Это не просто keyword extraction: terms должны быть globally consistent, чтобы один и тот же смысл назывался одинаково, и locally discriminative, чтобы похожие items не получали неразличимые identifiers. Поэтому CTG является фактически catalog normalization layer для LLM-based recommendation.</p>
+
+<ul>
+
+<li>TIDs остаются в native LLM vocabulary.</li>
+
+<li>Structured terms уменьшают output space относительно free text generation.</li>
+
+<li>Global consistency снижает synonym fragmentation.</li>
+
+<li>Local discriminability снижает collisions между похожими items.</li>
+
+<li>Case study показывает, как CTG стандартизирует identifiers across items.</li>
+
+</ul>
+
+<h3>13.2. Integrative Instruction Fine-tuning</h3>
+
+<ul>
+
+<li>GTI обучает модель internalize Term IDs как item identifiers.</li>
+
+<li>Sequential recommendation training объединяется с term understanding tasks.</li>
+
+<li>Модель учится генерировать TID set следующего item, а не atomic item ID.</li>
+
+<li>Instruction format помогает использовать pretrained LLM knowledge без искусственного SID vocabulary expansion.</li>
+
+<li>Ablation w/o GTI показывает, что одних хороших terms недостаточно.</li>
+
+</ul>
+
+<h3>13.3. Elastic Identifier Grounding</h3>
+
+<p>EIG решает главную боль textual identifiers: модель может сгенерировать почти правильный term set, но не совпасть с catalog string exactly. Elastic grounding сначала пытается exact mapping, затем fuzzy matching по terms/similarity. Это повышает valid rate и direct hit rate, но требует контроля ambiguity.</p>
+
+<ul>
+
+<li>Valid rate проверяет, можно ли сгенерированный identifier привязать к item.</li>
+
+<li>Direct hit rate проверяет, попал ли grounding непосредственно в correct item.</li>
+
+<li>Fuzzy grounding помогает при minor variation.</li>
+
+<li>Слишком мягкий fuzzy matching может спутать похожие товары.</li>
+
+<li>Для production нужен inverted index по normalized terms.</li>
+
+</ul>
+
+<h3>13.4. Эксперименты и robustness</h3>
+
+<ul>
+
+<li>In-domain datasets: Beauty, Sports, Toys.</li>
+
+<li>Cross-domain scenarios: Sports-Clothing и Phones-Electronics.</li>
+
+<li>Metrics: Recall@5/10, NDCG@5/10, valid rate, direct hit rate.</li>
+
+<li>Beauty in-domain: Recall@10 0.0846, NDCG@10 0.0506.</li>
+
+<li>Cross-domain improvements местами превышают 50-100% по Recall, что подчеркивает пользу language-native identifiers.</li>
+
+</ul>
+
+<h3>13.5. Failure modes</h3>
+
+<ul>
+
+<li>Term ambiguity: один standardized term применим к слишком многим items.</li>
+
+<li>Metadata weakness: если title/description бедные, CTG создает generic identifiers.</li>
+
+<li>Hallucinated term: LLM генерирует term, которого нет в catalog ontology.</li>
+
+<li>Grounding collision: fuzzy EIG выбирает wrong item среди похожих TIDs.</li>
+
+<li>Catalog evolution: новые brands/categories требуют обновления normalization rules и term index.</li>
+
+</ul>
+
+
+<h2>14. Первичные источники</h2>
+
+<ul>
+<li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2601.06798">2601.06798</a>.</li>
+</ul>
+
 </main>
+
 </body>
+
 </html>

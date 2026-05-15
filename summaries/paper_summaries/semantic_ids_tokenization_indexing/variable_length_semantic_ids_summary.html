@@ -37,12 +37,15 @@ th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align:
 th { background: var(--soft); text-align: left; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 .math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
+.nav a { color: var(--link); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
 </head>
 <body>
 <main>
-<h1>Variable-Length Semantic IDs for Recommender Systems</h1>
+<h1><a href="https://arxiv.org/abs/2602.16375">Variable-Length Semantic IDs for Recommender Systems</a></h1>
+<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
 <p>Подробное саммари статьи:</p>
 <blockquote>
 <p><strong>Авторы:</strong> Kirill Khrylchenko.</p>
@@ -313,7 +316,24 @@ H\left(q(L\mid x,z)\right)
 <li><strong>Shared vocabulary across positions.</strong> Это красиво концептуально, но может быть менее удобно для иерархических retrieval систем с position-specific codebooks.</li>
 </ul>
 
-<h2>17. Итог</h2>
+<h2>17. Рисунки и таблицы</h2>
+<p>Ключевые таблицы статьи разделяют два вопроса: насколько экономны сами varlen-коды и насколько они полезны в downstream sequential recommendation. Таблица с датасетами фиксирует масштаб: Yambda, VK-LSVD и Amazon Toys &amp; Games отличаются числом items, событий, размерностью embedding'ов и долей head-взаимодействий, поэтому вывод о связи длины кода с популярностью проверяется не на одном синтетическом long tail.</p>
+<p>Таблицы RQ1 показывают reconstruction/recall trade-off для R-KMeans, fixed-length dVAE, variable-length dVAE и REINFORCE baseline. Отдельно важны графики распределения длин: они подтверждают, что модель не просто выбирает среднюю длину для всех объектов, а реально переносит часть head-item'ов в короткие сообщения и оставляет длинные коды для tail. В приложении есть дополнительные таблицы по prefix reconstruction и position-wise perplexity; они полезны для диагностики, потому что показывают, какие позиции несут информацию, а какие становятся почти padding.</p>
+
+<h2>18. Как реализовать и проверять</h2>
+<p>Практическая реализация начинается с фиксированного item embedding space: его нельзя менять одновременно с tokenizer'ом, иначе трудно понять, что именно улучшилось. Затем обучается dVAE-tokenizer с максимальной длиной <code>T</code>, shared vocabulary, Gumbel-Softmax relaxation и explicit length prior. На валидации нужно смотреть не только reconstruction, но и среднюю длину, entropy по позициям, utilization vocabulary, долю коллизий и распределение длин по popularity buckets.</p>
+<p>Downstream-проверка должна включать одинаковый sequential recommender для fixed и variable IDs. Для честного сравнения стоит нормировать token budget: если varlen получает меньше токенов на event, нужно явно считать Recall/Coverage на тот же inference budget. В production-версии дополнительно нужны constraints для валидных prefix'ов, fallback для невалидных generated IDs и мониторинг drift: если популярность item'ов меняется, learned length prior может устаревать.</p>
+
+<h2>19. Связь с соседними работами</h2>
+<p>По отношению к TIGER/RQ-VAE эта работа меняет не сам генеративный retrieval, а интерфейс item'а: вместо одинаковой длины semantic ID вводится экономный код переменной длины. С CoST ее объединяет критика reconstruction-only tokenization, но CoST улучшает различимость через contrastive objective, а varlen dVAE управляет стоимостью сообщения. С промышленными работами Spotify/Snapchat/Kuaishou связь прямая: длинные пользовательские истории и миллионы объектов делают token budget реальным bottleneck, поэтому сокращение head-кодов может быть полезно даже без улучшения качества ранжирования.</p>
+
+<h2>20. Источники</h2>
+<ul>
+<li>arXiv primary page: <a href="https://arxiv.org/abs/2602.16375">https://arxiv.org/abs/2602.16375</a>.</li>
+<li>arXiv source/PDF, использованные для формул, таблиц и экспериментального протокола.</li>
+</ul>
+
+<h2>21. Итог</h2>
 <p>Variable-Length Semantic IDs - сильная статья про то, что semantic ID должен быть не просто дискретным кодом item'а, а <strong>эффективным кодом</strong>. В generative recommendation каждый token стоит context и compute, поэтому фиксированная длина для всех item'ов выглядит все менее оправданной.</p>
 <p>Главная ценность работы - probabilistic formulation длины как latent variable и демонстрация, что adaptive-length codes улучшают downstream recommendation при фиксированном token budget. Работа особенно полезна для generative retrieval, LLM-based recommenders и любых систем, где item language должен масштабироваться на long-tail catalogs.</p>
 </main>
