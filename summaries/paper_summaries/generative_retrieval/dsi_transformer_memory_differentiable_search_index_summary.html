@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSI: Transformer Memory as a Differentiable Search Index</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
+.nav a { color: var(--link); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2202.06991">DSI: Transformer Memory as a Differentiable Search Index</a></h1>
+<p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Yi Tay, Vinh Q. Tran, Mostafa Dehghani, Jianmo Ni, Dara Bahri, Harsh Mehta, Zhen Qin, Kai Hui, Zhe Zhao, Jai Gupta, Tal Schuster, William W. Cohen, Don Metzler.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Google Research</span>; <span class="industry">Google Brain</span>.</p>
+<p><strong>Публикация:</strong> NeurIPS 2022.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>DSI предлагает принципиально новую парадигму информационного поиска: вместо традиционной схемы «encode query &#x2192; compare with document vectors &#x2192; rank» используется единая модель-Transformer, которая по текстовому запросу напрямую <em>генерирует</em> идентификатор релевантного документа (DocID). Вся информация о корпусе закодирована в параметрах модели — нет отдельного индекса, нет векторного ANN-поиска.</p>
+<p>Это первая работа, показавшая, что generative indexing может <strong>превзойти</strong> strong dense retrieval baselines (dual encoders) на хорошо изученной задаче поиска документов. Статья открыла целое направление generative retrieval (GR): большинство последующих работ — DSI++, NCI, SEAL, Ultron, TIGER, LETTER и другие — строятся поверх или в диалоге с этой концепцией.</p>
+
+<h2>2. Контекст и мотивация</h2>
+<p>Классический IR-пайплайн состоит из двух шагов: (1) offline indexing — построение индекса (BM25, dense vectors) и (2) online retrieval — поиск по индексу при поступлении запроса. Такая архитектура требует поддерживать отдельный поисковый движок, и encoder запроса не оптимизируется напрямую под конечное качество retrieval.</p>
+<p>DSI предлагает заменить это всё одним seq2seq Transformer: модель одновременно «индексирует» (запоминает документы в параметрах) и «отвечает» на запросы, генерируя DocID. Авторы показывают, что с правильными design choices это работает лучше, чем dual encoder при сопоставимом масштабе.</p>
+
+<h2>3. Ключевые компоненты DSI</h2>
+
+<h3>3.1. Дизайн DocID</h3>
+<p>Центральный вопрос DSI — как представить «адрес» документа, чтобы модель могла его генерировать. Статья исследует три подхода:</p>
+<ul>
+  <li><strong>Unstructured atomic:</strong> каждому документу назначается уникальное случайное целое число. Простейший вариант — но модель не имеет никаких подсказок о структуре пространства документов.</li>
+  <li><strong>Naively structured string:</strong> DocID — строка из нескольких числовых токенов (например, «123 456»). Модель генерирует их авторегрессионно.</li>
+  <li><strong>Semantically structured (hierarchical):</strong> DocID строится через иерархическую кластеризацию (k-means по embeddings): документ получает код вида «3 7 12», где первый токен — кластер верхнего уровня, следующий — подкластер и т.д. Это ключевое улучшение: похожие документы получают похожие DocID-префиксы, что облегчает обучение. Эта же идея лежит в основе Residual Quantization (RQ-VAE) в последующих системах TIGER и LETTER.</li>
+</ul>
+
+<h3>3.2. Стратегии индексирования</h3>
+<p>DSI обучается на двух типах задач одновременно:</p>
+<ul>
+  <li><strong>Indexing task</strong> — модель принимает текст документа (или его части) и генерирует соответствующий DocID. Авторы исследуют несколько вариантов: Inputs2Targets (документ &#x2192; DocID), Targets2Inputs (DocID &#x2192; документ), Bidirectional (оба направления), Span Corruption (BERT-style masking с последующей генерацией DocID).</li>
+  <li><strong>Retrieval task</strong> — модель принимает запрос и генерирует DocID целевого документа.</li>
+</ul>
+<p>Всё обучается как единая seq2seq задача с cross-entropy loss. Модель одновременно «запоминает» корпус и учится отвечать на запросы.</p>
+
+<h3>3.3. Constrained Decoding</h3>
+<p>Чтобы модель генерировала только <em>валидные</em> DocID (из тех, что существуют в корпусе), при инференсе используется constrained beam search с prefix tree (trie). На каждом шаге генерации допустимы только токены, которые являются валидным продолжением какого-то существующего DocID. Это избавляет от галлюцинаций — генерации несуществующих документов. Тот же механизм используется в GENRE, TIGER и всех последующих системах generative retrieval.</p>
+
+<h2>4. Экспериментальные результаты</h2>
+<p>Оценка проводится на NQ (Natural Questions) в трёх режимах по размеру корпуса: NQ10K, NQ100K, NQ320K. Метрика — Hits@1 (попал ли правильный документ в топ-1 результат beam search).</p>
+<table>
+<thead><tr><th>Модель</th><th>NQ10K Hits@1</th><th>NQ100K Hits@1</th><th>NQ320K Hits@1</th></tr></thead>
+<tbody>
+<tr><td>BM25</td><td>12.4</td><td>11.2</td><td>10.4</td></tr>
+<tr><td>Dual Encoder</td><td>12.4</td><td>26.7</td><td>35.6</td></tr>
+<tr><td>DSI (best)</td><td><strong>33.9</strong></td><td><strong>35.6</strong></td><td><strong>38.2</strong> (11B)</td></tr>
+</tbody>
+</table>
+<p>Наилучшие результаты показывают semantically structured DocID в сочетании со Span Corruption индексированием. Выбор стратегии индексирования и типа DocID оказывает существенное влияние на качество.</p>
+
+<h2>5. Сильные стороны</h2>
+<ul>
+  <li><strong>Единая модель вместо сложного пайплайна.</strong> Нет отдельного индекса, нет ANN-движка — только один Transformer. Это открывает возможность для end-to-end дифференцируемой оптимизации.</li>
+  <li><strong>Semantic DocID работает.</strong> Иерархическая кластеризация embeddings даёт DocID, структура которых помогает модели обобщаться: токены «смежных» документов похожи.</li>
+  <li><strong>Масштабируемость по параметрам.</strong> DSI выигрывает от большего числа параметров значительнее, чем BM25 или DE — перспективный сигнал для scaling.</li>
+  <li><strong>Zero-shot превосходит BM25.</strong> Даже без fine-tuning на labeled queries DSI, обученный только на корпусе, работает лучше BM25.</li>
+</ul>
+
+<h2>6. Ограничения</h2>
+<ul>
+  <li><strong>Масштаб корпуса.</strong> Эксперименты ограничены 320K документами. На корпусах из миллионов документов как будет вести себя DSI — открытый вопрос (частично решённый в DSI++, IncDSI).</li>
+  <li><strong>Добавление новых документов требует переобучения.</strong> Если в корпусе появляется новый документ, нужно обновлять модель — критическая проблема для живых систем (решена в DSI++, IncDSI).</li>
+  <li><strong>Стоимость инференса.</strong> Autoregressive beam search значительно дороже ANN-поиска по dense vectors. Это основной practical bottleneck для high-QPS систем (частично решается vectorized trie decoding).</li>
+  <li><strong>Memorization vs. generalization.</strong> Часть качества DSI объясняется запоминанием тренировочных пар, а не обобщением на новые запросы.</li>
+</ul>
+
+<h2>7. Почему эту статью важно прочитать первой</h2>
+<p>DSI — отправная точка всего направления generative retrieval. Понять её — значит понять базовую постановку задачи: что такое DocID, зачем нужен constrained decoding, в чём принципиальное отличие от dense retrieval. Почти все последующие работы (SEAL, NCI, Ultron, TIGER, LETTER, MINDER и десятки других) либо улучшают отдельные компоненты DSI, либо применяют его идеи к новым доменам (рекомендательные системы, knowledge-intensive NLP). Без знания DSI эти работы читать значительно труднее.</p>
+
+<p><a href="../../papers.html">&larr; К общему списку статей</a></p>
+</main>
+</body>
+</html>

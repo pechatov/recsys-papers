@@ -71,6 +71,16 @@ generative recommendation: модель
 генерирует SID candidates и оценивается Recall/NDCG. Design choice
 заключается в подборе codebook
 shape, обработки collisions и балансе semantic sharing vs uniqueness.</p>
+<h3>Пошаговая схема Snapchat SID adoption</h3>
+<ol>
+<li><strong>Сгенерировать SID treatment.</strong> Для videos/items строится GraphHash-like или другой SID mapping; вместе с ним считаются uniqueness, collision groups и coverage новых объектов.</li>
+<li><strong>Запустить low-risk path: SID as feature.</strong> SID добавляется в existing ranker как categorical feature для target item и как sequence feature для user history. Objective ranker'а не меняется.</li>
+<li><strong>Проверить feature value.</strong> Offline считаются AUC/UAUC, calibration и feature importance; online A/B показывает, дает ли semantic grouping lift без изменения retrieval stack.</li>
+<li><strong>Отдельно тестировать direct retrieval.</strong> Для GR setup user history длиной до 480 переводится в SID sequence, модель генерирует SID candidates, а mapping SID -> item возвращает videos.</li>
+<li><strong>Настроить collision policy.</strong> Deduplicate token или other collision handling добавляется только после анализа: максимальная uniqueness не является целью, потому что tail может выигрывать от shared coarse codes.</li>
+<li><strong>Подобрать codebook shape.</strong> Сравниваются ширина и глубина codebook по Recall/NDCG, sequence length, uniqueness и latency. Побеждает shape с лучшим downstream metric, а не с максимальной уникальностью.</li>
+<li><strong>Мониторить freshness.</strong> Для short-form content SID backfill, drift, hot new videos и feature-store availability становятся такими же важными, как offline SID metrics.</li>
+</ol>
 <h2>Эксперименты и метрики</h2>
 <p>Feature-use case оценивается offline AUC gains, где даже 0.01%
 считается значимым, и online A/B
@@ -97,7 +107,7 @@ benchmark.</li>
 <li>Критически обсуждает uniqueness как неполный
 критерий качества.</li>
 </ul>
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <p>Много внутренних данных и агрегированных gains;
 воспроизвести результаты
 полностью нельзя. Paper больше про design choices, чем про

@@ -89,6 +89,35 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Целевая функция DOS объединяет recommendation loss и quantization/alignment terms. DFI отвечает за то, чтобы SID не были только content-derived labels, а отражали реальные user-item transitions. ORQ можно понимать как поиск базиса, в котором residual quantizer менее разрушителен: после ортогонального поворота модель квантует компоненты, возвращая компактный SID, но с меньшим semantic loss. Важное свойство ортогональности - сохранение расстояний/норм, что делает преобразование менее произвольным, чем свободный MLP.</p>
 
+<h3>5.1. Пошаговый алгоритм DOS</h3>
+
+<ol>
+<li><strong>Собрать dual-flow batch.</strong> Для каждого train example берется user click sequence и target item; user-flow кодирует историю, item-flow кодирует target representation.</li>
+<li><strong>Получить collaborative alignment signal.</strong> DFI учит user-flow и item-flow жить в согласованном generation space, чтобы SID target item был предсказуем из user context.</li>
+<li><strong>Повернуть item embedding.</strong> Перед residual quantization применяется обучаемая ортогональная матрица \(R\), так что \(\tilde{\mathbf{z}} = R\mathbf{z}\). Ортогональность сохраняет нормы и расстояния, но меняет basis.</li>
+<li><strong>Выполнить residual quantization.</strong> Первый codebook выбирает главный code, затем следующие codebooks квантуют residual information. Цель ORQ - сделать ранние уровни SID более информативными, а поздние - не шумовыми.</li>
+<li><strong>Оптимизировать общий loss.</strong> Recommendation objective давит на полезность SID для генерации, quantization loss удерживает reconstructability, alignment terms уменьшают gap между codebook и user-item context.</li>
+<li><strong>Экспортировать SID как production feature.</strong> После обучения SID добавляется в downstream Meituan stack как incremental feature, а не требует полной замены ranker/retriever.</li>
+<li><strong>Проверить ablation.</strong> Отключение DFI должно показать потерю contextual alignment; отключение ORQ - потерю quantization geometry.</li>
+</ol>
+
+<pre><code>for batch of (user_sequence, target_item):
+    h_user = user_flow(user_sequence)
+    z_item = item_flow(target_item)
+
+    aligned = align(h_user, z_item)
+    z_rot = orthogonal_matrix @ z_item
+
+    residual = z_rot
+    sid = []
+    for codebook in residual_codebooks:
+        code = nearest_code(residual, codebook)
+        sid.append(code.index)
+        residual = residual - code.vector
+
+    loss = recommendation_loss(h_user, sid) + quantization_loss + alignment_loss
+    update user_flow, item_flow, orthogonal_matrix and codebooks</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Offline сравнение включает downstream AUC и F1. В таблице performance DOS превосходит несколько baseline-вариантов: например AUC поднимается до 0.8763 против 0.8363-0.8539 у альтернатив, F1 также улучшается. Отдельно показаны Hit@10 по бизнес-категориям и ablation: удаление DFI или ORQ снижает качество. Online A/B test проводился неделю на 30% production traffic Meituan и подтверждает инкрементальный выигрыш от SID без прочих архитектурных изменений.</p>

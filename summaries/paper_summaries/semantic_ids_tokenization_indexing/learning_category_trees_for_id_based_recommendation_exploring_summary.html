@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Learning Category Trees for ID-Based Recommendation: Exploring the Power of Differentiable Vector Quantization</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -85,6 +96,33 @@ th { background: var(--soft); text-align: left; }
 <li>Recommendation loss берется из downstream model.</li>
 <li>Total training co-evolves entity embeddings and codebooks.</li>
 </ul>
+<h3>Подробная схема алгоритма CAGE</h3>
+<p>CAGE не генерирует item ID в LLM. Он добавляет к обычным ID embeddings обучаемое category-tree представление, которое строится через каскадные VQ codebooks и обновляется вместе с downstream recommender'ом.</p>
+<ol>
+<li><strong>Старт с entity embedding.</strong> Для item или user берется текущий embedding \(\mathbf{e}\) из базовой модели. В начале обучения он может быть почти случайным, поэтому дерево нельзя построить один раз offline.</li>
+<li><strong>Каскадное квантование.</strong> На первом уровне nearest codeword выбирается из \(Q^{(1)}\); на следующем уровне квантуется representation предыдущего уровня. Так получается path от fine к coarse или наоборот, в зависимости от реализации layer ordering.</li>
+<li><strong>Straight-through update.</strong> Forward pass использует hard nearest-neighbor code, а backward pass пропускает градиент к entity embedding/codebook через STE.</li>
+<li><strong>Собрать category representation.</strong> Коды нескольких уровней усредняются или агрегируются в \(\bar{\mathbf{c}}\), после чего смешиваются с исходным ID embedding через residual connection \( \mathbf{z} = \mathbf{e} + \alpha \bar{\mathbf{c}}\).</li>
+<li><strong>Передать в downstream model.</strong> SASRec/CF/CTR backbone получает enhanced embedding \(\mathbf{z}\) и оптимизирует свой обычный loss.</li>
+<li><strong>Обновить tree через CAGE loss.</strong> Quantization и commitment losses удерживают entity embeddings и codewords согласованными, пока recommendation loss сдвигает дерево к полезной для задачи структуре.</li>
+</ol>
+<pre><code>for batch in recommender_training:
+    e = embedding_lookup(batch.entities)
+    previous = e
+    selected_codes = []
+
+    for level in 1..H:
+        c = nearest_codeword(previous, codebook[level])
+        selected_codes.append(c)
+        loss_quant += ||stopgrad(previous) - c||^2
+        loss_commit += ||previous - stopgrad(c)||^2
+        previous = straight_through(c, previous)
+
+    c_bar = average(selected_codes)
+    z = e + alpha * c_bar
+    prediction = downstream_model(z, batch.context)
+    loss = recommendation_loss(prediction, batch.labels) + omega * (loss_quant + beta * loss_commit)
+    update(embeddings, codebooks, downstream_model)</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -107,24 +145,22 @@ th { background: var(--soft); text-align: left; }
 <li>Hyperparameter plots: omega_q and beta are especially important.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
-<p>Ниже — основные инженерные плюсы.</p>
+<p>Сильные стороны CAGE связаны с тем, что он извлекает дискретную структуру даже из ID-only данных.</p>
 <ul>
-<li>Works without content features.</li>
-<li>Applies to many recommender families.</li>
-<li>Learns hierarchy aligned to downstream objective.</li>
-<li>Can improve sparse entity representations.</li>
-<li>Simple residual fusion makes integration cheap.</li>
+<li><strong>Не требует текстов, картинок или готовых категорий.</strong> Это важно для доменов, где side content бедный, приватный или недоступный.</li>
+<li><strong>Дерево обучается вместе с recommender'ом.</strong> В отличие от offline clustering, category structure может перестраиваться под list completion, CF или CTR objective.</li>
+<li><strong>Модуль легко встроить.</strong> Residual fusion \(e + \alpha c\) позволяет добавить CAGE поверх существующих embedding lookups без переписывания всего backbone.</li>
+<li><strong>Работает в нескольких family models.</strong> Проверка на sequential, CF и CTR снижает риск, что метод является трюком одного benchmark'а.</li>
+<li><strong>Помогает sparse entity representations.</strong> Shared codewords дают редким items/users дополнительный сигнал через соседей в learned tree.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
-<p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
+<p>Ограничения CAGE возникают из-за того, что learned categories полезны для модели, но не обязательно стабильны или интерпретируемы.</p>
 <ul>
-<li>Learned categories may be non-interpretable.</li>
-<li>Hyperparameters H/K/alpha/beta matter a lot.</li>
-<li>No guarantee of stable taxonomy across retraining.</li>
-<li>Cold-start with no interactions is not solved.</li>
-<li>Not a direct generative retrieval method.</li>
+<li><strong>Категории могут быть неинтерпретируемыми.</strong> Даже если они улучшают CTR/NDCG, это не значит, что tree можно показывать analyst'ам как taxonomy.</li>
+<li><strong>Стабильность taxonomy не гарантирована.</strong> При retraining один и тот же item может сменить path, что усложняет monitoring и сравнение версий.</li>
+<li><strong>Гиперпараметры критичны.</strong> Число уровней \(H\), размер codebook'ов, \(\alpha\), \(\beta\) и вес CAGE loss меняют trade-off memorization vs sharing.</li>
+<li><strong>Cold-start без interactions не решен.</strong> Если item вообще не имеет поведенческого сигнала и нет content features, CAGE неоткуда вывести осмысленный code path.</li>
+<li><strong>Это не полноценный generative retrieval method.</strong> CAGE строит representation augmentation, но не решает constrained decoding, valid ID generation и beam search.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

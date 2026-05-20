@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Generative Flow Network for Listwise Recommendation</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -84,6 +95,30 @@ th { background: var(--soft); text-align: left; }
 <li>Policy learns exploration distribution, not just deterministic ranking.</li>
 <li>Offline and online simulation objectives are separated.</li>
 </ul>
+<h2>Детальный алгоритм GFN4Rec</h2>
+<p>GFN4Rec рассматривает рекомендательную страницу как trajectory в generation tree. Состояние - частично собранный список, действие - добавить следующий item, terminal state - полный slate. Модель должна генерировать списки с вероятностью, пропорциональной list reward, а не просто сортировать независимые item scores.</p>
+<ol>
+<li><strong>Ограничить candidate set.</strong> На практике GFlowNet применяется после candidate generation/reranking shortlist, иначе combinatorial action space слишком большой.</li>
+<li><strong>Задать состояние.</strong> Root state - пустой список. После каждого action состояние содержит ordered partial slate и user/context features.</li>
+<li><strong>Определить forward policy.</strong> Нейросетевой policy \(P_F(a \mid s)\) выбирает item, который еще не был добавлен. Invalid repeats и business-forbidden items маскируются.</li>
+<li><strong>Собрать trajectory.</strong> Модель последовательно добавляет items до длины \(K\). Полный список является leaf в generation tree.</li>
+<li><strong>Посчитать listwise reward.</strong> Reward агрегирует relevance/engagement и может включать diversity, novelty или multi-behavior feedback. Важна log-scale обработка reward, чтобы не только top slate получал вероятность.</li>
+<li><strong>Обучить flow matching.</strong> Потоки в intermediate states согласуются так, чтобы total probability terminal lists соответствовала reward. Bias factors стабилизируют skewed reward scales.</li>
+<li><strong>Использовать policy для exploration.</strong> На serving/simulation можно sample lists из policy, а не брать один deterministic top-k, что дает quality-diversity trade-off.</li>
+</ol>
+<pre><code>for user_context in batch:
+    state = empty_slate()
+    trajectory = [state]
+    while len(state) &lt; K:
+        logits = policy(user_context, state)
+        logits = mask_repeated_and_invalid_items(logits, state)
+        item = sample_or_decode(logits)
+        state = append(state, item)
+        trajectory.append(state)
+
+    reward = list_reward(state)  # relevance + diversity + business terms
+    loss = flow_matching_loss(trajectory, log_reward=log(reward), bias_terms=True)
+    update(policy, loss)</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,24 +141,22 @@ th { background: var(--soft); text-align: left; }
 <li>Diversity versus reward comparisons.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Optimizes slate distribution directly.</li>
-<li>Naturally encourages diversity.</li>
-<li>Relevant for exploration-heavy feeds.</li>
-<li>Can be combined with existing candidate generation.</li>
-<li>Formal connection to GFlowNet theory.</li>
+<li><strong>Оптимизирует распределение списков, а не item scores.</strong> Это правильнее для feeds, где utility зависит от сочетания items.</li>
+<li><strong>Естественно поддерживает diversity/exploration.</strong> Probability mass распределяется между несколькими хорошими slates, а не коллапсирует в один top-k.</li>
+<li><strong>Reward можно сделать listwise.</strong> В objective можно включать multi-behavior feedback, novelty и бизнес-ограничения.</li>
+<li><strong>Совместим с существующим retrieval.</strong> Метод можно ставить как list generator/reranker поверх ограниченного candidate set.</li>
+<li><strong>Есть теоретическая опора.</strong> GFlowNet formulation дает ясную связь между terminal reward и probability flow.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Reward design is hard in real products.</li>
-<li>Large candidate sets need pruning.</li>
-<li>Training sensitive to reward scale.</li>
-<li>Business constraints must be added via masks/rules.</li>
-<li>Not about semantic item IDs directly.</li>
+<li><strong>Reward design становится главным риском.</strong> Если reward плохо отражает долгосрочную satisfaction, GFlowNet будет честно оптимизировать неправильные списки.</li>
+<li><strong>Action space требует pruning.</strong> Полный каталог недоступен для tree generation; нужен предварительный candidate set.</li>
+<li><strong>Чувствительность к scale reward.</strong> Слишком skewed rewards дают нестабильный flow matching, поэтому log reward и bias factors критичны.</li>
+<li><strong>Business constraints не появляются сами.</strong> Repeats, policy rules, freshness и safety нужно явно добавлять masks/rules.</li>
+<li><strong>Это не метод semantic IDs.</strong> В группе SID-работ он полезен как listwise generative contrast, но item tokenization напрямую не решает.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

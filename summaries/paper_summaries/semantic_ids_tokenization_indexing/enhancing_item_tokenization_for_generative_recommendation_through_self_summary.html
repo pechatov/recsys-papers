@@ -84,6 +84,29 @@ th { background: var(--soft); text-align: left; }
 <li>Training interval controls stability-versus-adaptivity.</li>
 <li>Evaluation compares before/after token refinement.</li>
 </ul>
+<h2>Детальный алгоритм self-improving tokenization</h2>
+<p>Метод можно понимать как iterative relabeling loop. Внешний tokenizer дает стартовую карту item -&gt; tokens, затем LLM recommender, обучившись на этой карте, возвращает сигнал о том, какие token assignments плохо согласованы с его внутренней schema. После remap обучение продолжается уже с улучшенными tokens.</p>
+<ol>
+<li><strong>Инициализировать item tokens.</strong> Начальная карта может быть построена из text, numerical strings или externally assigned new tokens. Важно сохранить compact token representation, а не раскрывать длинный title.</li>
+<li><strong>Обучить generative recommender.</strong> LLM получает user histories в виде item token sequences и учится autoregressive recommendation objective.</li>
+<li><strong>Снять model-learned associations.</strong> После достаточной сходимости анализируются token/item representations, generation errors, соседства или другие learned patterns, которые показывают mismatch между external tokenizer и LLM.</li>
+<li><strong>Пересчитать token map.</strong> Items получают обновленные tokens так, чтобы близкие по learned schema items стали согласованнее, а problematic collisions/near-collisions уменьшились.</li>
+<li><strong>Продолжить training с новой картой.</strong> Истории пользователей ретокенизируются новой версией map; checkpoint и token map должны быть синхронизированы.</li>
+<li><strong>Повторять с контролем churn.</strong> Update frequency задает trade-off: редкие updates дают стабильность, частые - быстрее адаптируются, но могут разрушить training trajectory.</li>
+<li><strong>Финализировать serving map.</strong> Для inference фиксируется конкретная версия token map; beam outputs валидируются против нее.</li>
+</ol>
+<pre><code>token_map = external_tokenizer(items)
+model = initialize_LLM_recommender()
+
+for round in self_improvement_rounds:
+    train(model, tokenize_logs(logs, token_map))
+    learned_signal = extract_item_token_patterns(model, logs, token_map)
+    candidate_map = refine_tokens(token_map, learned_signal)
+    if churn(candidate_map, token_map) &lt; max_allowed_churn:
+        token_map = version_and_publish_for_next_round(candidate_map)
+
+final_model = continue_training(model, tokenize_logs(logs, token_map))
+serve(final_model, token_map)</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,24 +129,22 @@ th { background: var(--soft); text-align: left; }
 <li>Implementation figure: plug-and-play integration.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Does not require differentiable tokenizer.</li>
-<li>Can improve already trained/static token maps.</li>
-<li>Uses LLM as feedback source.</li>
-<li>Compatible with multiple tokenization starts.</li>
-<li>Simpler than fully joint ETEGRec-style training.</li>
+<li><strong>Не требует differentiable tokenizer.</strong> Метод можно добавить поверх уже существующего token map, не переписывая весь generator/tokenizer pipeline.</li>
+<li><strong>LLM становится источником обратной связи.</strong> Refinement использует learned associations самого recommender-а, а не только external embeddings.</li>
+<li><strong>Подходит к разным initial tokenizers.</strong> Paper позиционирует self-improvement как plug-and-play enhancement для text/numeric/new-token starts.</li>
+<li><strong>Компактнее textual item descriptions.</strong> Tokens остаются короткими, поэтому prefilling/decoding дешевле, чем генерация длинных titles.</li>
+<li><strong>Проще joint end-to-end token learning.</strong> Iterative relabeling легче внедрить там, где tokenizer нельзя сделать полностью differentiable.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Token churn complicates reproducibility.</li>
-<li>Historical logs need mapping versions.</li>
-<li>Too frequent updates can destabilize training.</li>
-<li>Wrong self-feedback may reinforce model bias.</li>
-<li>Serving needs agreement between model checkpoint and token map.</li>
+<li><strong>Token churn усложняет воспроизводимость.</strong> Один и тот же item может иметь разные tokens в разных rounds, поэтому все логи требуют map version id.</li>
+<li><strong>Self-feedback может усилить bias модели.</strong> Если LLM уже переобучилась на popularity или старый exposure, refinement закрепит эту ошибку.</li>
+<li><strong>Слишком частые updates нестабильны.</strong> Модель постоянно догоняет меняющийся язык item'ов и может терять ранее выученные patterns.</li>
+<li><strong>Serving требует строгой синхронизации.</strong> Checkpoint, token map, trie и item lookup должны быть одной версии.</li>
+<li><strong>Нужны диагностические метрики churn/collision.</strong> Average 8% improvement сам по себе не показывает, где remap помог, а где испортил tail или cold-start.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

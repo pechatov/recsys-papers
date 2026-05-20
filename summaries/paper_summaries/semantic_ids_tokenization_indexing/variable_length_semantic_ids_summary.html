@@ -193,6 +193,17 @@ H\left(q(L\mid x,z)\right)
 </ol>
 <p>Так сохраняется интуиция residual quantization, но обучение идет стандартным backpropagation.</p>
 
+<h2>8.1. Пошаговый алгоритм variable-length dVAE</h2>
+<ol>
+<li><strong>Зафиксировать item embedding space.</strong> На вход tokenizer получает \(\mathbf{x}\), например 64D/128D item embedding из существующей модели; embedding model не меняется во время tokenizer ablation.</li>
+<li><strong>Сгенерировать relaxed tokens.</strong> Autoregressive encoder на каждом шаге \(t \le T\) предсказывает logits по shared vocabulary, Gumbel-Softmax дает differentiable one-hot approximation.</li>
+<li><strong>Обновить residual state.</strong> Expected token embedding вычитается из hidden/residual representation, поэтому следующие позиции кодируют оставшуюся информацию.</li>
+<li><strong>Предсказать stopping probabilities.</strong> Отдельная length head оценивает \(q(s_l=1 \mid x,z_{1:l})\); EOS не смешивается с semantic tokens.</li>
+<li><strong>Взвесить reconstruction по длинам.</strong> Decoder восстанавливает \(\mathbf{x}\) по каждому prefix, а loss суммирует reconstruction с весами \(q(L=l)\), сглаженными небольшой uniform component.</li>
+<li><strong>Добавить регуляризации.</strong> Vocabulary KL поддерживает broad token utilization, geometric length prior и \(\lambda E[L]\) делают частые объекты короче, entropy term не дает длине схлопнуться слишком рано.</li>
+<li><strong>Сформировать hard IDs для downstream.</strong> На inference берутся argmax tokens до выбранной stop length; для sequential recommender variable IDs укладываются в фиксированный token budget.</li>
+</ol>
+
 <h2>9. Экспериментальный setup</h2>
 <h3>9.1. Датасеты</h3>
 <table>
@@ -308,7 +319,7 @@ H\left(q(L\mid x,z)\right)
 <li><strong>Downstream evaluation.</strong> Автор проверяет не только reconstruction, но и sequential recommendation under fixed token budget.</li>
 </ul>
 
-<h2>16. Ограничения и вопросы</h2>
+<h2>16. Слабые стороны, ограничения и вопросы</h2>
 <ul>
 <li><strong>Collision handling.</strong> В downstream recommender добавляется special unique identifier token, чтобы разрешать collision между semantic IDs. Это частично возвращает атомарный item ID.</li>
 <li><strong>Serving complexity.</strong> Variable-length decoding требует аккуратной обработки stopping probabilities, valid prefixes и mapping generated sequence to item.</li>

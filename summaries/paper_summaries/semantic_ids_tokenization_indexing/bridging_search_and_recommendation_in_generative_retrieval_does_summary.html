@@ -84,6 +84,28 @@
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Bridging Search and Recommendation in Generative Retrieval: Does One Task Help the Other? качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
+<h3>Подробная схема алгоритма</h3>
+<p>Статья не предлагает новый tokenizer; ее алгоритм - controlled multi-task protocol, который проверяет, когда единый generative retriever действительно переносит сигнал между search и recommendation.</p>
+<ol>
+  <li><strong>Подготовить общий catalog ID space.</strong> Один и тот же item/document должен иметь один identifier, чтобы search examples и recommendation examples конкурировали за общие decoder-параметры.</li>
+  <li><strong>Сформировать search examples.</strong> Входом служит query prompt, target - identifier релевантного item. Это проверяет semantic/query relevance.</li>
+  <li><strong>Сформировать recommendation examples.</strong> Входом служит user history prompt, target - identifier следующего item. Это проверяет collaborative/co-consumption relevance.</li>
+  <li><strong>Обучить три модели.</strong> Search-only, recommendation-only и joint модель используют одинаковый autoregressive objective, но joint получает смешанный поток examples с task prompts.</li>
+  <li><strong>Разделить две гипотезы.</strong> H1 проверяется через близость popularity distributions: если KL между задачами мал, joint модель получает полезную popularity regularization. H2 проверяется через overlap query-relevant и co-occurring pairs: если item neighborhoods согласованы, representation переносится между задачами.</li>
+  <li><strong>Оценить обе задачи отдельно.</strong> Joint модель считается полезной только если улучшает или не разрушает search и recommendation одновременно, а не выигрывает одну задачу за счет другой.</li>
+  <li><strong>Сделать diagnostic ablations.</strong> Popularity removal, redundancy/overlap analysis и t-SNE item embeddings используются не как украшение, а чтобы объяснить, за счет чего joint training сработал.</li>
+</ol>
+<pre><code>for task in {search, recommendation}:
+    build prompted examples with shared item identifiers
+
+train M_search on search examples only
+train M_rec on recommendation examples only
+train M_joint on mixed examples with task prompts
+
+measure search metrics and recommendation metrics separately
+estimate popularity KL and item-neighborhood overlap
+if M_joint improves both tasks:
+    attribute gain to H1/H2 diagnostics, not just to extra data</code></pre>
 <h2>Эксперименты</h2>
 <ul>
   <li>Real datasets: MPD, MovieLens-derived ML, Podcasts from Spotify logs 2023-07 to 2023-10.</li>
@@ -108,15 +130,17 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Excellent diagnostic framing.</li>
-  <li>Explains when unified generative IR is justified.</li>
-  <li>Avoids overclaiming against non-generative baselines.</li>
+  <li><strong>Диагностическая постановка вместо очередного SOTA-claim.</strong> Работа явно проверяет H1 popularity regularization и H2 latent representation regularization, поэтому объясняет условия пользы joint training.</li>
+  <li><strong>Отдельная оценка search и recommendation.</strong> Это защищает от ложного вывода, когда единая модель улучшает recommendation за счет деградации explicit search.</li>
+  <li><strong>Симуляции связывают результат с распределениями задач.</strong> S1/S2/S3 показывают, что решающими являются popularity KL, overlap и matching relevant pairs, а не само слово "multi-task".</li>
+  <li><strong>Подходит как decision framework для GenSAR-like систем.</strong> До внедрения unified GR можно измерить overlap каталога и понять, ожидается ли перенос сигнала.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Not a production deployment paper.</li>
-  <li>Benefits depend on item overlap and distribution compatibility.</li>
-  <li>ID strategy is not the main contribution.</li>
+  <li><strong>Нет production deployment.</strong> Работа хорошо объясняет механизм, но не отвечает на latency, refresh, business KPI и rollback вопросы промышленной SAR-системы.</li>
+  <li><strong>Польза зависит от структурной совместимости задач.</strong> Если search catalog и recommendation catalog слабо пересекаются или имеют разные popularity distributions, joint training может дать negative transfer.</li>
+  <li><strong>Identifier design почти не исследуется.</strong> Статья говорит, когда совместное обучение помогает, но не решает collisions, code utilization, valid-path decoding и lifecycle SID.</li>
+  <li><strong>Сложно перенести вывод без диагностики overlap.</strong> Нельзя просто взять joint prompt format; нужно заново измерить KL, item overlap и query/co-occurrence agreement в своем домене.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

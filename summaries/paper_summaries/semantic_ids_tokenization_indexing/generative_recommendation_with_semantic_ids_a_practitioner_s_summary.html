@@ -84,6 +84,16 @@ th { background: var(--soft); text-align: left; }
 <li>Evaluation standardization across public benchmarks.</li>
 <li>Collision and decoding policies made explicit.</li>
 </ul>
+<h3>GRID pipeline как алгоритм воспроизведения</h3>
+<ol>
+<li><strong>Зафиксировать dataset adapter.</strong> Один и тот же split, negative policy, history truncation и item metadata используются для всех методов; иначе сравнение tokenizer'ов превращается в сравнение preprocessing.</li>
+<li><strong>Выбрать modality encoder.</strong> GRID отделяет text/image/multimodal encoder от tokenizer, поэтому можно проверить, дает ли lift SID method или более сильный encoder.</li>
+<li><strong>Сгенерировать SID map.</strong> Tokenizer module строит item -> SID через RQ-VAE/VQ/residual k-means style implementation и сохраняет mapping, collision report, code utilization и vocabulary sizes.</li>
+<li><strong>Обучить GR backbone.</strong> Sequential generative recommender получает user history as SID sequence и оптимизирует autoregressive next-SID prediction.</li>
+<li><strong>Настроить decoding policy.</strong> Beam search, constrained trie, duplicate filtering и SID-to-item resolution фиксируются как отдельный module, потому что они часто меняют Recall сильнее, чем tokenizer.</li>
+<li><strong>Запустить component ablations.</strong> Меняется ровно один компонент: encoder, tokenizer, backbone, training schedule или decoding. Так GRID выявляет, какой элемент реально отвечает за gain.</li>
+<li><strong>Сформировать unified report.</strong> Помимо Recall/NDCG сохраняются invalid rate, collision rate, head/tail/cold-start slices, latency и seed variance.</li>
+</ol>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,7 +116,7 @@ th { background: var(--soft); text-align: left; }
 <li>Benchmark result tables under unified setup.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
+<p>Сильная сторона работы в том, что она делает SID/GR pipeline измеримым по компонентам, а не предлагает еще один плохо сопоставимый top-line результат.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
 <li>Improves experimental hygiene.</li>
@@ -115,7 +125,7 @@ th { background: var(--soft); text-align: left; }
 <li>Encourages component-level diagnosis.</li>
 <li>Useful before proposing new SID methods.</li>
 </ul>
-<h2>ограничения</h2>
+<h2>слабые стороны и ограничения</h2>
 <p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>

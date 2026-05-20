@@ -81,6 +81,30 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Model variants analyze song decomposition, increasing model complexity after reducing embeddings, and user input length.</li>
 </ul>
+<h3>Подробная схема алгоритма music semantic IDs</h3>
+<p>Эта работа ближе к production compression/regularization, чем к LLM generative retrieval: semantic IDs используются как shared content-derived representations для next-song recommender, уменьшая зависимость от огромной таблицы уникальных track embeddings.</p>
+<ol>
+<li><strong>Собрать content representation трека.</strong> Для каждой песни используются аудио/метаданные/контентные признаки, которые должны быть стабильнее sparse interaction-only ID embedding.</li>
+<li><strong>Построить semantic ID или shared token decomposition.</strong> Похожие треки получают общие компоненты представления, поэтому модель может делить параметры между long-tail songs.</li>
+<li><strong>Заменить или дополнить item embedding table.</strong> Варианты paper анализируют, сколько информации держать в shared semantic representation, а сколько оставить в song-specific memorization.</li>
+<li><strong>Перекинуть saved parameters в model capacity.</strong> После уменьшения item table можно увеличить сложность sequence model или длину user input, чтобы проверить, где параметрический бюджет дает больший эффект.</li>
+<li><strong>Обучить next-song recommender.</strong> Модель предсказывает следующий трек по истории прослушиваний, используя semantic IDs как признаки/embeddings.</li>
+<li><strong>Оценить quality-size-diversity trade-off.</strong> Помимо accuracy считаются diversity и model size; online A/B проверяет, не ухудшает ли semantic sharing реальные музыкальные сессии.</li>
+</ol>
+<pre><code>for song in catalog:
+    content_vec = content_encoder(song.audio, song.metadata)
+    semantic_id = semantic_tokenizer(content_vec)
+    song_features[song] = compose_shared_embedding(semantic_id)
+
+for batch in listening_sequences:
+    x = encode_history(batch.history, song_features)
+    logits = next_song_model(x)
+    loss = next_item_loss(logits, batch.next_song)
+    update(next_song_model, semantic_embeddings)
+
+evaluate:
+    compare item_id_only, semantic_id_only and hybrid variants
+    report accuracy, diversity, model_size, tail performance and online metrics</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -104,25 +128,23 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
+<p>Сильные стороны paper в том, что semantic IDs рассматриваются как инструмент перераспределения model capacity в музыкальном продукте.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Фокус на model size, а не только Recall.</strong> Для streaming catalog огромная item table является реальным production cost, и paper явно учитывает этот trade-off.</li>
+<li><strong>Music domain хорошо подходит content sharing.</strong> Аудио и metadata позволяют связать tail tracks с похожими head tracks даже при малом числе прослушиваний.</li>
+<li><strong>Проверяется diversity.</strong> В музыке accuracy без разнообразия может ухудшить experience, поэтому diversity/online impact важнее одного offline top-K.</li>
+<li><strong>Есть online A/B.</strong> Это снижает риск, что semantic sharing улучшает offline metric, но портит реальные listening sessions.</li>
+<li><strong>Показывает альтернативу LLM-SID.</strong> Semantic IDs могут быть feature compression mechanism внутри classic recommender, а не только output vocabulary для генератора.</li>
 </ul>
 
 <h2>Ограничения</h2>
 <p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li><strong>Сильная зависимость от content encoder'ов.</strong> Если аудио/metadata embeddings плохо отражают taste substitutability, shared semantic IDs будут связывать неправильные треки.</li>
+<li><strong>Semantic sharing может повредить memorization.</strong> Для популярных песен точный item-specific signal часто важнее обобщения через похожие tracks.</li>
+<li><strong>Online music objectives сложнее offline accuracy.</strong> Diversity, novelty fatigue, session length и skips могут конфликтовать с next-song hit metrics.</li>
+<li><strong>Внутренние данные ограничивают воспроизводимость.</strong> Два music datasets и A/B ценны, но без каталога и serving constraints трудно повторить эффект.</li>
+<li><strong>Это не constrained generative retrieval.</strong> Работа не решает invalid ID generation и beam-search issues, потому что semantic IDs используются как shared features.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

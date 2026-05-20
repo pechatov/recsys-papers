@@ -53,30 +53,60 @@ img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px
 <h2>4. Set permutation regularization</h2>
 <p>Поскольку item features внутри action не упорядочены, один и тот же action set можно сегментировать несколькими способами без изменения semantics. ActionPiece использует set permutation regularization: модель видит несколько tokenization variants для той же последовательности. Это работает как data augmentation и снижает зависимость от произвольного порядка features.</p>
 
-<h2>5. Эксперименты</h2>
+<h2>5. Пошаговый алгоритм ActionPiece</h2>
+<ol>
+<li><strong>Представить action как set features.</strong> Каждый user action раскладывается не в один item ID, а в unordered set признаков item'а.</li>
+<li><strong>Инициализировать vocabulary атомарными признаками.</strong> На старте каждый feature является отдельным token, как символы в BPE.</li>
+<li><strong>Посчитать co-occurrence внутри action.</strong> Частые пары feature tokens внутри одного action set получают вес как кандидаты для merge.</li>
+<li><strong>Посчитать co-occurrence между соседними actions.</strong> Пары tokens из adjacent action sets тоже учитываются, чтобы vocabulary захватывал transition patterns, а не только item semantics.</li>
+<li><strong>Выбрать лучший merge.</strong> Самая полезная weighted pair объединяется в новый ActionPiece token; vocabulary пополняется этим pattern token.</li>
+<li><strong>Повторять до budget vocabulary.</strong> Алгоритм итеративно строит tokens, которые могут покрывать feature subsets и cross-action patterns.</li>
+<li><strong>Токенизировать sequence context-aware способом.</strong> Один и тот же item/action может получить разное разбиение в зависимости от соседних actions.</li>
+<li><strong>Применить set permutation regularization.</strong> Для одного unordered action set генерируются несколько valid tokenization variants, чтобы recommender не зависел от произвольного порядка features.</li>
+<li><strong>Обучить generative recommender.</strong> Модель получает ActionPiece-tokenized sequences и предсказывает следующие action tokens/items.</li>
+</ol>
+<pre><code>vocab = atomic_item_features
+while len(vocab) &lt; vocab_budget:
+    scores = {}
+    for user_sequence in logs:
+        for action_set in user_sequence:
+            scores += intra_action_pair_counts(action_set)
+        for adjacent_actions in user_sequence:
+            scores += inter_action_pair_counts(adjacent_actions, distance_weights)
+    best_pair = argmax(scores)
+    vocab.add(merge(best_pair))
+    retokenize_sequences(vocab)
+
+for training sequence:
+    variants = set_permutation_tokenizations(sequence, vocab)
+    train_generative_recommender(variants)</code></pre>
+
+<h2>6. Эксперименты</h2>
 <p>Авторы сравнивают ActionPiece с sequential recommendation и generative recommendation baselines на Amazon Reviews datasets. ActionPiece стабильно обгоняет baseline'ы и улучшает NDCG@10 на 6.00%-12.82% относительно лучшего baseline. Отдельный вывод: feature-based methods обычно лучше item ID-only, а generative models с sub-item semantics лучше используют item features.</p>
 <p>В абляциях авторы показывают, что выигрыш не объясняется только большим vocabulary size. Контекстные merges и set permutation regularization вносят отдельный вклад.</p>
 
-<h2>6. Что важно</h2>
+<h2>7. Сильные стороны</h2>
 <ul>
-<li>ActionPiece сдвигает фокус с item tokenization на action-sequence tokenization.</li>
-<li>Метод учитывает контекст до обучения generative recommender, уже на уровне tokenizer.</li>
-<li>Vocabulary строится data-driven, но не игнорирует unordered nature feature sets.</li>
-<li>Это хорошая альтернатива fixed semantic ID, когда user behavior sequence несет больше смысла, чем isolated item.</li>
+<li><strong>Сдвигает фокус с item tokenization на action-sequence tokenization.</strong> Метод кодирует поведенческий контекст, а не только объект каталога.</li>
+<li><strong>Context-aware merges происходят до обучения recommender.</strong> Tokenizer уже содержит устойчивые intra-action и inter-action patterns.</li>
+<li><strong>Учитывает unordered природу feature sets.</strong> Set permutation regularization снижает зависимость от искусственного порядка признаков.</li>
+<li><strong>Хорош для доменов, где действие важнее item semantics.</strong> Один и тот же item может означать разные intents в разных histories, и ActionPiece допускает разную сегментацию.</li>
+<li><strong>Ablations отделяют vocabulary size от механизма.</strong> Выигрыш объясняется contextual merges и regularization, а не просто большим словарем.</li>
 </ul>
 
-<h2>7. Ограничения</h2>
+<h2>8. Ограничения</h2>
 <ul>
 <li>Алгоритм vocabulary construction сложнее обычного RQ-VAE tokenizer.</li>
 <li>Нужно иметь качественные item features; raw item IDs сами по себе не раскрывают потенциал метода.</li>
 <li>Context-aware tokens могут быть менее стабильными при сильном изменении behavior distribution.</li>
 <li>Production decoding и item grounding требуют аккуратной реализации, потому что output tokens больше не соответствуют одному item напрямую.</li>
+<li>Vocabulary refresh может быть дорогим: изменение frequent action patterns меняет merges и token meanings.</li>
 </ul>
 
-<h2>8. Связь с Semantic ID работами</h2>
+<h2>9. Связь с Semantic ID работами</h2>
 <p>TIGER/CoST/LETTER обычно спрашивают: как токенизировать item? ActionPiece спрашивает: как токенизировать действие внутри последовательности? Это делает работу особенно полезной для sequential recommendation, где intent зависит от соседних действий.</p>
 
-<h2>9. Вывод</h2>
+<h2>10. Вывод</h2>
 <p>ActionPiece - сильная идея для generative sequential recommendation: токенизировать не item изолированно, а action в контексте. Если semantic IDs дают компактный язык объектов, ActionPiece строит язык поведенческих паттернов. Это особенно важно для длинных историй, где один и тот же item может означать разные intents.</p>
 </main>
 </body>

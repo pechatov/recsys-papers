@@ -3,161 +3,209 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Generative Recommender with End-to-End Learnable Item Tokenization</title>
+  <title>ETEGRec: Generative Recommender with End-to-End Learnable Item Tokenization</title>
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-main { max-width: 1040px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
 h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
-h2 { font-size: 1.35rem; }
-h3 { font-size: 1.08rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
 p { margin: .75rem 0; }
 a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
 ul, ol { padding-left: 1.55rem; }
 li { margin: .3rem 0; }
 blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
 th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
 th { background: var(--soft); text-align: left; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
-.nav { margin: .5rem 0 1.2rem; }
-.note { color: var(--muted); }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.55rem; } }</style>
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
 </head>
 <body>
 <main>
-<h1><a href="https://arxiv.org/abs/2409.05546">Generative Recommender with End-to-End Learnable Item Tokenization</a></h1>
+<h1><a href="https://arxiv.org/abs/2409.05546">ETEGRec: Generative Recommender with End-to-End Learnable Item Tokenization</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
 <blockquote>
 <p><strong>Авторы:</strong> Enze Liu, Bowen Zheng, Cheng Ling, Lantao Hu, Han Li, Wayne Xin Zhao, Ji-Rong Wen.</p>
-<p><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span>; <span class="industry">Kuaishou</span> (China); Renmin University of China.</p>
-<p><strong>Первичный источник:</strong> arXiv:2409.05546.</p>
+<p><strong>Аффилиации:</strong> Renmin University of China; <span class="industry">Kuaishou Technology</span>.</p>
+<p><strong>Публикация:</strong> SIGIR 2025, Padua, Italy.</p>
 </blockquote>
-<h2>коротко</h2>
-<p>ETEGRec объединяет RQ-VAE item tokenizer и T5-like generative recommender в end-to-end систему через recommendation-oriented alignment и alternating optimization.</p>
-<p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
-<ul>
-<li>Две alignment цели: Sequence-Item Alignment и Preference-Semantic Alignment.</li>
-<li>Tokenizer и recommender обучаются циклически, а не полностью независимо.</li>
-<li>Inference complexity остается как у TIGER, потому что item tokenization кешируется.</li>
-<li>PSA использует reconstructed semantic embedding target item.</li>
-<li>Ablation показывает вклад SIA, PSA и alternating training.</li>
-</ul>
-<h2>контекст</h2>
-<p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
-<p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>ETEGRec (End-To-End Generative Recommender) решает проблему разрыва между item tokenizer'ом и генеративным recommender'ом, которые в стандартных pipeline'ах (TIGER, LETTER) обучаются раздельно. Статья предлагает dual encoder-decoder архитектуру, где RQ-VAE токенизатор и T5-like recommender связаны двумя alignment objectives: Sequence-Item Alignment (SIA), выравнивающим sequence hidden states с target item representation через symmetric KL divergence, и Preference-Semantic Alignment (PSA), использующим InfoNCE между decoder preference state и reconstructed semantic embedding. Alternating optimization обеспечивает стабильное совместное обучение. На трёх Amazon 2023 датасетах ETEGRec значимо превосходит все baselines, включая TIGER и LETTER.</p>
+
+<h2>2. Контекст</h2>
+<p>В генеративной рекомендации item'ы представляются как дискретные token sequences, и модель авторегрессионно генерирует токены следующего item'а. Существующие подходы делят pipeline на два независимых этапа: сначала обучается токенизатор (RQ-VAE), затем на фиксированных token'ах обучается recommender. Такое decoupling создаёт фундаментальную проблему: токенизатор оптимизирует reconstruction loss, не зная о downstream recommendation objective, а recommender не может влиять на качество токенизации.</p>
+<p>TIGER использует Sentence-T5 embeddings и RQ-VAE, LETTER добавляет collaborative и diversity regularization. Но во всех случаях token sequences фиксируются до обучения recommender'а и не обновляются. ETEGRec -- первая работа, которая делает токенизацию и рекомендацию end-to-end совместимыми через alignment objectives.</p>
+
+<h2>3. Проблема</h2>
+<p>Авторы выделяют два аспекта decoupling problem. Во-первых, токенизатор не осведомлён о recommendation objective: он оптимизирует reconstruction, а не downstream Recall/NDCG. Item'ы с хорошими reconstruction но плохими recommendation properties получают одинаковые коды с item'ами, которые recommender'у было бы полезно различать. Во-вторых, recommender не может передать обратно знание о пользовательских предпочтениях в токенизатор: если encoder научился, что определённые item'ы часто следуют друг за другом, эта информация не попадает в token assignment.</p>
+
+<h2>4. Dual encoder-decoder архитектура</h2>
+<h3>4.1. Item Tokenizer (RQ-VAE)</h3>
+<p>Вход: collaborative embedding \(\mathbf{z} \in \mathbb{R}^{d_s}\) (256-мерный из SASRec). Encoder \(\mathrm{Encoder}_T\) -- MLP, переводящий \(\mathbf{z}\) в latent \(\mathbf{r}\). Residual quantization через \(L\) codebook'ов \(\mathcal{C}_l = \{\mathbf{e}_k^l\}_{k=1}^K\):</p>
+<div class="math">\[
+c_l = \arg\max_k P(k|\mathbf{v}_l), \quad P(k|\mathbf{v}_l) = \frac{\exp(-\|\mathbf{v}_l - \mathbf{e}_k^l\|^2)}{\sum_{j=1}^K \exp(-\|\mathbf{v}_l - \mathbf{e}_j^l\|^2)}
+\]</div>
+<p>где \(\mathbf{v}_1 = \mathbf{r}\), \(\mathbf{v}_l = \mathbf{v}_{l-1} - \mathbf{e}_{c_{l-1}}^l\). Quantized representation: \(\tilde{\mathbf{r}} = \sum_{l=1}^L \mathbf{e}_{c_l}^l\). Decoder \(\mathrm{Decoder}_T\) восстанавливает: \(\tilde{\mathbf{z}} = \mathrm{Decoder}_T(\tilde{\mathbf{r}})\). Semantic quantization loss:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{SQ}} = \|\mathbf{z} - \tilde{\mathbf{z}}\|^2 + \sum_{l=1}^L \left(\|\mathrm{sg}[\mathbf{v}_l] - \mathbf{e}_{c_l}^l\|^2 + \beta\|\mathbf{v}_l - \mathrm{sg}[\mathbf{e}_{c_l}^l]\|^2\right)
+\]</div>
+<p>В экспериментах: \(L = 3\) codebook'а, \(K = 256\) кодов, dimension 128, \(\beta = 0.25\). К каждому item'у добавляется uniqueness token для разрешения коллизий.</p>
+
+<h3>4.2. Generative Recommender</h3>
+<p>T5-like encoder-decoder: 6 encoder layers + 6 decoder layers, hidden 128, FFN 512, 4 heads, head dim 64. Encoder обрабатывает tokenized user history \(X\), decoder авторегрессионно генерирует target token sequence \(Y\). Recommendation loss:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{REC}} = -\sum_{j=1}^L \log P(Y_j | X, Y_{<j})
+\]</div>
+
+<h2>5. Recommendation-oriented Alignment</h2>
+<h3>5.1. Sequence-Item Alignment (SIA)</h3>
+<p>Гипотеза: encoder hidden states \(\mathbf{H}^E\) должны быть тесно связаны с collaborative embedding target item'а. Авторы проецируют mean-pooled encoder output в пространство токенизатора:</p>
+<div class="math">\[
+\mathbf{z}^E = \mathrm{MLP}(\mathrm{mean\_pool}(\mathbf{H}^E))
+\]</div>
+<p>Затем \(\mathbf{z}^E\) и \(\mathbf{z}\) (target item embedding) пропускаются через токенизатор, получая распределения \(P_{\mathbf{z}}^l\) и \(P_{\mathbf{z}^E}^l\) на каждом уровне. SIA loss -- symmetric KL divergence:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{SIA}} = -\sum_{l=1}^L \bigl(D_{\mathrm{KL}}(P_{\mathbf{z}}^l \| P_{\mathbf{z}^E}^l) + D_{\mathrm{KL}}(P_{\mathbf{z}^E}^l \| P_{\mathbf{z}}^l)\bigr)
+\]</div>
+<p>SIA заставляет encoder recommender'а формировать представления, совместимые с token space. Дополнительный эффект: SIA решает проблему bypass encoder, когда decoder игнорирует encoder и полагается только на уже сгенерированные токены.</p>
+
+<h3>5.2. Preference-Semantic Alignment (PSA)</h3>
+<p>Гипотеза: первый hidden state decoder'а \(\mathbf{h}^D\) кодирует user preference, а reconstructed semantic embedding \(\tilde{\mathbf{z}}\) -- семантику target item'а. Они должны быть выровнены. PSA -- symmetric InfoNCE с in-batch negatives:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{PSA}} = -\Bigl(\log\frac{\exp(s(\tilde{\mathbf{z}}, \mathbf{h}^D)/\tau)}{\sum_{\hat{\mathbf{h}} \in B} \exp(s(\tilde{\mathbf{z}}, \hat{\mathbf{h}})/\tau)} + \log\frac{\exp(s(\mathbf{h}^D, \tilde{\mathbf{z}})/\tau)}{\sum_{\hat{\mathbf{z}} \in B} \exp(s(\mathbf{h}^D, \hat{\mathbf{z}})/\tau)}\Bigr)
+\]</div>
+<p>где \(s(\cdot, \cdot)\) -- cosine similarity, \(\tau\) -- temperature.</p>
+
+<h2>6. Alternating Optimization</h2>
+<p>Обучение делится на циклы длины \(C\). В первую эпоху каждого цикла обучается токенизатор (recommender заморожен):</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{IT}} = \mathcal{L}_{\mathrm{SQ}} + \mu\,\mathcal{L}_{\mathrm{SIA}} + \lambda\,\mathcal{L}_{\mathrm{PSA}}
+\]</div>
+<p>В оставшиеся \(C-1\) эпох обучается recommender (токенизатор заморожен):</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{GR}} = \mathcal{L}_{\mathrm{REC}} + \mu\,\mathcal{L}_{\mathrm{SIA}} + \lambda\,\mathcal{L}_{\mathrm{PSA}}
+\]</div>
+<p>Чередование продолжается до сходимости токенизатора, после чего recommender дообучается. \(C\) настраивается в \(\{2, 4\}\). Этот механизм предотвращает нестабильность, которая возникает при полностью совместном обучении: слишком частые обновления token assignments дестабилизируют recommender.</p>
+
+<h3>6.1. Псевдокод обучения ETEGRec</h3>
+<p>Практически ETEGRec - это не один backward pass через все компоненты, а controlled alternating schedule. Главный artifact, который постоянно меняется во время обучения, - mapping item -> token sequence, поэтому recommender нельзя обучать так, будто tokens статичны.</p>
+<pre><code>initialize tokenizer RQ-VAE from collaborative item embeddings
+initialize T5-like generative recommender
+
+for cycle in training_cycles:
+    freeze(recommender)
+    unfreeze(tokenizer)
+    for epoch in first_epoch_of_cycle:
+        z = collaborative_embedding(target_item)
+        token_probs, token_ids, z_recon = tokenizer(z)
+        encoder_state = recommender.encode(history_token_sequence)
+        decoder_state = recommender.decode_prefix(target_token_sequence)
+        loss = L_SQ(z, z_recon, token_ids)
+             + mu * L_SIA(encoder_state, z, tokenizer)
+             + lambda * L_PSA(decoder_state, z_recon)
+        update(tokenizer)
+    refresh_item_to_token_mapping()
+
+    freeze(tokenizer)
+    unfreeze(recommender)
+    for epoch in remaining_epochs_of_cycle:
+        target_tokens = lookup_tokens(target_item)
+        logits = recommender(history_tokens, target_prefix=target_tokens)
+        loss = L_REC(logits, target_tokens)
+             + mu * L_SIA(recommender.encoder_state, target_item_embedding, tokenizer)
+             + lambda * L_PSA(recommender.decoder_state, tokenizer.reconstruct(target_item))
+        update(recommender)
+
+after tokenizer_converges:
+    freeze(tokenizer)
+    train recommender to convergence on fixed final token mapping
+    serve with cached item token assignments and beam search</code></pre>
+
+<h2>7. Рисунки</h2>
+<img src="../../assets/etegrec/framework.png" alt="ETEGRec framework: dual encoder-decoder with SIA and PSA alignment" width="720">
+<p>Рисунок показывает dual encoder-decoder architecture: item tokenizer (RQ-VAE) слева и generative recommender (T5) справа. SIA связывает encoder output recommender'а с item representation через tokenizer. PSA связывает decoder preference state с reconstructed semantic embedding. Стрелки alignment losses показывают, что information flow идёт в обоих направлениях.</p>
+
+<h2>8. Эксперименты и результаты</h2>
+<h3>8.1. Датасеты</h3>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Компоненты</td><td>RQ-VAE tokenizer + T5-like encoder-decoder recommender</td></tr>
-<tr><td>Данные</td><td>три Amazon 2023 категории</td></tr>
-<tr><td>Метрики</td><td>Recall@5/10 и NDCG@5/10</td></tr>
+<tr><th>Датасет</th><th>#Users</th><th>#Items</th><th>#Interactions</th><th>Sparsity</th></tr>
+<tr><td>Instrument</td><td>57,439</td><td>24,587</td><td>511,836</td><td>99.964%</td></tr>
+<tr><td>Scientific</td><td>50,985</td><td>~25,000</td><td>--</td><td>~99.969%</td></tr>
+<tr><td>Game</td><td>94,762</td><td>25,612</td><td>814,586</td><td>99.966%</td></tr>
 </table>
-<h2>проблема</h2>
-<p>Decoupled tokenizer учится reconstruct embedding, а recommender учится next-item generation; их latent spaces и objectives не обязаны совпадать.</p>
-<p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
-<ul>
-<li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
-<li>Collisions или near-collisions ухудшают exact item retrieval.</li>
-<li>Long-tail items получают слабый сигнал и нестабильные IDs.</li>
-<li>Beam search может генерировать invalid или duplicate identifiers.</li>
-<li>Offline lift может не перенестись в production из-за drift, catalog churn и constraints.</li>
-</ul>
-<h2>метод/архитектура</h2>
-<p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
-<p>Архитектурная идея раскрывается через следующие элементы.</p>
-<ul>
-<li>Item tokenizer: RQ-VAE с semantic quantization loss.</li>
-<li>Generative recommender: T5-style Transformer, 6 encoder/decoder layers, hidden 128, FFN 512, 4 heads.</li>
-<li>SIA: выравнивает sequence state и target item representation через symmetric KL.</li>
-<li>PSA: InfoNCE между decoder preference state и reconstructed item semantic embedding.</li>
-<li>Alternating optimization: 1 epoch tokenizer, затем C-1 epochs recommender, C tuned in {2,4}.</li>
-</ul>
-<h2>objective/алгоритм</h2>
-<p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
-<p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
-<ul>
-<li>Semantic quantization loss: reconstruction плюс residual quantization terms.</li>
-<li>Recommendation loss: autoregressive negative log-likelihood target SID tokens.</li>
-<li>SIA loss: symmetric KL между sequence-derived и item-derived distributions.</li>
-<li>PSA loss: contrastive alignment with in-batch negatives.</li>
-<li>Tokenizer objective: L_SQ + mu L_SIA + lambda L_PSA.</li>
-<li>Recommender objective: L_REC + mu L_SIA + lambda L_PSA.</li>
-</ul>
-<h2>эксперименты</h2>
-<p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
-<p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
+<p>Amazon 2023 review data, 5-core filtering, max sequence length 50, leave-one-out evaluation, full ranking. Beam size 20.</p>
+
+<h3>8.2. Основные результаты</h3>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 subsets, including Instrument, Scientific and Games-style categories</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, CID, SID, TIGER, TIGER-SAS, LETTER</td></tr>
-<tr><td>Implementation</td><td>AdamW, weight decay 0.05, separate learning rates tokenizer/recommender</td></tr>
-<tr><td>Ablation</td><td>w/o SIA, w/o PSA, w/o alternating training</td></tr>
-<tr><td>Analysis</td><td>seen/unseen users and t-SNE preference-semantic clusters</td></tr>
+<tr><th>Модель</th><th>Inst R@5</th><th>Inst R@10</th><th>Inst N@5</th><th>Inst N@10</th><th>Game R@10</th><th>Game N@10</th></tr>
+<tr><td>SASRec</td><td>0.0341</td><td>0.0530</td><td>0.0217</td><td>0.0277</td><td>0.0821</td><td>0.0426</td></tr>
+<tr><td>FDSA</td><td>0.0364</td><td>0.0557</td><td>0.0233</td><td>0.0295</td><td>0.0857</td><td>0.0453</td></tr>
+<tr><td>TIGER</td><td>0.0368</td><td>0.0574</td><td>0.0242</td><td>0.0308</td><td>0.0895</td><td>0.0471</td></tr>
+<tr><td>LETTER</td><td>0.0372</td><td>0.0581</td><td>0.0243</td><td>0.0310</td><td>0.0901</td><td>0.0475</td></tr>
+<tr><td><strong>ETEGRec</strong></td><td><strong>0.0402</strong></td><td><strong>0.0624</strong></td><td><strong>0.0260</strong></td><td><strong>0.0331</strong></td><td><strong>0.0947</strong></td><td><strong>0.0507</strong></td></tr>
 </table>
-<h2>рисунки/таблицы</h2>
-<p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
-<p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
-<ul>
-<li>Framework figure: dual encoder-decoder and two alignment losses.</li>
-<li>Discussion table: contrasts ETEGRec with TIGER, LETTER and other GR methods.</li>
-<li>Ablation table: each alignment component matters.</li>
-<li>t-SNE figure: preference points cluster near target semantic points.</li>
-<li>Hyperparameter figure: sensitivity to alignment coefficients.</li>
-</ul>
-<h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
-<p>Ниже — основные инженерные плюсы.</p>
-<ul>
-<li>Directly addresses tokenizer-recommender mismatch.</li>
-<li>Keeps inference compatible with cached item IDs.</li>
-<li>Uses both sequence-level and target-level alignment.</li>
-<li>Includes complexity analysis.</li>
-<li>Ablation design is clear and actionable.</li>
-</ul>
-<h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
-<p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
-<ul>
-<li>Alternating schedule adds operational complexity.</li>
-<li>Frequent SID changes are hard in production.</li>
-<li>Alignment coefficients mu/lambda need careful tuning.</li>
-<li>End-to-end training may be less stable than two-stage TIGER.</li>
-<li>Reported setup uses public categories, not full industrial churn.</li>
-</ul>
-<h2>как реализовать/проверять</h2>
-<p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
-<p>Ниже — минимальный набор проверок перед доверием к результату.</p>
-<ul>
-<li>Start from a reproduced TIGER baseline.</li>
-<li>Freeze all preprocessing and SID length before adding alignment.</li>
-<li>Log SIA/PSA/SQ/REC losses separately.</li>
-<li>Compare frozen-tokenizer, joint-training and alternating variants.</li>
-<li>Check invalid generated IDs and collision rates.</li>
-<li>Version token maps if tokenizer updates during training.</li>
-</ul>
-<h2>связь</h2>
-<p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>ETEGRec is a direct successor to TIGER/LETTER: it keeps RQ-VAE but makes it recommendation-aware through model interaction.</p>
+<p>Все улучшения статистически значимы (\(p < 0.01\)). ETEGRec превосходит LETTER на 7-8% по Recall@10 на Instrument и на 5% на Game. Среди традиционных моделей лучше всех FDSA благодаря текстовым features.</p>
+
+<h3>8.3. Ablation study</h3>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
-<tr><td>ETEGRec</td><td>end-to-end alignment tokenizer/recommender</td></tr>
-<tr><td>MTGRec</td><td>multiple identifiers as pretraining augmentation</td></tr>
-<tr><td>MoC/LAMIA</td><td>parallel/multi-aspect semantic representation</td></tr>
-<tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
+<tr><th>Вариант</th><th>Inst R@10</th><th>Inst N@10</th><th>Game R@10</th><th>Game N@10</th></tr>
+<tr><td>ETEGRec (full)</td><td>0.0624</td><td>0.0331</td><td>0.0947</td><td>0.0507</td></tr>
+<tr><td>w/o SIA</td><td>--</td><td>--</td><td>0.0917</td><td>0.0491</td></tr>
+<tr><td>w/o PSA</td><td>0.0609</td><td>0.0321</td><td>0.0933</td><td>0.0499</td></tr>
+<tr><td>w/o SIA + PSA</td><td>0.0601</td><td>--</td><td>0.0894</td><td>0.0478</td></tr>
+<tr><td>w/o Alternating Training</td><td>0.0529</td><td>0.0277</td><td>0.0810</td><td>0.0428</td></tr>
+<tr><td>w/o End-to-End</td><td>--</td><td>--</td><td>0.0899</td><td>0.0475</td></tr>
 </table>
-<h2>итог</h2>
-<p>ETEGRec is strong when the main bottleneck is mismatch, not raw capacity. It is more complex than CoST but more aligned with the downstream task.</p>
-<p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
-<ul>
-<li>Хороший кандидат для controlled offline reproduction.</li>
-<li>Требует versioned SID/token maps при production использовании.</li>
-<li>Нужны ablations по каждому заявленному компоненту.</li>
-<li>Нужно проверять head/tail и cold-start отдельно.</li>
-<li>Нужно явно считать training и inference cost.</li>
-</ul>
+<p>Ключевые выводы. Удаление alternating training даёт самое сильное падение: без чередования recommender дестабилизируется из-за постоянных обновлений token assignments. Удаление обоих alignment losses приближает результат к TIGER/LETTER baseline. Важно: вариант w/o ETE (обучение отдельного recommender'а на финальных токенах) хуже полного ETEGRec, что доказывает: выигрыш не только от лучших идентификаторов, но и от интеграции prior knowledge токенизатора в recommender.</p>
+
+<h3>8.4. Generalizability</h3>
+<p>На 5% unseen users (с наименьшей историей) ETEGRec также превосходит LETTER и TIGER, демонстрируя более robust preference modeling через alignment. Это важно для cold-start сценариев.</p>
+
+<h3>8.5. t-SNE визуализация</h3>
+<p>Визуализация \(\mathbf{h}^D\) (preference) и \(\tilde{\mathbf{z}}\) (semantic) для 10 item'ов с 80 историями каждый показывает: preference points кластеризуются вокруг соответствующих target semantic points и отделены от чужих. Это подтверждает, что PSA действительно выравнивает preference space и semantic space.</p>
+
+<h2>9. Complexity analysis</h2>
+<p>Item tokenization per item: \(O(d^2 + LKd)\). Generative recommendation: \(O(N^2d + Nd^2)\). Loss computation: REC -- \(O(LKd)\), SIA -- \(O(LKd)\), PSA -- \(O(Md)\). Общий порядок training complexity совпадает с TIGER и LETTER. Inference complexity идентична TIGER, потому что token assignments кэшируются.</p>
+
+<h2>10. Hyperparameter analysis</h2>
+<p>\(\mu\) (SIA coefficient): оптимально \(3 \times 10^{-4}\) на Instrument/Scientific, \(10^{-3}\) на Game. Слишком большое \(\mu\) мешает основному обучению. \(\lambda\) (PSA coefficient): лучший результат при \(\lambda = 10^{-4}\) на всех трёх датасетах.</p>
+
+<h2>11. Сильные стороны</h2>
+<p><strong>Прямая атака на decoupling problem.</strong> ETEGRec -- первая работа, которая формально связывает item tokenizer и generative recommender через alignment objectives. SIA и PSA работают с двух сторон: sequence-level и target-level.</p>
+<p><strong>Inference-compatible.</strong> Благодаря кэшированию token assignments, inference cost идентичен TIGER. Alternating optimization добавляет overhead только в training.</p>
+<p><strong>Чистый ablation design.</strong> Каждый компонент (SIA, PSA, alternating training, end-to-end) проверяется отдельно на трёх датасетах, что даёт ясную картину contribution.</p>
+<p><strong>Open-source.</strong> Код доступен на GitHub (RUCAIBox/ETEGRec), что важно для воспроизводимости.</p>
+
+<h2>12. Ограничения</h2>
+<p><strong>Operational complexity.</strong> Alternating training требует аккуратного управления: переключение между optimization targets, версионирование token maps внутри training loop. В production это значительно сложнее, чем two-stage pipeline.</p>
+<p><strong>SID churn.</strong> При каждом обновлении токенизатора token assignments меняются. В production частая смена SIDs требует синхронизации между моделью, индексом и serving stack.</p>
+<p><strong>Hyperparameter sensitivity.</strong> \(\mu\) и \(\lambda\) требуют аккуратной настройки; оптимальные значения различаются между датасетами. Перенос на новый домен не гарантирован без дополнительного grid search.</p>
+<p><strong>Масштаб экспериментов.</strong> Amazon 2023 subsets -- средний масштаб (50-95k users). Нет проверки на industrial-scale данных с миллионами item'ов и streaming обновлениями.</p>
+<p><strong>Нет online evaluation.</strong> В отличие от PIT (той же группы из Kuaishou), ETEGRec не имеет A/B-теста в production.</p>
+
+<h2>13. Практические выводы</h2>
+<p>ETEGRec показывает, что end-to-end alignment между токенизатором и recommender'ом даёт значимый прирост поверх LETTER-style regularization. Для практика ключевые takeaways: (1) alternating training стабильнее полностью совместного обучения; (2) alignment через distribution matching (KL) и contrastive (InfoNCE) работают комплементарно; (3) inference cost не увеличивается благодаря кэшированию токенов.</p>
+
+<h2>14. Связь с соседними работами</h2>
+<p>ETEGRec -- прямой преемник TIGER и LETTER. От TIGER он отличается end-to-end обучением. От LETTER -- не только добавлением CF/diversity regularization, но и feedback loop от recommender'а к tokenizer'у. Conceptually ETEGRec ближе к PIT (Kuaishou), который также делает end-to-end, но через co-generative architecture с beam index вместо alternating optimization. SIIT (Snap) предлагает альтернативу: итеративную relabeling без differentiable joint optimization.</p>
+
+<h2>15. Итог</h2>
+<p>ETEGRec -- важный шаг от decoupled к end-to-end генеративной рекомендации. Его главный вклад -- формализация двух alignment objectives (SIA и PSA), которые связывают sequence representation recommender'а с token space tokenizer'а. Alternating optimization обеспечивает стабильность. Статья хорошо дополняет LETTER: если LETTER показывает, что tokenizer должен быть CF-aware, ETEGRec показывает, что tokenizer и recommender должны быть aware друг друга. Ограничения связаны с operational complexity и отсутствием production validation.</p>
+
 </main>
 </body>
 </html>

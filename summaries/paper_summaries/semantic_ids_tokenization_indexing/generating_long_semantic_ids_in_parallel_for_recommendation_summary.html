@@ -79,6 +79,16 @@
 <li>Complexity analysis подчеркивает независимость runtime memory/time от размера item pool.</li>
 <li>В ablation beam search для unordered long SID дает нули, потому что генерирует невалидные token sequences.</li>
 </ul>
+<h3>Пошаговый алгоритм RPG</h3>
+<ol>
+<li><strong>Построить длинный unordered SID.</strong> Item embedding разбивается OPQ/PQ-style на несколько subspaces; каждый subspace получает token. SID длиной 16/32/64 трактуется как set-like code, а не как ordered path.</li>
+<li><strong>Собрать token embedding representation.</strong> Item representation для обучения получается агрегированием embeddings всех его semantic tokens, плюс projection heads, которые не должны быть shared слишком грубо.</li>
+<li><strong>Обучить multi-token prediction.</strong> По user history модель одним forward pass предсказывает logits для всех token positions target SID. Нет autoregressive dependency между target tokens.</li>
+<li><strong>Посчитать item score из token logits.</strong> Для каждого item score равен сумме или агрегации logits тех tokens, которые входят в его SID. Это превращает independent token classification в ranking over catalog items.</li>
+<li><strong>Построить graph of valid SIDs.</strong> Узлы - реальные catalog items/SIDs; ребра соединяют близкие коды по Hamming/semantic distance. Граф нужен, потому что независимые token logits сами по себе могут составить несуществующий SID.</li>
+<li><strong>Запустить graph-constrained decoding.</strong> Стартовый candidate set расширяется итеративной propagation по соседям; score пересчитывается только для reachable valid items, а не для всех возможных token combinations.</li>
+<li><strong>Вернуть top-K valid items.</strong> Финальная выдача сортируется по aggregated score, а invalid sequences никогда не попадают в результат, в отличие от naive beam search по unordered tokens.</li>
+</ol>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальный блок полезен тем, что проверяет не только общий Recall/NDCG, но и efficiency/cold-start/ablation slices.</p>
@@ -116,7 +126,7 @@
 <li>Ablations показывают, что выигрыш не только от backbone, но и от graph decoding/tokenizer design.</li>
 </ul>
 
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <p>Ограничения важны для production transfer.</p>
 <ul>
 <li>Independence assumption между токенами может терять полезную структуру.</li>

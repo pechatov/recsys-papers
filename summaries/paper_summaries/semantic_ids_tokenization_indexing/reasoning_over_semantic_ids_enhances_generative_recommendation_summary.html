@@ -89,6 +89,37 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective alignment stage объединяет multi-task losses для разных форматов: восстановление/понимание SID, описание item, контекстные задачи и recommendation-oriented prompts. Reinforcement stage оптимизирует reward, связанный с правильностью recommendation outcome, а не с совпадением chain-of-thought. Это важно: для SID reasoning важен не “красивый” текст рассуждения, а траектория, которая приводит к правильному item/SID.</p>
 
+<h3>5.1. Пошаговый алгоритм SIDReasoner</h3>
+<p>SIDReasoner нужно читать как training recipe поверх существующего SID-based LLM recommender: сначала SID становятся grounded symbols, затем reasoning policy улучшается outcome reward'ом.</p>
+<ol>
+<li><strong>Зафиксировать SID tokenizer.</strong> Для items уже есть semantic ID sequences; метод не начинается с нового quantizer'а.</li>
+<li><strong>Сгенерировать enriched SID corpus.</strong> Teacher model создает item descriptions, attributes, behavioral contexts и prompt/response pairs, где SID связан с language и recommendation scenarios.</li>
+<li><strong>Multi-task alignment SFT.</strong> Student LLM обучается переводить text -> SID, SID -> text, понимать SID в контексте user history и генерировать next SID.</li>
+<li><strong>Собрать reasoning rollouts.</strong> Для recommendation prompts модель генерирует reasoning trajectory и predicted SID/item.</li>
+<li><strong>Outcome-driven RL.</strong> Reward считается по recommendation outcome: valid SID, попадание target item в top-K, улучшение ranking. Human-written reasoning traces не нужны.</li>
+<li><strong>Audit reasoning separately.</strong> Поскольку reward оптимизирует outcome, интерпретируемость reasoning проверяется вручную/качественно отдельно от Recall/NDCG.</li>
+</ol>
+<pre><code>sid_map = load_existing_semantic_ids(catalog)
+
+for item in catalog:
+    enriched_examples += teacher_generate(
+        sid=sid_map[item],
+        metadata=item.text_attributes,
+        behavior_context=item.interaction_context)
+
+alignment_sft:
+    for example in enriched_examples:
+        loss = multitask_lm_loss(student_llm, example)
+        update(student_llm)
+
+reinforced_reasoning:
+    for prompt in recommendation_prompts:
+        rollout = student_llm.generate_reasoning_and_sid(prompt)
+        reward = recommendation_reward(rollout.predicted_sid, target_item)
+        rl_update(student_llm, rollout, reward)
+
+evaluate base, alignment_only, rl_only and full model on Recall/NDCG plus reasoning audit</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты на трех Amazon23 datasets: Video Games, Office Products, Industrial and Scientific. Метрики включают стандартные Recall/NDCG для generative recommendation, а также model study/ablation. SIDReasoner превосходит base SID-based LLM recommender; ablation показывает вклад SID-language alignment и reinforced reasoning. Дополнительно анализируются interpretability и cross-domain generalization, что важно для тезиса о transferable reasoning.</p>

@@ -86,6 +86,30 @@
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для GenSAR: Unifying Balanced Search and Recommendation with Generative Retrieval качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
+<h3>Подробная схема алгоритма</h3>
+<p>GenSAR строит identifier как двухслойный компромисс: часть кода общая для search и recommendation, часть остается task-specific, чтобы одна задача не перезаписала другую.</p>
+<ol>
+  <li><strong>Собрать два embedding space.</strong> Для item получают semantic embedding из query/content relevance и collaborative embedding из user-item interactions.</li>
+  <li><strong>Обучить shared RQ-VAE levels.</strong> Первые codebooks кодируют общую структуру item, которая должна быть полезна обеим задачам.</li>
+  <li><strong>Обучить task-specific residual levels.</strong> Separate codebooks сохраняют search-specific и recommendation-specific остатки, чтобы explicit query relevance и collaborative preference не смешивались насильно.</li>
+  <li><strong>Сформировать SID.</strong> Item получает identifier вида shared prefix + task-specific suffix; это дает sharing на coarse уровне и specialization на fine уровне.</li>
+  <li><strong>Смешать training examples.</strong> Search prompt содержит query, recommendation prompt содержит user history; target - SID релевантного item для соответствующей задачи.</li>
+  <li><strong>Обучить generative model.</strong> Decoder оптимизирует autoregressive cross-entropy по target SID, а task prompt указывает, какую ветку identifier semantics использовать.</li>
+  <li><strong>На inference включить task prompt.</strong> Для search и recommendation используется один generator, но разные prompts и соответствующие валидные SID paths.</li>
+</ol>
+<pre><code>semantic_emb = search_encoder(item)
+collab_emb = recommendation_encoder(item)
+
+shared_codes = rqvae_shared(semantic_emb, collab_emb)
+search_codes = rqvae_search_residual(semantic_emb, shared_codes)
+rec_codes = rqvae_rec_residual(collab_emb, shared_codes)
+
+SID_search = shared_codes + search_codes
+SID_rec = shared_codes + rec_codes
+
+train generator on:
+    "[search] query" -> SID_search(item)
+    "[rec] user_history" -> SID_rec(item)</code></pre>
 <h2>Эксперименты</h2>
 <ul>
   <li>Datasets: public Amazon semi-synthetic SAR и коммерческий dataset.</li>
@@ -111,15 +135,17 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Хорошая формализация multi-objective каталога.</li>
-  <li>Identifier design объясним и проверяем.</li>
-  <li>Показывает баланс, а не только single-task SOTA.</li>
+  <li><strong>Identifier-level балансировка задач.</strong> Shared prefix переносит общую item semantics, а task-specific suffix защищает search и recommendation от взаимного interference.</li>
+  <li><strong>Проверяемые ablations.</strong> Удаление shared или task-specific частей напрямую проверяет, где находится выигрыш.</li>
+  <li><strong>Один generator для двух режимов.</strong> Task prompts дают понятный routing mechanism без двух полностью независимых моделей.</li>
+  <li><strong>Метод явно работает с trade-off.</strong> Важен не single-task максимум, а одновременное качество search и recommendation.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Коммерческий dataset частично закрыт.</li>
-  <li>Метод требует качественных semantic и collaborative embeddings.</li>
-  <li>Production KPI search и rec могут конфликтовать сильнее, чем offline HR/NDCG.</li>
+  <li><strong>Зависимость от двух upstream embedding spaces.</strong> Если semantic encoder слаб для query relevance или collaborative encoder шумный, shared/specific decomposition будет наследовать эти ошибки.</li>
+  <li><strong>Нужно тюнить длину identifier.</strong> Слишком короткий SID повышает collisions, слишком длинный увеличивает autoregressive errors и latency.</li>
+  <li><strong>Коммерческий dataset частично закрыт.</strong> Абсолютные gains и свойства overlap трудно воспроизвести вне платформы.</li>
+  <li><strong>Offline баланс может не совпасть с business балансом.</strong> В production search и feed могут иметь разные KPI, где "balanced HR/NDCG" не является правильной целевой функцией.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

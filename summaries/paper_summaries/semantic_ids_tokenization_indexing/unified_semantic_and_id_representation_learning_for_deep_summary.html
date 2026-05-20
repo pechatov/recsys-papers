@@ -81,6 +81,32 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Components: unified semantic and ID tokenization, unified distance function, end-to-end joint optimization.</li>
 </ul>
+<h3>Подробная схема алгоритма USR</h3>
+<p>USR исходит из того, что ID tokens и semantic tokens не являются взаимозаменяемыми: ID side лучше запоминает конкретные collaborative relations, semantic side лучше переносится на похожие/tail items. Алгоритм строит unified representation и unified distance, чтобы обе стороны участвовали в одном recommender objective.</p>
+<ol>
+<li><strong>Построить две token views.</strong> Для item создается ID-oriented representation из interaction/entity ID signal и semantic representation из content/semantic features.</li>
+<li><strong>Провести semantic tokenization.</strong> Appendix algorithm строит дискретные semantic tokens/codewords, затем сохраняет mapping item -> semantic tokens.</li>
+<li><strong>Объединить ID и semantic side.</strong> Вместо выбора одного пространства model получает unified token representation, где item-specific memorization и semantic sharing сохраняются одновременно.</li>
+<li><strong>Согласовать расстояния.</strong> Unified distance function задает, как сравнивать items/contexts, чтобы ID distance не подавлял semantic distance и наоборот.</li>
+<li><strong>Обучать end-to-end.</strong> Sequential recommender оптимизируется на top-K objective, а token representations обновляются так, чтобы downstream ranking, token clusters и distance geometry были согласованы.</li>
+<li><strong>Диагностировать пространство.</strong> Визуализация токенов и distance mismatch analysis нужны для проверки, не превратился ли unified space в ID-only или semantic-only режим.</li>
+</ol>
+<pre><code>for item in catalog:
+    id_view = id_embedding(item.id)
+    semantic_view = semantic_encoder(item.content)
+    semantic_tokens = semantic_tokenizer(semantic_view)
+    unified_item[item] = fuse(id_view, semantic_tokens)
+
+for batch in sequential_training:
+    history_repr = encode_history(batch.history, unified_item)
+    target_repr = unified_item[batch.target]
+    scores = unified_distance(history_repr, target_repr, negatives=batch.candidates)
+    loss = topk_recommendation_loss(scores)
+    update(id_embeddings, semantic_tokenizer, fusion, recommender)
+
+monitor:
+    distance_mismatch(id_space, semantic_space)
+    token_clusters, codebook_size_sweep, head_tail metrics</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -104,25 +130,23 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
+<p>Сильные стороны USR в том, что он не заставляет выбирать между exact ID memorization и semantic sharing.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Формулирует distance mismatch как проблему.</strong> Paper не просто добавляет content tokens, а показывает, что ID и semantic spaces имеют разные геометрии.</li>
+<li><strong>Hybrid design соответствует production reality.</strong> Warm/head items часто требуют ID memorization, а tail/cold items выигрывают от semantic sharing.</li>
+<li><strong>End-to-end optimization снижает tokenizer mismatch.</strong> Semantic tokens не остаются frozen artifact, который может быть удобен encoder'у и неудобен recommender'у.</li>
+<li><strong>Визуализация токенов полезна для аудита.</strong> Она помогает увидеть collapse, дублирование и переобладание одной стороны unified representation.</li>
+<li><strong>Codebook size study делает capacity trade-off явным.</strong> Можно отделить недостаток токенов от плохого fusion/distance objective.</li>
 </ul>
 
 <h2>Ограничения</h2>
 <p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li><strong>Unified distance легко перекосить.</strong> Если scale ID side выше, semantic tokens станут декоративными; если выше semantic side, warm-item memorization ухудшится.</li>
+<li><strong>Больше компонентов для тюнинга.</strong> Нужно выбирать codebook size, fusion weight, distance scaling и downstream loss одновременно.</li>
+<li><strong>Appendix tokenization усложняет воспроизведение.</strong> Если semantic tokenizer реализован чуть иначе, comparison может перестать быть честным.</li>
+<li><strong>Не решает сам по себе invalid generation.</strong> USR про representation learning для deep recommenders, а не про полный constrained SID decoder.</li>
+<li><strong>Стабильность при catalog refresh не доказана.</strong> End-to-end token updates могут менять semantic tokens и ломать совместимость с cached features.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

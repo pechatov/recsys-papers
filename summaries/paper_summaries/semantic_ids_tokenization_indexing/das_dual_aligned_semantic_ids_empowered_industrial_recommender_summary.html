@@ -81,6 +81,30 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>MLLM embedding dims: ads 256, users 1024; RQ-VAE: 3 codebooks, 512 codes per codebook, code embedding dim 32.</li>
 </ul>
+<h3>Подробная схема алгоритма</h3>
+<p>DAS в текущем summary описан как one-stage aligned SID pipeline для рекламы: пользовательские и рекламные представления квантуются не изолированно, а под alignment signals MDAM и downstream CTR/generative tasks.</p>
+<ol>
+<li><strong>Собрать MLLM embeddings.</strong> Для ads берутся 256-dimensional representations, для users - 1024-dimensional representations из Kuaishou advertising logs.</li>
+<li><strong>Построить dual-alignment pairs.</strong> MDAM использует несколько отношений: u2i, i2i-u2u и co-i2i-u2u, чтобы SID отражал и user-ad match, и item/item plus user/user structure.</li>
+<li><strong>Пропустить embeddings через RQ-VAE.</strong> Три codebooks по 512 codewords с code embedding dim 32 последовательно квантуют residual representation.</li>
+<li><strong>Оптимизировать quantization вместе с alignment.</strong> Code assignment не является frozen preprocessing: losses одновременно давят на reconstruction/quantization и на dual alignment с рекламным objective.</li>
+<li><strong>Сформировать SID features.</strong> Полученные коды добавляются в CTR baseline как discriminative features и используются в generative task с 15-day user sequences длины 10.</li>
+<li><strong>Проверить компоненты MDAM.</strong> Ablation удаляет dual u2i/i2i-u2u/co-i2i-u2u alignment; падение AUC/UAUC/GAUC показывает, что все связи нужны не декоративно.</li>
+<li><strong>Развернуть как versioned artifact.</strong> Tokenizer, mappings ad/user -> SID и RQ-VAE checkpoints должны версионироваться, потому что online A/B использует их как production feature.</li>
+</ol>
+<pre><code>ads = mllm_ad_embeddings(dim=256)
+users = mllm_user_embeddings(dim=1024)
+pairs = build_MDAM_pairs(u2i, i2i_u2u, co_i2i_u2u)
+
+for batch in advertising_logs:
+    sid_ads = RQ_VAE_3x512(ads)
+    sid_users = RQ_VAE_3x512(users)
+    loss = quantization_loss + reconstruction_loss + dual_alignment_loss(pairs)
+    update tokenizer and alignment modules
+
+export SID features
+train CTR/generative recommender with frozen SID version
+run A/B on cold-start and overall eCPM slices</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -104,28 +128,21 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>One-stage alignment вместо frozen tokenizer.</strong> DAS не строит MLLM semantic IDs отдельно от recommender objective, поэтому меньше риск получить красивые, но бесполезные коды.</li>
+<li><strong>MDAM покрывает несколько типов отношений.</strong> u2i, i2i-u2u и co-i2i-u2u alignment помогают SID отражать не только ad semantics, но и collaborative структуру рекламного графа.</li>
+<li><strong>Есть крупная production evidence.</strong> 1.8B user-ad samples, около 100M users, 8M ads и online A/B на 10% traffic/40M+ users делают работу полезной именно как industrial reference.</li>
+<li><strong>Показан cold-start эффект.</strong> eCPM +8.98% на cold-start важнее среднего uplift, потому что semantic sharing должен помогать там, где raw ID слаб.</li>
+<li><strong>SID работает как incremental feature.</strong> Discriminative features дают +2.69% eCPM без необходимости полностью заменить production stack.</li>
 </ul>
 
 <h2>Ограничения</h2>
-<p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
-<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
-<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
-<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+<li><strong>Закрытый advertising domain.</strong> Данные, MDAM graph construction и production traffic Kuaishou не воспроизводятся напрямую, поэтому переносимость нужно проверять заново.</li>
+<li><strong>Высокая зависимость от качества MLLM embeddings.</strong> Если ad/user embeddings уже содержат business bias или stale semantics, DAS будет выравнивать и квантизовать этот bias.</li>
+<li><strong>One-stage training сложнее сопровождать.</strong> Изменение alignment weights, RQ-VAE codebooks или upstream MLLM версии может менять SID semantics и ломать feature compatibility.</li>
+<li><strong>MDAM добавляет много гиперпараметров и графовых assumptions.</strong> Неверный баланс u2i/i2i/u2u сигналов может переоптимизировать SID под текущий traffic mix.</li>
+<li><strong>Business uplift не гарантирует semantic purity.</strong> eCPM/CTR могут расти за счет popularity и рекламных constraints, поэтому нужно отдельно мониторить code utilization, collision examples и cold-start cohorts.</li>
 </ul>
 
 <h2>Как реализовать/проверять</h2>

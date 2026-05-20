@@ -66,6 +66,32 @@ prediction на candidate-aware tokens. Это chain: output retrieval stage
 сочетает generative likelihood и ranking loss, что должно
 уменьшить разрыв между recall и order
 quality.</p>
+<h2>Детальный алгоритм RecoChain</h2>
+<p>RecoChain делает retrieve-then-rank не двумя независимыми моделями, а одной цепочкой токенов. Сначала decoder генерирует SID кандидата, затем этот кандидат добавляется в candidate-aware segment, на котором та же модель оценивает ranking score.</p>
+<ol>
+<li><strong>Построить SID tokenizer и trie.</strong> Каждый item имеет semantic ID sequence; trie нужен, чтобы beam search не уходил в invalid paths.</li>
+<li><strong>Закодировать user behavior sequence.</strong> История пользователя подается как SID tokens с нужными разделителями и positional structure.</li>
+<li><strong>Обучить retrieval segment.</strong> Первая часть objective - next-item SID generation: модель должна предсказать token sequence target item.</li>
+<li><strong>Сформировать candidate-aware continuation.</strong> После generated/target SID добавляется специальный subsequence, в котором candidate tokens становятся условием ranking head.</li>
+<li><strong>Обучить ranking segment.</strong> Hidden states candidate-aware continuation передаются в head, который предсказывает click/relevance score.</li>
+<li><strong>На inference сначала сгенерировать candidates.</strong> Beam search возвращает top-B valid SIDs; каждый мапится в item или candidate group.</li>
+<li><strong>Затем rerank тем же model checkpoint.</strong> Для каждого candidate строится candidate-aware input, считается ranking score, candidates сортируются заново.</li>
+<li><strong>Измерять paired metrics.</strong> Нужно сравнивать Recall/NDCG до и после reranking при разных beam sizes, потому что reranker не может восстановить item, которого нет в candidate pool.</li>
+</ol>
+<pre><code>for training_example in logs:
+    history_tokens = encode_history_as_SIDs(user_history)
+    target_sid = SID[target_item]
+
+    loss_gen = autoregressive_loss(model, history_tokens, target_sid)
+    candidate_segment = build_candidate_aware_segment(history_tokens, target_sid)
+    rank_score = ranking_head(model(candidate_segment))
+    loss_rank = ranking_loss(rank_score, click_or_relevance_label)
+    update(loss_gen + lambda_rank * loss_rank)
+
+at serving:
+    candidates = constrained_beam_search(model, history_tokens, beam_size=B)
+    scores = [ranking_head(model(build_candidate_aware_segment(history, c))) for c in candidates]
+    return sort_by_score(candidates, scores)</code></pre>
 <h2>Эксперименты и метрики</h2>
 <p>Авторы варьируют beam size, input sequence length и retrieval length.
 Метрики: Recall@5/10 и NDCG@5/10 до и
@@ -85,19 +111,20 @@ sensitivity analysis: они показывают,
 переупорядочивания.</p>
 <h2>Сильные стороны</h2>
 <ul>
-<li>Работа явно связывает generation и ranking в одном sequence
-pipeline.</li>
-<li>Анализирует не только overall metrics, но и beam/retrieval
-length sensitivity.</li>
-<li>Подход естественно встраивается поверх SID-based
-candidate generation.</li>
+<li><strong>Связывает retrieval и ranking в одном sequence pipeline.</strong> Generated candidate становится условием ranking stage, а не передается в полностью отдельную модель.</li>
+<li><strong>Хорошая sensitivity diagnostics.</strong> Beam size, input sequence length и retrieval length показывают, когда reranking действительно добавляет качество.</li>
+<li><strong>Естественно встраивается поверх SID generation.</strong> RecoChain не требует отказаться от trie/beam semantic retrieval.</li>
+<li><strong>Уменьшает objective mismatch.</strong> Ranking loss видит representations того же decoder-а, который породил candidates.</li>
+<li><strong>Показывает ceiling candidate pool.</strong> Результаты при разных beams помогают отделить проблемы retrieval recall от ordering.</li>
 </ul>
 <h2>Ограничения</h2>
-<p>Вклад reranking местами умеренный и зависит от
-beam/candidate quality. Если retriever уже
-очень точен или candidate pool узкий, эффект ограничен.
-Статья не раскрывает full
-industrial online validation.</p>
+<ul>
+<li><strong>Reranker не лечит candidate starvation.</strong> Если beam не достал релевантный item, ranking head не сможет его добавить.</li>
+<li><strong>Gain зависит от ширины beam.</strong> При beam 10 эффект небольшой, при beam 40 больше; значит latency-quality trade-off остается.</li>
+<li><strong>Стоимость inference растет.</strong> Нужно не только сгенерировать candidates, но и прогнать candidate-aware scoring для каждого.</li>
+<li><strong>Есть риск attention leakage.</strong> Training sequence должен быть организован так, чтобы ranking segment не видел target information некорректно.</li>
+<li><strong>Нет полной online validation.</strong> Offline Recall/NDCG gains не доказывают, что chain выдержит production latency и traffic shift.</li>
+</ul>
 <h2>Как реализовать / проверять</h2>
 <p>Нужен валидный SID tokenizer, beam generator и reranking head над
 candidate-aware tokens. Проверять

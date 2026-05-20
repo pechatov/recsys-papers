@@ -80,6 +80,33 @@
 <li>Order-agnostic design уменьшает число LLM calls относительно token-sequence identifiers.</li>
 <li>Semantic strength sweep показывает, что semantic score особенно важен для cold items.</li>
 </ul>
+<h3>Подробная схема алгоритма SETRec</h3>
+<p>SETRec меняет основное предположение SID generation: item identifier является не строкой, где первый токен обязан предсказываться раньше второго, а unordered set независимых evidence tokens. Это убирает искусственную autoregressive зависимость внутри identifier, сохраняя последовательность между user actions.</p>
+<ol>
+<li><strong>Построить CF tokenizer.</strong> Collaborative tokens кодируют поведенческие связи items: что покупают/смотрят вместе и какие items похожи по interaction graph.</li>
+<li><strong>Построить semantic tokenizer.</strong> Semantic tokens кодируют content/text meaning и особенно помогают cold items, где interaction signal слабый.</li>
+<li><strong>Собрать set identifier.</strong> Для каждого item создается множество токенов из CF и semantic parts. Порядок внутри множества не должен нести смысл.</li>
+<li><strong>Сериализовать историю с sparse attention.</strong> Модель видит последовательность user actions, но attention mask запрещает ложные dependencies между token slots одного item identifier.</li>
+<li><strong>Query-guided generation.</strong> Вместо left-to-right генерации SID модель получает несколько query slots и одновременно предсказывает token slots следующего item.</li>
+<li><strong>Set-to-item matching.</strong> На inference generated token set сопоставляется с catalog index. Ranking комбинирует CF score и semantic score; semantic strength отдельно настраивается для cold/warm regimes.</li>
+</ol>
+<pre><code>for item in catalog:
+    cf_tokens = cf_tokenizer(item, interactions)
+    sem_tokens = semantic_tokenizer(item.text_or_content)
+    set_id[item] = unordered_union(cf_tokens, sem_tokens)
+    add_to_set_index(set_id[item], item)
+
+for batch in training:
+    encoded_history = llm_encoder(batch.history_sets, sparse_identifier_mask=True)
+    query_slots = initialize_slots(num_identifier_tokens)
+    predicted_tokens = parallel_decoder(query_slots, encoded_history)
+    loss = set_prediction_loss(predicted_tokens, batch.next_item_set)
+    update(tokenizers, llm)
+
+for request in serving:
+    token_set = parallel_generate(request.history)
+    candidates = lookup_items_by_set(token_set)
+    rank = cf_score(candidates) + semantic_strength * semantic_score(candidates)</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальный блок полезен тем, что проверяет не только общий Recall/NDCG, но и efficiency/cold-start/ablation slices.</p>
@@ -105,23 +132,23 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны ниже выделены с точки зрения внедрения и воспроизводимости.</p>
+<p>Сильные стороны SETRec связаны с формой identifier и с тем, что paper проверяет не только качество, но и стоимость inference.</p>
 <ul>
-<li>Clear design principles for item identifiers.</li>
-<li>Combines CF and semantic information instead of choosing one.</li>
-<li>Efficiency claim backed by inference-time columns.</li>
-<li>Tests both encoder-decoder and decoder-only LLM backbones.</li>
-<li>Cold-start analysis is stronger than in many SID papers.</li>
+<li><strong>Убирает искусственный порядок токенов.</strong> Если порядок SID является артефактом tokenizer-а, left-to-right beam search действительно создает лишние ошибки.</li>
+<li><strong>CF и semantic evidence объединены явно.</strong> CF tokens поддерживают warm memorization, semantic tokens улучшают cold generalization.</li>
+<li><strong>Efficiency подтверждается wall-clock колонками.</strong> Reported speedups 8-18x полезны, потому что многие LLM-GenRec работы игнорируют serving time.</li>
+<li><strong>Проверены T5 и Qwen variants.</strong> Это снижает риск, что результат держится только на encoder-decoder backbone.</li>
+<li><strong>Cold-start анализ содержательный.</strong> Semantic strength sweep показывает, почему semantic score нужно настраивать отдельно для cold items.</li>
 </ul>
 
 <h2>Ограничения</h2>
 <p>Ограничения важны для production transfer.</p>
 <ul>
-<li>Set matching can complicate constrained decoding and catalog lookup.</li>
-<li>External tokens may still be poorly aligned with pretrained LLM vocabulary.</li>
-<li>Large LLM serving is heavy even if token generation is simultaneous.</li>
-<li>Warm-item scalability is limited: larger Qwen does not automatically improve CF understanding.</li>
-<li>If token slots are not truly independent, order-agnostic assumption may hide useful structure.</li>
+<li><strong>Set matching сложнее обычного trie.</strong> Для unordered identifiers нужен index по множествам/подмножествам и политика ambiguous matches.</li>
+<li><strong>Independence assumption может быть слишком сильной.</strong> Если некоторые token slots действительно имеют hierarchy или residual meaning, order-agnostic mask выбрасывает полезную структуру.</li>
+<li><strong>External tokens все еще не native LLM vocabulary.</strong> SETRec уменьшает autoregressive проблему, но не полностью решает semantic gap специальных recommendation tokens.</li>
+<li><strong>Large LLM serving остается дорогим.</strong> Simultaneous generation ускоряет относительно token-sequence SID, но Qwen-scale inference все равно тяжел для high-QPS retrieval.</li>
+<li><strong>Warm-item scaling ограничен.</strong> Larger Qwen не гарантирует лучшего CF understanding, поэтому ID memorization может оставаться bottleneck'ом.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

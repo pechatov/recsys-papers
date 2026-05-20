@@ -81,6 +81,24 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Cross-task approaches: token-separated IDs, prefix-share IDs, embedding-combined IDs.</li>
 </ul>
+<h3>Подробная схема алгоритма</h3>
+<p>Spotify paper сравнивает не один метод, а несколько designs того, как item SID должен жить в совместной search+recommendation модели.</p>
+<ol>
+<li><strong>Построить task-specific embeddings.</strong> Search embedding отражает query-item relevance, recommendation embedding - listening/co-consumption behavior.</li>
+<li><strong>Выбрать SID design.</strong> Token-separated IDs используют разные token spaces для задач; prefix-share IDs делают общий coarse prefix и task-specific suffix; embedding-combined IDs сначала объединяют embeddings, потом квантуют.</li>
+<li><strong>Сгенерировать identifiers.</strong> Для каждого item строится SID согласно выбранному design, а mapping SID -> item сохраняется для constrained decoding.</li>
+<li><strong>Обучить joint generator.</strong> Search examples и recommendation examples смешиваются; task prompt сообщает модели, какой режим нужен.</li>
+<li><strong>Оценить trade-off.</strong> Каждая SID стратегия проверяется на search metrics и recommendation metrics, потому что слишком сильное sharing или separation вредят разным задачам.</li>
+<li><strong>Проанализировать interference.</strong> Если token-separated выигрывает одну задачу, но теряет sharing, а prefix-share улучшает баланс, это показывает, где общая структура полезна.</li>
+</ol>
+<pre><code>search_emb[item] = encode_query_relevance(item)
+rec_emb[item] = encode_listening_behavior(item)
+
+for design in {token_separated, prefix_share, embedding_combined}:
+    sid[item, task] = build_identifier(design, search_emb, rec_emb)
+    train joint_generator on prompted search and recommendation examples
+    evaluate search and recommendation separately
+    inspect collision/utilization and task interference</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -104,28 +122,20 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Фокус на identifier design для двух задач.</strong> Paper не просто смешивает datasets, а сравнивает token-separated, prefix-share и embedding-combined designs.</li>
+<li><strong>Хорошо показывает trade-off sharing vs interference.</strong> Token-separated IDs уменьшают конфликт, prefix-share IDs сохраняют общий coarse signal, embedding-combined IDs проверяют раннее fusion.</li>
+<li><strong>Практически применимо к музыкальному каталогу Spotify.</strong> Search и recommendation действительно обслуживают один catalog, поэтому joint SID design имеет продуктовый смысл.</li>
+<li><strong>Работа дополняет Bridging SAR.</strong> Bridging объясняет, когда task transfer возможен, а эта статья показывает, как identifier может его поддержать или разрушить.</li>
 </ul>
 
 <h2>Ограничения</h2>
-<p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
-<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
-<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
-<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+<li><strong>Закрытые Spotify/internal данные.</strong> Без тех же query logs, listening logs и catalog overlap сложно воспроизвести вывод о лучшем SID design.</li>
+<li><strong>Качество зависит от upstream task embeddings.</strong> Если search и recommendation spaces уже плохо откалиброваны, tokenization только закрепит mismatch.</li>
+<li><strong>Нет полного lifecycle ответа.</strong> Summary не раскрывает refresh policy, drift handling и совместимость SID при обновлении музыкального каталога.</li>
+<li><strong>Prefix sharing может переусреднить intents.</strong> Один artist/track может быть релевантен query по metadata, но иметь другой collaborative meaning в consumption graph.</li>
+<li><strong>Offline trade-off не равен product trade-off.</strong> Search satisfaction и feed engagement могут иметь разные weights, которых HR/NDCG не отражают.</li>
 </ul>
 
 <h2>Как реализовать/проверять</h2>

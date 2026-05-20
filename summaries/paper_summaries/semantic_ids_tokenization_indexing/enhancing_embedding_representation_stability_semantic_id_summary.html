@@ -84,6 +84,16 @@
 <li>Для user history анализируются attention metrics: attention на первый source token, padding attention, entropy и token self-attention.</li>
 <li>Semantic ID модели имеют более низкие entropy/padding/self-attention и больше внимания к signal tokens.</li>
 </ul>
+<h3>Пошаговая схема production pipeline</h3>
+<ol>
+<li><strong>Собрать стабильное окно ads content.</strong> Берутся text/image/video content embeddings из CU stack за последние месяцы, чтобы tokenizer видел достаточно активных объявлений и не обучался только на одном дневном срезе.</li>
+<li><strong>Обучить RQ-VAE.</strong> Content embedding проходит encoder, residual codebooks выбирают hierarchical codewords, decoder восстанавливает embedding. Результат - Semantic ID с несколькими уровнями coarse-to-fine granularity.</li>
+<li><strong>Заморозить tokenizer checkpoint.</strong> Production не переобучает RQ-VAE в hot path; при ad creation SID генерируется offline/nearline и записывается в Entity Data Store.</li>
+<li><strong>Разложить SID в sparse features.</strong> Для полного кода и prefix-ngram combinations строятся categorical feature IDs. Prefix-5gram design использует и coarse, и fine уровни, поэтому один ad дает несколько semantic rows.</li>
+<li><strong>Применить modulo hash только после semantic parameterization.</strong> Если feature cardinality превышает table size, collisions происходят между semantic tuples, а не между случайными raw IDs.</li>
+<li><strong>Добавить target и history features в ranker.</strong> SID features используются как для текущего ad/item, так и для user engagement histories, где attention modules получают более стабильные signal tokens.</li>
+<li><strong>Сравнить с individual embeddings и random hash.</strong> Offline считаются NE и segment gains по head/tail/new items; online sanity check заменяет item на item с тем же prefix и измеряет click loss.</li>
+</ol>
 
 <h2>Эксперименты</h2>
 <p>Paper содержит offline experiments, segment analysis, representation-space analysis, user-history modeling и productionization.</p>
@@ -118,7 +128,7 @@
 <li>Обсуждение A/A variance и random hashing как источника нестабильности.</li>
 </ul>
 
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <p>Ограничения в основном связаны с закрытым production контекстом.</p>
 <ul>
 <li>Данные internal, поэтому точная репликация невозможна.</li>

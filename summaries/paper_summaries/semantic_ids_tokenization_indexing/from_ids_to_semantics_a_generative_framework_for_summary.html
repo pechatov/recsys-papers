@@ -89,6 +89,35 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Routing module выбирает, сколько информации брать из universal encoder и domain adapters. Semantic IDs обучаются так, чтобы быть пригодными для autoregressive generation, а не только для восстановления текста. Recommendation objective оптимизирует предсказание следующего item'а в multi-domain sequence, а domain-aware prefix tree превращает sequence generation в контролируемый retrieval: beam search не уходит в недопустимые ветки и снижает grounding errors.</p>
 
+<h3>5.1. Пошаговая схема GenCDR</h3>
+<ol>
+<li><strong>Разметить домены и собрать item features.</strong> Для каждого item известен domain label; item text/features проходят через общий encoder и domain-specific adapter.</li>
+<li><strong>Посчитать universal representation.</strong> Universal branch извлекает переносимую семантику, которая должна помогать там, где нет shared item IDs.</li>
+<li><strong>Посчитать domain-specific correction.</strong> Domain adapter добавляет локальные значения терминов, категорий и user intent. Пример из summary: “Apple” может иметь разные смыслы в lifestyle и technology domains.</li>
+<li><strong>Смешать branches routing module.</strong> Dynamic routing выбирает веса universal/domain-specific information для item-а; эти weights являются важной диагностикой collapse.</li>
+<li><strong>Сгенерировать domain-adaptive semantic ID.</strong> Disentangled representation квантуется/кодируется в SID, который сохраняет shared semantics и domain correction.</li>
+<li><strong>Обучить cross-domain autoregressive recommender.</strong> User history из нескольких доменов представляется как SID sequence; decoder предсказывает next item SID с учетом target domain.</li>
+<li><strong>Ограничить inference prefix tree.</strong> Domain-aware prefix tree оставляет в beam search только валидные item paths нужного домена, снижая domain leakage и invalid generation.</li>
+<li><strong>Проверить transfer и leakage.</strong> Нужны source-only/target-only/joint comparisons, valid generation rate и routing weights по domain/category.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    u = universal_encoder(item.features)
+    d = domain_adapter[item.domain](item.features)
+    alpha = routing_module(item.features, item.domain)
+    z = alpha * u + (1 - alpha) * d
+    sid[item] = semantic_tokenizer(z)
+
+for sequence in multi_domain_logs:
+    input_sids = [sid[i] for i in sequence.history]
+    target_domain = sequence.target_domain
+    loss = autoregressive_loss(model, input_sids, sid[sequence.target_item], target_domain)
+    update(loss)
+
+at inference:
+    trie = domain_aware_prefix_tree(target_domain)
+    candidates = constrained_beam_search(model, history_sids, trie)</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты AAAI/arXiv версии проведены на нескольких cross-domain наборах; метрики - Recall@K и NDCG@K. GenCDR сравнивается с sequential, generative и cross-domain baselines, а также с вариантами без компонентов framework. Таблицы показывают устойчивое превосходство GenCDR по всем наборам. В efficiency analysis LoRA-based GenCDR требует существенно меньше trainable parameters, training time и peak GPU memory, чем full fine-tuning Qwen2.5-7B; также анализируется runtime memory/inference time относительно item pool size.</p>
@@ -100,25 +129,29 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <h2>8. Сильные стороны</h2>
 
 <ul>
-<li>Хорошо связывает semantic IDs с реальной проблемой CDR без shared IDs.</li>
+<li><strong>Хорошо связывает semantic IDs с реальной проблемой CDR без shared IDs.</strong> Identifier нужен не просто для сжатия item'а, а для переноса между доменами.</li>
 
-<li>Adapters дают инженерно разумный компромисс между universal transfer и domain specialization.</li>
+<li><strong>Adapters дают инженерно разумный компромисс.</strong> Universal branch сохраняет transfer, domain adapters не дают сгладить специфичные значения категорий и терминов.</li>
 
-<li>Domain-aware prefix tree делает генерацию не только точнее, но и безопаснее с точки зрения item grounding.</li>
+<li><strong>Domain-aware prefix tree делает генерацию grounded.</strong> Beam search не должен возвращать item из неправильного домена, даже если SID prefix похож.</li>
 
-<li>Есть отдельный efficiency analysis для LoRA/full fine-tuning и inference scaling.</li>
+<li><strong>Есть efficiency analysis.</strong> LoRA/full fine-tuning и runtime scaling по item pool size важны для практического CDR, где домены могут расти независимо.</li>
+
+<li><strong>Routing weights диагностируемы.</strong> Можно увидеть, действительно ли item использует domain adapter или вся модель collapse'ится в universal path.</li>
 </ul>
 
 <h2>9. Ограничения</h2>
 
 <ul>
-<li>Сложность framework выше обычного single-domain TIGER: нужны domain labels, adapters и routing diagnostics.</li>
+<li><strong>Сложность выше single-domain TIGER.</strong> Нужны domain labels, adapters, routing diagnostics и отдельные prefix trees.</li>
 
-<li>Качество зависит от того, насколько домены действительно имеют общую семантическую основу.</li>
+<li><strong>Transfer зависит от общей семантической основы.</strong> Если домены слишком разнородны, universal branch не сможет переносить полезный signal.</li>
 
-<li>Если домены слишком разнородны или overlap отсутствует полностью, universal branch может стать слабым.</li>
+<li><strong>Есть риск adapter collapse или over-specialization.</strong> Routing может почти всегда выбирать universal branch либо, наоборот, разорвать transfer через слишком сильные domain adapters.</li>
 
-<li>В AAAI версии код указан как supplementary; воспроизводимость зависит от доступности деталей preprocessing.</li>
+<li><strong>Prefix constraints могут скрывать слабую модель.</strong> Высокий valid generation rate не гарантирует хороший ranking внутри domain item pool.</li>
+
+<li><strong>Воспроизводимость зависит от preprocessing.</strong> В AAAI версии код указан как supplementary; без точных domain splits и merging правил результаты трудно повторить.</li>
 </ul>
 
 <h2>10. Как реализовать и проверять</h2>

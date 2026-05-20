@@ -76,6 +76,31 @@ space.</p>
 <p>Serving выполняет reverse denoising: от noisy representation под guidance
 модель приходит к next-interest
 embedding, затем retrieve candidates.</p>
+<h2>Детальный алгоритм DimeRec</h2>
+<p>DimeRec генерирует не item ID и не semantic ID, а continuous next-interest embedding. Алгоритм состоит из conditional diffusion: multi-interest guidance задает направление, а reverse denoising восстанавливает target item embedding на сфере.</p>
+<ol>
+<li><strong>Нормализовать item embeddings.</strong> Item vectors лежат на сфере, поэтому noise process должен сохранять spherical geometry.</li>
+<li><strong>Извлечь multi-interest guidance.</strong> Guidance Extraction Module, в основной версии ComiRec-SA, превращает behavior sequence в несколько interest vectors, а не один усредненный user state.</li>
+<li><strong>Выбрать target embedding для обучения.</strong> Для user sequence target item embedding становится clean sample, который diffusion module должен восстановить.</li>
+<li><strong>Добавить Geodesic Random Walk noise.</strong> Forward process двигает clean target по геодезическим шагам на сфере, а не обычным Gaussian noise в Euclidean space.</li>
+<li><strong>Обучить denoising под guidance.</strong> Diffusion Aggregation Module получает noisy target, timestep и guidance, затем предсказывает clean/score direction.</li>
+<li><strong>Сбалансировать losses.</strong> <code>L_gem</code> обучает guidance, <code>L_ssm</code> стабилизирует diffusion semantic/score modeling, <code>L_recon</code> напрямую восстанавливает target embedding.</li>
+<li><strong>На serving выполнить reverse diffusion.</strong> Из noisy/init representation под user guidance получается next-interest embedding, затем ANN index возвращает candidate items.</li>
+</ol>
+<pre><code>for user_sequence, target_item in batch:
+    guidance = GEM(user_sequence)  # multi-interest vectors
+    x0 = normalize(item_embedding[target_item])
+    t = sample_timestep()
+    xt = geodesic_random_walk_noise(x0, t)
+
+    pred = DAM(xt, t, guidance)
+    loss = L_gem(guidance, target_item) + mu * L_ssm(pred, x0) + lambda * L_recon(pred, x0)
+    update(loss)
+
+at serving:
+    guidance = GEM(user_history)
+    generated_embedding = reverse_denoise(guidance, steps=S)
+    candidates = ANN_search(normalize(generated_embedding))</code></pre>
 <h2>Эксперименты и метрики</h2>
 <p>Датасеты: YooChoose, KuaiRec и ML-10M.</p>
 <p>Метрики: HR@10/20/50 и NDCG@10/20/50.</p>
@@ -99,20 +124,20 @@ ComiRec-SA.</p>
 steps, <code>lambda</code> и <code>mu</code>.</p>
 <h2>Сильные стороны</h2>
 <ul>
-<li>Модель нацелена на matching stage и честно интерпретирует
-слабость по top ranking.</li>
-<li>Multi-interest guidance делает diffusion conditional на разные
-интересы пользователя.</li>
-<li>Есть ablation по guidance module, losses и online results.</li>
+<li><strong>Четкая ориентация на matching stage.</strong> DimeRec оптимизирует широкий candidate recall, поэтому HR@50 gains интерпретируются честнее, чем попытка назвать модель top-ranker.</li>
+<li><strong>Multi-interest guidance решает проблему одного user vector.</strong> ComiRec-SA дает diffusion module несколько возможных future interests.</li>
+<li><strong>GRW согласован с normalized embeddings.</strong> Noise process учитывает spherical geometry, а не ломает ее Euclidean perturbations.</li>
+<li><strong>Ablations показывают вклад блоков.</strong> Сравнение SASRec/MLP/ComiRec-DR/ComiRec-SA и удаление losses помогают понять, что не является декоративным.</li>
+<li><strong>Метод не требует SID vocabulary.</strong> Это полезный контраст к generative retrieval через discrete tokens: можно оставить ANN serving.</li>
 </ul>
 <h2>Ограничения</h2>
-<p>DimeRec не решает проблему discrete item vocabulary
-напрямую.</p>
-<p>Для больших каталогов все равно нужен ANN retrieval
-по generated embedding.</p>
-<p>Diffusion serving дороже простого dot-product encoder.</p>
-<p>Top-10 NDCG может быть не так силен, потому что model
-ориентирован на candidate matching.</p>
+<ul>
+<li><strong>Не решает discrete vocabulary.</strong> Каталог все равно обслуживается через ANN по generated embedding, а не через валидные item tokens.</li>
+<li><strong>Reverse diffusion дороже обычного encoder retrieval.</strong> Max diffusion steps напрямую бьют по latency, поэтому нужен quality-latency tuning.</li>
+<li><strong>Top ranking остается слабее matching.</strong> HR@50 может расти сильнее, чем NDCG@10; downstream ranker все равно нужен.</li>
+<li><strong>Guidance quality является bottleneck.</strong> Если GEM не выделяет реальные multi-interest modes, DAM будет восстанавливать усредненный или шумный intent.</li>
+<li><strong>ANN index должен быть строго согласован.</strong> Generated embeddings и item index должны иметь одну normalization/embedding версию.</li>
+</ul>
 <h2>Как реализовать / проверять</h2>
 <ol>
 <li>Подготовить normalized item embeddings.</li>

@@ -89,6 +89,17 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective PIT можно понять как совместную оптимизацию tokenization loss и recommendation loss с selection over candidate tokenizations. Вместо жесткого единственного item code модель хранит beam of possible SIDs; по мере обучения плохие candidates отсекаются, а хорошие укрепляются. Это снижает риск резкого SID churn и дает recommender'у возможность выбирать task-consistent representation. RQ-KMeans/I2I contrastive pretraining используется как semantically rich initialization.</p>
 
+<h3>5.1. Пошаговая схема PIT</h3>
+<ol>
+<li><strong>Инициализировать tokenizer.</strong> RQ-KMeans и I2I contrastive pretraining создают стартовые SIDs, уже связанные с item-item collaborative relations.</li>
+<li><strong>Сгенерировать candidate SID beam.</strong> Для item хранится не один SID, а несколько candidate mappings, которые могут конкурировать во время обучения.</li>
+<li><strong>Обучать co-generative loop.</strong> Tokenizer предлагает candidates, generative recommender считает sequence loss для target item, gradients и selection signal возвращаются к tokenizer.</li>
+<li><strong>Применить user-guided minimum-loss selection.</strong> Для конкретного user context выбирается SID candidate, который дает меньший recommendation loss; это делает code usefulness personalized/context-aware.</li>
+<li><strong>Обновлять Dynamic Beam Index.</strong> One-to-many item -> SID mapping публикуется в index; слабые candidates pruning'ятся, новые могут добавляться при co-evolution.</li>
+<li><strong>Синхронизировать serving.</strong> Model weights, tokenizer version и beam index snapshot должны обновляться атомарно, иначе generator будет выдавать SID, которых нет в online index.</li>
+<li><strong>Мониторить churn и entropy.</strong> PIT полезен только если beam size, codebook entropy, SID churn и invalid mapping rate остаются управляемыми.</li>
+</ol>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Offline experiments проведены на Amazon datasets с метриками Recall@5/10 и NDCG@5/10; PIT стабильно превосходит baselines. Абляции на Beauty и Toys показывают вклад co-generative architecture, co-evolution learning и dynamic beam index. Codebook entropy analysis демонстрирует более равномерное использование codebook. Online A/B test в Kuaishou сообщает uplift App Stay Time на 0.402% для OneRec-V2-PIT относительно OneRec-V2, что важно для production validation.</p>
@@ -109,7 +120,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <li>Метод не ограничивается content semantics, а делает tokenizer recommendation-aware.</li>
 </ul>
 
-<h2>9. Ограничения</h2>
+<h2>9. Слабые стороны и ограничения</h2>
 
 <ul>
 <li>Сложность online infrastructure выше: нужно синхронизировать модель, beam index и pruning.</li>

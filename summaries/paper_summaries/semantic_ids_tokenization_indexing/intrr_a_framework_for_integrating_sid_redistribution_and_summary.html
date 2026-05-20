@@ -89,6 +89,35 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Loss включает recommendation objective и auxiliary terms для redistribution/alignment. RAN можно рассматривать как scorer по уровням SID hierarchy: вместо генерации всех digit tokens модель получает item-level cost, а RAN уточняет путь/веса. Это уменьшает latency при разных beam widths, потому что основной autoregressive backbone не делает multi-pass decoding по каждому уровню SID. Weight coefficient для redistribution loss анализируется в sensitivity plot.</p>
 
+<h3>5.1. Пошаговый алгоритм IntRR</h3>
+
+<ol>
+<li><strong>Взять существующий SID hierarchy.</strong> Item уже имеет SID из RK-Means, VQ-VAE или RQ-VAE; IntRR не требует заново изобретать tokenizer.</li>
+<li><strong>Добавить UID anchor.</strong> Item-specific UID служит collaborative якорем, который помогает различать items с одинаковым или близким SID.</li>
+<li><strong>Прогнать Recursive-Assignment Network.</strong> RAN проходит по уровням hierarchy и вычисляет level weights/semantic shifts для данного item/context.</li>
+<li><strong>Сделать Adaptive SID Redistribution.</strong> Статичные веса уровней SID корректируются под recommendation objective, но исходная hierarchical structure сохраняется.</li>
+<li><strong>Сократить autoregressive длину.</strong> Backbone не генерирует все SID tokens подряд; он делает item-level prediction, а RAN уточняет hierarchical assignment.</li>
+<li><strong>Обучить joint objective.</strong> Recommendation loss учит next-item prediction, redistribution loss контролирует сдвиг уровней, а coefficient lambda задает силу вмешательства.</li>
+<li><strong>На inference сравнить latency при beam width \(W\).</strong> Выигрыш должен проявляться именно там, где flattened SID платит за каждый уровень.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    base_sid = tokenizer(item)
+    uid = item_uid_embedding(item)
+
+for training sequence:
+    context = backbone(user_history)
+    weights = RAN(base_sid, uid, context)
+    redistributed_sid = apply_level_weights(base_sid, weights)
+    prediction = length_reduced_predict(context, redistributed_sid)
+    loss = recommendation_loss(prediction) + lambda * redistribution_loss(weights)
+    update backbone and RAN
+
+inference:
+    generate item-level candidates
+    use RAN to resolve hierarchical SID weights
+    avoid full flattened SID decoding</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты на Amazon Beauty, Sports и Toys с indexing strategies RK-Means, VQ-VAE, RQ-VAE и backbones Transformer/HSTU. Метрики: Recall@5/10, NDCG@5/10, training efficiency и inference latency under beam width W. В тексте отмечено, что на Amazon Toys с RQ-VAE indexing IntRR дает наиболее крупные average improvements: около 63.1% для HSTU и 47.1% для Transformer. Latency таблица показывает устойчивое преимущество IntRR за счет обхода multi-pass autoregressive bottleneck.</p>

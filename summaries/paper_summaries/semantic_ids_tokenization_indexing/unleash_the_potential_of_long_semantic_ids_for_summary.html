@@ -89,6 +89,33 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective включает fine-grained token modeling и item-level Semantic Alignment loss \(\mathcal L_{ISA}\). Идея dual granularity: модель должна понимать детали long SID, но итоговый user intent должен быть близок к глобальной item representation. ATM учится не усреднять, а выбирать важные token-level semantics. Intent Token получает supervision как агрегатор sequence context, что улучшает особенно sparse/cold-start buckets.</p>
 
+<h3>5.1. Пошаговый алгоритм ACERec</h3>
+
+<ol>
+<li><strong>Построить long SID.</strong> Для каждого item создается длинная sequence semantic tokens, которая сохраняет больше fine-grained information, чем короткий RQ-style code.</li>
+<li><strong>Сжать tokens через ATM.</strong> Attentive Token Merger принимает long SID и порождает \(k\) compact latent vectors; attention учит, какие позиции SID важнее.</li>
+<li><strong>Вставить Intent Token.</strong> В sequence model добавляется dynamic anchor, который агрегирует user history и становится точкой предсказания следующего item.</li>
+<li><strong>Смоделировать user sequence на compact latents.</strong> Transformer/HSTU-like backbone работает не с полной длиной long SID, а с compressed item representations.</li>
+<li><strong>Оптимизировать dual-granularity objective.</strong> Fine-grained token loss сохраняет локальные SID details, а \(\mathcal L_{ISA}\) согласует Intent Token с item-level semantic representation.</li>
+<li><strong>Оценивать candidates holistic scoring.</strong> На inference модель оценивает item целиком, избегая посимвольной генерации длинной цепочки SID для каждого кандидата.</li>
+<li><strong>Подобрать compression ratio.</strong> \(k\) и \(r\) выбираются по curve quality vs latency; слишком сильное сжатие убивает пользу long SID, слишком слабое возвращает latency problem.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    long_sid = long_tokenizer(item)
+    compressed = ATM(long_sid, k)
+
+for user_history:
+    item_latents = [compressed[item] for item in history]
+    intent = sequence_model(item_latents, intent_token)
+    token_loss = predict_fine_grained_sid(intent, next_item.long_sid)
+    isa_loss = align(intent, next_item.global_semantic_embedding)
+    loss = token_loss + lambda_isa * isa_loss
+
+inference:
+    score candidates by holistic intent-item similarity
+    return top-K without decoding every long SID token</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты на шести Amazon Reviews datasets: Sports, Beauty, Toys, Instruments, Office, Baby. Метрики - Recall@K/NDCG@K, с акцентом на NDCG@10. В abstract указано среднее улучшение 14.40% по NDCG@10 относительно SOTA baselines. Абляции показывают: добавление ATM повышает Recall@10 на Instruments с 0.0826 до 0.1001; Intent Token тоже дает отдельный gain; комбинация ATM+Intent Token и \(\mathcal L_{ISA}\) достигает лучших результатов, например Recall@10 около 0.1190 в приведенном fine-grained ablation.</p>

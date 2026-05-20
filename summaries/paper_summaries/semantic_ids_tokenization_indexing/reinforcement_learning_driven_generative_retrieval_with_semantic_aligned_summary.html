@@ -83,6 +83,16 @@
   <li>GRPO uses normalized relative advantage and KL to reference policy.</li>
   <li>Reward groups compare generated identifiers for same query.</li>
 </ul>
+<h3>Пошаговая схема GRAM-RL</h3>
+<ol>
+  <li><strong>Подготовить multi-layer DocID targets.</strong> Для каждого документа LLM/prompt pipeline формирует три слоя natural-language identifier: summary, keywords и pseudo-query. Они покрывают document gist, lexical anchors и вероятный user intent.</li>
+  <li><strong>Supervised fine-tuning генератора.</strong> Модель обучается по CE loss генерировать эти identifier layers по документу или query-document context, чтобы получить стабильную reference policy.</li>
+  <li><strong>Собрать difficulty-aware negatives.</strong> Для каждого query добавляются hard/medium/easy negatives, чтобы reward различал не только очевидно плохие, но и близкие документы.</li>
+  <li><strong>Сэмплировать группы identifier candidates.</strong> Для одного query/document контекста модель генерирует несколько вариантов identifiers; они образуют group для GRPO.</li>
+  <li><strong>Посчитать reward.</strong> Dense similarity или retrieval score между query и generated identifier/document view становится reward; advantage нормируется внутри группы, а KL удерживает policy рядом с SFT reference.</li>
+  <li><strong>Обновить policy через GRPO.</strong> Модель усиливает identifiers, которые лучше вытаскивают релевантный документ относительно других candidates того же group.</li>
+  <li><strong>Выполнить multi-view retrieval fusion.</strong> На inference ранжируются title, body, summary, keyword и pseudo-query views; HRF fusion объединяет positions, view weights и paragraph frequency в итоговый score.</li>
+</ol>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Reinforcement Learning-Driven Generative Retrieval with Semantic-aligned Multi-Layer Identifiers качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -114,7 +124,7 @@
   <li>RL objective aligns identifier with retrieval, not only document summary.</li>
   <li>Negative sampling taxonomy is practical.</li>
 </ul>
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <ul>
   <li>Document retrieval differs from item recommendation.</li>
   <li>Natural-language identifiers cost more than compact SID.</li>

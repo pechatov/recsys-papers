@@ -3,160 +3,282 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale</title>
+  <title>QuaSID: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-main { max-width: 1040px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
 h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
-h2 { font-size: 1.35rem; }
-h3 { font-size: 1.08rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
 p { margin: .75rem 0; }
 a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
 ul, ol { padding-left: 1.55rem; }
 li { margin: .3rem 0; }
 blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
 th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
 th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
+.nav a { color: var(--link); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
-.nav { margin: .5rem 0 1.2rem; }
-.note { color: var(--muted); }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.55rem; } }</style>
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
 </head>
 <body>
 <main>
 <h1><a href="https://arxiv.org/abs/2603.00632">Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning for Recommendation at Industrial Scale</a></h1>
 <p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
 <blockquote>
 <p><strong>Авторы:</strong> Zheng Hu, Yuxin Chen, Yongsen Pan, Xu Yuan, Yuting Yin, Daoyuan Wang, Boyang Xia, Zefei Luo, Hongyang Wang, Songhao Ni, Dongxu Liang, Jun Wang, Shimin Cai, Tao Zhou, Fuji Ren, Wenwu Ou.</p>
-<p><strong>Аффилиации:</strong> University of Electronic Science and Technology of China; <span class="industry">Kuaishou Technology</span>.</p>
-<p><strong>Первичный источник:</strong> arXiv:2603.00632.</p>
+<p><strong>Аффилиации:</strong> University of Electronic Science and Technology of China (UESTC); <span class="industry">Kuaishou Technology</span>.</p>
+<p><strong>Конференция / ID:</strong> arXiv:2603.00632, февраль 2026.</p>
 </blockquote>
-<h2>коротко</h2>
-<p>QuaSID argues that SID collisions are heterogeneous and should be handled according to qualification and severity, not uniformly.</p>
-<p>Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.</p>
-<ul>
-<li>Distinguishes harmful conflicts from benign redundancy.</li>
-<li>Uses qualification-aware conflict pair selection.</li>
-<li>Scales repulsion by collision severity.</li>
-<li>Targets industrial-scale multimodal item SID learning.</li>
-<li>Includes deployment-oriented figures and weighting ablations.</li>
-</ul>
-<h2>контекст</h2>
-<p>Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.</p>
-<p>Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.</p>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>QuaSID (Qualification-Aware Semantic ID) предлагает подход к обучению semantic IDs, в котором коллизии дискретных кодов обрабатываются дифференцированно: вредные пересечения отталкиваются с силой, пропорциональной серьезности конфликта, а допустимые семантические совпадения сохраняются. Метод состоит из двух ключевых механизмов. Первый, CVPM (Conflict-Aware Valid Pair Masking), идентифицирует пары, которые не нужно отталкивать, например дубликаты одного и того же item'а в batch'е или collaborative positives. Второй, HaMR (Hamming-guided Margin Repulsion), разделяет коллизии на полные и частичные по Hamming-расстоянию и применяет hinge loss с разными margin'ами. Статья подкреплена промышленным deployment на Kuaishou и онлайн A/B-тестом, показавшим рост GMV до +2.38% и значительные улучшения для cold-start видео.</p>
+
+<h2>2. Контекст: коллизии semantic IDs как промышленная проблема</h2>
+<p>В generative recommendation item'ы представляются дискретными semantic IDs, которые генеративная модель порождает токен за токеном. При ограниченном размере codebook и высокой cardinality каталога неизбежно возникают коллизии: разные item'ы получают одинаковые или почти одинаковые дискретные коды. Предшествующие методы, включая стандартный RQ-VAE, либо игнорируют коллизии, либо равномерно отталкивают все пересекающиеся пары. Ни один из подходов не учитывает, что коллизии гетерогенны: близкие по семантике item'ы могут допустимо делить prefix, тогда как семантически далекие item'ы с одинаковым SID создают критическую ambiguity для downstream модели.</p>
+<p>В контексте Kuaishou каталог содержит мультимодальные item'ы (видео с текстовыми описаниями, ASR-транскриптами, ключевыми кадрами). Для таких масштабов полное устранение коллизий нереалистично, что делает задачу qualified collision management особенно актуальной.</p>
+
+<h2>3. Проблема: почему uniform repulsion вредит</h2>
+<p>Авторы формулируют две фундаментальные проблемы. Первая: при uniform repulsion модель тратит емкость codebook на искусственное разделение item'ов, которые семантически похожи и для которых частичное совпадение SID полезно. Это приводит к over-fragmentation, когда token space становится уникальным, но теряет обобщающую способность. Вторая: действительно вредные коллизии, в которых семантически далекие item'ы получают идентичные коды, не получают усиленного давления и продолжают создавать ambiguity. В результате downstream generative recommender получает противоречивый supervision, когда одна и та же последовательность токенов должна предсказывать принципиально разные item'ы.</p>
+
+<h2>4. Формальная постановка задачи</h2>
+<p>Пусть \(\mathcal{U}\) и \(\mathcal{I}\) - множества пользователей и item'ов, \(|\mathcal{I}| = N_i\). Каждый item \(i\) описывается мультимодальным вектором признаков \(\mathbf{x}_i \in \mathbb{R}^{d_{in}}\). Encoder \(f_\theta\) отображает \(\mathbf{x}_i\) в латентное представление \(\mathbf{z}_i = f_\theta(\mathbf{x}_i) \in \mathbb{R}^d\). Residual quantizer с \(L\) codebook'ами \(\mathcal{C}^{(l)} = \{\mathbf{c}_k^{(l)}\}_{k=1}^K\) порождает SID:</p>
+<div class="math">\[
+\mathbf{s}_i = [s_i^{(1)}, s_i^{(2)}, \ldots, s_i^{(L)}] \in \{1, \ldots, K\}^L
+\]</div>
+<p>Цель: обучить генератор SID \(g_\theta: \mathbf{x}_i \mapsto \mathbf{s}_i\), который оптимизирует encoder, codebook'и и дискретное назначение так, чтобы SID были collision-qualified и совместимы с collaborative сигналами.</p>
+
+<h2>5. Backbone: residual quantization и contrastive alignment</h2>
+<h3>5.1. Residual quantization</h3>
+<p>Для item'а \(i\) с латентным представлением \(\mathbf{z}_i\) residual quantization работает итеративно:</p>
+<div class="math">\[
+\mathbf{r}_i^{(0)} = \mathbf{z}_i, \quad
+\mathbf{q}_i^{(l)} = \mathbf{c}_{s_i^{(l)}}^{(l)}, \quad
+\mathbf{r}_i^{(l)} = \mathbf{r}_i^{(l-1)} - \mathbf{q}_i^{(l)}, \quad l = 1, \ldots, L
+\]</div>
+<p>Квантованное представление \(\hat{\mathbf{z}}_i = \sum_{l=1}^L \mathbf{q}_i^{(l)}\), а decoder \(h_\phi\) восстанавливает вход: \(\hat{\mathbf{x}}_i = h_\phi(\hat{\mathbf{z}}_i)\).</p>
+
+<h3>5.2. Reconstruction и RQ loss</h3>
+<p>Базовый reconstruction loss:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{rec}} = \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \|\hat{\mathbf{x}}_i - \mathbf{x}_i\|_2^2
+\]</div>
+<p>RQ loss со stop-gradient:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{rq}} = \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \sum_{l=1}^{L} \left( \|\operatorname{sg}[\mathbf{r}_i^{(l-1)}] - \mathbf{q}_i^{(l)}\|_2^2 + \beta \|\mathbf{r}_i^{(l-1)} - \operatorname{sg}[\mathbf{q}_i^{(l)}]\|_2^2 \right)
+\]</div>
+
+<h3>5.3. Collaborative contrastive alignment</h3>
+<p>Collaborative пары \(\mathcal{P} = \{(i_t, i_p)\}\) строятся алгоритмом Swing из user interaction logs. Для нормализованных trigger-embeddings \(\{\mathbf{e}_t^m\}\) и target-embeddings \(\{\mathbf{e}_p^n\}\) вычисляется InfoNCE loss:</p>
+<div class="math">\[
+\mathbf{S}_{m,n} = \frac{(\mathbf{e}_t^m)^\top \mathbf{e}_p^n}{\tau}
+\]</div>
+<div class="math">\[
+\mathcal{L}_{\mathrm{cl}} = -\frac{\lambda_{\mathrm{cl}}}{B} \sum_{m=1}^{B} \log \frac{\exp(\mathbf{S}_{m,m})}{\sum_{n=1}^{B} \mathbb{I}[M_{m,n}=1] \exp(\mathbf{S}_{m,n})}
+\]</div>
+<p>где \(M_{m,n} = 0\), когда \(n \neq m\) и item'ы \(\mathbf{e}_t^n\) и \(\mathbf{e}_t^m\) являются одним и тем же item'ом (false-negative masking).</p>
+
+<h2>6. Метод QuaSID: HaMR и CVPM</h2>
+<h3>6.1. Conflict-Aware Valid Pair Masking (CVPM)</h3>
+<p>В mini-batch'е из \(2B\) instances (triggers и targets) формируется маска валидных пар, которая исключает две категории: collaborative positives (trigger и его target) и дубликаты одного item'а:</p>
+<div class="math">\[
+\mathbf{M}_{ij}^{i2i} = \begin{cases} 0 & \text{если } (i \leq B \wedge j = i+B) \lor (j \leq B \wedge i = j+B) \\ 1 & \text{иначе} \end{cases}
+\]</div>
+<div class="math">\[
+\mathbf{M}_{ij}^{item} = \mathbb{I}[\text{id}(i) \neq \text{id}(j)]
+\]</div>
+<div class="math">\[
+\mathbf{M} = \mathbf{M}^{i2i} \odot \mathbf{M}^{item}
+\]</div>
+<p>Без CVPM модель могла бы отталкивать item от самого себя или от своего collaborative partner, что создавало бы разрушительный противоречивый сигнал.</p>
+
+<h3>6.2. Hamming-guided Margin Repulsion (HaMR)</h3>
+<p>Для всех валидных пар вычисляется Hamming-расстояние между SID:</p>
+<div class="math">\[
+\mathbf{H}_{ij} = d_H(i, j) = \sum_{l=1}^{L} \mathbb{I}[s_i^{(l)} \neq s_j^{(l)}]
+\]</div>
+<p>и cosine distance:</p>
+<div class="math">\[
+\mathbf{D}_{ij} = 1 - \mathbf{e}_i^\top \mathbf{e}_j
+\]</div>
+<p>Пары разделяются на множества полных и частичных коллизий:</p>
+<div class="math">\[
+\Omega_{\mathrm{full}} = \{(i,j) \mid \mathbf{H}_{ij} = 0 \wedge \mathbf{M}_{ij} = 1\}
+\]</div>
+<div class="math">\[
+\Omega_{\mathrm{partial}} = \{(i,j) \mid 0 < \mathbf{H}_{ij} \leq R \wedge \mathbf{M}_{ij} = 1\}
+\]</div>
+<p>где \(R\) - гиперпараметр Hamming-радиуса. Hinge loss для каждого типа:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{full}}(i,j) = \max(0, m_{\mathrm{full}} - \mathbf{D}_{ij}), \quad
+\mathcal{L}_{\mathrm{partial}}(i,j) = \max(0, m_{\mathrm{partial}} - \mathbf{D}_{ij})
+\]</div>
+<p>с \(m_{\mathrm{full}} \geq m_{\mathrm{partial}}\), что обеспечивает более сильное давление на полные коллизии. Итоговый HaMR loss:</p>
+<div class="math">\[
+\mathcal{L}_{\mathrm{HaMR}} = \frac{\lambda_{\mathrm{full}}}{|\Omega_{\mathrm{full}}| + \varepsilon} \sum_{(i,j) \in \Omega_{\mathrm{full}}} \mathcal{L}_{\mathrm{full}}(i,j) + \frac{\lambda_{\mathrm{partial}}}{|\Omega_{\mathrm{partial}}| + \varepsilon} \sum_{(i,j) \in \Omega_{\mathrm{partial}}} \mathcal{L}_{\mathrm{partial}}(i,j)
+\]</div>
+
+<h3>6.3. Общий training objective</h3>
+<div class="math">\[
+\mathcal{L} = \mathcal{L}_{\mathrm{rec}} + \mathcal{L}_{\mathrm{rq}} + \mathcal{L}_{\mathrm{HaMR}} + \mathcal{L}_{\mathrm{cl}}
+\]</div>
+<p>Все компоненты обучаются end-to-end, дискретные назначения оптимизируются через straight-through estimator (STE).</p>
+
+<h2>7. Рисунки и архитектурная схема</h2>
+<p>Figure 1 статьи иллюстрирует pipeline обучения SID: мультимодальные признаки кодируются и квантуются в дискретные SID, которые служат унифицированным интерфейсом для традиционной и генеративной рекомендации. Рисунок также показывает две проблемы: коллизии токенов, вызывающие semantic entanglement, и гетерогенность overlap-сигналов (вредные vs. допустимые).</p>
+<p>Figure 2 показывает общую архитектуру QuaSID: shared encoder, residual vector quantizer, decoder, модуль collaborative dual-tower contrastive alignment и HaMR с CVPM. Ключевой аспект: HaMR оперирует на уровне пар внутри batch'а, а CVPM предварительно фильтрует пары, которые не должны получать repulsion.</p>
+<p>Figure 3 демонстрирует два реальных примера коллизий из промышленного SID-обучения: (a) partial collision с совпадением 2 из 4 токенов между item'ами; (b) полная коллизия с идентичными 4-токенными SID у семантически далеких item'ов. Это мотивирует дифференцированный подход.</p>
+<p>Figure 4 показывает deployment pipeline QuaSID: offline periodic training, inference service для генерации SID, интеграция в retrieval (conventional + generative) и ranking stages.</p>
+
+<h2>8. Эксперименты: setup</h2>
+<h3>8.1. Датасеты</h3>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Scale</td><td>industrial recommendation at Kuaishou</td></tr>
-<tr><td>Input</td><td>multimodal item features</td></tr>
-<tr><td>Problem</td><td>compact SID space creates collisions</td></tr>
+<tr><th>Датасет</th><th>#Users</th><th>#Items</th><th>#Interactions</th></tr>
+<tr><td>Amazon-Beauty</td><td>22,363</td><td>12,101</td><td>1,048,296</td></tr>
+<tr><td>Amazon-Toys</td><td>19,412</td><td>11,924</td><td>905,253</td></tr>
 </table>
-<h2>проблема</h2>
-<p>Uniformly repelling every collision wastes capacity on benign collisions and may underweight truly harmful semantic entanglement.</p>
-<p>Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.</p>
-<ul>
-<li>Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.</li>
-<li>Collisions или near-collisions ухудшают exact item retrieval.</li>
-<li>Long-tail items получают слабый сигнал и нестабильные IDs.</li>
-<li>Beam search может генерировать invalid или duplicate identifiers.</li>
-<li>Offline lift может не перенестись в production из-за drift, catalog churn и constraints.</li>
-</ul>
-<h2>метод/архитектура</h2>
-<p>Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.</p>
-<p>Архитектурная идея раскрывается через следующие элементы.</p>
-<ul>
-<li>Collision qualification module.</li>
-<li>Severity-aware weighting.</li>
-<li>Selective contrastive/repulsive SID learning.</li>
-<li>Framework around multimodal item features.</li>
-<li>Deployment pipeline for SID usage.</li>
-</ul>
-<h2>objective/алгоритм</h2>
-<p>Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.</p>
-<p>Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.</p>
-<ul>
-<li>Base tokenization/recommendation loss.</li>
-<li>Qualified conflict pair repulsion.</li>
-<li>Severity-weighted contrastive term.</li>
-<li>Partial/full weighting variants in ablation.</li>
-<li>Collision metrics alongside recommendation metrics.</li>
-</ul>
-<h2>эксперименты</h2>
-<p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
-<p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
+<p>Публичные датасеты Amazon 2018 review с 5-core фильтрацией. Текстовые поля: Title, Brand, Categories, Price. Эмбеддинги item'ов извлечены через Sentence-T5-XXL. Промышленный датасет Kuaishou использует мультимодальные эмбеддинги из multimodal LLM.</p>
+
+<h3>8.2. Implementation details</h3>
+<p>Backbone: TIGER для всех методов. Optimizer: Adam, lr = \(3 \times 10^{-4}\), weight decay = \(10^{-5}\). Batch size: 256 (offline), 1024 (online). Transformer: 8 layers, 8 heads, embedding dim 128, MLP hidden 512. Codebooks: \(L=3, K=256\) (offline), \(L=4, K=1024\) (промышленный). Результаты усреднены по 5 random seeds.</p>
+<p>Гиперпараметры QuaSID: \(R=1\) (offline), \(R=2\) (online); \(m_{\mathrm{full}}=0.8\), \(m_{\mathrm{partial}}=0.5\); \(\lambda_{\mathrm{cl}} \in [0.01, 0.5]\), \(\lambda_{\mathrm{full}} \in [0.05, 0.8]\), \(\lambda_{\mathrm{partial}} \in [0.01, 0.8]\).</p>
+
+<h3>8.3. Baselines</h3>
+<p>Сравнение с 7 baseline-tokenizer'ами: RQ-VAE, GRVQ (grouped residual VQ), Improved VQGAN, RQ-VAE-Rotation, SimRQ, RQ-OPQ и RQ-Kmeans (two-stage collaborative approach).</p>
+
+<h2>9. Результаты экспериментов</h2>
+<h3>9.1. Overall performance</h3>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>industrial-scale Kuaishou settings plus offline analyses</td></tr>
-<tr><td>Figures</td><td>collision case, framework, deployment</td></tr>
-<tr><td>Ablations</td><td>partial_weight, full_weight, cl_weight variants visible in source assets</td></tr>
-<tr><td>Metrics</td><td>recommendation quality and collision quality</td></tr>
-<tr><td>Core claim</td><td>qualified collisions improve large-scale SID learning</td></tr>
+<tr><th>Tokenizer</th><th>Beauty HR@5</th><th>Beauty HR@10</th><th>Beauty NDCG@5</th><th>Beauty NDCG@10</th><th>Beauty Entropy</th></tr>
+<tr><td>RQ-VAE</td><td>0.0225</td><td>0.0300</td><td>0.0171</td><td>0.0195</td><td>9.3075</td></tr>
+<tr><td>Improved VQGAN</td><td>0.0232</td><td>0.0304</td><td>0.0167</td><td>0.0189</td><td>9.3569</td></tr>
+<tr><td>GRVQ</td><td>0.0222</td><td>0.0302</td><td>0.0161</td><td>0.0187</td><td>9.2755</td></tr>
+<tr><td>RQ-OPQ</td><td>0.0205</td><td>0.0271</td><td>0.0159</td><td>0.0180</td><td>9.3368</td></tr>
+<tr><td>RQ-VAE-Rotation</td><td>0.0236</td><td>0.0308</td><td>0.0175</td><td>0.0198</td><td>9.3455</td></tr>
+<tr><td>RQ-Kmeans</td><td>0.0254</td><td>0.0379</td><td>0.0171</td><td>0.0211</td><td>9.3793</td></tr>
+<tr><td><strong>QuaSID</strong></td><td><strong>0.0277</strong></td><td><strong>0.0392</strong></td><td><strong>0.0193</strong></td><td><strong>0.0230</strong></td><td><strong>9.3901</strong></td></tr>
 </table>
-<h2>рисунки/таблицы</h2>
-<p>Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.</p>
-<p>Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.</p>
-<ul>
-<li>Collision case figure: not all collisions are equal.</li>
-<li>Framework figure: qualification plus severity weighting.</li>
-<li>Deployment figure: production SID pipeline.</li>
-<li>Weighting plots: partial/full/contrastive weight behavior.</li>
-<li>Result tables: offline/industrial effectiveness.</li>
-</ul>
-<h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
-<p>Ниже — основные инженерные плюсы.</p>
-<ul>
-<li>Production-realistic collision framing.</li>
-<li>Avoids over-penalizing semantically close items.</li>
-<li>Adds diagnostics beyond collision count.</li>
-<li>Compatible with multimodal SID pipelines.</li>
-<li>Useful for billion-scale catalogs where no-collision is unrealistic.</li>
-</ul>
-<h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
-<p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
-<ul>
-<li>Qualification signal may be platform-specific.</li>
-<li>Wrong severity labels can harm representation.</li>
-<li>Future arXiv paper needs independent reproduction.</li>
-<li>More complex pair sampling and training pipeline.</li>
-<li>Requires detailed collision audit infrastructure.</li>
-</ul>
-<h2>как реализовать/проверять</h2>
-<p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>
-<p>Ниже — минимальный набор проверок перед доверием к результату.</p>
-<ul>
-<li>Compute exact SID collisions and prefix collisions.</li>
-<li>Label collision groups by semantic distance and downstream error.</li>
-<li>Sample conflict pairs rather than all collision pairs.</li>
-<li>Tune repulsion weights by severity.</li>
-<li>Check benign collision preservation.</li>
-<li>Track SID churn and serving compatibility.</li>
-</ul>
-<h2>связь</h2>
-<p>Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.</p>
-<p>QuaSID complements ASI++: ASI++ balances assignment distribution, while QuaSID asks which collisions are actually bad.</p>
 <table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
-<tr><td>ETEGRec</td><td>end-to-end alignment tokenizer/recommender</td></tr>
-<tr><td>MTGRec</td><td>multiple identifiers as pretraining augmentation</td></tr>
-<tr><td>MoC/LAMIA</td><td>parallel/multi-aspect semantic representation</td></tr>
-<tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
+<tr><th>Tokenizer</th><th>Toys HR@5</th><th>Toys HR@10</th><th>Toys NDCG@5</th><th>Toys NDCG@10</th><th>Toys Entropy</th></tr>
+<tr><td>RQ-VAE</td><td>0.0206</td><td>0.0256</td><td>0.0164</td><td>0.0180</td><td>9.3068</td></tr>
+<tr><td>RQ-OPQ</td><td>0.0228</td><td>0.0278</td><td>0.0179</td><td>0.0195</td><td>9.3521</td></tr>
+<tr><td>RQ-Kmeans</td><td>0.0260</td><td>0.0347</td><td>0.0190</td><td>0.0213</td><td>9.3460</td></tr>
+<tr><td><strong>QuaSID</strong></td><td><strong>0.0266</strong></td><td><strong>0.0366</strong></td><td><strong>0.0193</strong></td><td><strong>0.0225</strong></td><td><strong>9.3794</strong></td></tr>
 </table>
-<h2>итог</h2>
-<p>QuaSID is a mature industrial take: at scale, the goal is not zero collisions, but qualified collision management.</p>
-<p>Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.</p>
+<p>QuaSID улучшает top-K ranking quality в среднем на 5.9% над лучшим baseline'ом. Все улучшения статистически значимы (\(p &lt; 0.05\)). Корреляция между entropy SID и ranking quality: Pearson \(r \approx 0.65\), Spearman \(\rho \approx 0.72\), но entropy сама по себе не является достаточным предиктором.</p>
+
+<h3>9.2. Plug-and-play анализ HaMR</h3>
+<p>HaMR добавляется как дополнительный loss к существующим tokenizer'ам. Результат: NDCG@10 растет до +15.3% на Beauty и до +20.1% на Toys. Например, для Improved VQGAN на Toys добавление HaMR поднимает HR@5 с 0.0196 до 0.0239 (+21.8%), NDCG@10 с 0.0172 до 0.0207 (+20.1%). Для RQ-VAE на Toys: HR@5 с 0.0206 до 0.0239 (+16.0%), NDCG@10 с 0.0180 до 0.0203 (+12.8%). Это демонстрирует, что HaMR является plug-and-play компонентом, совместимым с широким спектром tokenization методов.</p>
+
+<h3>9.3. Online A/B-тест (Kuaishou e-commerce)</h3>
+<table>
+<tr><th>Setting</th><th>Completed Orders</th><th>GMV-S1</th><th>GMV-S2</th></tr>
+<tr><td>Generative Retrieval</td><td>+0.21%</td><td>+1.03%</td><td>+0.55%</td></tr>
+<tr><td>Ranking</td><td>+0.20%</td><td>+1.44%</td><td>+2.38%</td></tr>
+</table>
+<table>
+<tr><th>Setting</th><th>Completed Orders</th><th>GMV</th><th>GPM</th></tr>
+<tr><td>Retrieval</td><td>+1.09%</td><td>+1.69%</td><td>+3.25%</td></tr>
+<tr><td>Retrieval 100vv (cold-start)</td><td>+6.42%</td><td>+4.67%</td><td>+0.21%</td></tr>
+<tr><td>Retrieval 600vv (cold-start)</td><td>+4.69%</td><td>+3.11%</td><td>+0.53%</td></tr>
+<tr><td>Ranking 100vv</td><td>+1.77%</td><td>+4.10%</td><td>+2.99%</td></tr>
+<tr><td>Ranking 600vv</td><td>+2.64%</td><td>+3.88%</td><td>+2.78%</td></tr>
+</table>
+<p>Тест на 5% traffic (более 20M пользователей), 5 дней, все результаты статистически значимы. Особенно впечатляет результат для cold-start видео с менее 100 просмотрами: +6.42% завершенных заказов в retrieval. Это подтверждает, что qualified collision handling особенно полезен для long-tail и новых item'ов.</p>
+
+<h2>10. Ablation study</h2>
+<table>
+<tr><th>Вариант</th><th>Beauty HR@5</th><th>Beauty NDCG@5</th><th>Toys HR@5</th><th>Toys NDCG@5</th></tr>
+<tr><td>QuaSID (full)</td><td>0.0277</td><td>0.0193</td><td>0.0266</td><td>0.0193</td></tr>
+<tr><td>w/o CVPM</td><td>0.0263</td><td>0.0181</td><td>0.0264</td><td>0.0190</td></tr>
+<tr><td>w/o HaMR</td><td>0.0254</td><td>0.0170</td><td>0.0261</td><td>0.0189</td></tr>
+</table>
+<p>Удаление CVPM дает заметное падение на Beauty (NDCG@5: 0.0193 до 0.0181), подтверждая, что правильная фильтрация пар критична. Удаление HaMR приводит к деградации до уровня сильных baseline'ов. На Toys эффект CVPM слабее, что может быть связано с различной структурой collaborative графа.</p>
+
+<h2>11. Анализ чувствительности гиперпараметров</h2>
+<p>Figure 5 анализирует чувствительность на Beauty по трем параметрам:</p>
+<p>\(\lambda_{\mathrm{cl}}\) тестируется в \(\{0.01, 0.05, 0.1, 0.2, 0.5\}\). Пик при \(\lambda_{\mathrm{cl}} \approx 0.1\). При \(\lambda_{\mathrm{cl}} = 0.5\) качество деградирует, так как слишком сильный contrastive force конфликтует с дискретизацией.</p>
+<p>\(\lambda_{\mathrm{full}}\): лучший результат при 0.2. Меньшие значения недостаточно штрафуют полные коллизии, большие искажают representation space.</p>
+<p>\(\lambda_{\mathrm{partial}}\): качество растет от 0.01 до 0.1, затем при 0.5 и 0.8 HR и NDCG снижаются (over-penalizing семантически связанных item'ов, разделяющих часть токенов).</p>
+
+<h2>12. Deployment pipeline</h2>
+<p>QuaSID развернут на рекомендательной платформе Kuaishou. Pipeline включает: (1) offline periodic training с частотой, определяемой скоростью поступления trigger-target пар; (2) inference service, который проецирует item ID в SID; (3) применение SID в двух контекстах. В retrieval SID используется как для conventional retrieval, так и для generative retrieval. В ranking SID порождает cross features и matching side features как легковесные семантические сигналы.</p>
+
+<h2>12.1. Пошаговый алгоритм QuaSID</h2>
+<ol>
+<li><strong>Подготовить multimodal item features.</strong> Видео/товары кодируются encoder'ом \(f_\theta\) в latent \(\mathbf{z}_i\).</li>
+<li><strong>Сделать residual quantization.</strong> Для каждого уровня \(l\) выбирается ближайший codeword, residual обновляется, а SID получает token \(s_i^{(l)}\).</li>
+<li><strong>Построить collaborative pairs.</strong> Swing algorithm дает trigger-target пары \(\mathcal P\), которые должны быть близкими в contrastive alignment.</li>
+<li><strong>Сформировать CVPM mask.</strong> Из batch pair matrix исключаются дубликаты одного item'а и collaborative positives, чтобы модель не отталкивала допустимые совпадения.</li>
+<li><strong>Посчитать Hamming collision severity.</strong> Для валидных пар считается \(d_H\): full collisions имеют \(H=0\), partial collisions попадают в радиус \(0 &lt; H \le R\).</li>
+<li><strong>Применить HaMR.</strong> Full collisions получают больший margin \(m_{\mathrm{full}}\), partial collisions - меньший \(m_{\mathrm{partial}}\), поэтому harmful ambiguity штрафуется сильнее, чем допустимое shared prefix.</li>
+<li><strong>Сложить losses.</strong> Общий objective объединяет reconstruction, RQ loss, collaborative contrastive loss и HaMR.</li>
+<li><strong>Экспортировать SID.</strong> Offline service периодически пересчитывает item -> SID; retrieval и ranking используют коды как generative targets или cross/matching features.</li>
+</ol>
+<pre><code>for batch of trigger-target item pairs:
+    z = encoder(multimodal_features)
+    sid, quantized = residual_quantizer(z)
+    reconstruction = decoder(quantized)
+
+    M = CVPM_mask(batch)  # remove duplicates and collaborative positives
+    H = hamming_distance_matrix(sid)
+    D = cosine_distance_matrix(item_embeddings)
+
+    full_pairs = {(i,j): H[i,j] == 0 and M[i,j] == 1}
+    partial_pairs = {(i,j): 0 &lt; H[i,j] &lt;= R and M[i,j] == 1}
+    loss = L_rec + L_rq + L_cl + HaMR(full_pairs, partial_pairs, D)
+    update encoder, codebooks and decoder</code></pre>
+
+<h2>13. Сильные стороны</h2>
 <ul>
-<li>Хороший кандидат для controlled offline reproduction.</li>
-<li>Требует versioned SID/token maps при production использовании.</li>
-<li>Нужны ablations по каждому заявленному компоненту.</li>
-<li>Нужно проверять head/tail и cold-start отдельно.</li>
-<li>Нужно явно считать training и inference cost.</li>
+<li><strong>Collision handling формулируется квалификационно.</strong> QuaSID не требует невозможного zero-collision на промышленном масштабе, а управляет качеством collisions.</li>
+<li><strong>HaMR plug-and-play.</strong> Его можно добавить к gradient-based SID tokenizer'ам; на нескольких baseline'ах NDCG@10 растет на 5-15%.</li>
+<li><strong>CVPM убирает разрушительные false negatives.</strong> Дубликаты и collaborative positives не получают repulsion, поэтому contrastive signal не противоречит recommender signal.</li>
+<li><strong>Есть промышленный A/B.</strong> Kuaishou тестирует retrieval/ranking, completed orders, GMV и GPM, а не только offline HR/NDCG.</li>
+<li><strong>Сильный cold-start результат.</strong> Для видео с менее 100 просмотрами retrieval дает +6.42% completed orders, что соответствует заявленной пользе semantic sharing.</li>
 </ul>
+
+<h2>14. Ограничения и спорные моменты</h2>
+<ul>
+<li><strong>CVPM зависит от качества Swing pairs.</strong> Шумные или platform-specific collaborative positives могут неправильно объявить collision допустимой.</li>
+<li><strong>Фиксированные margins грубоваты.</strong> \(m_{\mathrm{full}}\) и \(m_{\mathrm{partial}}\) не учитывают локальную плотность token space; adaptive margins могли бы быть устойчивее.</li>
+<li><strong>Промышленная воспроизводимость закрыта.</strong> Kuaishou data и production pipeline недоступны, а public Amazon absolute metrics низкие.</li>
+<li><strong>Pairwise HaMR cost может расти.</strong> Hamming/cosine distances по всем batch pairs дороги при большом batch size.</li>
+<li><strong>Temporal dynamics не раскрыты.</strong> Неясно, как часто пересчитывать collision statistics и обновлять SID при drift.</li>
+<li><strong>Entropy не является надежным proxy.</strong> Корреляция есть, но SimRQ показывает, что high entropy не гарантирует лучший NDCG.</li>
+</ul>
+
+<h2>15. Практические рекомендации</h2>
+<p>Для реализации QuaSID стоит начать с сильного RQ-VAE baseline и добавить HaMR как isolated intervention. Необходимо логировать collision statistics не только на уровне полного SID, но и на уровне prefix'ов, так как partial collisions в ранних токенах могут иметь больший downstream impact. Рекомендуется вести мониторинг entropy SID, distribution collision load по codebook regions и head/tail Recall отдельно. Для ranking production важно тестировать AUC на head/tail сегментах и отслеживать latency tokenizer refresh.</p>
+
+<h2>16. Связь с другими работами</h2>
+<p>QuaSID дополняет AdaSID: AdaSID адаптивно балансирует collision regulation по ходу обучения, а QuaSID квалифицирует коллизии по их серьезности. Оба метода развивают идею, что не все коллизии одинаково вредны, но подходят с разных сторон: QuaSID фокусируется на severity-aware margin, AdaSID на temporal и load-adaptive pressure.</p>
+<p>С CoST QuaSID связан через contrastive alignment: оба используют contrastive objective для улучшения token space, но CoST заменяет reconstruction loss, а QuaSID добавляет collision-aware loss поверх стандартного pipeline. С TIGER QuaSID связан как улучшение tokenization phase, оставляя generation phase неизменной.</p>
+
+<h2>17. Итоговая оценка</h2>
+<p>QuaSID представляет зрелый промышленный подход к semantic ID learning. Его ключевой урок: при промышленном масштабе цель не zero collisions, а qualified collision management. HaMR как plug-and-play loss дает реальный инструмент, который можно встроить в существующий tokenization pipeline. Промышленная валидация на Kuaishou с ростом GMV и особенно сильными результатами для cold-start видео делает эту работу одним из наиболее практически значимых вкладов в область semantic IDs для рекомендаций.</p>
 </main>
 </body>
 </html>

@@ -84,6 +84,31 @@ th { background: var(--soft); text-align: left; }
 <li>Independent codebooks increase representational rank/capacity.</li>
 <li>Fusion module learns how much each code contributes.</li>
 </ul>
+<h2>Детальный алгоритм MoC</h2>
+<p>MoC решает не задачу генерации одного SID sequence, а задачу сохранения большой LLM semantic capacity в компактных recommender embeddings. Один item получает несколько независимых codes, а downstream модель учится смешивать их как multiple aspects item semantics.</p>
+<ol>
+<li><strong>Получить high-dimensional LLM embeddings.</strong> Исходный item representation может иметь 4096-16384 dimensions, что слишком дорого для прямого использования в recommender embedding table.</li>
+<li><strong>Обучить Multi-Codebooks VQ-VAE.</strong> Вместо одного bottleneck используются несколько независимых codebooks. Каждый codebook квантует свой aspect/partition latent representation.</li>
+<li><strong>Назначить несколько codes каждому item.</strong> Item representation становится набором discrete codes, по одному из каждого codebook. Это повышает representational capacity без хранения полного LLM vector online.</li>
+<li><strong>Экспортировать code embeddings.</strong> Downstream recommender хранит embedding tables для codes, а не огромные dense item embeddings.</li>
+<li><strong>Смешать codes через Mixture-of-Codes.</strong> Fusion module (sum/attention/MLP-style) учится, какой codebook важнее для конкретной recommendation task.</li>
+<li><strong>Обучить downstream recommender.</strong> Recommendation loss оптимизирует fusion и model weights end-to-end, но indexing stage уже задал capacity.</li>
+<li><strong>Диагностировать масштабируемость.</strong> Помимо Recall/NDCG проверяются discriminability, robustness к малым dimensions, occupancy и redundancy между codebooks.</li>
+</ol>
+<pre><code>for item in catalog:
+    x[item] = LLM_encoder(item.content)  # high-dimensional vector
+
+multi_codes = train_multi_codebook_VQVAE(x, num_codebooks=C)
+for item in catalog:
+    codes[item] = [quantize_c(x[item], codebook_c) for c in range(C)]
+
+for interaction in logs:
+    code_vectors = [embedding_table[c][codes[item][c]] for c in range(C)]
+    item_repr = mixture_of_codes(code_vectors)
+    score = recommender(user_repr, item_repr)
+    update(recommendation_loss(score, label))
+
+monitor occupancy_per_codebook, redundancy_between_codebooks, Recall/NDCG</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,24 +131,22 @@ th { background: var(--soft); text-align: left; }
 <li>Discriminability comparisons.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Addresses capacity bottleneck explicitly.</li>
-<li>Separates indexing and downstream fusion cleanly.</li>
-<li>Works with small recommender embedding dimensions.</li>
-<li>Provides diagnostics beyond Recall/NDCG.</li>
-<li>Relevant to industrial memory constraints.</li>
+<li><strong>Явно формулирует capacity bottleneck.</strong> Работа показывает, что single semantic embedding/code быстро насыщается при сжатии LLM semantics.</li>
+<li><strong>Чисто разделяет indexing и fusion.</strong> Multi-Codebooks VQ-VAE отвечает за representation capacity, Mixture-of-Codes - за downstream usage.</li>
+<li><strong>Практична для малых embedding dimensions.</strong> Метод рассчитан на recommender ограничения памяти, а не на полный online LLM embedding.</li>
+<li><strong>Есть диагностики вне Recall/NDCG.</strong> Discriminability и dimension robustness помогают понять, сохраняет ли MoC структуру LLM space.</li>
+<li><strong>Можно менять fusion независимо.</strong> Sum, attention или MLP fusion можно тестировать без переобучения всего item encoder-а.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Independent codebooks may duplicate information.</li>
-<li>Not automatically an autoregressive SID decoder.</li>
-<li>More code lookups increase memory and latency.</li>
-<li>Requires high-quality LLM embeddings upfront.</li>
-<li>Disentanglement is not guaranteed.</li>
+<li><strong>Independent codebooks могут дублировать информацию.</strong> Без redundancy regularization несколько codebooks могут выучить почти один и тот же aspect.</li>
+<li><strong>Это не готовый autoregressive SID language.</strong> Несколько параллельных codes удобны для representation layer, но не обязательно для sequential token decoding.</li>
+<li><strong>Lookup cost растет с числом codebooks.</strong> Память меньше, чем у LLM vectors, но больше, чем у одного ID embedding.</li>
+<li><strong>Качество завязано на upstream LLM embeddings.</strong> Если LLM space плохо отражает collaborative relevance, MoC сохранит не тот signal.</li>
+<li><strong>Disentanglement не гарантирован.</strong> Нельзя автоматически считать codebooks "аспектами" без occupancy/redundancy analysis.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Matching to Generation: A Survey on Generative Information Retrieval</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
+.nav a { color: var(--link); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2404.14851">From Matching to Generation: A Survey on Generative Information Retrieval</a></h1>
+<p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Xiaoxi Li, Jiajie Jin, Yujia Zhou, Yuyao Zhang, Peitian Zhang, Yutao Zhu, Zhicheng Dou.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Renmin University of China (RUC)</span>; <span class="industry">Tsinghua University</span>.</p>
+<p><strong>Публикация:</strong> ACM Transactions on Information Systems (TOIS), 2025.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>Лучший на сегодня систематический обзор всего направления <strong>generative information retrieval (GenIR)</strong>. Охватывает два главных направления:</p>
+<ul>
+  <li><strong>Generative Document Retrieval (GDR)</strong> — модель параметрически запоминает документы и генерирует их DocID в ответ на запрос. Сюда относятся DSI, GENRE, SEAL, NCI, Ultron, TIGER, LETTER и десятки других работ.</li>
+  <li><strong>Reliable Response Generation</strong> — модель генерирует ответ напрямую, опираясь на внутренние знания или внешние источники. Сюда относятся RAG, системы с цитированием источников, персональные ассистенты.</li>
+</ul>
+<p>Обзор опубликован в TOIS 2025, охватывает более 150 работ и сопровождается <a href="https://github.com/RUC-NLPIR/GenIR-Survey">официальным GitHub-репозиторием</a> с актуальным reading list.</p>
+
+<h2>2. Контекст</h2>
+<p>До 2022 года dominance в information retrieval принадлежала двум парадигмам: sparse retrieval (BM25, TF-IDF) и dense retrieval (dual encoders, ColBERT). Generative retrieval, начавшееся с DSI (2022) и GENRE (2021), предложило третью парадигму, быстро выросшую в самостоятельное направление с сотнями работ. К моменту публикации обзора стало очевидно, что GenIR делится на качественно разные ветки, требующие раздельного рассмотрения. Более ранние обзоры (Survey of GIR, 2024) охватывали только часть пространства; данный обзор — первый, систематически покрывающий все ветки включая рекомендательные системы.</p>
+
+<h2>3. Ключевые компоненты</h2>
+
+<h3>3.1. Generative Document Retrieval (GDR)</h3>
+<p>Авторы структурируют GDR по нескольким ортогональным осям:</p>
+<ul>
+  <li><strong>DocID Design:</strong>
+    <ul>
+      <li><em>Atomic IDs</em> — случайные числа (DSI baseline). Простейший вариант, плохо масштабируется.</li>
+      <li><em>Hierarchical IDs</em> — иерархическая кластеризация (DSI semantically structured, NCI, Ultron). Модель может использовать префиксы как «грубый адрес».</li>
+      <li><em>N-gram / Substring IDs</em> — фрагменты самих документов (SEAL, GENRE). Максимальная семантическая насыщенность.</li>
+      <li><em>Semantic IDs (quantization-based)</em> — коды из RQ-VAE или аналогов (TIGER, LETTER, DSI++). Компромисс между компактностью и семантикой.</li>
+    </ul>
+  </li>
+  <li><strong>Training strategies:</strong> indexing task vs retrieval task, совместное обучение, различные виды augmentation.</li>
+  <li><strong>Constrained Decoding:</strong> trie (GENRE, DSI), FM-Index (SEAL), vectorized trie для ускорения инференса.</li>
+  <li><strong>Incremental Learning:</strong> проблема добавления новых документов без полного переобучения — DSI++, IncDSI, подходы на основе continual learning.</li>
+  <li><strong>Downstream Task Adaptation:</strong> перенос GDR на knowledge-intensive NLP, open-domain QA, entity linking.</li>
+  <li><strong>Multimodal GR:</strong> документы с изображениями, аудио, видео — ранние работы по generative retrieval для мультимодальных корпусов.</li>
+</ul>
+
+<h3>3.2. Generative Recommendation</h3>
+<p>Обзор отдельно рассматривает применение GDR к рекомендательным системам: TIGER (первая промышленная система generative recommendation с semantic IDs), LETTER (learnable tokenization), семейство работ по дизайну semantic item IDs. Авторы показывают, что задача рекомендаций отличается от document retrieval: items не имеют текстового содержания в явном виде, history-conditioned generation сложнее, а corpus динамичен (новые items появляются постоянно).</p>
+
+<h3>3.3. Reliable Response Generation</h3>
+<p>Вторая половина обзора покрывает:</p>
+<ul>
+  <li><strong>Internal Knowledge Memorization:</strong> как LLM «запоминают» факты и когда это надёжно.</li>
+  <li><strong>Retrieval-Augmented Generation (RAG):</strong> таксономия RAG-систем, анализ trade-off между параметрической памятью и внешним retrieval.</li>
+  <li><strong>Response with Citations:</strong> системы, генерирующие ответы с явными ссылками на источники — верификация и grounding.</li>
+  <li><strong>Personal Information Assistant:</strong> персонализированные системы, использующие пользовательский контекст.</li>
+</ul>
+
+<h3>3.4. Evaluation</h3>
+<p>Авторы систематизируют evaluation benchmarks по каждому направлению:</p>
+<table>
+<thead><tr><th>Направление</th><th>Основные датасеты</th><th>Метрики</th></tr></thead>
+<tbody>
+<tr><td>Document Retrieval</td><td>NQ, MS MARCO, KILT, TriviaQA, FEVER</td><td>Recall@K, MRR, NDCG</td></tr>
+<tr><td>Generative Recommendation</td><td>Amazon Reviews, MovieLens, Yelp</td><td>Recall@K, NDCG@K, Hit Rate</td></tr>
+<tr><td>RAG / Response Generation</td><td>NQ, TriviaQA, WebQ, PopQA</td><td>EM, F1, Faithfulness</td></tr>
+</tbody>
+</table>
+
+<h2>4. Эксперименты / Coverage</h2>
+<p>Обзор не содержит собственных экспериментов, но систематически сопоставляет результаты из более чем 150 работ. Ключевые выводы авторов:</p>
+<ul>
+  <li>Semantic / hierarchical DocID стабильно превосходят atomic IDs на всех масштабах корпуса.</li>
+  <li>Constrained decoding обязателен для практического использования GR — без него качество падает драматически из-за галлюцинаций.</li>
+  <li>Проблема динамических корпусов (incremental learning) остаётся открытой: ни одно из текущих решений не обеспечивает zero-cost добавления новых документов.</li>
+  <li>GR для рекомендаций находится в активной фазе развития: большинство работ датируются 2023–2024 годами.</li>
+</ul>
+
+<h2>5. Сильные стороны</h2>
+<ul>
+  <li><strong>Самый полный охват на 2025 год.</strong> Единственный обзор, систематически покрывающий GDR, GenRec и Response Generation в единой таксономии.</li>
+  <li><strong>Чёткая таксономия DocID Design.</strong> Классификация типов идентификаторов — один из самых ценных вкладов: позволяет быстро ориентироваться в литературе.</li>
+  <li><strong>GitHub с living reading list.</strong> Репозиторий <a href="https://github.com/RUC-NLPIR/GenIR-Survey">RUC-NLPIR/GenIR-Survey</a> обновляется авторами — редкое качество для академического обзора.</li>
+  <li><strong>Inclusion рекомендательных систем.</strong> Рассмотрение GenRec как части GenIR, а не как отдельного направления, помогает понять общность underlying principles.</li>
+</ul>
+
+<h2>6. Ограничения</h2>
+<ul>
+  <li><strong>Глубина vs. широта.</strong> При охвате 150+ работ обзор неизбежно поверхностен в деталях: для глубокого понимания конкретного метода нужно читать оригинальную статью.</li>
+  <li><strong>Быстро устаревает.</strong> Поле генеративного IR развивается очень быстро; обзор 2024–2025 года уже может не включать новейшие работы (хотя GitHub частично компенсирует это).</li>
+  <li><strong>Раздел по рекомендациям менее детален.</strong> Глубина анализа GDR значительно превосходит глубину анализа GenRec — специалистам по рекомендательным системам стоит дополнительно читать профильные обзоры (например, обзоры по semantic ID design).</li>
+</ul>
+
+<h2>7. Почему важно прочитать</h2>
+<p>Данный обзор — лучшая точка входа для построения полной карты литературы по generative retrieval. В отличие от более ранних обзоров, он охватывает все ветки направления, включая recommender systems GR, и имеет официальный GitHub с актуальным reading list. Рекомендуется читать <em>после</em> DSI и TIGER — когда уже понятна базовая постановка задачи — чтобы увидеть полную картину: куда развивается направление, какие проблемы остаются открытыми (scalability, incremental learning, identifier design, hallucination) и какие подходы уже апробированы промышленностью. Особенно ценна таксономия DocID Design: она сразу объясняет, почему в литературе так много работ о «семантических идентификаторах» и как они все соотносятся друг с другом.</p>
+
+<p><a href="../../papers.html">&larr; К общему списку статей</a></p>
+</main>
+</body>
+</html>

@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root {
       color-scheme: light;
@@ -86,6 +97,29 @@
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Prompt-to-Slate: Diffusion Models for Prompt-Conditioned Slate Generation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
+<h3>Подробная схема алгоритма</h3>
+<p>DMSG заменяет autoregressive generation of item IDs на denoising в continuous slate space: модель сразу восстанавливает набор embedding'ов будущего slate, а затем округляет их до каталога.</p>
+<ol>
+  <li><strong>Закодировать обучающие slates.</strong> Playlist/bundle превращается в concatenated sequence item embeddings фиксированной длины; prompt кодируется text encoder'ом.</li>
+  <li><strong>Добавить forward noise.</strong> На шаге \(t\) к slate latent добавляется Gaussian noise, создавая зашумленное представление.</li>
+  <li><strong>Обучить denoising transformer.</strong> Модель получает noisy slate, timestep и prompt condition, затем через cross-attention предсказывает noise или clean latent.</li>
+  <li><strong>Сэмплировать на inference.</strong> Стартуя с noise, DDIM/denoising steps постепенно строят slate latent, conditioned on prompt.</li>
+  <li><strong>Округлить к items.</strong> Каждый latent vector маппится к ближайшему item embedding в каталоге; затем применяются post-processing rules против duplicates/invalid candidates.</li>
+  <li><strong>Получить diversity.</strong> Несколько запусков с разным seed для одного prompt дают разные coherent slates, что важно для freshness/exposure.</li>
+</ol>
+<pre><code>train:
+    slate_latent = concatenate(item_embeddings(slate))
+    condition = text_encoder(prompt)
+    noisy, noise = add_gaussian_noise(slate_latent, timestep)
+    predicted = diffusion_transformer(noisy, timestep, condition)
+    minimize denoising_loss(predicted, noise)
+
+inference:
+    latent = random_noise()
+    for t in DDIM_steps:
+        latent = denoise(latent, t, text_encoder(prompt))
+    slate = nearest_neighbor_rounding(latent, catalog_embeddings)
+    postprocess duplicates and invalid items</code></pre>
 <h2>Эксперименты</h2>
 <ul>
   <li>Datasets: Spotify MPD subset 100K playlists и Amazon Bundle 11K items/5,444 bundles.</li>
@@ -111,15 +145,17 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Моделирует slate целиком.</li>
-  <li>Естественно генерирует diverse alternatives.</li>
-  <li>Поддерживает dynamic catalogs через обновление mapping/decoder.</li>
+  <li><strong>Моделирует joint slate distribution.</strong> Метод оптимизирует совместимость item'ов внутри playlist/bundle, а не независимый top-K ranking.</li>
+  <li><strong>Prompt conditioning естественно подходит editorial сценариям.</strong> Natural language prompt может задавать mood/use-case, где пользовательской истории мало или нет.</li>
+  <li><strong>Stochastic generation дает diversity/freshness.</strong> Несколько samples одного prompt создают альтернативные slates без ручного reranking diversity.</li>
+  <li><strong>Continuous latent decouples model from fixed token IDs.</strong> При обновлении каталога можно обновлять nearest-neighbor mapping, не обязательно переобучая decoder с нуля.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Зависит от item embeddings и rounding.</li>
-  <li>Similarity metrics не полностью заменяют user satisfaction.</li>
-  <li>Diffusion steps дают latency trade-off.</li>
+  <li><strong>Качество ограничено item embeddings.</strong> Если embedding space плохо отражает slate compatibility, diffusion будет генерировать гладкие, но нерелевантные vectors.</li>
+  <li><strong>Nearest-neighbor rounding может сломать coherence.</strong> Latent vectors могут быть согласованными до округления, но ближайшие catalog items окажутся duplicates или semantically off.</li>
+  <li><strong>Diffusion latency остается trade-off.</strong> 50 steps на NVIDIA L4 дают P99 150 ms в summary, но другой catalog/encoder может потребовать другой budget.</li>
+  <li><strong>Similarity metrics не равны satisfaction.</strong> NDCGSim/MAPSim/BertScore/CategorySim полезны, но не заменяют пользовательское acceptance, skips и saves.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

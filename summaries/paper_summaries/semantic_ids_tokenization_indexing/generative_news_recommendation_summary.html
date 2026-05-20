@@ -85,6 +85,25 @@
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Generative News Recommendation качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
+<h3>Подробная схема алгоритма</h3>
+<p>GNR - это не только ранжирование новостей: pipeline сначала находит focal/related articles, затем превращает их в персонализированный multi-news narrative.</p>
+<ol>
+  <li><strong>Построить dual-level representations.</strong> Для новости берутся semantic-level embeddings и LLM-generated theme-level descriptions; для пользователя агрегируются истории кликов в тех же пространствах.</li>
+  <li><strong>Обучить ranking model.</strong> На positive clicked news и negative samples оптимизируется log-likelihood, чтобы выбрать focal news под пользователя.</li>
+  <li><strong>Найти related news.</strong> Siamese relation classifier проверяет, какие статьи связаны с focal news, используя contrastive margin loss.</li>
+  <li><strong>Отфильтровать по user interest.</strong> Related candidates не просто добавляются в narrative: они проходят preference filter, чтобы тематическая связность не вытеснила персональную релевантность.</li>
+  <li><strong>Сгенерировать narrative.</strong> LLM получает focal news, отобранные related news и user-interest signal и строит связный personalized story.</li>
+  <li><strong>Сделать UIFT.</strong> Сначала генератор distill'ится от ChatGPT-style outputs, затем донастраивается через interest-aware ranking signal, чтобы narrative был не только fluent, но и полезен пользователю.</li>
+  <li><strong>Оценить два слоя.</strong> Ranking метрики проверяют выбор новостей, generation win-rate/factuality checks - качество narrative.</li>
+</ol>
+<pre><code>encode each news article into semantic and theme features
+encode user history in the same dual-level space
+rank focal news with negative-sampling likelihood
+for each focal news:
+    retrieve related news with Siamese relation classifier
+    filter related news by user preference
+    generate narrative conditioned on focal, related set and user interest
+    tune generator with UIFT interest-aware feedback</code></pre>
 <h2>Эксперименты</h2>
 <ul>
   <li>Experiments evaluate recommendation accuracy and narrative fusion.</li>
@@ -108,15 +127,17 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Addresses generated output, not just item selection.</li>
-  <li>Combines recommendation score and LLM generation.</li>
-  <li>Theme-level representation is natural for news events.</li>
+  <li><strong>Выходом является продуктовая форма, а не только список ID.</strong> Для новостей event-level narrative часто полезнее, чем набор похожих заголовков.</li>
+  <li><strong>Dual-level representation соответствует домену.</strong> Semantic embeddings ловят текстовую близость, theme-level LLM summaries ловят событие и угол подачи.</li>
+  <li><strong>Related-news exploration отделена от personalization.</strong> Это снижает риск собрать тематически связную, но неинтересную конкретному пользователю историю.</li>
+  <li><strong>UIFT выравнивает генерацию с recommender signal.</strong> Генератор не остается generic summarizer'ом, а получает preference-aware feedback.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Hallucination/factuality risk.</li>
-  <li>Evaluation of narratives is expensive and partly subjective.</li>
-  <li>Needs editorial safeguards and source attribution in production.</li>
+  <li><strong>Hallucination/factuality risk выше, чем у обычного ranker.</strong> Модель не только выбирает статьи, но и формулирует narrative; ошибки могут добавить несуществующие связи между событиями.</li>
+  <li><strong>Оценка generation субъективна и дорога.</strong> NDCG/AUC для ranking не доказывают, что итоговый narrative фактически корректен и редакционно приемлем.</li>
+  <li><strong>Source attribution обязателен для production.</strong> Без ссылок на исходные статьи пользователь не сможет проверить, откуда взяты утверждения.</li>
+  <li><strong>Freshness/drift критичны.</strong> News тематика быстро устаревает; theme representations и related-news graph требуют частого обновления.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

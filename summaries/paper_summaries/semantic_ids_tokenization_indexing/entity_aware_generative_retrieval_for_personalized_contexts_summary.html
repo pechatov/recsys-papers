@@ -86,6 +86,30 @@
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Entity-Aware Generative Retrieval for Personalized Contexts качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
+<h3>Подробная схема алгоритма</h3>
+<p>PEARL можно понимать как generative passage retriever, у которого все трудные места персонального поиска вынесены в entity-aware preprocessing и prefix-aware training.</p>
+<ol>
+  <li><strong>Построить passage identifiers.</strong> Каждый персональный документ получает генерируемый ID/path, по которому seq2seq retriever должен найти passage.</li>
+  <li><strong>Разметить entity spans.</strong> Query и passages аннотируются ролями сущностей: person, location, event, time и другими приватными reference types.</li>
+  <li><strong>Собрать diversified contexts.</strong> Для train examples создаются варианты с перестановками или заменами однотипных сущностей, чтобы модель не запоминала одну surface form.</li>
+  <li><strong>Обучить базовую генерацию ID.</strong> Encoder получает entity-annotated query/context, decoder генерирует identifier позитивного passage.</li>
+  <li><strong>Добавить span-level regularization.</strong> Loss не дает модели свести решение к одной строке имени: surrounding context и role должны влиять на retrieval.</li>
+  <li><strong>Выбрать prefix-close negatives.</strong> Похожие paths в identifier trie используются как hard negatives: они структурно близки, но относятся к другой персональной сущности.</li>
+  <li><strong>Оптимизировать contrastive term.</strong> Query representation притягивается к позитивному passage/path и отталкивается от prefix-close negatives.</li>
+  <li><strong>На inference выполнять constrained generation.</strong> Decoder генерирует passage identifier только по валидным prefix paths, затем ID маппится обратно в документ.</li>
+</ol>
+<pre><code>annotate query and passages with entity roles
+for each training query:
+    positive = target passage identifier
+    negatives = passages with close identifier prefixes
+    augmented = diversify_entities(query, passages)
+    optimize generation_loss(query -> positive)
+    optimize span_regularization(entity spans)
+    optimize contrastive_loss(query, positive, negatives)
+
+at inference:
+    generate valid passage identifier under prefix constraints
+    return mapped personalized passage</code></pre>
 <h2>Эксперименты</h2>
 <ul>
   <li>Оценка включает существующий PIR dataset и новый synthetic benchmark PAIR.</li>
@@ -109,15 +133,17 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Работа явно формулирует PIR как задачу разрешения персональных entities, а не как обычный semantic matching.</li>
-  <li>Метод дает понятные рычаги для диагностики: entity spans, prefix negatives, diversified contexts.</li>
-  <li>Подход совместим с любым seq2seq generative retriever, если есть identifier space.</li>
+  <li><strong>Точная постановка PIR.</strong> Метод не притворяется обычным semantic matching: он моделирует private nicknames, family relations, locations и temporal cues как сущности с ролями.</li>
+  <li><strong>Hard negatives берутся из identifier structure.</strong> Prefix-close negatives проверяют именно ту ошибку, которая вредна generative retrieval: почти правильный путь к другому passage.</li>
+  <li><strong>Diversification решает zero-shot surface forms.</strong> Перестановки и замены однотипных entities учат модель не переобучаться на конкретные имена.</li>
+  <li><strong>Механизмы диагностируемы.</strong> Можно отдельно смотреть ошибки annotation, span attention, prefix collisions и вклад diversification.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Полный текст DOI не удалось получить напрямую, поэтому часть деталей недоступна.</li>
-  <li>Синтетический PAIR может не покрывать реальные privacy, sparsity и user-memory drift.</li>
-  <li>Метод зависит от качества entity annotation и от того, насколько корректно entity roles отражают персональный контекст.</li>
+  <li><strong>Детали paper частично недоступны в текущем summary.</strong> Полный ACM PDF не был доступен, поэтому численные гиперпараметры и точная формула loss могут быть неполными.</li>
+  <li><strong>Entity annotation становится критическим dependency.</strong> Ошибка в роли сущности может направить contrastive learning против правильного passage.</li>
+  <li><strong>Synthetic PAIR ограничивает внешнюю валидность.</strong> Реальные персональные данные имеют privacy constraints, sparse histories и memory drift, которые синтетика покрывает не полностью.</li>
+  <li><strong>Identifier prefix сам может создавать bias.</strong> Если passage IDs плохо организованы, prefix negatives будут отражать артефакт индекса, а не реальные трудные случаи.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

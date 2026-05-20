@@ -53,6 +53,35 @@ vs <code>O+I</code>, а также несколько late-fusion стратег
 генерирует next-item SID, а качество измеряется Recall/NDCG. Алгоритмический вклад
 находится до обучения GR: подобрать representation space, в котором tokenization дает более
 полезную дискретизацию. OCR-text выступает как drop-in replacement для text embedding.</p>
+<h2>Детальный алгоритм Text-as-Vision SID</h2>
+<p>Алгоритм полезно читать как controlled replacement experiment: весь TIGER/LETTER-like pipeline фиксируется, а меняется только то, как item text превращается в embedding перед semantic ID learning.</p>
+<ol>
+<li><strong>Подготовить стандартный text baseline.</strong> Для каждого item получить обычный text embedding <code>T</code> из title/description/category fields.</li>
+<li><strong>Отрендерить item text как изображение.</strong> Описание превращается в картинку с фиксированным template: ширина, padding, шрифт, перенос строк и resolution должны быть одинаковыми.</li>
+<li><strong>Получить OCR-text embedding.</strong> Rendered image проходит через OCR/vision-language encoder; результат обозначается <code>O</code>.</li>
+<li><strong>Собрать modality variants.</strong> Unimodal: <code>T</code> vs <code>O</code>. Early fusion: <code>T+I</code> vs <code>O+I</code>, где <code>I</code> - image embedding. Late fusion: несколько стратегий объединения embeddings/SIDs/model inputs.</li>
+<li><strong>Построить Semantic IDs одинаковым tokenizer-ом.</strong> Для каждого representation variant применяется тот же RQ-VAE/RQ-KMeans pipeline, чтобы сравнение не смешивало encoder и tokenizer changes.</li>
+<li><strong>Обучить downstream GR.</strong> TIGER или LETTER обучается с одинаковым leave-one-out split и beam search 20.</li>
+<li><strong>Сравнить не только Recall/NDCG.</strong> Нужно смотреть geometry embeddings, codebook utilization, collision rate, prefix distribution и preprocessing cost.</li>
+<li><strong>Повторить по категориям.</strong> Scientific/Instruments выигрывают больше, Arts слабее: эффект зависит от того, является ли text attribute-centric.</li>
+</ol>
+<pre><code>for item in catalog:
+    T[item] = text_encoder(item.text_fields)
+    rendered = render_text_as_image(item.text_fields, template=fixed_template)
+    O[item] = OCR_vision_encoder(rendered)
+    I[item] = image_encoder(item.image)
+
+variants = {
+    "T": T,
+    "O": O,
+    "T+I": fuse(T, I),
+    "O+I": fuse(O, I),
+}
+
+for name, representation in variants.items():
+    sid_map = train_same_tokenizer(representation)
+    model = train_TIGER_or_LETTER(logs_as_sids(logs, sid_map))
+    evaluate(model, beam_size=20, metrics=["Recall", "NDCG", "collision", "utilization"])</code></pre>
 <h2>Эксперименты и метрики</h2>
 <p>Используются Amazon-подобные домены Scientific, Luxury, Instruments и Arts. Метрики: Recall@5/10/20 и
 NDCG@5/10/20, leave-one-out split, beam search 20. В unimodal TIGER OCR-text превосходит обычный text на
@@ -66,18 +95,20 @@ NDCG@5/10/20, leave-one-out split, beam search 20. В unimodal TIGER OCR-text п
 backbone; robustness section показывает, что разные OCR encoders дают близкие Recall@10 на Instruments.</p>
 <h2>Сильные стороны</h2>
 <ul>
-<li>Работа аккуратно изолирует источник улучшения: меняется representation для
-tokenization, а не весь recommender.</li>
-<li>Проверены unimodal, early-fusion и late-fusion варианты, поэтому вывод не привязан к одной
-архитектуре.</li>
-<li>Есть анализ датасетной специфики: OCR-text особенно полезен для attribute-centric
-descriptions.</li>
+<li><strong>Хорошо изолирует источник улучшения.</strong> Меняется representation для tokenization, а не весь recommender, поэтому вывод про OCR-text чище.</li>
+<li><strong>Проверяет несколько fusion regimes.</strong> Unimodal, early fusion и late fusion показывают, что эффект не привязан к одной архитектуре.</li>
+<li><strong>Дает dataset-specific интерпретацию.</strong> OCR-text особенно полезен для attribute-centric descriptions, а на Arts эффект слабее.</li>
+<li><strong>Проверяет robustness OCR backbone/resolution.</strong> Это снижает риск, что результат является артефактом одного encoder-а.</li>
+<li><strong>Практически применимо как offline preprocessing.</strong> OCR-text embeddings можно кэшировать, не меняя online GR architecture.</li>
 </ul>
 <h2>Ограничения</h2>
-<p>Метод добавляет preprocessing cost: нужно рендерить текст и запускать OCR/vision encoder. Он
-может быть бесполезен для богатого естественного текста и языков/шрифтов,
-плохо покрытых OCR model. Статья эмпирическая: она не доказывает, что OCR-text всегда
-лучше, а показывает условия, где он выигрывает.</p>
+<ul>
+<li><strong>Preprocessing cost выше.</strong> Нужно рендерить text images и запускать OCR/vision encoder для всего каталога.</li>
+<li><strong>Эффект зависит от структуры текста.</strong> Для богатого естественного описания обычный text encoder может быть лучше.</li>
+<li><strong>Rendering template становится гиперпараметром.</strong> Font, width, line wrap, resolution и cropping могут менять embedding quality.</li>
+<li><strong>Language/domain mismatch OCR encoder-а опасен.</strong> Неподдержанные языки, шрифты или специальные symbols делают OCR-text noisy.</li>
+<li><strong>Работа эмпирическая.</strong> Она показывает условия выигрыша, но не доказывает универсальное превосходство OCR-text.</li>
+</ul>
 <h2>Как реализовать / проверять</h2>
 <p>Нужно зафиксировать baseline tokenizer и downstream TIGER/LETTER, затем заменить только text
 encoder на OCR-text encoder. Проверять стоит: качество semantic ID, collision rate, Recall/NDCG, latency offline

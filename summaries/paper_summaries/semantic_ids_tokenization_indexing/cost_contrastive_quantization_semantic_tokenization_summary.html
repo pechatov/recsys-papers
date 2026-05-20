@@ -35,6 +35,11 @@ img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
 th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
 th { background: var(--soft); text-align: left; }
+.table-scroll { overflow-x: auto; margin: 1rem 0; }
+.table-scroll table { margin: 0; min-width: 720px; }
+.results-table { font-size: .94rem; }
+.results-table th:not(:first-child), .results-table td:not(:first-child) { text-align: right; }
+.results-table th:first-child, .results-table td:first-child, .results-table th:nth-child(2), .results-table td:nth-child(2) { text-align: left; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 .math { overflow-x: auto; padding: .35rem 0; }
 .nav { margin-top: -.25rem; }
@@ -396,7 +401,18 @@ r_1 = r_0 - e_1^{c_1}
 </ul>
 <h2>10. Таблицы и результаты</h2>
 <h3>Table 1: Dataset statistics</h3>
-<p>| Dataset | #Users | #Items | Seq_Len | Avg seq len | Median | |---|---:|---:|---|---:|---:| | MIND | 29,207 | 12,251 | [15, 70] | 25.06 | 22 | | Office(S) | 2,868 | 14,618 | [10, 20] | 13.21 | 12 | | Office(L) | 16,696 | 37,347 | [5, 50] | 8.38 | 12 |</p>
+<div class="table-scroll">
+<table class="results-table">
+<thead>
+<tr><th>Dataset</th><th>#Users</th><th>#Items</th><th>Seq_Len</th><th>Avg seq len</th><th>Median</th></tr>
+</thead>
+<tbody>
+<tr><td>MIND</td><td>29,207</td><td>12,251</td><td>[15, 70]</td><td>25.06</td><td>22</td></tr>
+<tr><td>Office(S)</td><td>2,868</td><td>14,618</td><td>[10, 20]</td><td>13.21</td><td>12</td></tr>
+<tr><td>Office(L)</td><td>16,696</td><td>37,347</td><td>[5, 50]</td><td>8.38</td><td>12</td></tr>
+</tbody>
+</table>
+</div>
 <p>Важные детали preprocessing:</p>
 <ul>
 <li>MIND: оставляют interactions с at least 15 users, sequence length capped at 70.</li>
@@ -413,7 +429,25 @@ r_1 = r_0 - e_1^{c_1}
 <li>MIND выглядит наиболее сильным benchmark'ом в статье.</li>
 </ul>
 <h3>Table 2: Results on MIND</h3>
-<p>| Method | Metric | @5 | @10 | @20 | @40 | |---|---|---:|---:|---:|---:| | Random | NDCG | 0.0201 | 0.0265 | 0.0327 | 0.0390 | | Random | Recall | 0.0319 | 0.0519 | 0.0766 | 0.1075 | | <code>L_re</code> | NDCG | 0.0363 | 0.0474 | 0.0594 | 0.0727 | | <code>L_re</code> | Recall | 0.0560 | 0.0905 | 0.1384 | 0.2031 | | <code>L_co</code> | NDCG | 0.0522 | 0.0663 | 0.0817 | 0.0975 | | <code>L_co</code> | Recall | 0.0803 | 0.1241 | 0.1855 | 0.2625 | | <code>L_re + L_co</code> | NDCG | 0.0444 | 0.0574 | 0.0710 | 0.0865 | | <code>L_re + L_co</code> | Recall | 0.0677 | 0.1081 | 0.1621 | 0.2376 | | Improvement over <code>L_re</code> | NDCG | 43.76% | 39.90% | 37.52% | 34.10% | | Improvement over <code>L_re</code> | Recall | 43.34% | 37.21% | 34.05% | 29.24% |</p>
+<div class="table-scroll">
+<table class="results-table">
+<thead>
+<tr><th>Method</th><th>Metric</th><th>@5</th><th>@10</th><th>@20</th><th>@40</th></tr>
+</thead>
+<tbody>
+<tr><td>Random</td><td>NDCG</td><td>0.0201</td><td>0.0265</td><td>0.0327</td><td>0.0390</td></tr>
+<tr><td>Random</td><td>Recall</td><td>0.0319</td><td>0.0519</td><td>0.0766</td><td>0.1075</td></tr>
+<tr><td><code>L_re</code></td><td>NDCG</td><td>0.0363</td><td>0.0474</td><td>0.0594</td><td>0.0727</td></tr>
+<tr><td><code>L_re</code></td><td>Recall</td><td>0.0560</td><td>0.0905</td><td>0.1384</td><td>0.2031</td></tr>
+<tr><td><code>L_co</code></td><td>NDCG</td><td>0.0522</td><td>0.0663</td><td>0.0817</td><td>0.0975</td></tr>
+<tr><td><code>L_co</code></td><td>Recall</td><td>0.0803</td><td>0.1241</td><td>0.1855</td><td>0.2625</td></tr>
+<tr><td><code>L_re + L_co</code></td><td>NDCG</td><td>0.0444</td><td>0.0574</td><td>0.0710</td><td>0.0865</td></tr>
+<tr><td><code>L_re + L_co</code></td><td>Recall</td><td>0.0677</td><td>0.1081</td><td>0.1621</td><td>0.2376</td></tr>
+<tr><td>Improvement over <code>L_re</code></td><td>NDCG</td><td>43.76%</td><td>39.90%</td><td>37.52%</td><td>34.10%</td></tr>
+<tr><td>Improvement over <code>L_re</code></td><td>Recall</td><td>43.34%</td><td>37.21%</td><td>34.05%</td><td>29.24%</td></tr>
+</tbody>
+</table>
+</div>
 <p>Главный результат:</p>
 <ul>
 <li>pure contrastive CoST (<code>L_co</code>) лучше reconstruction baseline (<code>L_re</code>) на всех k;</li>
@@ -421,7 +455,23 @@ r_1 = r_0 - e_1^{c_1}
 </ul>
 <p>Это важная деталь: добавление reconstruction loss не помогает на MIND. Значит, точная реконструкция может не просто быть ненужной, а мешать retrieval-aligned tokenization.</p>
 <h3>Table 3: Results on Amazon Office</h3>
-<p>| Method | Metric | Office(S) @10 | Office(S) @20 | Office(L) @10 | Office(L) @20 | |---|---|---:|---:|---:|---:| | <code>L_re</code> | NDCG | 0.0024 | 0.0032 | 0.0041 | 0.0053 | | <code>L_re</code> | Recall | 0.0037 | 0.0068 | 0.0075 | 0.0123 | | <code>L_co</code> | NDCG | 0.0034 | 0.0043 | 0.0047 | 0.0059 | | <code>L_co</code> | Recall | 0.0060 | 0.0094 | 0.0079 | 0.0125 | | <code>L_re + L_co</code> | NDCG | 0.0035 | 0.0042 | 0.0042 | 0.0052 | | <code>L_re + L_co</code> | Recall | 0.0066 | 0.0096 | 0.0079 | 0.0119 | | Improvement | NDCG | 43.80% | 31.06% | 15.11% | 10.53% | | Improvement | Recall | 80.95% | 41.03% | 5.38% | 1.46% |</p>
+<div class="table-scroll">
+<table class="results-table">
+<thead>
+<tr><th>Method</th><th>Metric</th><th>Office(S) @10</th><th>Office(S) @20</th><th>Office(L) @10</th><th>Office(L) @20</th></tr>
+</thead>
+<tbody>
+<tr><td><code>L_re</code></td><td>NDCG</td><td>0.0024</td><td>0.0032</td><td>0.0041</td><td>0.0053</td></tr>
+<tr><td><code>L_re</code></td><td>Recall</td><td>0.0037</td><td>0.0068</td><td>0.0075</td><td>0.0123</td></tr>
+<tr><td><code>L_co</code></td><td>NDCG</td><td>0.0034</td><td>0.0043</td><td>0.0047</td><td>0.0059</td></tr>
+<tr><td><code>L_co</code></td><td>Recall</td><td>0.0060</td><td>0.0094</td><td>0.0079</td><td>0.0125</td></tr>
+<tr><td><code>L_re + L_co</code></td><td>NDCG</td><td>0.0035</td><td>0.0042</td><td>0.0042</td><td>0.0052</td></tr>
+<tr><td><code>L_re + L_co</code></td><td>Recall</td><td>0.0066</td><td>0.0096</td><td>0.0079</td><td>0.0119</td></tr>
+<tr><td>Improvement</td><td>NDCG</td><td>43.80%</td><td>31.06%</td><td>15.11%</td><td>10.53%</td></tr>
+<tr><td>Improvement</td><td>Recall</td><td>80.95%</td><td>41.03%</td><td>5.38%</td><td>1.46%</td></tr>
+</tbody>
+</table>
+</div>
 <p>Интерпретация:</p>
 <ul>
 <li>на Office(S) gains большие, особенно Recall@10;</li>
@@ -828,6 +878,14 @@ semantic_ids = {}
 for item, x in zip(items, X):
     semantic_ids[item.id] = cost_tokenizer.encode(x)  # tuple(c1, ..., cM)</code></pre>
 <p>Важно: этот псевдокод передает идею, но не все детали straight-through estimator и stop-gradient.</p>
+<h3>17.1. Что должно получиться на выходе каждого этапа</h3>
+<ol>
+<li><strong>После text encoding:</strong> для каждого item есть фиксированный PLM vector; если эти embeddings плохи, CoST не исправит отсутствие collaborative signal.</li>
+<li><strong>После residual quantization:</strong> каждый item имеет tuple codes \((c_1,\ldots,c_M)\), а codebook utilization не должен collapse'иться в несколько популярных codes.</li>
+<li><strong>После contrastive training:</strong> reconstructed representation своего item должна быть ближе к original representation, чем reconstructions других batch items; это проверяется similarity matrix diagnostics.</li>
+<li><strong>После экспорта SID:</strong> token-to-item lookup должен явно хранить collisions, потому что генератор может сгенерировать валидный tuple, который соответствует нескольким item'ам.</li>
+<li><strong>После обучения TIGER:</strong> улучшение Recall/NDCG нужно сверить с invalid SID rate, beam hit rate и распределением сгенерированных prefixes.</li>
+</ol>
 <h2>18. Спорные интерпретации</h2>
 <h3>18.1. "CoST captures neighborhood relationships" - частично да, но формально ограниченно</h3>
 <p>Contrastive loss действительно использует other items in batch. Но positive pair - это только <code>(x_i, x_hat_i)</code>, а не <code>(x_i, x_neighbor)</code>. Поэтому CoST скорее учит <strong>instance discrimination</strong> и indirectly preserves neighborhood, чем напрямую моделирует top-k neighborhood graph.</p>

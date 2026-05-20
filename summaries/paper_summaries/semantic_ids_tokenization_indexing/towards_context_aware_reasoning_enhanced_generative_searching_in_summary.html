@@ -83,6 +83,38 @@
   <li>Rank-aware weighted reward summarizes full beam list.</li>
   <li>Constrained prefix trie ensures valid SID generation.</li>
 </ul>
+<h3>Пошаговая схема CRS</h3>
+<p>CRS строит generative search как reasoning-over-context задачу: модель сначала учится читать JSON/text context и SID, затем в self-evolving loop улучшает reasoning на hard cases, а R-GRPO дает reward по полному ranked list, а не только top-1.</p>
+<ol>
+  <li><strong>Сериализовать context.</strong> Для каждого request собираются user profile, recent queries, clicks/non-clicks, geography/time и current query metadata; item context содержит title, price, brand, category и GMV.</li>
+  <li><strong>Alignment SFT.</strong> Модель обучается context reconstruction и Context2SID prediction, чтобы связать structured context с valid item identifiers.</li>
+  <li><strong>Initial reasoning generation.</strong> LLM генерирует reasoning trajectory и SID candidates; constrained prefix trie не дает выйти за catalog vocabulary.</li>
+  <li><strong>Выделить hard wrong cases.</strong> Self-evolving loop фокусируется на примерах, где initial SFT ошибается или ranked list слабый.</li>
+  <li><strong>R-GRPO update.</strong> Reasoning rollout отделяется от beam search по items; reward агрегирует structure, length, validity и rank-aware weighted quality всего beam list.</li>
+  <li><strong>Consolidation SFT.</strong> Успешные trajectories возвращаются в supervised set, чтобы модель не забывала найденные решения после RL iterations.</li>
+</ol>
+<pre><code>prepare_example:
+    context = serialize_json(user_profile, history, clicks, non_clicks, query, geo_time)
+    item_context = serialize_items(title, price, brand, category, gmv)
+    target_sid = item_to_sid[target_item]
+
+alignment_sft:
+    loss = context_reconstruction_loss(context)
+         + context_to_sid_loss(context, target_sid)
+    update(model)
+
+self_evolving_loop:
+    hard_cases = collect_wrong_or_low_rank_cases(model, validation_data)
+    for case in hard_cases:
+        reasoning_rollout = model.generate_reasoning(case.context)
+        beam_list = constrained_beam_search(model, reasoning_rollout, sid_prefix_trie)
+        reward = structure_reward(reasoning_rollout)
+               + length_reward(reasoning_rollout)
+               + validity_reward(beam_list)
+               + rank_aware_reward(beam_list, case.target_item)
+        R_GRPO_update(model, reasoning_rollout, reward)
+    solved = collect_successful_trajectories(model, hard_cases)
+    SFT_update(model, solved)</code></pre>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для Towards Context-aware Reasoning-enhanced Generative Searching in E-commerce качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -111,15 +143,19 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Addresses ranking objective mismatch directly.</li>
-  <li>Uses practical JSON context instead of complex feature engineering.</li>
-  <li>Good failure analysis around distillation bias.</li>
+  <li><strong>Ranking objective mismatch решается явно.</strong> R-GRPO учитывает ranked list, поэтому top-1 miss не превращает весь rollout в одинаково плохой сигнал.</li>
+  <li><strong>Context format прагматичен.</strong> JSON/text serialization позволяет подключить user/query/item signals без построения отдельной сложной feature architecture.</li>
+  <li><strong>Self-evolving loop работает на hard cases.</strong> Модель не просто дообучается на всем датасете, а целенаправленно исправляет ошибки initial SFT.</li>
+  <li><strong>Constrained prefix trie встроен в алгоритм.</strong> Valid SID generation контролируется во время beam search, а не маскируется post-filtering.</li>
+  <li><strong>Работа честно обсуждает distillation bias.</strong> Это важно, потому что reasoning trajectories от larger LLM могут быть не только полезными, но и систематически смещенными.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Reasoning adds latency.</li>
-  <li>Generated reasoning may repeat or contradict itself.</li>
-  <li>Private logs limit reproducibility.</li>
+  <li><strong>Reasoning добавляет latency.</strong> Даже если SID beam constrained, генерация reasoning trajectory дороже обычного generative search.</li>
+  <li><strong>Generated reasoning не всегда надежен.</strong> Case study уже отмечает repetition/inconsistency; plausible explanation не доказывает causal decision process.</li>
+  <li><strong>Private Kuaishou logs ограничивают воспроизводимость.</strong> All-100K/All-50K/Fashion-27K отражают конкретный traffic mix и feature availability.</li>
+  <li><strong>Reward design может быть хрупким.</strong> Structure, length, validity и rank-aware weights задают разные incentives; неправильные веса приведут к reward hacking.</li>
+  <li><strong>JSON context может не масштабироваться без отбора.</strong> Слишком длинный user/item context ухудшит latency и может разбавить ключевые сигналы.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

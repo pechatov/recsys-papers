@@ -89,6 +89,39 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective остается SEATER-like: item identifiers задаются balanced tree, а generative model обучается предсказывать путь/identifier. Оптимизация статьи находится не в loss recommender'а, а в алгоритме построения identifier structure. Complexity сравнивается через число items N, branching factor k, beam width b, embedding dimension d и длину identifier L. Hybrid algorithm балансирует два objective: минимизировать construction time и удержать retrieval metrics.</p>
 
+<h3>5.1. Пошаговая схема construction algorithms</h3>
+<p>Все варианты получают на вход item embeddings и возвращают balanced tree, где путь от root к leaf является identifier. Разница только в том, как на каждом узле делить текущий набор items на \(k\) child groups.</p>
+<ol>
+<li><strong>Original constrained method.</strong> Для узла с большим item set запускается constrained clustering: child groups должны быть сбалансированы по размеру, а assignments минимизируют расстояние до центров. Это качественно, но дорого на верхних уровнях.</li>
+<li><strong>Greedy method.</strong> Использует Faiss/ANN для быстрого выбора nearest centers и жадного заполнения balanced child groups. Это резко сокращает build time, но может ошибиться в крупных semantic splits.</li>
+<li><strong>Hybrid method.</strong> На верхних уровнях, где items много и constrained clustering дорогой, используется greedy. Когда размер подзадачи падает ниже порога около 2000 items, алгоритм переключается на original constrained clustering.</li>
+<li><strong>Identifier assignment.</strong> После рекурсивного разбиения item получает path \((c_1,\ldots,c_L)\). Этот path используется как target sequence для SEATER-like generative recommender.</li>
+<li><strong>Оценка trade-off.</strong> Для каждого дерева отдельно измеряются construction time и downstream NDCG/Hit/Recall, потому что самое быстрое дерево не обязано быть лучшим для generation.</li>
+</ol>
+<pre><code>build_tree(items, depth):
+    if depth == L or len(items) == 1:
+        return leaf(items)
+
+    if method == "original":
+        groups = constrained_kmeans(items, branching_factor=k)
+    elif method == "greedy":
+        groups = faiss_greedy_balanced_split(items, branching_factor=k)
+    elif method == "hybrid":
+        if len(items) &gt; threshold_2000:
+            groups = faiss_greedy_balanced_split(items, branching_factor=k)
+        else:
+            groups = constrained_kmeans(items, branching_factor=k)
+
+    node = TreeNode()
+    for child_id, group in enumerate(groups):
+        node.children[child_id] = build_tree(group, depth + 1)
+    return node
+
+for item in catalog:
+    identifier[item] = path_from_root_to_leaf(tree, item)
+
+train_generative_recommender(user_history, target_identifier)</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Датасеты включают Yelp, News, Books и Yambda. Метрики: NDCG@20/50, Hit@20/50, Recall@20/50, а также wall-clock tree construction time. На Yambda и других наборах SEATER подтверждает преимущества над sequential baselines. Greedy сокращает время построения до менее 2% original на крупнейшем item collection, но может немного уступать по качеству. Hybrid обычно достигает качества original, а на крупнейшем наборе даже улучшает его, при времени около 5-8% original.</p>

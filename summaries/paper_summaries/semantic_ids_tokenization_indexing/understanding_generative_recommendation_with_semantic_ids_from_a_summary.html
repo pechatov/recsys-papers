@@ -84,6 +84,34 @@ th { background: var(--soft); text-align: left; }
 <li>Cross-entropy for LLM-as-RS LoRA training.</li>
 <li>Ablations over encoder size, codebook count/size, RS size and LLM size.</li>
 </ul>
+<h3>подробная схема алгоритма исследования</h3>
+<p>Это не новый tokenizer, а экспериментальный protocol для доказательства bottleneck: авторы масштабируют каждый компонент SID-based GR отдельно и сравнивают с LLM-as-RS.</p>
+<ol>
+<li><strong>Собрать SID-based pipeline.</strong> Item text/title кодируется modality encoder'ом, затем tokenizer строит SID, после чего recommendation backbone учится генерировать/предсказывать item через SID.</li>
+<li><strong>Масштабировать modality encoder.</strong> Увеличивается размер encoder'а, но downstream SID quality проверяет, проходит ли дополнительная semantics через quantization.</li>
+<li><strong>Масштабировать tokenizer capacity.</strong> Меняются число codebooks и codebook size; измеряется, где MR@k перестает улучшаться.</li>
+<li><strong>Масштабировать RS backbone.</strong> Увеличивается recommender model size; если SID bottleneck уже насыщен, больший backbone не восстанавливает потерянную информацию.</li>
+<li><strong>Построить LLM-as-RS baseline.</strong> LLM получает item text/title histories напрямую и fine-tune'ится LoRA cross-entropy objective, без дискретного SID bottleneck.</li>
+<li><strong>Подогнать scaling laws.</strong> MR@k curves аппроксимируются power-law terms через Huber loss и L-BFGS, чтобы сравнить saturation rates.</li>
+<li><strong>Проверить cold-start и efficiency.</strong> LLM-as-RS сильнее масштабируется, но SID остается дешевле на inference; вывод зависит от compute/latency budget.</li>
+</ol>
+<pre><code>for encoder_size in encoder_grid:
+    embeddings = modality_encoder(encoder_size, item_text)
+    sid = tokenizer(embeddings)
+    train_sid_gr(backbone_fixed, sid)
+    log MR@k
+
+for tokenizer_capacity in codebook_grid:
+    sid = tokenizer(embeddings, tokenizer_capacity)
+    train_sid_gr(backbone_fixed, sid)
+    log MR@k and saturation
+
+for backbone_size in rs_grid:
+    train_sid_gr(backbone_size, sid)
+    log MR@k
+
+train LLM_as_RS with LoRA on item text histories
+fit scaling curves and compare SID bottleneck vs direct text modeling</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,24 +134,20 @@ th { background: var(--soft); text-align: left; }
 <li>Efficiency appendix: training/inference trade-off.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
-<p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Asks the right scaling question.</li>
-<li>Provides diagnostics beyond single model comparison.</li>
-<li>Separates CF and semantic information capacity.</li>
-<li>Includes cold-start and efficiency analyses.</li>
-<li>Forces SID research to measure bottlenecks.</li>
+<li><strong>Правильный scaling question.</strong> Работа проверяет не "какой метод лучше в одной точке", а где насыщается encoder, tokenizer и recommender backbone.</li>
+<li><strong>Изолирует SID capacity bottleneck.</strong> Масштабирование modality encoder'а и RS backbone мало помогает, если короткий SID уже потерял семантику.</li>
+<li><strong>Сравнивает с сильной альтернативой.</strong> LLM-as-RS напрямую потребляет item text/title histories и показывает, что LLM может учить CF signal при достаточном budget.</li>
+<li><strong>Есть cold-start и efficiency angle.</strong> Вывод не сводится к quality: SID дешевле на inference, LLM-as-RS лучше масштабируется.</li>
+<li><strong>Дает практическую диагностику для новых SID papers.</strong> Нужно строить scaling curves и semantic-loss checks, а не только reported NDCG@10.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
-<p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>LLM-as-RS inference is expensive.</li>
-<li>Title generation requires constrained matching.</li>
-<li>Datasets are public Amazon, not full production feeds.</li>
-<li>Scaling laws depend on chosen architectures.</li>
-<li>SID variants beyond tested ones may reduce bottleneck.</li>
+<li><strong>LLM-as-RS дорогой на inference.</strong> Даже если scaling лучше, serving cost может быть неприемлем для high-QPS recommender.</li>
+<li><strong>Amazon datasets не равны production feed.</strong> Полные промышленные каталоги имеют freshness, policy constraints, multimodal features и feedback loops.</li>
+<li><strong>Scaling laws зависят от выбранных architectures.</strong> Другие SID designs, multi-identifier systems или adaptive tokenizers могут сдвинуть saturation point.</li>
+<li><strong>Text/title quality критична для LLM-as-RS.</strong> В доменах с бедным или noisy text преимущество direct text modeling может исчезнуть.</li>
+<li><strong>Constrained matching для generated titles остается отдельной проблемой.</strong> Direct text generation должна быть надежно заземлена в catalog items.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

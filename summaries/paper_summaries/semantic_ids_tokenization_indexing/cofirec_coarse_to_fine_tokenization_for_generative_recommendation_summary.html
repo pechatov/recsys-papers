@@ -81,6 +81,16 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Components: theoretical reformulation, coarse-to-fine tokenizer, coarse-to-fine autoregressive generation.</li>
 </ul>
+<h3>Пошаговая схема CoFiRec</h3>
+<ol>
+<li><strong>Задать coarse-to-fine пространство.</strong> Item identifier разбивается на уровни: ранние токены должны описывать broad semantic group, поздние - уточнять конкретный item внутри этой группы.</li>
+<li><strong>Построить или восстановить hierarchy.</strong> Если в домене есть чистая taxonomy, она используется как prior; если нет, Automatic Hierarchy Construction строит coarse groups из item representations так, чтобы lower-level choices были условно зависимы от prefix.</li>
+<li><strong>Обучить tokenizer с positional meaning.</strong> Tokenizer назначает item'у последовательность, где позиция не произвольна: первый токен ограничивает область поиска, следующие токены уточняют fine-grained identity.</li>
+<li><strong>Подготовить training targets.</strong> User history переводится в sequences coarse-to-fine IDs; target item также представлен как hierarchical token path.</li>
+<li><strong>Обучить autoregressive generator.</strong> Модель предсказывает target path слева направо. Ошибка верхнего уровня штрафуется особенно сильно practically, потому что она отсекает весь correct branch.</li>
+<li><strong>Использовать prefix constraints на inference.</strong> После выбора coarse token decoder ограничивает допустимые fine tokens только descendants выбранного prefix. Это снижает invalid combinations и ускоряет поиск.</li>
+<li><strong>Проверить hierarchy diagnostics.</strong> Нужно считать code distribution по уровням, cold-start slices и cases top-level mistakes, потому что хороший aggregate NDCG может скрывать плохое coarse partitioning.</li>
+</ol>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -106,23 +116,21 @@
 <h2>Сильные стороны</h2>
 <p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Позиции ID получают смысл.</strong> В отличие от произвольного SID tuple, CoFiRec делает ранние токены coarse decisions, а поздние - refinement, что проще диагностировать.</li>
+<li><strong>Inference использует структуру tokenizer-а.</strong> Coarse prefix сужает fine choices, поэтому tokenization и decoding работают как один hierarchical retrieval process.</li>
+<li><strong>Есть путь для доменов без taxonomy.</strong> Automatic Hierarchy Construction снижает зависимость от ручного дерева категорий.</li>
+<li><strong>Хорошо подходит для user preference refinement.</strong> Модель естественно учится сначала выбирать broad intent, потом конкретизировать item.</li>
+<li><strong>Ablations по codebook size / ID distribution / cold-start полезны для переноса.</strong> Они показывают, где иерархия помогает, а где over-constraining может навредить.</li>
 </ul>
 
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li><strong>Top-level ошибка дорогая.</strong> Если generator выбирает неверный coarse token, правильный item становится недоступен для fine decoding.</li>
+<li><strong>Hierarchy может закрепить старый bias.</strong> Category/geography/tree prior полезен, только если он соответствует реальному user intent; иначе sharing будет неправильным.</li>
+<li><strong>Automatic hierarchy тоже надо мониторить.</strong> Кластеры могут быть красивыми semantic groups, но смешивать товары с разной substitutability или business value.</li>
+<li><strong>Сложнее обновлять каталог.</strong> Новый item надо вставить не только в codebook, но и в правильный branch; массовый refresh меняет prefix distribution.</li>
+<li><strong>Coarse-to-fine assumption не универсальна.</strong> Для domains, где пользовательский intent пересекает категории, жесткая hierarchy может быть хуже flat или multi-aspect SID.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

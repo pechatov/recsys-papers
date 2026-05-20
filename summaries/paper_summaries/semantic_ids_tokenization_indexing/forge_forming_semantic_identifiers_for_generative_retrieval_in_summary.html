@@ -83,6 +83,16 @@
   <li>Offline continued pretraining на последних 7 днях interactions помогает LLM адаптироваться к обновленным SID.</li>
   <li>Оценка SID включает HitRate, Embedding HitRate, Gini coefficient, utilization, style/homogeneous consistency и production metrics вроде transaction count.</li>
 </ul>
+<h3>Пошаговая схема FORGE pipeline</h3>
+<ol>
+  <li><strong>Собрать multimodal item features.</strong> Для товаров строятся image/text fusion embeddings, плюс item-side signals: seller, price, category и другие attributes.</li>
+  <li><strong>Добавить collaborative relations.</strong> Из user behavior logs извлекаются i2i/co-occurrence связи, чтобы tokenizer различал не только визуально похожие, но и совместно потребляемые товары.</li>
+  <li><strong>Обучить SID tokenizer.</strong> RQ-VAE/RQ-style tokenizer строит multi-level residual codes; FORGE сравнивает layouts 2/3/4 levels и разные capacities.</li>
+  <li><strong>Проверить raw SID distribution.</strong> До обучения generator считаются utilization, Gini, collision groups, style/homogeneous consistency и Embedding HitRate; плохой SID не стоит чинить только LLM'ом.</li>
+  <li><strong>Применить collision post-processing.</strong> KNN-based cap ограничивает число items на SID, например KNN-25/10/5; no-collision и intentional merge используются как ablation extremes.</li>
+  <li><strong>Обучить generative retriever.</strong> T5/Qwen получает sequence of historical behavior SIDs, а для search еще query keywords, и autoregressively генерирует target SID.</li>
+  <li><strong>Адаптироваться к свежему каталогу.</strong> Continued pretraining на последних 7 днях interactions синхронизирует LLM с обновленным SID mapping и меняющейся платформенной distribution.</li>
+</ol>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -116,7 +126,7 @@
   <li>Не полагается на одну offline метрику и явно показывает, какие метрики коррелируют с retrieval.</li>
   <li>Описывает training/inference formats, что делает работу полезной для воспроизведения pipeline.</li>
 </ul>
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <ul>
   <li>Часть данных анонимизирована и защищена privacy constraints; полная воспроизводимость ограничена.</li>
   <li>Выводы завязаны на e-commerce с частыми homogeneous/style duplicates.</li>

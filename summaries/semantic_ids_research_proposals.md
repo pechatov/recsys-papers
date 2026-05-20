@@ -1,6 +1,6 @@
 # Research proposals: Semantic IDs and item tokenization for recommender systems
 
-Этот файл собирает направления, которые выглядят реалистичными для проекта на 3-6 месяцев и могут вырасти в short paper или full paper для конференции по recommender systems / IR, например ECIR, KDD workshop, RecSys workshop, SIGIR short, CIKM short. Идеи специально сформулированы так, чтобы их можно было проверить на публичных датасетах и не требовать закрытого production-трафика.
+Этот файл собирает направления, которые выглядят реалистичными для проекта на 3-6 месяцев и могут вырасти в short paper или full paper для конференции по recommender systems / IR, например ECIR, KDD workshop, RecSys workshop, SIGIR short, CIKM short. Идеи специально сформулированы так, чтобы их можно было проверить на публичных датасетах и не требовать закрытого production-трафика. Обновлено 2026-05-17 после просмотра свежих работ по transferable, personalized, hierarchical и topology-aware semantic IDs.
 
 ## 1. Stability-aware Semantic ID: tokenizer, который оптимизирует не только качество, но и drift
 
@@ -145,3 +145,75 @@
 **Эксперимент.** Simulated streaming на temporal splits: items приходят батчами, часть исчезает. Сравнить full retrain, frozen index, local re-index. Метрики: quality, number of changed codes, compute cost, latency proxy.
 
 **Потенциальный вклад.** Public benchmark и baseline для streaming semantic ID lifecycle.
+
+## 13. Transferable semantic ID tokenizer with domain-incremental adaptation
+
+**Вопрос.** Можно ли добавлять новый домен в universal semantic-ID tokenizer без ухудшения уже выученных доменов и без полной переиндексации?
+
+**Мотивация.** UTGRec показывает ценность transferable tokenization, но открытым остается lifecycle-вопрос: что происходит, когда домены добавляются последовательно, а не доступны все сразу при pretraining.
+
+**Идея метода.** Использовать frozen shared codebook и domain adapters/projection matrices. Для нового домена обновлять только адаптеры и небольшую часть leaf codebook, добавляя regularization на сохранение старых item-code distributions.
+
+**Эксперимент.** Amazon Reviews 2023: pretrain на 2-3 доменах, добавлять следующие домены по одному. Метрики: target-domain Recall/NDCG, backward transfer, forgetting по старым доменам, code drift, code utilization.
+
+**Потенциальный вклад.** Более реалистичный protocol для universal semantic IDs, где каталог растет по вертикалям.
+
+## 14. Personalized semantic IDs with canonical fallback for serving
+
+**Вопрос.** Можно ли получить выгоду Pctx-style personalized tokenization, не потеряв production-friendly canonical item index?
+
+**Мотивация.** Personalized IDs лучше отражают пользовательский intent, но ломают cache, trie и стабильный item-to-code mapping.
+
+**Идея метода.** Представить item как canonical semantic prefix плюс personalized suffix или context delta. Retrieval идет по canonical prefix, а personalized suffix используется для reranking/generation внутри shortlist.
+
+**Эксперимент.** Amazon/MovieLens/Yelp. Сравнить static SID, fully personalized SID, canonical+personalized hybrid. Метрики: Recall/NDCG, valid generation rate, cache hit proxy, number of unique codes per item, latency proxy.
+
+**Потенциальный вклад.** Компромисс между personalization и deployability, которого сейчас не хватает dynamic SID работам.
+
+## 15. Trie topology diagnostics for semantic ID quality
+
+**Вопрос.** Какие свойства prefix tree, индуцированного semantic IDs, предсказывают downstream GR quality?
+
+**Мотивация.** TrieRec показывает, что topology важна для Transformer'а. Но tokenizer research редко оценивает качество дерева само по себе.
+
+**Идея метода.** Ввести набор trie diagnostics: depth balance, sibling semantic purity, prefix popularity skew, subtree entropy, behavioral consistency within subtree, collision concentration. Проверить корреляцию с GR quality до дорогого обучения recommender.
+
+**Эксперимент.** Сгенерировать SIDs разными tokenizer'ами: RQ-VAE, CoST, LETTER, HiD-VAE-like supervised hierarchy, random balanced tree. Обучить одинаковый GR backbone с/без TrieRec encodings.
+
+**Потенциальный вклад.** Дешевые topology-aware proxy metrics для выбора tokenizer'а.
+
+## 16. Bi-level tokenizer optimization with stability constraints
+
+**Вопрос.** Можно ли объединить BLOGER-style recommendation alignment с production constraint на стабильность кодов?
+
+**Мотивация.** Bi-level optimization улучшает соответствие tokenizer и generator, но может часто менять item-to-code mapping, что опасно для обновляемого каталога.
+
+**Идея метода.** Добавить upper-level stability term: tokenizer получает recommendation gradient, но code movement ограничивается prefix-preservation или edit-distance penalty относительно предыдущего checkpoint.
+
+**Эксперимент.** Rolling temporal splits. Baselines: two-stage SID, BLOGER-like bi-level, stability-only SID. Метрики: Recall/NDCG, drift rate, degradation при warm-start generator, changed-prefix percentage.
+
+**Потенциальный вклад.** Практичный вариант end-to-end semantic IDs для систем, где переиндексация стоит дорого.
+
+## 17. Hierarchy supervision: taxonomy tags vs behavioral hierarchy
+
+**Вопрос.** Что лучше для hierarchical semantic IDs: человеческая taxonomy, LLM-generated tags или hierarchy, выученная из behavior graph?
+
+**Мотивация.** HiD-VAE делает semantic path интерпретируемым через tags, но потребительские intent'ы часто не совпадают с category tree.
+
+**Идея метода.** Сравнить три источника hierarchy supervision: catalog taxonomy, LLM tags, clusters/coarsening user-item graph. Можно также обучить hybrid hierarchy, где верхние уровни taxonomy-based, а нижние behavior-based.
+
+**Эксперимент.** Датасеты с metadata и interaction logs. Метрики: Recall/NDCG, interpretability via tag accuracy, collision harmfulness, diversity, subtree behavioral purity.
+
+**Потенциальный вклад.** Практический ответ на вопрос, какую иерархию должен кодировать semantic ID.
+
+## 18. Semantic-ID token embedding alignment for small-data adaptation
+
+**Вопрос.** Насколько важна инициализация embeddings новых SID tokens при адаптации LLM к generative recommendation?
+
+**Мотивация.** STAR указывает на token-embedding misalignment: mean-of-vocabulary initialization может сделать новые SID tokens слишком похожими и ухудшить sample efficiency. Работа пока менее устойчива как источник, но сама проблема сильная.
+
+**Идея метода.** Сравнить initialization/alignment schemes: random, mean vocabulary, title-description contrastive alignment, item-neighborhood alignment, code-prefix-aware initialization. Основной фокус -- low-data и cold-start transfer.
+
+**Эксперимент.** Взять небольшой GR setup с T5/Qwen backbone и semantic IDs от RQ-VAE/LETTER. Ограничить training data долями 1%, 5%, 10%, 100%. Метрики: Recall/NDCG, token embedding diversity, valid generation rate, convergence speed.
+
+**Потенциальный вклад.** Недорогая и хорошо изолированная работа про то, как вводить SID vocabulary в pretrained LM без потери семантики.

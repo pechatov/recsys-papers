@@ -81,6 +81,30 @@ tokens и item tokens.</p>
 <p>Efficient retrieval stage избегает полного autoregressive item-by-item
 decoding.</p>
 <p>Это важное отличие от TIGER-style beam search.</p>
+<h3>Подробная схема алгоритма TokenRec</h3>
+<ol>
+<li><strong>Обучить CF encoder.</strong> Из user-item interaction graph строятся continuous collaborative representations для users и items.</li>
+<li><strong>Разделить user/item tokenizers.</strong> Masked Vector-Quantized Tokenizer обучается отдельно для user IDs и item IDs, потому что распределения и cold-start свойства разные.</li>
+<li><strong>Применить masking.</strong> Доля latent dimensions скрывается с ratio <code>rho</code>, чтобы tokenizer не копировал representation напрямую, а восстанавливал robust collaborative signal.</li>
+<li><strong>Квантизовать по sub-codebooks.</strong> Representation разбивается на <code>K</code> частей, каждая выбирает codeword из <code>J</code> вариантов; итог - несколько discrete tokens на user/item.</li>
+<li><strong>Обучить reconstruction/VQ objective.</strong> Tokenizer должен восстановить CF representation и одновременно использовать codebooks без collapse.</li>
+<li><strong>Сформировать retrieval representation.</strong> User tokens и item tokens становятся LLM-compatible discrete interface для matching.</li>
+<li><strong>Выполнить efficient top-K retrieval.</strong> Вместо autoregressive beam search по всем item identifiers модель использует matching stage, который быстрее оценивает candidates.</li>
+<li><strong>Проверить generalization.</strong> Seen/unseen users/items оцениваются отдельно, потому что collaborative tokens легко переобучаются на известных ID.</li>
+</ol>
+<pre><code>CF_user, CF_item = train_cf_encoder(interactions)
+
+for entity_type in {user, item}:
+    Z = CF_representations(entity_type)
+    masked_Z = mask_dimensions(Z, rho)
+    tokens = VQ_tokenizer(masked_Z, K_subcodebooks, J_codewords)
+    loss = reconstruction_loss(tokens, Z) + vq_commitment_loss
+    update tokenizer
+
+user_tokens = tokenize(users)
+item_tokens = tokenize(items)
+train generative/matching recommender(user_tokens, item_tokens)
+retrieve top-K without full autoregressive beam over catalog</code></pre>
 <h2>Эксперименты и метрики</h2>
 <p>Датасеты: LastFM, ML1M, Amazon Beauty и Amazon Clothing.</p>
 <p>Метрики: HR@10/20/30 и NDCG@10/20/30.</p>
@@ -108,23 +132,20 @@ sub-codebooks <code>K</code> и codewords
 <code>J</code>.</p>
 <h2>Сильные стороны</h2>
 <ul>
-<li>Токенизируются и users, и items, а не только item
-catalog.</li>
-<li>Источник токенов - collaborative representations, а не только
-text/content.</li>
-<li>Отдельно рассматриваются efficiency и generalizability.</li>
-<li>Есть hyperparameter analysis для masking и codebook design.</li>
+<li><strong>Токенизируются и users, и items.</strong> Это важное отличие от item-only SID: user side тоже получает compact collaborative language.</li>
+<li><strong>Источник токенов - CF representations.</strong> TokenRec переносит high-order user-item structure, а не только text/content semantics.</li>
+<li><strong>Efficiency является частью метода.</strong> Работа явно уходит от дорогого TIGER-style beam search для каждого пользователя.</li>
+<li><strong>Проверяется generalizability.</strong> Seen/unseen users analysis показывает, где LLM/text-based методы проседают и зачем нужны collaborative tokens.</li>
+<li><strong>Есть hyperparameter analysis.</strong> Masking ratio <code>rho</code>, число sub-codebooks <code>K</code> и codewords <code>J</code> напрямую контролируют capacity и robustness.</li>
 </ul>
 <h2>Ограничения</h2>
-<p>Collaborative tokens зависят от качества CF encoder.</p>
-<p>Для cold-start items без interactions TokenRec слабее content-based SID
-methods, если не добавить side
-information.</p>
-<p>Discrete collaborative tokens могут устаревать при temporal drift,
-как в работе про SID staleness.</p>
-<p>LLM compatibility не означает, что pretrained language knowledge
-напрямую понимает эти tokens без
-grounding.</p>
+<ul>
+<li><strong>Зависимость от CF encoder.</strong> Если collaborative representation шумная или popularity-biased, tokenizer аккуратно дискретизирует уже плохой сигнал.</li>
+<li><strong>Cold-start items без interactions остаются слабыми.</strong> Без side information content-based SID может быть лучше для новых объектов.</li>
+<li><strong>Temporal drift ломает collaborative tokens.</strong> User/item co-consumption меняется, поэтому mappings требуют refresh и alignment strategy.</li>
+<li><strong>LLM-compatible не значит semantically understood.</strong> Pretrained language model не знает смысл новых discrete CF tokens без grounding/fine-tuning.</li>
+<li><strong>Masking ratio чувствителен.</strong> Слишком высокий <code>rho</code> уничтожает collaborative signal, слишком низкий дает memorization и слабую generalization.</li>
+</ul>
 <h2>Как реализовать / проверять</h2>
 <ol>
 <li>Обучить CF encoder на user-item interactions.</li>

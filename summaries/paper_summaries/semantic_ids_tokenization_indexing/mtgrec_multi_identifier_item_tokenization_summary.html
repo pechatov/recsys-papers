@@ -85,6 +85,36 @@ th { background: var(--soft); text-align: left; }
 <li>Curriculum updates sampling probabilities of groups.</li>
 <li>Pretrain on hybrid data, then fine-tune single-tokenizer data.</li>
 </ul>
+<h2>Детальный алгоритм MTGRec</h2>
+<p>MTGRec использует нестабильность последних checkpoints tokenizer-а как полезную augmentation: один item получает несколько близких semantic identifiers, но на inference система возвращается к одному выбранному tokenizer-у, чтобы не создавать ambiguous serving.</p>
+<ol>
+<li><strong>Обучить enhanced RQ-VAE tokenizer.</strong> В реализации используется RQ-VAE с 3 codebooks size 256 и дополнительным collision codebook; также упоминаются whitening, deeper MLP и EMA как TIGER++-style улучшения.</li>
+<li><strong>Сохранить последние checkpoints.</strong> Берутся adjacent final checkpoints, а не независимые tokenizer-ы. Такие checkpoints дают разные, но семантически близкие views item identity.</li>
+<li><strong>Перекодировать каталог каждым checkpoint.</strong> Для каждого item получается несколько SID variants. Одна и та же user history превращается в несколько tokenized sequence groups.</li>
+<li><strong>Сделать pretraining dataset из groups.</strong> Вместо one-item-one-identifier модель видит несколько допустимых token traces для одного поведения, что увеличивает diversity training signal.</li>
+<li><strong>Оценивать influence group sampling.</strong> Для группы считается first-order approximation: насколько gradient на этой группе должен изменить validation loss. Sampling probability увеличивается для групп с положительным влиянием.</li>
+<li><strong>Pretrain generative recommender curriculum-style.</strong> Модель обучается на hybrid groups, где curriculum sampler постепенно выбирает более полезные tokenizer variants.</li>
+<li><strong>Fine-tune на одном tokenizer-е.</strong> Перед serving модель дообучается на выбранной single-tokenizer разметке, чтобы decoder генерировал однозначные SIDs.</li>
+<li><strong>На inference использовать стандартный SID lookup.</strong> Multi-identifier эффект остается в весах модели, но внешняя система видит один item-token map.</li>
+</ol>
+<pre><code>tokenizer_checkpoints = train_RQVAE_and_save_last_n()
+groups = []
+for ckpt in tokenizer_checkpoints:
+    sid_map = encode_catalog(ckpt, items)
+    groups.append(tokenize_user_sequences(logs, sid_map))
+
+for pretrain_step in range(T):
+    validation_grad = grad(loss(model, validation_batch))
+    group_scores = {}
+    for group in groups:
+        train_grad = grad(loss(model, sample(group)))
+        group_scores[group] = - dot(validation_grad, train_grad)
+    group_probs = normalize_positive_influence(group_scores)
+    batch = sample_group(groups, group_probs)
+    update_model(batch)
+
+fine_tune(model, groups[selected_serving_tokenizer])
+serve with selected SID map only</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -107,24 +137,22 @@ th { background: var(--soft); text-align: left; }
 <li>Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
 <p>Ниже — основные инженерные плюсы.</p>
 <ul>
-<li>Cheap way to get multiple related identifiers.</li>
-<li>Uses tokenizer uncertainty as data augmentation.</li>
-<li>Curriculum avoids treating all augmented groups equally.</li>
-<li>Inference stays single-identifier.</li>
-<li>Strong comparison against TIGER++ and LETTER.</li>
+<li><strong>Дешевый источник multiple identifiers.</strong> Adjacent checkpoints уже возникают при обучении RQ-VAE, поэтому не нужно тренировать несколько независимых tokenizer-ов.</li>
+<li><strong>Использует uncertainty tokenizer-а как сигнал.</strong> Небольшие изменения assignment около convergence превращаются в augmentation для rare/unstable items.</li>
+<li><strong>Curriculum не считает все variants равными.</strong> Influence estimator отбирает группы, которые лучше помогают validation objective.</li>
+<li><strong>Serving остается простым.</strong> После fine-tuning используется один tokenizer, поэтому нет multi-map ambiguity при beam decoding.</li>
+<li><strong>Сильные baselines.</strong> Сравнение с TIGER, LETTER и TIGER++ делает вывод про pretraining augmentation более полезным.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
 <p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
 <ul>
-<li>Pretraining pipeline is more complex.</li>
-<li>Multiple identifiers disappear at inference except through learned weights.</li>
-<li>Depends on RQ-VAE checkpoint trajectory.</li>
-<li>Influence estimation adds gradient overhead.</li>
-<li>Token map versioning still matters.</li>
+<li><strong>Зависимость от checkpoint trajectory.</strong> Если последние RQ-VAE checkpoints почти одинаковы, augmentation слабая; если слишком разные, identifiers становятся noisy.</li>
+<li><strong>Influence estimation стоит градиентов.</strong> Curriculum требует дополнительных gradient computations и усложняет distributed training.</li>
+<li><strong>Эффект multiple identifiers не виден напрямую на inference.</strong> После single-tokenizer fine-tuning улучшение остается только в параметрах модели, поэтому диагностика сложнее.</li>
+<li><strong>Pipeline длиннее обычного TIGER.</strong> Нужно хранить несколько token maps, группы последовательностей, sampling state и selected serving map.</li>
+<li><strong>Versioning все равно критичен.</strong> Fine-tuned checkpoint должен строго соответствовать финальному tokenizer-у; иначе beam outputs будут мапиться неверно.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

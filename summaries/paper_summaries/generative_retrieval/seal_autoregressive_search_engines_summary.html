@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAL: Autoregressive Search Engines: Generating Substrings as Document Identifiers</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; }
+li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border: 1px solid var(--border); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.math { overflow-x: auto; padding: .35rem 0; }
+.nav { margin-top: -.25rem; }
+.nav a { color: var(--link); }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+</head>
+<body>
+<main>
+<h1><a href="https://arxiv.org/abs/2204.10628">SEAL: Autoregressive Search Engines: Generating Substrings as Document Identifiers</a></h1>
+<p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Michele Bevilacqua, Giuseppe Ottaviano, Patrick Lewis, Scott Yih, Sebastian Riedel, Fabio Petroni.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Facebook AI Research (Meta)</span>.</p>
+<p><strong>Публикация:</strong> NeurIPS 2022.</p>
+</blockquote>
+
+<h2>1. Коротко: о чем статья</h2>
+<p>SEAL предлагает принципиально иной подход к выбору идентификаторов в generative retrieval: вместо атомарных DocID (как в DSI) использовать <strong>все n-граммы документа</strong> в качестве возможных идентификаторов. Это устраняет необходимость в предварительном определении структуры пространства документов — любая уникальная подстрока документа становится его валидным «адресом».</p>
+<p>Система состоит из двух компонентов: FM-Index (компактная структура данных для constrained decoding по всем n-граммам корпуса) и autoregressive language model (для scoring n-граммов). SEAL показывает в среднем +10 points over established retrieval solutions на KILT benchmark и устанавливает новый SOTA на ряде датасетов.</p>
+
+<h2>2. Контекст</h2>
+<p>DSI и GENRE используют атомарные или кластеризованные DocID, назначаемые документам заранее. Этот подход имеет структурное ограничение: необходимо явно разбить пространство документов на категории (через k-means кластеризацию), и это разбиение фиксируется до обучения. Проблемы такого подхода:</p>
+<ul>
+  <li><strong>Произвольность разбиения:</strong> кластеризация embedding-пространства не обязательно соответствует тому, как модель «думает» о документах в процессе генерации.</li>
+  <li><strong>Конфликты DocID:</strong> если два документа попадают в одну ветку иерархии, их DocID будут похожи, и модель с трудом их различает.</li>
+  <li><strong>Потеря семантики:</strong> числовые DocID («3 7 12») не несут прямой семантической информации — модель должна выучить их как произвольные метки.</li>
+</ul>
+<p>SEAL предлагает альтернативу: идентификаторы, уже присутствующие в тексте документов — n-граммы. Они естественны, несут семантическую информацию и не требуют дополнительной кластеризации.</p>
+
+<h2>3. Ключевые компоненты</h2>
+
+<h3>3.1. FM-Index как замена Trie</h3>
+<p>В GENRE и DSI для constrained decoding используется trie (prefix tree) всех допустимых идентификаторов. SEAL обобщает этот подход: вместо trie используется <strong>FM-Index</strong> — суффиксный массив со сжатием (Ferragina-Manzini Index), хранящий все подстроки корпуса. FM-Index позволяет эффективно проверять, является ли текущий префикс генерации началом хотя бы одного реального n-грамма в корпусе, и перечислять все документы, содержащие данный n-грамм. При этом FM-Index значительно компактнее, чем trie по всем n-граммам корпуса.</p>
+
+<h3>3.2. Scoring: LM-вероятности и частота n-граммов</h3>
+<p>Итоговый score документа в SEAL формируется из двух компонентов:</p>
+<ul>
+  <li><strong>LM score:</strong> вероятность n-грамма по language model — насколько модель считает данный n-грамм подходящим «адресом» для данного запроса.</li>
+  <li><strong>IDF-подобный вес:</strong> редкие n-граммы (встречающиеся в малом числе документов) получают более высокий вес, как в TF-IDF/BM25 логике. Это предотвращает доминирование очень частых n-граммов (стоп-слов, типичных фраз).</li>
+</ul>
+<p>Итоговый score документа: \(\text{score}(d) = \sum_{g \in G_d} p_\text{LM}(g | q) \cdot \text{idf}(g)\), где \(G_d\) — n-граммы, ссылающиеся на документ \(d\).</p>
+
+<h3>3.3. Intersection-based Scoring</h3>
+<p>Поскольку несколько разных n-граммов могут ссылаться на один и тот же документ, SEAL агрегирует их scores через intersection: если запрос генерирует несколько n-граммов, все указывающие на документ \(d\), их взвешенные вероятности суммируются. Документы, «поддержанные» несколькими независимыми n-граммами, получают более высокий итоговый score.</p>
+
+<h3>3.4. Training</h3>
+<p>Модель обучается генерировать n-граммы, характерные для целевого документа, включая заголовок документа (в задаче document retrieval). Обучение стандартное seq2seq cross-entropy — никакой специальной архитектуры, только другая постановка задачи (генерировать n-грамм, а не DocID).</p>
+
+<h2>4. Эксперименты / Coverage</h2>
+<p>SEAL оценивается на KILT benchmark (Knowledge-Intensive Language Tasks), охватывающем несколько задач document retrieval:</p>
+<table>
+<thead><tr><th>Датасет</th><th>Задача</th><th>Результат SEAL</th></tr></thead>
+<tbody>
+<tr><td>Natural Questions (NQ)</td><td>Open-domain QA</td><td>Новый SOTA среди GR методов, лучше предыдущих dense систем</td></tr>
+<tr><td>TriviaQA</td><td>Open-domain QA</td><td>Новый SOTA</td></tr>
+<tr><td>FEVER</td><td>Fact verification</td><td>Новый SOTA</td></tr>
+<tr><td>Среднее по KILT</td><td>Все задачи</td><td>+10 points над established retrieval solutions</td></tr>
+</tbody>
+</table>
+<p>Дополнительно авторы проводят ablation study, показывающее важность обоих компонентов scoring: убирание LM score или IDF-веса ухудшает результаты.</p>
+
+<h2>5. Сильные стороны</h2>
+<ul>
+  <li><strong>Нет предварительного определения DocID.</strong> N-граммы существуют в тексте естественно — не нужна кластеризация или специальный дизайн идентификаторов.</li>
+  <li><strong>Богатая семантика идентификаторов.</strong> N-граммы несут прямую семантическую информацию (в отличие от числовых кодов), что облегчает модели задачу обобщения.</li>
+  <li><strong>FM-Index масштабируется лучше, чем trie.</strong> Компактная структура FM-Index позволяет покрывать большие корпуса без взрывного роста памяти.</li>
+  <li><strong>Принцип «идентификаторы из самих документов»</strong> оказался продуктивным: он прямо повлиял на последующие работы по дизайну identifier в GR для рекомендаций.</li>
+</ul>
+
+<h2>6. Ограничения</h2>
+<ul>
+  <li><strong>Сложность инференса.</strong> Intersection-based scoring требует агрегации результатов по множеству n-граммов — пайплайн сложнее, чем в DSI или GENRE.</li>
+  <li><strong>Зависимость от качества LM scoring.</strong> Если модель плохо оценивает вероятность n-граммов для данного запроса, итоговый retrieval деградирует.</li>
+  <li><strong>Ограниченность задачей document retrieval.</strong> N-граммы как идентификаторы работают для текстовых документов; прямой перенос на item retrieval в рекомендациях (где «документы» — товары или видео) неочевиден и требует адаптации.</li>
+  <li><strong>Зависимость от FM-Index.</strong> Построение и хранение FM-Index для большого корпуса требует дополнительной инфраструктуры.</li>
+</ul>
+
+<h2>7. Почему важно прочитать</h2>
+<p>SEAL показывает, что DocID не обязательно должны быть заранее определены и кластеризованы — можно использовать сами фрагменты документов. Это принципиальное расширение поля generative retrieval: пространство возможных идентификаторов определяется самим корпусом, а не внешней процедурой разбиения. Понимание SEAL объясняет, почему последующие работы в рекомендациях (TIGER, LETTER, GENRE-based системы) так много внимания уделяют дизайну identifier: выбор пространства идентификаторов критически влияет на качество. SEAL — третья ключевая точка в истории GR наряду с DSI и GENRE, и её чтение необходимо для понимания эволюции идей о том, что может быть «адресом» документа.</p>
+
+<p><a href="../../papers.html">&larr; К общему списку статей</a></p>
+</main>
+</body>
+</html>

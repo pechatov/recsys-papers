@@ -82,6 +82,34 @@
 <li>Baselines include GRU4Rec, SASRec, BERT4Rec and generative/SID baselines.</li>
 </ul>
 
+<h2>Детальный алгоритм SimCIT</h2>
+<p>SimCIT можно читать как замену reconstruction-first RQ-VAE tokenizer-а на contrastive tokenizer, который сразу учится делать item-коды различимыми для генеративного retrieval. Остальная TIGER-like часть остается почти стандартной: меняется способ построения item language.</p>
+<ol>
+<li><strong>Собрать multimodal item representation.</strong> Для каждого item объединяются доступные content features: текстовые поля, визуальные/POI признаки и другие signals. На AMap это особенно важно, потому что POI-каталог большой, sparse и географически неоднородный.</li>
+<li><strong>Спроецировать item в latent tokenizer space.</strong> Encoder переводит multimodal embedding в компактный вектор, который будет квантизован residual quantization layers.</li>
+<li><strong>Выполнить learnable residual quantization.</strong> На каждом уровне выбирается codeword, residual передается дальше, а итоговый identifier становится последовательностью codes. В отличие от arbitrary string ID, эти codes делят параметры между похожими item'ами.</li>
+<li><strong>Построить contrastive supervision.</strong> Positive pair связывает item representation и его quantized/reconstructed representation; negatives берутся из других item'ов batch. Temperature управляет жесткостью разделения.</li>
+<li><strong>Добавить implicit diversity regularization.</strong> Tokenizer должен быть не только discriminative, но и достаточно равномерно использовать code space, иначе generative decoder будет часто попадать в overloaded prefixes.</li>
+<li><strong>Экспортировать minimal sufficient identifier.</strong> После обучения для каждого item фиксируется SID sequence, которая содержит достаточно информации для retrieval, но не превращается в длинное текстовое описание.</li>
+<li><strong>Обучить autoregressive recommender.</strong> User histories заменяются SID sequences; модель учится генерировать next-item SID. На inference beam search возвращает candidate SIDs, которые мапятся обратно в catalog items.</li>
+<li><strong>Проверить не только Recall/NDCG.</strong> Для AMap-подобного каталога нужно смотреть code assignment distribution, temperature/batch sensitivity, cold-start POI buckets и invalid generated IDs.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    h_item = multimodal_fusion(text, image, POI_features)
+    z_item = tokenizer_encoder(h_item)
+    sid_item, z_quant = residual_quantize(z_item)
+
+for batch in items:
+    positives = similarity(h_item, decode(z_quant_item))
+    negatives = similarity(h_item, decode(z_quant_other_items))
+    loss = contrastive_loss(positives, negatives, temperature)
+         + quantization_regularization
+         + diversity_regularization
+
+train autoregressive_generator(user_history_as_SIDs, next_item_SID)
+decode with beam search and validate SID -&gt; item mapping</code></pre>
+
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
 <ul>
@@ -104,28 +132,21 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Прямой удар по tokenizer objective.</strong> Работа не меняет весь recommender, а показывает, что contrastive item tokenization может быть лучше reconstruction-only квантизации именно для retrieval.</li>
+<li><strong>Multimodal setup соответствует задаче AMap.</strong> POI и local-life items редко описываются одним текстовым полем; fusion делает SID ближе к реальному item signal.</li>
+<li><strong>Минимально достаточный identifier.</strong> Метод избегает длинного текстового decoding и сохраняет компактную SID-последовательность, пригодную для beam search.</li>
+<li><strong>Есть анализ training dynamics.</strong> Sensitivity по temperature, batch, epoch и codebook assignment помогает понять, когда contrastive loss стабилен.</li>
+<li><strong>Проверка на индустриальном масштабе.</strong> AMap dataset с миллионами users/items проверяет не только toy-quality, но и sparse POI-каталог.</li>
 </ul>
 
 <h2>Ограничения</h2>
-<p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
-<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
-<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
-<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+<li><strong>Чувствительность к negatives.</strong> In-batch negatives могут быть false negatives: похожие POI или товары оказываются искусственно разведены, если batch составлен неудачно.</li>
+<li><strong>Temperature и batch size становятся ключевыми.</strong> Слишком высокая жесткость contrastive objective может разрушать semantic sharing, слишком мягкая - оставить коды неразличимыми.</li>
+<li><strong>Multimodal fusion трудно воспроизвести.</strong> Качество зависит от того, какие AMAP/Alibaba признаки доступны, а часть industrial signals не раскрыта.</li>
+<li><strong>Не решает serving полностью.</strong> Нужны SID trie, collision handling, catalog refresh и мониторинг invalid generated IDs.</li>
+<li><strong>Риск переобучения на географию.</strong> Для POI-каталога модель может учить локальные co-occurrence shortcuts, которые плохо переносятся в другой город или временной период.</li>
 </ul>
 
 <h2>Как реализовать/проверять</h2>

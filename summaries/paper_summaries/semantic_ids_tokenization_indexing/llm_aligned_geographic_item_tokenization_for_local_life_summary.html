@@ -82,6 +82,32 @@
 <li>Backbone BGE; prompt length 512; embedding size 1024; last token hidden state as text representation.</li>
 </ul>
 
+<h2>Детальный алгоритм LGSID</h2>
+<p>LGSID делает две вещи последовательно: сначала выравнивает LLM/text embedding space с географическим preference signal, затем строит hierarchical geographic item tokens, которые generative recommender может декодировать как валидные local-life items.</p>
+<ol>
+<li><strong>Сформировать item prompt.</strong> Для каждого local-life item собираются текстовые признаки, категория, brand и географический контекст. BGE backbone читает prompt длиной до 512 tokens, а last-token hidden state используется как 1024-dimensional text representation.</li>
+<li><strong>Обучить reward model.</strong> Двухслойный MLP с sigmoid оценивает, насколько item подходит пользовательскому/geographic context. Для каждого positive используются 15 negatives, чтобы модель видела list-wise contrast между близкими и нерелевантными POI.</li>
+<li><strong>Построить preference pairs для G-DPO.</strong> Positive/negative пары фильтруются по co-occurrence score; domain-mixed DPO оставляет пары выше threshold 1200, чтобы выравнивание опиралось на устойчивые geographic preferences, а не на случайные совпадения.</li>
+<li><strong>Fine-tune LLM embeddings через G-DPO.</strong> Используется LoRA rank 8, dropout 0.05, fine-tuning key/value layers и in-batch contrastive learning. Цель - не общий semantic similarity, а embedding space, где локально совместимые items ближе.</li>
+<li><strong>Построить hierarchical geographic tokenizer.</strong> Выровненные embeddings квантуются в hierarchy: coarse codes должны отражать регион/район/крупную semantic zone, fine codes различают близкие items внутри зоны.</li>
+<li><strong>Обучить discriminative и generative задачи.</strong> Discriminative setup считает AUC на positives и downsampled negatives 1:4; generative setup использует leave-one-out и Hit/NDCG@K по сгенерированным identifiers.</li>
+<li><strong>Проверить geography-aware sanity checks.</strong> Визуализации и case studies должны показать, что items с близкими codes действительно образуют geographic clusters, а не только category clusters.</li>
+</ol>
+
+<pre><code>for item in local_life_catalog:
+    text_repr[item] = BGE(prompt(item), max_len=512).last_hidden_state
+
+reward_model = train_MLP(positive_items, sampled_negatives_per_positive=15)
+pairs = filter_by_cooccurrence(preference_pairs, threshold=1200)
+aligned_encoder = G_DPO_finetune(BGE, pairs, reward_model, LoRA_rank=8)
+
+for item in catalog:
+    z = aligned_encoder(prompt(item))
+    geo_sid[item] = hierarchical_quantize(z, geographic_constraints)
+
+train_generator(user_history_as_geo_SIDs, next_item_geo_SID)
+decode only valid geo_sid paths and evaluate Hit/NDCG plus AUC slices</code></pre>
+
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
 <ul>
@@ -104,28 +130,21 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Выравнивает LLM space под local-life preference.</strong> Метод не предполагает, что generic text embedding уже знает расстояние, районность и локальный intent.</li>
+<li><strong>Geographic hierarchy делает SID интерпретируемым.</strong> Coarse/fine levels можно проверять по карте и neighborhood clusters, а не только по Recall.</li>
+<li><strong>Reward model и G-DPO дают явный training signal.</strong> Positive с 15 negatives и co-occurrence filtering превращают географическую совместимость в обучаемый preference objective.</li>
+<li><strong>Масштаб датасета близок к production.</strong> 50M samples, 19M users и 2.3M items проверяют метод на плотном локальном каталоге.</li>
+<li><strong>Есть две проверки качества.</strong> Discriminative AUC и generative Hit/NDCG помогают отделить representation alignment от качества decoder-а.</li>
 </ul>
 
 <h2>Ограничения</h2>
-<p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
-<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
-<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
-<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+<li><strong>Сильная зависимость от внутренних geo signals.</strong> Co-occurrence threshold, reward labels и Kuaishou local-life taxonomy трудно перенести в каталог без похожих логов.</li>
+<li><strong>География может конфликтовать с intent.</strong> Близкие места не всегда взаимозаменяемы: brand, price и occasion могут быть важнее distance.</li>
+<li><strong>G-DPO добавляет чувствительные гиперпараметры.</strong> LoRA rank, dropout, negative sampling и threshold 1200 задают trade-off между semantic alignment и overfitting.</li>
+<li><strong>Hierarchical tokenizer может закрепить старую карту спроса.</strong> При открытии новых районов, сезонных событий или изменении traffic patterns codes устаревают.</li>
+<li><strong>Private dataset ограничивает воспроизводимость.</strong> Масштаб убедителен, но внешнему исследователю трудно проверить reward model и geographic clusters.</li>
 </ul>
 
 <h2>Как реализовать/проверять</h2>

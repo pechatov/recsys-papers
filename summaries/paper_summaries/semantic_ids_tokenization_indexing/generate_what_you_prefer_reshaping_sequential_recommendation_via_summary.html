@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Generate What You Prefer: Reshaping Sequential Recommendation via Guided Diffusion</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
@@ -84,6 +95,35 @@ th { background: var(--soft); text-align: left; }
 <li>No sampled negative classification loss.</li>
 <li>Similarity retrieval objective at inference.</li>
 </ul>
+<h3>Подробная схема алгоритма DreamRec</h3>
+<p>DreamRec не строит discrete SID. Его алгоритм полезен как контраст к SID-подходам: генератор создает continuous oracle vector следующего item'а, а конкретный catalog item выбирается nearest-neighbor search по embedding table.</p>
+<ol>
+<li><strong>Подготовить item embedding space.</strong> Для каждого item хранится вектор \(\mathbf{e}_i\). Качество всего метода ограничено тем, насколько это пространство отражает заменяемость и последовательные предпочтения.</li>
+<li><strong>Закодировать историю.</strong> Transformer encoder получает последовательность прошлых item'ов и строит condition vector \(\mathbf{h}_u\), описывающий текущий user intent.</li>
+<li><strong>Forward diffusion.</strong> Target embedding следующего item'а \(\mathbf{e}_{t+1}\) постепенно зашумляется до Gaussian noise на случайном timestep \(s\).</li>
+<li><strong>Conditional denoising.</strong> Denoising network получает noisy vector, timestep и \(\mathbf{h}_u\), затем предсказывает noise или clean embedding. Loss учит восстанавливать target representation без sampled negatives.</li>
+<li><strong>Inference из шума.</strong> Модель начинает с Gaussian vector и делает несколько reverse diffusion шагов, каждый раз conditioning on user history. На выходе получается oracle item vector \(\hat{\mathbf{e}}\).</li>
+<li><strong>Catalog projection.</strong> \(\hat{\mathbf{e}}\) не обязан совпадать с реальным item. Поэтому финальный candidate set строится через ANN/top-K nearest neighbors в item embedding table.</li>
+</ol>
+<pre><code>for user_sequence in training:
+    history, target_item = split_last(user_sequence)
+    h = transformer_encoder(history)
+    x0 = item_embedding[target_item]
+
+    s = sample_diffusion_step()
+    noise = normal_like(x0)
+    xs = sqrt(alpha_bar[s]) * x0 + sqrt(1 - alpha_bar[s]) * noise
+
+    predicted = denoiser(xs, step=s, condition=h)
+    loss = denoising_loss(predicted, noise_or_x0)
+    update(transformer_encoder, denoiser)
+
+for request in serving:
+    h = transformer_encoder(request.history)
+    x = gaussian_noise()
+    for s in reversed(diffusion_steps):
+        x = denoise_step(x, s, condition=h)
+    candidates = ANN_search(item_embedding_table, query=x, top_k=K)</code></pre>
 <h2>эксперименты</h2>
 <p>Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.</p>
 <p>При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.</p>
@@ -106,24 +146,22 @@ th { background: var(--soft); text-align: left; }
 <li>Analysis of negative-sampling-free preference modeling.</li>
 </ul>
 <h2>сильные стороны</h2>
-<p>Сильная сторона работы в том, что она уточняет один конкретный bottleneck SID/GR систем и предлагает измеримый механизм его уменьшения.</p>
-<p>Ниже — основные инженерные плюсы.</p>
+<p>Сильные стороны DreamRec в том, что он меняет саму форму обучения sequential recommender.</p>
 <ul>
-<li>Avoids negative sampling pitfalls.</li>
-<li>Models preference in continuous item space.</li>
-<li>Conceptually clean oracle-item interpretation.</li>
-<li>Can exploit high-quality item embeddings.</li>
-<li>Useful baseline against SID compression.</li>
+<li><strong>Убирает sampled-negative classification.</strong> Модель не тратит обучение на easy negatives и не страдает от false negatives в sampled softmax setting.</li>
+<li><strong>Генерирует preference target в continuous space.</strong> Oracle vector может описывать направление интереса пользователя до привязки к конкретному item, что полезно при плотном embedding space.</li>
+<li><strong>Простой смысл inference.</strong> Reverse diffusion создает запрос к ANN index; это проще отлаживать, чем invalid SID sequences и constrained decoding.</li>
+<li><strong>Хороший counterfactual baseline для SID работ.</strong> Если continuous generation выигрывает у SID, значит discrete compression действительно теряет полезную информацию.</li>
+<li><strong>Можно использовать сильные pretrained item embeddings.</strong> Метод напрямую выигрывает от улучшения content/collaborative representation без смены decoding vocabulary.</li>
 </ul>
 <h2>ограничения</h2>
-<p>Ограничения в основном связаны с воспроизводимостью, масштабом, стоимостью inference/training или переносимостью assumptions на другой каталог.</p>
-<p>Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.</p>
+<p>Ограничения DreamRec в первую очередь связаны с тем, что continuous oracle vector нужно проецировать обратно на дискретный каталог.</p>
 <ul>
-<li>Requires ANN/nearest-neighbor retrieval at inference.</li>
-<li>Latency grows with denoising steps.</li>
-<li>Quality depends on item embedding space.</li>
-<li>Generated oracle may fall between catalog items.</li>
-<li>Does not produce compact semantic IDs.</li>
+<li><strong>ANN остается обязательным serving компонентом.</strong> DreamRec не заменяет retrieval index генерацией валидного ID; он генерирует vector query к item table.</li>
+<li><strong>Latency зависит от числа denoising steps.</strong> Greedy one-pass decoder SID-системы могут быть быстрее, если diffusion требует много reverse steps.</li>
+<li><strong>Oracle vector может попасть между item'ами.</strong> Ближайший сосед не обязательно является лучшим recommendation, если embedding geometry плохо калибрована.</li>
+<li><strong>Нет компактного semantic identifier artifact.</strong> Метод не дает token map, trie, prefix analysis или code utilization diagnostics.</li>
+<li><strong>Качество полностью завязано на embedding space.</strong> Если item embeddings переобучены на popularity или плохо отражают substitutability, diffusion будет красиво генерировать неправильное пространство.</li>
 </ul>
 <h2>как реализовать/проверять</h2>
 <p>Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.</p>

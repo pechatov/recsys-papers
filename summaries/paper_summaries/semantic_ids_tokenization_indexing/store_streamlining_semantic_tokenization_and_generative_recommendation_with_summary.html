@@ -81,6 +81,17 @@ th { background: var(--soft); text-align: left; }
 <p>На inference STORE строит code tree, который содержит все валидные token combinations. При beam search logits невалидных branches маскируются, чтобы модель генерировала только существующие item identifiers. Это аналог constrained decoding в generative retrieval.</p>
 <p>Авторы противопоставляют conditional beam search более мягким ограничениям LC-Rec: soft constraints могут оставить path, который не соответствует реальному item; code-tree masking делает generated identifier валидным по конструкции.</p>
 
+<h2>7.1. Пошаговый алгоритм STORE</h2>
+<ol>
+<li><strong>Сформировать instruction data для tokenizer-а.</strong> Item text превращается в prompts text-to-token, а semantic token slots учатся как dense outputs одного LLM backbone.</li>
+<li><strong>Обучить dense tokenizer.</strong> Cascaded attention mask и self-supervised tasks заставляют LLM создавать token embeddings, адаптированные к recommendation domain, а не просто повторять frozen text encoder.</li>
+<li><strong>Дискретизировать dense tokens.</strong> PCA уменьшает размерность 1024D representations, k-means превращает dense slots в discrete semantic token IDs.</li>
+<li><strong>Добавить token-to-text reconstruction.</strong> По discrete/dense semantic tokens LLM восстанавливает item content, чтобы снизить information loss и сохранить связь token space с текстом.</li>
+<li><strong>Обучить token-to-token recommender.</strong> User history как sequence of semantic tokens подается тому же LLM, target - tokens следующего item.</li>
+<li><strong>Добавить text-token alignment во время recommendation tuning.</strong> Auxiliary task не дает LLM воспринимать semantic tokens как произвольные новые symbols без content grounding.</li>
+<li><strong>Инференс через code tree.</strong> Conditional beam search маскирует невалидные branches и возвращает только token paths, существующие в item catalog.</li>
+</ol>
+
 <h2>8. Экспериментальный setup</h2>
 <p>STORE оценивается на двух real-world datasets:</p>
 <table>
@@ -120,7 +131,7 @@ th { background: var(--soft); text-align: left; }
 <li>Метод применим не только к retrieval, но и к scoring/CTR-like setup.</li>
 </ul>
 
-<h2>13. Ограничения</h2>
+<h2>13. Слабые стороны и ограничения</h2>
 <ul>
 <li><strong>Не полностью end-to-end.</strong> k-means clustering остается отдельным offline step, поэтому discrete token map все равно нужно версионировать.</li>
 <li><strong>LLM cost.</strong> Единый LLM упрощает архитектуру концептуально, но может быть дороже, чем маленький tokenizer + recommender.</li>

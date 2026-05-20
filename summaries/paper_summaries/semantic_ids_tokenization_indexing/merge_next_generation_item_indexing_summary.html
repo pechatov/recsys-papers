@@ -83,12 +83,107 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <h2>4. Метод и архитектура</h2>
 
-<p>MERGE обрабатывает batch items с collaborative embeddings. Для каждого item ищется ближайший cluster и similarity. Если similarity выше threshold tau, cluster обновляется через EMA; если ниже, item попадает в unmatched set. В unmatched set строится graph по pairwise similarities выше tau', connected components через union-find становятся candidate clusters, если их размер не меньше m. Fill-Then-Append сначала заполняет reset slots, потом расширяет codebook, а одиночные unmatched items recycle'ятся.</p>
+<p>MERGE - это не еще один вариант VQ-loss, а online indexing algorithm для потока items. На вход он получает поток item embeddings и prior tags, на выходе поддерживает hierarchical item index: fine-grained codebook \(\mathcal{Q}\), coarse-grained codebook \(\mathcal{P}\), mapping item -> cluster и обратный mapping cluster -> items для retrieval.</p>
+
+<p>Идея в одном предложении: вместо того чтобы всегда насильно назначать item ближайшему centroid, MERGE сначала проверяет качество match, обновляет только хорошие clusters, а для плохо совпавших items создает новые clusters из самих данных.</p>
+
+<h3>4.1. Состояние, которое хранит алгоритм</h3>
+
+<ul>
+<li>\(\mathcal{Q} = \{\mathbf{q}_k\}_{k=1}^{K}\) - fine codebook, где каждый \(\mathbf{q}_k\) является embedding'ом cluster'а. Размер \(K\) динамический: codebook может расширяться.</li>
+<li>\(\mathbf{S}_k\) - EMA-сумма embeddings items, назначенных cluster'у \(k\).</li>
+<li>\(N_k\) - EMA-count, то есть сглаженная occupancy cluster'а \(k\).</li>
+<li>\(\mathcal{Q}^{zero}\) - reset slots: cluster entries, которые занулены и могут быть переиспользованы новыми clusters.</li>
+<li>Очередь recycled items - items, которые пока не смогли ни хорошо matched, ни сформировать достаточно большой новый cluster.</li>
+<li>Coarse codebook \(\mathcal{P}\), который строится поверх \(\mathcal{Q}\) после стабилизации fine clusters.</li>
+</ul>
+
+<h3>4.2. Основной цикл MERGE</h3>
+
+<ol>
+<li><strong>Сформировать batch.</strong> Items группируются по prior tags из multimodal-информации, чтобы внутри batch были более однородные объекты. В статье используется около 100 tag categories. Это инженерный шаг, но он важен: без него в одном batch могут смешиваться разные semantic regions, и новые clusters будут шумными.</li>
+<li><strong>Получить embeddings.</strong> Для каждого item берется 64-dimensional collaborative embedding из retriever model. Эти embeddings содержат ID-features, author-related features, statistical signals и content-aware attributes.</li>
+<li><strong>Найти nearest existing cluster.</strong> Для item \(i\) считается cosine similarity до всех current codewords и выбирается лучший cluster:
+<div class="math">\[
+k_i^* = \arg\max_k \operatorname{sim}(\mathbf{e}_i, \mathbf{q}_k), \qquad
+s_i^* = \max_k \operatorname{sim}(\mathbf{e}_i, \mathbf{q}_k).
+\]</div></li>
+<li><strong>Принять или отклонить assignment.</strong> Если \(s_i^* \ge \tau\), item считается matched и попадает в \(\mathcal{B}^+\). Если \(s_i^* < \tau\), item не втискивается в плохой cluster и попадает в \(\mathcal{B}^-\). Это главный поворот относительно VQ.</li>
+<li><strong>Обновить matched clusters.</strong> Для каждого cluster \(k\) собираются matched items \(\mathcal{B}_k^+\). Затем обновляются EMA-переменные:
+<div class="math">\[
+\mathbf{S}_k \leftarrow \gamma \mathbf{S}_k + (1-\gamma)\sum_{i\in \mathcal{B}_k^+}\mathbf{e}_i,\qquad
+N_k \leftarrow \gamma N_k + (1-\gamma)|\mathcal{B}_k^+|.
+\]</div>
+Новый centroid задается как \(\mathbf{q}_k \leftarrow \mathbf{S}_k / N_k\). EMA делает обновления не дергаными: cluster адаптируется к stream drift, но не разваливается от одного batch.</li>
+<li><strong>Построить новые clusters из unmatched items.</strong> Для \(\mathcal{B}^-\) считаются pairwise similarities. Между двумя items проводится edge, если similarity выше \(\tau'\). Далее Union-Find находит connected components. Каждая component mean-pooled в candidate cluster \(\mathbf{u}\).</li>
+<li><strong>Отфильтровать слабые candidate clusters.</strong> Candidate cluster становится valid только если его размер не меньше \(m\). Маленькие components считаются недостаточно надежными: их items уходят в recycling queue и ждут будущих batches.</li>
+<li><strong>Добавить valid clusters в codebook через Fill-Then-Append.</strong> Сначала valid clusters заполняют reset slots \(\mathcal{Q}^{zero}\), чтобы сохранить относительный порядок codebook и не плодить лишний churn. Если reset slots не хватило, оставшиеся clusters append'ятся в конец \(\mathcal{Q}\). Для новых clusters инициализируются \(\mathbf{S}_k\) и \(N_k\).</li>
+<li><strong>Параллельно контролировать occupancy.</strong> Каждый cluster классифицируется по \(N_k\): underfilled, growing или stable. Underfilled clusters reset'ятся сразу. Growing clusters получают окно наблюдения \(M\); если за \(M\) steps они не стали stable, их тоже reset'ят. Так MERGE чистит dead или слишком слабые clusters.</li>
+<li><strong>Построить coarse hierarchy.</strong> После fine codebook \(\mathcal{Q}\) MERGE строит coarse codebook \(\mathcal{P}\). Пары prototypes merge'ятся по affinity score:
+<div class="math">\[
+w(\mathbf{p}_x,\mathbf{p}_y)=\operatorname{sim}(\mathbf{p}_x,\mathbf{p}_y)-\lambda \min(N_x,N_y).
+\]</div>
+Первый член тянет похожие clusters вместе, второй штрафует merge крупных clusters, чтобы не разрушать uniformity. Merged prototype считается count-weighted average. Затем silhouette pruning выкидывает плохо сидящие fine prototypes, а pruned/unmerged prototypes переотправляются на reconnection. В статье строят один coarse layer, хотя процедуру можно рекурсивно повторять.</li>
+<li><strong>Использовать index в retrieval serving.</strong> В Trinity-style pipeline по long-term user behavior строится histogram cluster distributions. Система выбирает relevant clusters, достает candidate items через cluster -> items mapping, затем передает кандидатов в downstream retriever/reranker, pre-ranking и ranking.</li>
+</ol>
 <img src="../../assets/merge/framework.png" alt="MERGE framework" width="760">
 
 <h2>5. Objective и алгоритм</h2>
 
-<p>Objective не записан как один differentiable loss; это online indexing algorithm с несколькими invariants: item-to-cluster similarity должна быть высокой, occupancy - в рабочем диапазоне, cluster-to-cluster similarity - низкой. EMA-переменные S_k и N_k сглаживают обновления. Occupancy monitoring делит clusters на underfilled, growing и stable; underfilled/growing-too-long slots reset'ятся. Fine-to-coarse merging строит hierarchy для efficient retrieval.</p>
+<p>Objective не записан как один differentiable loss; это набор operational invariants, которые алгоритм поддерживает во время streaming update:</p>
+
+<ul>
+<li><strong>Accuracy invariant:</strong> item назначается cluster'у только при достаточно высокой cosine similarity \(s_i^* \ge \tau\).</li>
+<li><strong>Uniformity invariant:</strong> cluster occupancy не должна уходить в extreme skew; underfilled и stagnant growing clusters reset'ятся.</li>
+<li><strong>Separation invariant:</strong> новые clusters создаются только из items, которые не похожи на existing codebook, а coarse merging использует pruning, чтобы не смешивать плохо совместимые fine prototypes.</li>
+<li><strong>Stability invariant:</strong> centroids обновляются EMA, а reset slots переиспользуются через Fill-Then-Append, чтобы уменьшить churn индекса.</li>
+</ul>
+
+<p>Практические hyperparameters из appendix: \(\tau=0.88\), \(\gamma=0.9993\), \(\tau'=0.83\), \(\lambda=0.01\), \(M=80\), \(m=4\), \(\varepsilon_1=0.25\), \(\varepsilon_2=0.2644\). Эти значения важны как ориентир, но не как универсальная настройка: они завязаны на embedding model, traffic mix и масштаб платформы.</p>
+
+<h3>5.1. Псевдокод на уровне реализации</h3>
+
+<pre><code>initialize Q = empty codebook
+initialize recycled_queue = empty
+
+for each streaming update:
+    B = tag_based_batch(new_items + recycled_queue)
+    E = retriever_embeddings(B)
+
+    matched = []
+    unmatched = []
+
+    for item i with embedding e_i:
+        k_star, s_star = nearest_codeword(e_i, Q, cosine)
+        if s_star >= tau:
+            matched.append((i, k_star, e_i))
+        else:
+            unmatched.append((i, e_i))
+
+    for each cluster k:
+        B_k = embeddings assigned to k from matched
+        S_k = gamma * S_k + (1 - gamma) * sum(B_k)
+        N_k = gamma * N_k + (1 - gamma) * len(B_k)
+        if N_k > 0:
+            q_k = S_k / N_k
+
+    U = union_find_components(unmatched, edge_if_cosine_ge_tau_prime)
+    valid = [mean_pool(component) for component in U if size(component) >= m]
+    recycled_queue = items from components with size < m
+
+    Q = fill_then_append(Q, valid, reset_slots=Q_zero)
+
+    for each cluster k in Q:
+        if N_k < epsilon_1:
+            reset(k)
+        elif epsilon_1 <= N_k < epsilon_2 for more than M steps:
+            reset(k)
+        else:
+            keep(k)
+
+periodically:
+    P = build_coarse_codebook(Q)
+    publish hierarchical index {P, Q} and mappings to serving</code></pre>
 
 <h2>6. Эксперименты и метрики</h2>
 
@@ -103,25 +198,41 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <h2>8. Сильные стороны</h2>
 
 <ul>
-<li>Сильная production-мотивация: streaming, skew, occupancy и online A/B.</li>
+<li><strong>Решает правильную production-проблему.</strong> Статья бьет не по абстрактному reconstruction loss, а по трем понятным failure modes индекса: плохой item-to-cluster match, skewed occupancy и слабое разделение clusters.</li>
 
-<li>Отказ от forced assignment решает корневую проблему VQ в non-stationary catalog.</li>
+<li><strong>Отказ от forced assignment.</strong> Самое сильное изменение - item может быть не назначен никуда, если ближайший cluster плохой. Это предотвращает загрязнение старых clusters новыми semantic regions.</li>
 
-<li>Union-Find cluster creation и recycling просты и масштабируемы.</li>
+<li><strong>Streaming-native behavior.</strong> Codebook не фиксирован: MERGE умеет создавать новые clusters, переиспользовать reset slots и постепенно адаптироваться к changing catalog.</li>
 
-<li>Индексу задаются понятные health metrics, которые можно мониторить онлайн.</li>
+<li><strong>Простые building blocks.</strong> EMA, threshold matching, Union-Find, occupancy reset и greedy merging проще обслуживать, чем тяжелую end-to-end differentiable SID-систему.</li>
+
+<li><strong>Хорошая диагностика индекса.</strong> I2C similarity, cluster size distribution, VV-bucket distribution и C2C similarity напрямую показывают, чем индекс лучше или хуже VQ.</li>
+
+<li><strong>Есть online A/B и path metrics.</strong> Работа не ограничивается offline plots: MERGE проверен в Trinity-style serving pipeline, а single-path metrics показывают, что вклад идет именно через MERGE retrieval path.</li>
+
+<li><strong>Hierarchy строится после fine clustering.</strong> В отличие от residual-style approaches, MERGE сначала получает stable fine clusters, а потом объединяет их в coarse layer. Это снижает раннее накопление ошибок в hierarchy.</li>
 </ul>
 
-<h2>9. Ограничения</h2>
+<h2>9. Слабые стороны и ограничения</h2>
 
 <ul>
-<li>Метод зависит от качества collaborative embeddings и tag-based batch formation.</li>
+<li><strong>Сильная зависимость от upstream embeddings.</strong> Если retriever embeddings плохо отражают реальные user-item relations, MERGE будет аккуратно кластеризовать уже искаженное пространство.</li>
 
-<li>Thresholds tau/tau', m, EMA gamma и occupancy bounds требуют настройки под поток.</li>
+<li><strong>Много чувствительных hyperparameters.</strong> \(\tau\), \(\tau'\), \(m\), \(\gamma\), \(\varepsilon_1\), \(\varepsilon_2\), \(M\), \(\lambda\) задают разные trade-offs. Для другого traffic mix их придется заново тюнить.</li>
 
-<li>Dynamic codebook усложняет backward compatibility item mappings.</li>
+<li><strong>Operational complexity выше, чем у VQ.</strong> Нужно поддерживать reset slots, recycled queue, EMA state, versioning codebook, item -> cluster audit trail и безопасную публикацию mappings в serving.</li>
 
-<li>Работа больше про indexing, чем про end-to-end generative SID training.</li>
+<li><strong>Tag-based batching может внести bias.</strong> Prior tags ускоряют convergence, но если taxonomy устарела или плохо отражает viewing behavior, clusters могут наследовать этот bias.</li>
+
+<li><strong>Нет public reproducibility.</strong> Evaluation построен на закрытых platform-specific данных с hundreds of millions candidates. Это честно для industrial paper, но сложно независимо воспроизвести.</li>
+
+<li><strong>Core online gains умеренные.</strong> AAD +0.0081%, AAH +0.0546%, WatchTime +0.1006%. На масштабе платформы это важно, но эффект не выглядит крупным в относительных процентах.</li>
+
+<li><strong>Не все срезы улучшаются.</strong> В online table high-VV bucket \(100k,\infty\) падает на -2.65%, freshness 12-24h и 24-72h тоже отрицательные. Это показывает trade-off в сторону low-VV/fresh exposure.</li>
+
+<li><strong>Пока не generative retrieval.</strong> Авторы явно пишут, что текущая application ограничена traditional retrieval; использование MERGE как token space для generative retrieval оставлено на future work.</li>
+
+<li><strong>Pairwise step для unmatched items может стать дорогим.</strong> Union-Find сам дешевый, но построение edges по pairwise similarities внутри большого unmatched batch требует контроля размера batch и ANN/approximation в production.</li>
 </ul>
 
 <h2>10. Как реализовать и проверять</h2>

@@ -90,6 +90,40 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective instruction tuning строится на нескольких форматах: модель учится понимать TIDs, связывать их с item metadata и генерировать следующий item через term identifiers. Grounding objective не является обычным softmax по item IDs; после генерации terms применяется matching function. Fuzzy grounding использует token/term overlap и similarity, чтобы повысить valid hit rate. Важная идея: LLM остается в своем словаре, а item catalog получает контролируемый standardized layer.</p>
 
+<h3>5.1. Пошаговый алгоритм GRLM</h3>
+<p>GRLM заменяет искусственный SID vocabulary на controlled textual identifier layer. Поэтому ключевые artifacts - normalized term ontology, item -> TID index и elastic grounding function.</p>
+<ol>
+<li><strong>Context-aware Term Generation.</strong> Для каждого item raw metadata преобразуется в стандартизированный набор terms. Terms должны быть globally consistent и locally discriminative.</li>
+<li><strong>Построить term index.</strong> Для каждого item сохраняется normalized TID set; строится inverted index term -> items и exact index full TID set -> item.</li>
+<li><strong>Integrative Instruction Fine-tuning.</strong> LLM обучается на задачах term understanding, item metadata grounding и sequential recommendation через TID generation.</li>
+<li><strong>Генерация next identifier.</strong> По user history модель генерирует набор terms следующего item, оставаясь в native LLM vocabulary.</li>
+<li><strong>Elastic Identifier Grounding.</strong> Сначала выполняется exact match generated TID set. Если его нет, fuzzy matching считает overlap/similarity с catalog TIDs и выбирает candidates.</li>
+<li><strong>Оценка valid/direct hit.</strong> Помимо Recall/NDCG обязательно измеряются valid rate, direct hit rate и ambiguous grounding rate.</li>
+</ol>
+<pre><code>for item in catalog:
+    tid_terms = context_aware_term_generation(item.metadata, global_rules)
+    tid_terms = normalize_terms(tid_terms)
+    item_tid[item] = tid_terms
+    exact_index[tid_terms].append(item)
+    for term in tid_terms:
+        inverted_index[term].append(item)
+
+instruction_tuning:
+    train LLM on:
+        metadata_to_tid
+        tid_to_metadata
+        user_history_to_next_tid
+        term_internalization_tasks
+
+serving:
+    generated_terms = LLM.generate_terms(user_history)
+    normalized = normalize_terms(generated_terms)
+    if normalized in exact_index:
+        candidates = exact_index[normalized]
+    else:
+        candidates = fuzzy_grounding(normalized, inverted_index, item_tid)
+    rank candidates and report valid_hit plus recommendation metrics</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты включают in-domain datasets Beauty, Sports, Toys и cross-domain pairs Sports-Clothing, Phones-Electronics. Метрики: Recall@5/10, NDCG@5/10, valid rate и direct hit rate. В in-domain таблице GRLM улучшает best baseline: например на Beauty Recall@10 0.0846 и NDCG@10 0.0506; на Sports Recall@10 0.0539 и NDCG@10 0.0313; на Toys Recall@10 0.0942 и NDCG@10 0.0561. Cross-domain gains особенно крупные, местами improvement превышает 50-100% по Recall@5/10. Hallucination analysis показывает высокий valid/direct hit rate.</p>

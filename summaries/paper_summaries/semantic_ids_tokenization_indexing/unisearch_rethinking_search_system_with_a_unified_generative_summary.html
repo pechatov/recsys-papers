@@ -83,6 +83,35 @@
   <li>SPO uses reward system plus clicks/likes/downloads/watch time.</li>
   <li>KL-like stability prevents catastrophic deviation.</li>
 </ul>
+<h2>Детальный алгоритм UniSearch</h2>
+<p>UniSearch заменяет cascaded search не одним decoder-ом, а совместным обучением Search Generator, Video Encoder, SID quantizer и preference optimization. Алгоритм важен именно как связка training и serving: valid-path trie, TensorRT/KV-cache и SPO входят в production viability.</p>
+<ol>
+  <li><strong>Закодировать videos.</strong> BERT-like Video Encoder читает multimodal/text/visual/statistical features и строит item embeddings для live/video pools.</li>
+  <li><strong>Дискретизировать items через VQ-VAE.</strong> Item embeddings переводятся в k-level semantic IDs. SID должен быть пригоден для trie decoding и обратного mapping в item.</li>
+  <li><strong>Обучить Search Generator.</strong> BART-like encoder-decoder получает query/user context и генерирует SID tokens релевантных items.</li>
+  <li><strong>Добавить coarse-to-fine learning.</strong> Модель учится сначала более грубым semantic levels, затем fine levels; это облегчает задачу, но требует контроля path collapse.</li>
+  <li><strong>Добавить residual contrastive learning.</strong> RCL выравнивает query residual components и item residual components, чтобы SID levels были complementary, а не дублировали друг друга.</li>
+  <li><strong>Запустить constrained decoding.</strong> Trie service ограничивает beam только валидными SID paths; в статье valid path rate растет с 51.3% до 99.8%.</li>
+  <li><strong>Оптимизировать Search Preference Optimization.</strong> SPO использует reward system и feedback clicks/likes/downloads/watch time, но KL-like stability удерживает model от catastrophic deviation.</li>
+  <li><strong>Deploy с serving оптимизациями.</strong> TensorRT, KV-cache и pool-specific serving нужны, чтобы generative architecture выдержала live и billion-scale short-video search.</li>
+</ol>
+<pre><code>video_embeddings = VideoEncoder(multimodal_video_features)
+sid_map = VQVAE_quantize(video_embeddings, levels=k)
+
+for batch in search_logs:
+    query_context = encode_query_user_context(batch)
+    target_sid = sid_map[clicked_or_relevant_item]
+    loss_gen = autoregressive_sid_loss(SearchGenerator, query_context, target_sid)
+    loss_cf = coarse_to_fine_loss(target_sid)
+    loss_rcl = residual_contrastive_loss(query_context, video_embeddings, sid_map)
+    update(loss_gen + lambda_cf * loss_cf + lambda_rcl * loss_rcl)
+
+for spo_batch in online_feedback:
+    generated = constrained_generate(SearchGenerator, spo_batch.query, trie=sid_trie)
+    reward = reward_system(generated, clicks_likes_downloads_watchtime)
+    update(SPO_loss(generated, reward) + KL_stability_penalty)
+
+serve with trie + TensorRT + KV_cache</code></pre>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для UniSearch: Rethinking Search System with a Unified Generative Architecture качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -114,15 +143,19 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Strongest production evidence among papers.</li>
-  <li>Joint tokenization/generation directly attacks objective mismatch.</li>
-  <li>Includes serving details, not just model metrics.</li>
+  <li><strong>Сильная production evidence.</strong> 7-day A/B on 10% traffic и отдельные live/video results делают работу ближе к реальному search replacement.</li>
+  <li><strong>Joint tokenization/generation атакует objective mismatch.</strong> Video Encoder, SID quantizer и Search Generator обучаются как связанная система.</li>
+  <li><strong>Constrained serving раскрыт явно.</strong> Trie, TensorRT и KV-cache показывают, как generative search доводится до production latency.</li>
+  <li><strong>RCL улучшает complementarity SID levels.</strong> Это важнее простой VQ-VAE квантизации, где levels могут дублировать signal.</li>
+  <li><strong>SPO связывает offline generation с online feedback.</strong> Clicks/likes/downloads/watch time используются после supervised phase.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Point-wise beam generation limits list diversity.</li>
-  <li>Complex online system required.</li>
-  <li>Private data and reward definitions limit reproducibility.</li>
+  <li><strong>Point-wise beam generation ограничивает diversity.</strong> Модель генерирует candidates, но не оптимизирует listwise slate как GFN-style подходы.</li>
+  <li><strong>Система сложная.</strong> Нужны Video Encoder, VQ-VAE, generator, trie service, SPO loop, TensorRT/KV-cache и online reward plumbing.</li>
+  <li><strong>Private reward definitions ограничивают воспроизводимость.</strong> TPC/CTR/CQR/PFC/VPD/PVD/LPC завязаны на Kuaishou product semantics.</li>
+  <li><strong>Coarse-to-fine может вызвать path collapse.</strong> Ablation прямо указывает, что CF полезен, но требует RCL/контроля.</li>
+  <li><strong>Каталог и traffic нестабильны.</strong> Live pool и 1B short-video pool требуют постоянного refresh SID/trie, иначе valid generation не гарантирует freshness.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

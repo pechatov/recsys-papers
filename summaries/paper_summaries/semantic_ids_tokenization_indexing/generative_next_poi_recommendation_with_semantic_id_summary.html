@@ -96,6 +96,37 @@ timestamps.</p>
 time.</p>
 <p>Авторы также используют data augmentation: next POI task
 может заменяться fill-in-the-blank task.</p>
+<h2>Пошаговый алгоритм GNPR-SID</h2>
+<p>GNPR-SID состоит из offline tokenization POI catalog и supervised fine-tuning LLM на последовательностях посещений. В отличие от обычного item SID, здесь после генерации нужно дополнительно проверять spatial/time feasibility.</p>
+<ol>
+<li><strong>Собрать POI features.</strong> Для каждого места объединяются category/text attributes, coordinates и collaborative check-in patterns.</li>
+<li><strong>Обучить POI encoder.</strong> Semantic и collaborative signals переводятся в общий embedding, пригодный для residual quantization.</li>
+<li><strong>Построить SID через RQ-VAE.</strong> Несколько codebooks последовательно кодируют residual; итоговый SID является compositional representation POI.</li>
+<li><strong>Добавить diversity loss.</strong> Weight <code>lambda</code> подбирается по Unique, Collision и Acc@1: задача не просто максимизировать уникальность, а избежать collapse без разрушения semantic grouping.</li>
+<li><strong>Сериализовать user trajectory.</strong> История POI SIDs и timestamp tokens превращается в prompt для LLM; augmentation добавляет fill-in-the-blank variants.</li>
+<li><strong>Fine-tune LLM.</strong> Target - SID следующего POI. Inference генерирует SID, который мапится на catalog POI и фильтруется по доступности/географии.</li>
+</ol>
+<pre><code>for poi in catalog:
+    semantic = encode_text_category(poi)
+    collaborative = encode_checkin_patterns(poi)
+    embedding = fuse(semantic, collaborative, coordinates=poi.location)
+    sid[poi] = rq_vae_quantize(embedding)
+
+train_quantizer:
+    loss = reconstruction_loss(poi_embedding, reconstructed_embedding)
+         + lambda_div * diversity_loss(sid_assignments)
+    update(encoder, rq_vae_codebooks)
+
+for trajectory in user_checkins:
+    prompt = format_history([sid[poi] for poi in trajectory.history], timestamps)
+    target = sid[trajectory.next_poi]
+    loss = llm_generation_loss(prompt, target)
+    update(LLM)
+
+serving:
+    generated_sid = LLM.generate(history_prompt)
+    poi = sid_to_poi[generated_sid]
+    return spatial_time_filter(poi, user_context)</code></pre>
 <h2>Эксперименты и метрики</h2>
 <p>Датасеты: NYC, TKY и CA.</p>
 <p>Основная метрика - Acc@1.</p>

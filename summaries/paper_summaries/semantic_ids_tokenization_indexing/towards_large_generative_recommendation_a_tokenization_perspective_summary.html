@@ -81,6 +81,16 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Tokenization categories: item IDs, textual descriptions, semantic IDs.</li>
 </ul>
+<h3>Практический алгоритм выбора tokenization strategy</h3>
+<ol>
+<li><strong>Определить action space.</strong> Сначала решается, что генерирует модель: raw item IDs, text descriptions, semantic IDs, multi-token actions или hybrid representation.</li>
+<li><strong>Оценить constraints каталога.</strong> Размер item pool, churn, cold-start rate, content quality и допустимая latency определяют, нужен ли компактный SID, textual ID или feature-only adoption.</li>
+<li><strong>Выбрать tokenizer family.</strong> Atomic IDs дают memorization; textual tokens дают language prior; SID/RQ/PQ/hierarchical tokens дают parameter sharing и controlled vocabulary.</li>
+<li><strong>Задать decoding constraints.</strong> Для autoregressive IDs нужен trie/code-tree; для unordered/parallel IDs нужен graph или post-validation; для text IDs нужна entity resolution.</li>
+<li><strong>Обучить generator под выбранный action language.</strong> User histories переводятся в тот же token space, target item становится token sequence, loss обычно autoregressive NLL или its variants.</li>
+<li><strong>Оценивать не только Recall/NDCG.</strong> Обязательны invalid generation, collision rate, code utilization, head/tail/cold-start slices, latency и update cost.</li>
+<li><strong>Итерировать tokenization как artifact.</strong> При drift каталога tokenizer пересобирается или дообучается, а old/new mappings должны поддерживать совместимый rollout и rollback.</li>
+</ol>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -106,23 +116,21 @@
 <h2>Сильные стороны</h2>
 <p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Хорошая карта пространства решений.</strong> Tutorial четко разделяет item IDs, textual descriptions и semantic IDs как разные action languages для GenRec.</li>
+<li><strong>Фокус на tokenization как фундаменте.</strong> Работа полезна тем, что ставит tokenizer до выбора backbone: плохой action space не спасается большим LLM.</li>
+<li><strong>Собирает open challenges в один checklist.</strong> Invalid generation, constraints, freshness, alignment, efficiency и scaling перечислены как обязательные engineering questions.</li>
+<li><strong>Помогает сравнивать соседние papers.</strong> Через эту рамку проще понять, чем отличаются TIGER, LETTER, STORE, RPG, CoFiRec и Snapchat-style feature use.</li>
+<li><strong>Подходит для проектирования production roadmap.</strong> Можно начать с SID-as-feature, затем перейти к constrained retrieval, не смешивая эти этапы.</li>
 </ul>
 
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li><strong>Это tutorial, а не новый метод.</strong> Нет нового tokenizer objective, benchmark table или ablation, поэтому выводы являются рамкой анализа, а не эмпирическим доказательством.</li>
+<li><strong>Нет единого рецепта выбора SID.</strong> Работа перечисляет alternatives, но practitioner все равно должен сам подобрать codebook shape, decoding policy и refresh strategy.</li>
+<li><strong>Open challenges остаются открытыми.</strong> Invalid generation, freshness и efficiency названы, но не решены алгоритмически.</li>
+<li><strong>Риск слишком общей taxonomy.</strong> Для конкретного домена решают детали: text quality, churn, business constraints, inventory policy и ranker integration.</li>
+<li><strong>Нельзя использовать как performance evidence.</strong> Отсутствие новых экспериментов означает, что любой production decision требует отдельного benchmark.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

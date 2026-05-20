@@ -89,6 +89,34 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective FAMAE - masked reconstruction/prediction по item fields, но с recommendation-native design: representation должна быть достаточной для sequential task. GAOQ оптимизирует quantization не только локально, но и глобально: code dimensions/levels должны быть ортогонально согласованы, а prefixes - информативны для следующего token. Это уменьшает неопределенность генератора при autoregressive decoding, потому что ранние SID tokens несут больше task-relevant signal.</p>
 
+<h3>5.1. Пошаговая схема ReSID</h3>
+<ol>
+<li><strong>Собрать structured item fields.</strong> Используются catalog fields вроде category, brand, title-like attributes и другие регулярные признаки, а не generic LLM embedding.</li>
+<li><strong>Обучить Field-Aware Masked Auto-Encoding.</strong> На каждом step часть полей маскируется; encoder должен восстановить/предсказать masked fields с учетом field-specific structure.</li>
+<li><strong>Проверить task-aware embedding quality.</strong> До quantization embedding оценивается не semantic similarity, а preservation/predictability metrics, связанные с recommendation.</li>
+<li><strong>Применить orthogonal alignment.</strong> GAOQ ищет ортогональное преобразование latent space: геометрия сохраняется, но basis становится удобнее для predictable SID prefixes.</li>
+<li><strong>Квантизовать globally, а не только locally.</strong> Code assignment должен снижать semantic ambiguity и prefix-conditional uncertainty, а не просто минимизировать nearest-centroid reconstruction.</li>
+<li><strong>Экспортировать SID sequence.</strong> Ранние tokens должны нести больше task-relevant signal, чтобы autoregressive decoder меньше ошибался на первых шагах.</li>
+<li><strong>Обучить generative recommender.</strong> User histories заменяются ReSID identifiers; downstream Recall/NDCG проверяют, действительно ли tokenizer лучше LLM-centric baselines.</li>
+<li><strong>Сравнить cost.</strong> Отдельно считается tokenization throughput/cost, потому что один из claims - до 122x дешевле.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    fields = structured_fields(item)
+    masked_fields = sample_field_mask(fields)
+    z = FAMAE_encoder(masked_fields)
+    loss_famae = field_reconstruction_loss(z, fields)
+    update(loss_famae)
+
+embeddings = {item: FAMAE_encoder(fields(item)) for item in catalog}
+R = learn_orthogonal_alignment(embeddings, objective="low_prefix_uncertainty")
+for item, z in embeddings.items():
+    z_aligned = R @ z
+    sid[item] = globally_aligned_orthogonal_quantize(z_aligned)
+
+train_generator(user_histories_as_sids, next_item_sid)
+monitor Recall/NDCG, prefix entropy, ambiguity, tokenization cost</code></pre>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты на десяти subsets Amazon-2023: Musical Instruments, Video Games, Industrial & Scientific, Baby Products, Arts/Crafts/Sewing, Sports & Outdoors, Toys & Games, Health & Household, Beauty & Personal Care, Books. Метрики - Recall@5/10 и NDCG@5/10. ReSID в среднем превосходит strong sequential и SID-based generative baselines более чем на 10% и снижает tokenization cost до 122x. Ablation на трех datasets показывает вклад FAMAE и GAOQ отдельно.</p>
@@ -100,25 +128,29 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <h2>8. Сильные стороны</h2>
 
 <ul>
-<li>Сильная концептуальная позиция: tokenizer должен быть recommendation-native, а не LLM-centric по умолчанию.</li>
+<li><strong>Сильная концептуальная позиция.</strong> Tokenizer должен быть recommendation-native, а не LLM-centric по умолчанию.</li>
 
-<li>Дает два независимых компонента, которые можно проверять отдельно: FAMAE и GAOQ.</li>
+<li><strong>Два проверяемых компонента.</strong> FAMAE улучшает representation before quantization, GAOQ меняет quantization stage.</li>
 
-<li>Широкая оценка на 10 Amazon-2023 subsets.</li>
+<li><strong>Широкая оценка.</strong> 10 Amazon-2023 subsets уменьшают риск, что gain является артефактом одного домена.</li>
 
-<li>Efficiency claim важен для больших каталогов и частого retokenization.</li>
+<li><strong>Efficiency claim важен для больших каталогов.</strong> До 122x дешевле tokenization делает frequent retokenization более реалистичным.</li>
+
+<li><strong>Task-aware diagnostics.</strong> Работа требует смотреть predictability/uncertainty, а не только semantic purity embeddings.</li>
 </ul>
 
 <h2>9. Ограничения</h2>
 
 <ul>
-<li>Structured fields должны быть достаточно богатыми; в бедных каталогах FAMAE может проиграть text/LLM encoder.</li>
+<li><strong>Нужны богатые structured fields.</strong> В бедных каталогах FAMAE может проиграть text/LLM encoder-у, который видит open-world semantics.</li>
 
-<li>Без LLM embeddings может ухудшиться open-world semantic transfer и cold-start за пределами полей.</li>
+<li><strong>Open-world transfer слабее.</strong> Без LLM embeddings новые текстовые concepts и rare attributes могут кодироваться хуже.</li>
 
-<li>GAOQ сложнее обычного RQ/PQ и требует аккуратной реализации.</li>
+<li><strong>GAOQ сложнее обычного RQ/PQ.</strong> Нужно реализовать global orthogonal alignment и следить, чтобы task-specific optimization не переобучилась.</li>
 
-<li>Средний gain скрывает dataset-specific вариативность, поэтому нужны per-domain проверки.</li>
+<li><strong>Structured fields могут содержать shortcuts.</strong> Category/brand/popularity-like поля способны дать leakage или dataset artifacts.</li>
+
+<li><strong>Средний gain скрывает variation.</strong> Per-domain проверки обязательны: в разных Amazon subsets качество fields и semantics различаются.</li>
 </ul>
 
 <h2>10. Как реализовать и проверять</h2>

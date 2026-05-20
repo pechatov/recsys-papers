@@ -83,6 +83,16 @@
   <li>CoT tokens добавляют deterministic feature path, semantic IDs сохраняют dense semantic compression.</li>
   <li>JSA уменьшает число pairwise attention operations на длинных sequences.</li>
 </ul>
+<h3>Пошаговая схема GRACE</h3>
+<ol>
+  <li><strong>Построить hybrid item tokenization.</strong> Для каждого товара формируется Chain-of-Thought path из product knowledge graph: category, brand, price bucket и item-level details. К нему добавляется semantic ID, чтобы сохранить dense similarity beyond metadata.</li>
+  <li><strong>Закодировать multi-behavior history.</strong> Click, add-to-cart, like, remove-from-cart и другие actions превращаются в token blocks; каждый block содержит behavior marker, CoT tokens и SID tokens.</li>
+  <li><strong>Разбить историю на journeys.</strong> Последовательность пользователя сегментируется на shopping journeys, где current journey получает более плотное внимание, а старые journeys сжимаются.</li>
+  <li><strong>Сформировать JSA mask.</strong> Compression attention агрегирует long history, intra-journey attention моделирует локальные намерения, inter-journey attention связывает похожие journeys, current-journey attention оставляет подробный контекст для последней сессии.</li>
+  <li><strong>Обучить next-token generation.</strong> Decoder предсказывает следующий interaction/item token path; loss остается generative, но attention topology ограничивает, какие history tokens могут влиять друг на друга.</li>
+  <li><strong>Инференс с валидными item paths.</strong> Generated CoT/SID sequence сопоставляется с catalog items; для production нужен trie или post-validation, иначе explicit attributes не гарантируют существующий item.</li>
+  <li><strong>Проверить вклад CoT и JSA отдельно.</strong> Ablation должна показать, что CoT улучшает business semantics, а JSA снижает attention compute без потери long-history signal.</li>
+</ol>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для GRACE: Generative Recommendation via Journey-Aware Sparse Attention on Chain-of-Thought Tokenization качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -114,7 +124,7 @@
   <li>Sparse attention привязан к пользовательскому пути и поэтому интерпретируем.</li>
   <li>Метод одновременно улучшает качество и compute.</li>
 </ul>
-<h2>Ограничения</h2>
+<h2>Слабые стороны и ограничения</h2>
 <ul>
   <li>Нужен качественный product knowledge graph.</li>
   <li>CoT tokens увеличивают sequence length и требуют аккуратного budget.</li>

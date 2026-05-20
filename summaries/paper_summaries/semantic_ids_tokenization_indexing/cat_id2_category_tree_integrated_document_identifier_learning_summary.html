@@ -81,6 +81,37 @@
 <li>Если используется parallel/set decoding, нужно контролировать invalid combinations.</li>
 <li>Metric: Recall@5/10/20/50/100; paper explicitly does not use NDCG because recall stage is primary.</li>
 </ul>
+<h3>Подробная схема алгоритма CAT-ID2</h3>
+<p>CAT-ID2 строит DocID не как свободный RQ-VAE код, а как learned identifier, ограниченный e-commerce category tree. Алгоритм можно разделить на построение category-aware token space, обучение DocID generator и serving-time recall.</p>
+<ol>
+<li><strong>Нормализовать category path.</strong> Для каждого товара берется category tree depth до 3: слишком мелкие ветки удаляются, слишком глубокие обрезаются. Это задает внешний hierarchical prior.</li>
+<li><strong>Получить document representation.</strong> Product title/description и category metadata кодируются T5-base/RQ-VAE pipeline'ом в latent vector.</li>
+<li><strong>Назначить discrete identifier.</strong> RQ-VAE строит multi-token DocID, но assignment штрафуется не только reconstruction, а также category-aware constraints.</li>
+<li><strong>Применить Hierarchical Class Constraint Loss.</strong> Товары из одной category path должны иметь согласованные prefixes/regions identifier space. Это делает DocID интерпретируемым для e-commerce search.</li>
+<li><strong>Применить Cluster Scale Constraint Loss.</strong> Category-consistent clusters не должны становиться слишком маленькими или перегруженными; иначе recall stage либо теряет tail, либо возвращает слишком много candidates.</li>
+<li><strong>Применить Dispersion Loss.</strong> Похожие категории удерживаются близко, но соседние products внутри одной broad category должны оставаться различимыми.</li>
+<li><strong>Обучить generative retriever.</strong> Query-document pairs с Exact/Substitute labels используются для обучения decoder генерировать DocID relevant products.</li>
+<li><strong>Serving.</strong> Query декодируется в beam of DocIDs; intermediate-node truncation и DR scores используются как latency mitigation перед финальным candidate recall.</li>
+</ol>
+<pre><code>for product in catalog:
+    path = normalize_category_tree(product.category, max_depth=3)
+    z = document_encoder(product.text, path)
+    doc_id = rq_vae_quantize(z)
+    store(product, path, doc_id)
+
+for batch in query_document_pairs:
+    pred_ids = generative_retriever(batch.queries, target_prefix=batch.doc_ids)
+    loss_recall = cross_entropy(pred_ids, batch.doc_ids)
+    loss_hccl = hierarchical_class_constraint(batch.doc_ids, batch.category_paths)
+    loss_cscl = cluster_scale_constraint(batch.doc_ids)
+    loss_disp = dispersion_constraint(batch.doc_ids, batch.document_vectors)
+    loss = loss_recall + a * loss_hccl + b * loss_cscl + c * loss_disp
+    update(document_encoder, rq_vae, generative_retriever)
+
+for query in serving:
+    beams = constrained_decode(query)
+    beams = truncate_intermediate_nodes(beams)
+    candidates = map_docids_to_products(beams)</code></pre>
 
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
@@ -105,25 +136,23 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
+<p>Сильные стороны CAT-ID2 связаны с использованием e-commerce taxonomy как production prior, а не просто как дополнительной feature.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Category tree встроен в learning objective.</strong> Identifier space наследует реальную структуру e-commerce каталога, поэтому DocID меньше похож на произвольный hash.</li>
+<li><strong>Проверка идет именно на recall stage.</strong> Отказ от NDCG в пользу Recall@5-100 согласован с задачей генеративного retriever-а, который должен дать кандидатов downstream ranker'у.</li>
+<li><strong>HCCL и CSCL показывают важный trade-off.</strong> В ablation каждый constraint по отдельности может вредить, а вместе они удерживают category consistency и scale balance.</li>
+<li><strong>Есть production-oriented online test.</strong> Meituan A/B с latency mitigation полезнее, чем только ESCI offline numbers.</li>
+<li><strong>Метод хорошо подходит к e-commerce semantics.</strong> Категории, бренды и Substitute/Exact labels ближе к пользовательскому intent, чем чистая text similarity.</li>
 </ul>
 
 <h2>Ограничения</h2>
 <p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
+<li><strong>Метод зависит от качества category tree.</strong> Если taxonomy устарела, слишком broad или плохо отражает search intent, constraints будут закреплять неправильную структуру.</li>
+<li><strong>Category constraint может переограничить retrieval.</strong> Substitute products иногда лежат в соседних категориях; слишком жесткий HCCL может ухудшить cross-category recall.</li>
+<li><strong>Много весов losses.</strong> HCCL, CSCL и dispersion требуют настройки; ablation показывает, что отдельные компоненты могут ухудшать результат.</li>
+<li><strong>Online details частично закрыты.</strong> Meituan serving подтверждает практичность, но без полного pipeline сложно воспроизвести latency и truncation policy.</li>
+<li><strong>Category depth нормализация теряет информацию.</strong> Truncation до depth 3 упрощает обучение, но может смешивать товары, различимые только на более глубоком уровне.</li>
 <li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
 <li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
 <li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>

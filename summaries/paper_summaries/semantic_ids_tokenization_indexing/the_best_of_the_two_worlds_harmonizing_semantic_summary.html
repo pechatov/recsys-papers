@@ -82,6 +82,33 @@
 <li>Components: SID branch, HID branch, code-guided alignment loss, masked sequence granularity loss, joint training/inference.</li>
 </ul>
 
+<h2>Детальный алгоритм dual SID/HID harmonization</h2>
+<p>Метод строится вокруг двух параллельных языков item identity: Hash ID сохраняет memorization для конкретного item, Semantic ID дает sharing между похожими item'ами. Главное - не сложить embeddings механически, а согласовать branches на code и sequence levels.</p>
+<ol>
+<li><strong>Построить HID branch.</strong> Каждый item получает hash-based identifier. Эта ветка ведет себя как сильный ID-based sequential recommender: хорошо запоминает head items и точные transitions.</li>
+<li><strong>Построить SID branch.</strong> Item content/semantic representation квантуется в semantic IDs. Эта ветка дает обобщение для tail/cold items, но может смешивать items, которые похожи семантически, но различны в поведении.</li>
+<li><strong>Обучить общий sequential backbone.</strong> User history кодируется в двух представлениях: HID sequence и SID sequence. Обе ветки предсказывают next item, но несут разные inductive biases.</li>
+<li><strong>Добавить code-guided alignment.</strong> Semantic structure из SID space переносится в HID space: hash embeddings не должны быть полностью произвольными, если соответствующие items семантически близки.</li>
+<li><strong>Добавить masked sequence granularity loss.</strong> На уровне последовательности модель маскирует части representation и учится восстанавливать/согласовывать granular semantic signal, чтобы alignment работал не только для отдельных item codes.</li>
+<li><strong>Смешать branches для prediction.</strong> На inference score получает информацию от HID и SID. Баланс должен сохранять exact identity для head и semantic sharing для tail.</li>
+<li><strong>Проверить popularity breakdown.</strong> Ключевой тест - не средний Recall/NDCG, а head/tail slices: high alignment weight может улучшить tail, но разрушить HID memorization для популярных items.</li>
+</ol>
+
+<pre><code>for item in catalog:
+    hid[item] = hash_identifier(item.id)
+    sid[item] = semantic_tokenizer(item.content)
+
+for user_sequence in logs:
+    h_hid = sequential_encoder([hid[i] for i in user_sequence])
+    h_sid = sequential_encoder([sid[i] for i in user_sequence])
+
+    loss_rec = next_item_loss(fuse(h_hid, h_sid), target_item)
+    loss_code = align_hash_space_to_semantic_codes(hid, sid)
+    loss_seq = masked_sequence_granularity_loss(h_hid, h_sid)
+    optimize(loss_rec + lambda_code * loss_code + lambda_seq * loss_seq)
+
+evaluate overall metrics and popularity buckets separately</code></pre>
+
 <h2>Эксперименты</h2>
 <p>Экспериментальная конкретика из paper:</p>
 <ul>
@@ -104,28 +131,21 @@
 </ul>
 
 <h2>Сильные стороны</h2>
-<p>Сильные стороны с практической точки зрения.</p>
 <ul>
-<li>Метод явно проектирует identifier под downstream recommender/search objective.</li>
-<li>Paper обсуждает не только качество, но и хотя бы часть diagnostics или deployment constraints.</li>
-<li>Есть ablation, позволяющий отделить вклад tokenizer-а от backbone.</li>
-<li>Domain-specific inductive bias делает SID менее случайным и более интерпретируемым.</li>
-<li>Работа помогает понять, когда semantic sharing лучше exact ID memorization.</li>
-<li>Для industrial papers ценны масштабы данных и online checks.</li>
+<li><strong>Правильно ставит конфликт HID vs SID.</strong> Head memorization и tail generalization действительно разные задачи, и работа не пытается заменить одно другим.</li>
+<li><strong>Два уровня alignment.</strong> Code-guided alignment работает на item/code уровне, а masked sequence granularity loss - на уровне пользовательской истории.</li>
+<li><strong>Popularity breakdown является частью аргумента.</strong> Метод проверяется не только aggregate metrics, но и тем, как он ведет себя на head/tail items.</li>
+<li><strong>Сохраняет совместимость с sequential recommendation.</strong> Это не generative-only решение: его можно рассматривать как hybrid representation для обычного SRS backbone.</li>
+<li><strong>Ablations покрывают alignment компоненты.</strong> Можно отделить эффект SID branch от эффекта согласования с HID.</li>
 </ul>
 
 <h2>Ограничения</h2>
-<p>Ограничения и риски.</p>
 <ul>
-<li>Internal datasets или domain-specific signals ограничивают воспроизводимость.</li>
-<li>Tokenizer может переобучиться на текущий каталог/географию/категорийное дерево.</li>
-<li>Сложные losses добавляют гиперпараметры, которые могут быть нестабильны между доменами.</li>
-<li>Ablation на одном датасете не гарантирует перенос на другой traffic mix.</li>
-<li>Если constraints слишком сильные, они могут вызвать collapse или потерю fine-grained differences.</li>
-<li>Business metrics могут конфликтовать с semantic purity.</li>
-<li>Главный общий failure mode для SID-подходов: semantic collision выглядит осмысленно offline, но смешивает конкурирующие items в конкретном business objective.</li>
-<li>Второй общий failure mode: tokenizer обучен на старом каталоге и перестает отражать новые категории, бренды, форматы или geography.</li>
-<li>Третий общий failure mode: offline Recall/NDCG улучшается, но serving latency, graph refresh, feature joins или beam constraints съедают online gain.</li>
+<li><strong>Alignment может стереть преимущество HID.</strong> Если вес code-guided loss слишком высокий, hash branch перестает быть точным memorization channel.</li>
+<li><strong>SID quality остается внешним bottleneck.</strong> Плохие semantic IDs будут передавать hash branch неправильную структуру.</li>
+<li><strong>Две ветки усложняют serving.</strong> Нужно хранить HID и SID mappings, синхронизировать их версии и контролировать latency fusion.</li>
+<li><strong>Masked sequence granularity добавляет tuning.</strong> Частота/маска/вес loss влияют на то, будет ли модель учить полезную структуру или шум.</li>
+<li><strong>Неочевидна переносимость в быстро меняющихся каталогах.</strong> Hash IDs обновляются проще, чем semantic tokenizer; при churn согласование может устаревать.</li>
 </ul>
 
 <h2>Как реализовать/проверять</h2>

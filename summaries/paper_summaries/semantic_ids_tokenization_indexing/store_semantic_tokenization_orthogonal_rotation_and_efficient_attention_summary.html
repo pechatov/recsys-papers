@@ -83,6 +83,30 @@
   <li>Rotation improves decomposition and interaction geometry.</li>
   <li>Attention sparsity 1/2 in online setup improves serving speed.</li>
 </ul>
+<h3>Пошаговая схема STORE</h3>
+<p>STORE не является generative retrieval методом: semantic tokenization здесь используется как способ масштабировать ranking model на high-cardinality sparse features. Алгоритм меняет representation перед ranker'ом, а не output space.</p>
+<ol>
+  <li><strong>Разделить sparse features по типу.</strong> High-cardinality динамические признаки (items, sellers, ads) идут в semantic tokenization; low-cardinality/static признаки обрабатываются отдельно.</li>
+  <li><strong>Semantic tokenization для high-cardinality IDs.</strong> OPMQ decomposes each ID embedding into compact semantic tokens, уменьшая зависимость от огромных sparse tables и улучшая sharing между похожими entities.</li>
+  <li><strong>Orthogonal Rotation Transformation.</strong> Static/low-cardinality feature subspace ортогонально поворачивается, чтобы разные компоненты признаков меньше коллапсировали в одни и те же interaction directions.</li>
+  <li><strong>Собрать unified token sequence.</strong> Ranker получает semantic tokens, rotated static features и остальные dense/context features.</li>
+  <li><strong>Efficient Attention.</strong> Attention module оценивает contribution tokens и фильтрует низкополезные; online setup использует sparsity 1/2 для throughput.</li>
+  <li><strong>Обучить CTR/ranking loss.</strong> Основной objective остается prediction loss, поэтому tokenization/rotation полезны только если улучшают downstream AUC/CTR при приемлемой latency.</li>
+</ol>
+<pre><code>for feature_batch in training_logs:
+    high_card_tokens = []
+    for feature_id in high_cardinality_features(feature_batch):
+        semantic_tokens = OPMQ_tokenize(feature_id, K=32, codebook_size=300)
+        high_card_tokens.extend(semantic_tokens)
+
+    rotated_static = orthogonal_rotation(low_cardinality_features(feature_batch))
+    tokens = concat(high_card_tokens, rotated_static, dense_context_features)
+
+    token_scores = attention_importance(tokens)
+    kept_tokens = keep_top_fraction(tokens, token_scores, fraction=0.5)
+    prediction = ranking_transformer(kept_tokens)
+    loss = ctr_or_cvr_loss(prediction, labels)
+    update(tokenizer, rotation, attention, ranker)</code></pre>
 <h3>Что важно при чтении</h3>
 <p>В этой секции статьи стоит отделять заявленный conceptual contribution от инженерного механизма: для STORE: Semantic Tokenization, Orthogonal Rotation and Efficient Attention for Scaling Up Ranking Models качество возникает из сочетания representation design, training objective и evaluation protocol.</p>
 <p>Если переносить метод в другую систему, нельзя копировать только название компонента: нужно воспроизвести входные данные, формат идентификаторов, ограничения decoding и slices, на которых авторы показывают выигрыш.</p>
@@ -109,15 +133,19 @@
 </ul>
 <h2>Сильные стороны</h2>
 <ul>
-  <li>Extends semantic ID from retrieval target to ranking features.</li>
-  <li>Balances quality and efficiency.</li>
-  <li>Production A/B evidence is strong.</li>
+  <li><strong>Расширяет semantic tokenization на ranking.</strong> STORE показывает, что SID-like decomposition полезна не только как target identifier, но и как feature representation для DLRM/ranking transformers.</li>
+  <li><strong>Качество и throughput оптимизируются вместе.</strong> Efficient attention не является косметикой: online setup сообщает training throughput 1.84x при росте CTR/AUC.</li>
+  <li><strong>OPMQ параметры раскрыты для deployment.</strong> K=32 и codebook size 300 дают более конкретный ориентир, чем абстрактное "semantic tokenizer".</li>
+  <li><strong>Rotation адресует interaction geometry.</strong> Работа не сводится к сжатию embedding table; она также пытается уменьшить Interaction-Collapse между heterogeneous features.</li>
+  <li><strong>Есть production A/B.</strong> 15-дневный online test с CTR +2.71% делает выводы сильнее чистого offline ranking benchmark.</li>
 </ul>
 <h2>Ограничения</h2>
 <ul>
-  <li>Production details limited.</li>
-  <li>Token filtering may hurt rare but important features.</li>
-  <li>Rotation/tokenization require feature-schema-specific tuning.</li>
+  <li><strong>Production details limited.</strong> Без полного описания feature schema и serving stack трудно понять, какие gains идут от STORE, а какие от platform-specific engineering.</li>
+  <li><strong>Token filtering может выкинуть редкие важные сигналы.</strong> Low-contribution по attention не всегда означает низкую бизнес-ценность, особенно для fraud, niche interest и cold-start features.</li>
+  <li><strong>Rotation/tokenization требуют schema-specific tuning.</strong> Другой набор sparse fields может потребовать других codebook sizes, rotation dimensions и sparsity threshold.</li>
+  <li><strong>Semantic tokens могут устаревать.</strong> Dynamic e-commerce features меняются быстрее, чем static codebook; нужен refresh и drift monitoring.</li>
+  <li><strong>Ranking objective не объясняет token semantics.</strong> Улучшение AUC не гарантирует, что learned tokens интерпретируемы или переносимы в retrieval/generation.</li>
 </ul>
 <h2>Как реализовать/проверять</h2>
 <ol>

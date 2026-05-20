@@ -89,6 +89,17 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 <p>Objective распределен по pipeline. LLM agents генерируют и выбирают мотивации по prompt/arena scoring. Spreading module учится сближать items с релевантными мотивациями и переносить их по semantic similarity. Residual SID строится как итеративный nearest-center lookup: выбирается ближайший code, residual обновляется, процесс повторяется M раз. Полученный multi-dimensional ID vector подается как categorical feature в sequential/recommendation model.</p>
 
+<h3>5.1. Пошаговая схема MoMoREC</h3>
+<ol>
+<li><strong>Выделить frequent purchase patterns.</strong> Из логов берутся purchase sequences, встречающиеся два и более раза; это снижает шум для LLM motivation inference.</li>
+<li><strong>Сгенерировать candidate motivations.</strong> Analysis Agent описывает возможные причины покупки, Summary Module агрегирует themes, Judgement/Arena/Scoring выбирает наиболее representative motivation.</li>
+<li><strong>Назначить мотивации head/frequent items.</strong> Items из устойчивых purchase lists получают LLM-derived motivation text как latent behavioral explanation.</li>
+<li><strong>Обучить пространство spreading.</strong> Motivation texts и item features переводятся в embeddings; contrastive learning делает items с релевантными мотивациями ближе.</li>
+<li><strong>Распространить мотивации на tail.</strong> Для long-tail items берутся top-K похожие frequent items/clusters, после чего motivation labels/embeddings переносятся по semantic similarity.</li>
+<li><strong>Построить residual semantic IDs.</strong> Dense motivation embedding квантуется итеративно: nearest center -> subtract residual -> repeat \(M\) раз, получая multi-code categorical vector.</li>
+<li><strong>Подать IDs в обычный recommender.</strong> DeepFM/DCN/DIN-like или sequential backbone использует residual motivation SIDs как sparse features без online LLM inference.</li>
+</ol>
+
 <h2>6. Эксперименты и метрики</h2>
 
 <p>Эксперименты AAAI проведены на трех benchmark datasets и нескольких traditional recommendation backbones. Метрики включают AUC/accuracy-style recommendation metrics в таблицах; авторы показывают, что MoMoREC значительно улучшает традиционные модели. В тексте и Figure 2 подчеркивается, что LLM generation имеет 10x или более latency increase и на сотни раз больше параметров относительно DeepFM/DCNmix/DIN-like models, тогда как MoMoREC переносит LLM knowledge в offline IDs.</p>
@@ -109,7 +120,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <li>Multi-agent схема повышает качество мотиваций по сравнению с single prompt generation.</li>
 </ul>
 
-<h2>9. Ограничения</h2>
+<h2>9. Слабые стороны и ограничения</h2>
 
 <ul>
 <li>Качество мотиваций зависит от prompts, LLM и языка/домена marketplace.</li>

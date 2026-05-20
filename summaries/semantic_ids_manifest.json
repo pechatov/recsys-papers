@@ -628,5 +628,50 @@
     "affiliations": "Huawei; Renmin University of China",
     "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/mtgrec_multi_identifier_item_tokenization_summary.html",
     "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/mtgrec_multi_identifier_item_tokenization_summary.html"
+  },
+  {
+    "start": "71",
+    "title": "Universal Item Tokenization for Transferable Generative Recommendation",
+    "url": "https://arxiv.org/abs/2504.04405",
+    "year": "2025",
+    "affiliations": "WeChat, Tencent; Renmin University of China",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/universal_item_tokenization_for_transferable_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/universal_item_tokenization_for_transferable_generative_recommendation_summary.html"
+  },
+  {
+    "start": "72",
+    "title": "HiD-VAE: Interpretable Generative Recommendation via Hierarchical and Disentangled Semantic IDs",
+    "url": "https://arxiv.org/abs/2508.04618",
+    "year": "2025",
+    "affiliations": "Jilin University; City University of Hong Kong; Nanjing University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/hid_vae_interpretable_generative_recommendation_via_hierarchical_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/hid_vae_interpretable_generative_recommendation_via_hierarchical_summary.html"
+  },
+  {
+    "start": "73",
+    "title": "Bi-Level Optimization for Generative Recommendation: Bridging Tokenization and Generation",
+    "url": "https://arxiv.org/abs/2510.21242",
+    "year": "2026",
+    "affiliations": "Upwork; University of Science and Technology of China; Beihang University; National University of Singapore",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/bloger_bi_level_optimization_for_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/bloger_bi_level_optimization_for_generative_recommendation_summary.html"
+  },
+  {
+    "start": "74",
+    "title": "Pctx: Tokenizing Personalized Context for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2510.21276",
+    "year": "2025",
+    "affiliations": "Zhejiang University; University of California San Diego; Singapore Management University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/pctx_tokenizing_personalized_context_for_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/pctx_tokenizing_personalized_context_for_generative_recommendation_summary.html"
+  },
+  {
+    "start": "75",
+    "title": "Trie-Aware Transformers for Generative Recommendation",
+    "url": "https://arxiv.org/abs/2602.21677",
+    "year": "2026",
+    "affiliations": "Ant Group; Zhejiang University",
+    "summary_href": "paper_summaries/semantic_ids_tokenization_indexing/trierec_trie_aware_transformers_for_generative_recommendation_summary.html",
+    "summary_path": "summaries/paper_summaries/semantic_ids_tokenization_indexing/trierec_trie_aware_transformers_for_generative_recommendation_summary.html"
   }
 ]
