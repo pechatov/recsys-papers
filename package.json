@@ -7,18 +7,22 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "convert:summaries": "python3 scripts/convert_html_summaries_to_md.py",
+    "normalize:math": "python3 scripts/normalize_markdown_math.py",
+    "audit:summaries": "python3 scripts/audit_markdown_summaries.py",
+    "audit:math": "python3 scripts/audit_rendered_math.py",
     "prepare:public": "python3 scripts/prepare_public_site.py",
     "predev": "npm run prepare:public",
     "dev": "astro dev",
     "prebuild": "npm run prepare:public",
     "build": "astro build",
     "preview": "astro preview",
-    "check:links": "python3 scripts/validate_summary_links.py summaries",
-    "check:public-links": "npm run prepare:public && python3 scripts/validate_summary_links.py public/summaries",
-    "check": "npm run check:links && npm run check:public-links"
+    "check:links": "npm run build && python3 scripts/validate_summary_links.py dist/summaries",
+    "check:math": "npm run build && npm run audit:math",
+    "check": "npm run check:links && npm run audit:math"
   },
   "dependencies": {
-    "astro": "^6.4.8"
-  },
-  "devDependencies": {}
+    "astro": "^6.4.8",
+    "remark-math": "^6.0.0"
+  }
 }

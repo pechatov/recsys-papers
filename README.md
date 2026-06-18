@@ -24,6 +24,18 @@ The build mirrors `summaries/` into `public/summaries/` before Astro starts, so
 existing HTML pages, images, MathJax formulas, reading-status controls, and
 scroll gutters remain available.
 
+## Editing Summaries
+
+Detailed paper summaries are Markdown source files in
+`src/content/paper_summaries/`. Astro renders them to the legacy public URLs
+under `summaries/paper_summaries/.../*.html`, so old catalog links continue to
+work while summaries remain easy to edit.
+
+Figures live in `summaries/assets/`. Keep every figure for one paper under a
+single clearly named asset directory, for example `summaries/assets/cost/` or
+`summaries/assets/vq4rec/`, and reference them from Markdown with the same
+relative paths used by the generated HTML pages.
+
 ## Build
 
 ```bash
@@ -42,7 +54,8 @@ also be started manually from the Actions tab.
 
 ## Notes
 
-- The detailed summaries are still HTML in `summaries/`.
-- The long-term target is to move source content to Markdown/MDX with structured
-  metadata and generate catalog pages from data.
+- The full catalog is still maintained as `summaries/papers.html`.
+- Missing detailed summaries are marked in the catalog with
+  `саммари пропущено`; their takeaway is the paper abstract when it can be
+  resolved automatically.
 - A project license has not been selected yet.
