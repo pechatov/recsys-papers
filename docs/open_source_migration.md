@@ -47,9 +47,9 @@ Alternatives considered:
 
 ### Phase 2: structured catalog
 
-- Extract paper metadata from `papers.html` and `semantic_ids_manifest.json`.
+- Extract paper metadata from `papers.html` and detailed summary pages.
 - Create a canonical data file, likely JSON or YAML.
-- Generate catalog and wiki-table pages from that data.
+- Generate catalog pages from that data.
 - Keep old URLs or redirects for existing summary pages.
 
 ### Phase 3: content migration

@@ -9,12 +9,6 @@ SOURCE = ROOT / "summaries"
 TARGET = ROOT / "public" / "summaries"
 PUBLIC_EXCLUDES = {
     ".DS_Store",
-    "papers_wiki.html",
-    "semantic_ids_deep_research_selected_directions.html",
-    "semantic_ids_deep_research_selected_directions.md",
-    "semantic_ids_manifest.json",
-    "semantic_ids_research_proposals.html",
-    "semantic_ids_research_proposals.md",
 }
 
 
