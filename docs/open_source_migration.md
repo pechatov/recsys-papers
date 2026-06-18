@@ -54,10 +54,11 @@ Alternatives considered:
 
 ### Phase 3: content migration
 
-- Convert detailed summaries from HTML to Markdown/MDX incrementally.
+- Convert detailed summaries from HTML to Markdown/MDX.
 - Store metadata in frontmatter.
 - Move repeated page chrome, MathJax setup, navigation, and scroll controls into
   reusable Astro layouts.
+- Preserve legacy `.html` summary URLs through Astro-generated static routes.
 
 ### Phase 4: open-source polish
 

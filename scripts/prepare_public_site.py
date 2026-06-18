@@ -9,6 +9,7 @@ SOURCE = ROOT / "summaries"
 TARGET = ROOT / "public" / "summaries"
 PUBLIC_EXCLUDES = {
     ".DS_Store",
+    "paper_summaries",
 }
 
 

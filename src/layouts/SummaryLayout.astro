@@ -1,0 +1,225 @@
+---
+interface Props {
+  title: string;
+  paperUrl?: string;
+  catalogId: string;
+}
+
+const { title, paperUrl, catalogId } = Astro.props;
+const catalogHref = `../../papers.html#${catalogId}`;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <script is:inline>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)'], ['$', '$']],
+          displayMath: [['\\[', '\\]'], ['$$', '$$']],
+          processEscapes: true
+        },
+        options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script is:inline>
+      try {
+        const storedTheme = localStorage.getItem('recsys-papers-theme');
+        const systemTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : systemTheme;
+      } catch (_) {}
+    </script>
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --fg: #1f2933;
+        --muted: #65758b;
+        --border: #d8dee9;
+        --bg: #ffffff;
+        --soft: #f6f8fb;
+        --link: #0b66c3;
+        --link-strong: #0f4f9e;
+        --panel: rgba(255,255,255,.96);
+        --shadow: rgba(15, 23, 42, .08);
+        --focus: #93c5fd;
+        --gutter-bg: rgba(255,255,255,.92);
+        --gutter-left: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0));
+        --gutter-right: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0));
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --fg: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #334155;
+        --bg: #0f172a;
+        --soft: #172033;
+        --link: #7dd3fc;
+        --link-strong: #bae6fd;
+        --panel: rgba(15,23,42,.94);
+        --shadow: rgba(0,0,0,.28);
+        --focus: #38bdf8;
+        --gutter-bg: rgba(15,23,42,.92);
+        --gutter-left: linear-gradient(90deg, rgba(125,211,252,.10), rgba(125,211,252,0));
+        --gutter-right: linear-gradient(270deg, rgba(125,211,252,.10), rgba(125,211,252,0));
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+      main { max-width: 980px; margin: 0 auto; padding: 72px 24px; }
+      h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+      h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+      h2 { font-size: 1.45rem; }
+      h3 { font-size: 1.18rem; }
+      p { margin: .75rem 0; }
+      a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+      a:hover { color: var(--link-strong); }
+      ul, ol { padding-left: 1.55rem; }
+      li { margin: .3rem 0; }
+      table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+      th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+      th { background: var(--soft); text-align: left; }
+      code { background: var(--soft); border: 1px solid var(--border); border-radius: 4px; padding: .06rem .24rem; }
+      pre { overflow-x: auto; padding: 1rem; background: var(--soft); border: 1px solid var(--border); border-radius: 8px; }
+      pre code { border: 0; padding: 0; background: transparent; }
+      blockquote { margin: 1rem 0; padding: .2rem 1rem; color: var(--muted); border-left: 4px solid var(--border); }
+      img { max-width: 100%; height: auto; }
+      .nav { color: var(--muted); }
+      .math { overflow-x: auto; padding: .35rem 0; }
+      .tex-inline { white-space: nowrap; }
+      .paper-figure {
+        margin: 1.25rem 0;
+        padding: .75rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--soft);
+      }
+      .paper-figure img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 4px;
+      }
+      .paper-figure figcaption {
+        margin-top: .65rem;
+        color: var(--muted);
+        font-size: .94rem;
+      }
+      .table-scroll { overflow-x: auto; margin: 1rem 0; }
+      .table-scroll table { min-width: 720px; margin: 0; }
+      .theme-toggle {
+        position: fixed;
+        left: 14px;
+        top: 14px;
+        z-index: 30;
+        width: 78px;
+        height: 40px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0;
+        background: #ff6b00;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 8px 24px var(--shadow);
+        transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+      }
+      .theme-toggle::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(15,23,42,.22);
+      }
+      .theme-symbol {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: #fff;
+        transform: translateY(-50%);
+        box-shadow: 0 -11px 0 -8px #fff, 0 11px 0 -8px #fff, 11px 0 0 -8px #fff, -11px 0 0 -8px #fff, 8px 8px 0 -8px #fff, -8px -8px 0 -8px #fff, 8px -8px 0 -8px #fff, -8px 8px 0 -8px #fff;
+      }
+      :root[data-theme="dark"] .theme-toggle { background: #020617; }
+      :root[data-theme="dark"] .theme-symbol { left: 22px; width: 18px; height: 18px; background: #fff; box-shadow: none; }
+      :root[data-theme="dark"] .theme-symbol::after { content: ""; position: absolute; top: -2px; right: -3px; width: 18px; height: 18px; border-radius: 999px; background: #020617; }
+      :root[data-theme="dark"] .theme-symbol::before { content: ""; position: absolute; left: -8px; top: 2px; width: 4px; height: 4px; border-radius: 999px; background: #fff; box-shadow: 8px -6px 0 -1px #fff, 10px 9px 0 -1px #fff; }
+      .theme-toggle:hover { transform: translateY(-1px); }
+      .theme-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+      .summary-scroll-gutter {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 4;
+        width: calc((100vw - 980px) / 2);
+        min-width: 56px;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity .15s ease, background .15s ease;
+      }
+      .summary-scroll-gutter::after {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: .2rem .45rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--gutter-bg);
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+        white-space: nowrap;
+      }
+      .summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+      .summary-scroll-top { left: 0; }
+      .summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+      .summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: var(--gutter-left); }
+      .summary-scroll-bottom { right: 0; }
+      .summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+      .summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: var(--gutter-right); }
+      @media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }
+      @media (max-width: 640px) { main { padding: 72px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+    </style>
+  </head>
+  <body>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему" aria-pressed="false"><span class="theme-symbol" aria-hidden="true"></span></button>
+    <button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+    <button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+    <main>
+      <h1>{paperUrl ? <a href={paperUrl}>{title}</a> : title}</h1>
+      <p class="nav"><a href={catalogHref}>← К общему списку статей</a></p>
+      <slot />
+      <p class="nav"><a href={catalogHref}>← К общему списку статей</a></p>
+    </main>
+    <script is:inline>
+      const topButton = document.querySelector('.summary-scroll-top');
+      const bottomButton = document.querySelector('.summary-scroll-bottom');
+      const themeButton = document.querySelector('#theme-toggle');
+      const getTheme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      const setTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        themeButton?.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        try { localStorage.setItem('recsys-papers-theme', theme); } catch (_) {}
+      };
+      themeButton?.addEventListener('click', () => setTheme(getTheme() === 'dark' ? 'light' : 'dark'));
+      themeButton?.setAttribute('aria-pressed', getTheme() === 'dark' ? 'true' : 'false');
+      topButton?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      bottomButton?.addEventListener('click', () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }));
+    </script>
+  </body>
+</html>

@@ -4,4 +4,5 @@ node_modules/
 dist/
 public/summaries/
 __pycache__/
+.cache/
 docs/summary_status_audit.md

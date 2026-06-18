@@ -1,0 +1,239 @@
+# Markdown summary audit
+
+Generated from local Markdown content. This is a structural audit, not a full paper-reading correctness review.
+
+## Counts
+
+- Markdown summaries: 166
+- Summaries with at least one image: 14
+- Summaries without images: 152
+- Summaries under 1200 words: 41
+- Summaries missing one of method/experiments/limitations headings: 79
+- Catalog missing-summary placeholders without resolved abstract: 1
+- Summaries with mixed image asset prefixes: 0
+
+## Priority Review Queue
+
+These summaries should be checked first with `cs-paper-reading`: short files, files without figures, or files missing core technical sections.
+
+| Words | Images | Missing core sections | Summary |
+| ---: | ---: | :---: | --- |
+| 406 | 0 | experiments | `src/content/paper_summaries/semantic_ids_tokenization_indexing/trierec_trie_aware_transformers_for_generative_recommendation_summary.md` |
+| 411 | 0 | experiments | `src/content/paper_summaries/semantic_ids_tokenization_indexing/bloger_bi_level_optimization_for_generative_recommendation_summary.md` |
+| 412 | 0 | experiments | `src/content/paper_summaries/semantic_ids_tokenization_indexing/hid_vae_interpretable_generative_recommendation_via_hierarchical_summary.md` |
+| 435 | 0 | experiments | `src/content/paper_summaries/semantic_ids_tokenization_indexing/pctx_tokenizing_personalized_context_for_generative_recommendation_summary.md` |
+| 515 | 0 | experiments | `src/content/paper_summaries/semantic_ids_tokenization_indexing/universal_item_tokenization_for_transferable_generative_recommendation_summary.md` |
+| 797 | 0 | method | `src/content/paper_summaries/generative_retrieval/genre_autoregressive_entity_retrieval_summary.md` |
+| 806 | 0 | method | `src/content/paper_summaries/generative_retrieval/dsi_transformer_memory_differentiable_search_index_summary.md` |
+| 826 | 0 | method | `src/content/paper_summaries/generative_retrieval/seal_autoregressive_search_engines_summary.md` |
+| 853 | 0 | method | `src/content/paper_summaries/generative_retrieval/from_matching_to_generation_survey_summary.md` |
+| 503 | 0 | - | `src/content/paper_summaries/generative_retrieval/alleviating_llm_generative_retrieval_hallucination_alipay_search_summary.md` |
+| 545 | 0 | - | `src/content/paper_summaries/generative_retrieval/tbgrecall_generative_retrieval_model_ecommerce_recommendation_summary.md` |
+| 548 | 0 | - | `src/content/paper_summaries/generative_retrieval/onerec_unifying_retrieve_rank_iterative_preference_alignment_summary.md` |
+| 553 | 0 | - | `src/content/paper_summaries/generative_retrieval/killing_two_birds_unifying_retrieval_ranking_single_gr_model_summary.md` |
+| 594 | 0 | - | `src/content/paper_summaries/generative_retrieval/gpt4rec_generative_framework_personalized_recommendation_summary.md` |
+| 599 | 0 | - | `src/content/paper_summaries/generative_retrieval/llm_universal_retriever_industrial_scale_recommender_summary.md` |
+| 622 | 0 | - | `src/content/paper_summaries/generative_retrieval/generative_retrieval_alignment_model_ecommerce_retrieval_summary.md` |
+| 650 | 0 | - | `src/content/paper_summaries/generative_retrieval/synthetic_datasets_collaborative_filtering_gans_summary.md` |
+| 663 | 0 | - | `src/content/paper_summaries/generative_retrieval/preference_discerning_llm_enhanced_generative_retrieval_summary.md` |
+| 675 | 0 | - | `src/content/paper_summaries/generative_retrieval/on_generative_agents_in_recommendation_summary.md` |
+| 683 | 0 | - | `src/content/paper_summaries/generative_retrieval/genrec_large_language_model_for_generative_recommendation_summary.md` |
+| 711 | 0 | - | `src/content/paper_summaries/generative_retrieval/end_to_end_learnable_clustering_intent_learning_recommendation_summary.md` |
+| 719 | 0 | - | `src/content/paper_summaries/generative_retrieval/diffusion_models_generative_outfit_recommendation_summary.md` |
+| 720 | 0 | - | `src/content/paper_summaries/generative_retrieval/vectorizing_trie_efficient_constrained_decoding_summary.md` |
+| 732 | 0 | - | `src/content/paper_summaries/generative_retrieval/gacrec_generative_adversarial_contrastive_long_tail_summary.md` |
+| 732 | 0 | - | `src/content/paper_summaries/generative_retrieval/synthetic_data_strategies_domain_specific_generative_retrieval_summary.md` |
+| 734 | 0 | - | `src/content/paper_summaries/generative_retrieval/idnp_interest_dynamics_generative_neural_processes_summary.md` |
+| 743 | 0 | - | `src/content/paper_summaries/generative_retrieval/inductive_generative_recommendation_retrieval_based_speculation_summary.md` |
+| 749 | 0 | - | `src/content/paper_summaries/generative_retrieval/learning_without_mnar_prior_propensity_generative_recommender_summary.md` |
+| 757 | 0 | - | `src/content/paper_summaries/generative_retrieval/generative_retrieval_meets_multi_graded_relevance_summary.md` |
+| 810 | 0 | - | `src/content/paper_summaries/generative_retrieval/gs2rs_generative_cold_start_filter_bubbles_summary.md` |
+| 842 | 0 | - | `src/content/paper_summaries/generative_retrieval/making_transformer_decoders_better_differentiable_indexers_summary.md` |
+| 1009 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_next_poi_recommendation_with_semantic_id_summary.md` |
+| 1037 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/tokenrec_learning_to_tokenize_id_for_llm_based_summary.md` |
+| 1087 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_recommendation_with_semantic_ids_a_practitioner_s_summary.md` |
+| 1133 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/reasoning_over_semantic_ids_enhances_generative_recommendation_summary.md` |
+| 1135 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/dimerec_a_unified_framework_for_enhanced_sequential_recommendation_summary.md` |
+| 1138 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_flow_network_for_listwise_recommendation_summary.md` |
+| 1150 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_recommender_systems_at_snapchat_use_summary.md` |
+| 1177 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/reinforcement_learning_driven_generative_retrieval_with_semantic_aligned_summary.md` |
+| 1189 | 0 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/harmonizing_generative_retrieval_and_ranking_in_chain_of_summary.md` |
+| 1412 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/on_the_equivalence_between_auto_regressive_next_token_prediction_and_full_item_vocabulary_maxim_summary.md` |
+| 1441 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/integrating_chain_of_thought_into_generative_retrieval_a_preliminary_study_summary.md` |
+| 1457 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/modeling_behavioral_intensity_and_transitions_for_generative_recommendation_summary.md` |
+| 1486 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/rclrec_reverse_curriculum_learning_for_modeling_sparse_conversions_in_generative_recommendation_summary.md` |
+| 1510 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/position_aware_drafting_for_inference_acceleration_in_llm_based_generative_list_wise_recommenda_summary.md` |
+| 1587 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/purely_semantic_indexing_llm_based_generative_recommendation_retrieval_summary.md` |
+| 1612 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/cold_starts_in_generative_recommendation_a_reproducibility_study_summary.md` |
+| 1623 | 0 | method | `src/content/paper_summaries/semantic_ids_tokenization_indexing/store_streamlining_semantic_tokenization_and_generative_recommendation_with_summary.md` |
+| 1649 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/recast_recasting_learning_signals_for_reinforcement_learning_in_generative_recommendation_summary.md` |
+| 1661 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary.md` |
+| 1701 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/from_relevance_to_authority_authority_aware_generative_retrieval_in_web_search_engines_summary.md` |
+| 1724 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/mbgr_multi_business_prediction_for_generative_recommendation_at_meituan_summary.md` |
+| 1736 | 0 | limitations | `src/content/paper_summaries/semantic_ids_tokenization_indexing/unirec_bridging_the_expressive_gap_between_generative_and_discriminative_recommendation_via_cha_summary.md` |
+| 1747 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/towards_sustainable_growth_a_multi_value_aware_retrieval_framework_for_e_commerce_search_summary.md` |
+| 1748 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/mlps_are_efficient_distilled_generative_recommenders_summary.md` |
+| 1750 | 0 | limitations | `src/content/paper_summaries/generative_retrieval/echoes_in_filter_bubble_diagnosing_and_curing_popularity_bias_in_generative_recommenders_summary.md` |
+| 1779 | 0 | limitations | `src/content/paper_summaries/semantic_ids_tokenization_indexing/capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary.md` |
+| 1785 | 0 | method | `src/content/paper_summaries/semantic_ids_tokenization_indexing/glass_a_generative_recommender_for_long_sequence_modeling_summary.md` |
+| 1800 | 0 | limitations | `src/content/paper_summaries/semantic_ids_tokenization_indexing/conditional_memory_enhanced_item_representation_for_generative_recommendation_summary.md` |
+| 1804 | 0 | limitations | `src/content/paper_summaries/semantic_ids_tokenization_indexing/from_head_to_tail_asymmetric_knowledge_transfer_in_long_tail_recommendation_with_generative_sem_summary.md` |
+
+## Image Prefix Check
+
+- No mixed image prefixes detected among summaries with images.
+
+## Summaries Without Images
+
+- `src/content/paper_summaries/generative_retrieval/a_parametric_memory_head_for_continual_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/act_with_think_chunk_autoregressive_modeling_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/alleviating_llm_generative_retrieval_hallucination_alipay_search_summary.md`
+- `src/content/paper_summaries/generative_retrieval/cold_starts_in_generative_recommendation_a_reproducibility_study_summary.md`
+- `src/content/paper_summaries/generative_retrieval/diffusion_models_generative_outfit_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/dsi_transformer_memory_differentiable_search_index_summary.md`
+- `src/content/paper_summaries/generative_retrieval/dual_diffusional_generative_fashion_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/echoes_in_filter_bubble_diagnosing_and_curing_popularity_bias_in_generative_recommenders_summary.md`
+- `src/content/paper_summaries/generative_retrieval/efficient_dataset_selection_for_continual_adaptation_of_generative_recommenders_summary.md`
+- `src/content/paper_summaries/generative_retrieval/efficient_generative_retrieval_for_e_commerce_search_with_semantic_cluster_ids_and_expert_guide_summary.md`
+- `src/content/paper_summaries/generative_retrieval/end_to_end_learnable_clustering_intent_learning_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/from_matching_to_generation_survey_summary.md`
+- `src/content/paper_summaries/generative_retrieval/from_relevance_to_authority_authority_aware_generative_retrieval_in_web_search_engines_summary.md`
+- `src/content/paper_summaries/generative_retrieval/gacrec_generative_adversarial_contrastive_long_tail_summary.md`
+- `src/content/paper_summaries/generative_retrieval/generative_conversational_recommender_system_summary.md`
+- `src/content/paper_summaries/generative_retrieval/generative_retrieval_alignment_model_ecommerce_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/generative_retrieval_meets_multi_graded_relevance_summary.md`
+- `src/content/paper_summaries/generative_retrieval/genre_autoregressive_entity_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/genrec_large_language_model_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/gpt4rec_generative_framework_personalized_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/gr_overcomes_limitations_identifier_ambiguity_summary.md`
+- `src/content/paper_summaries/generative_retrieval/gs2rs_generative_cold_start_filter_bubbles_summary.md`
+- `src/content/paper_summaries/generative_retrieval/idnp_interest_dynamics_generative_neural_processes_summary.md`
+- `src/content/paper_summaries/generative_retrieval/inductive_generative_recommendation_retrieval_based_speculation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/integrating_chain_of_thought_into_generative_retrieval_a_preliminary_study_summary.md`
+- `src/content/paper_summaries/generative_retrieval/killing_two_birds_unifying_retrieval_ranking_single_gr_model_summary.md`
+- `src/content/paper_summaries/generative_retrieval/lasar_latent_adaptive_semantic_aligned_reasoning_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/learning_without_mnar_prior_propensity_generative_recommender_summary.md`
+- `src/content/paper_summaries/generative_retrieval/llm_universal_retriever_industrial_scale_recommender_summary.md`
+- `src/content/paper_summaries/generative_retrieval/lost_in_decoding_reproducing_and_stress_testing_the_look_ahead_prior_in_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/making_transformer_decoders_better_differentiable_indexers_summary.md`
+- `src/content/paper_summaries/generative_retrieval/masked_diffusion_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/mbgr_multi_business_prediction_for_generative_recommendation_at_meituan_summary.md`
+- `src/content/paper_summaries/generative_retrieval/mlps_are_efficient_distilled_generative_recommenders_summary.md`
+- `src/content/paper_summaries/generative_retrieval/modeling_behavioral_intensity_and_transitions_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/mtserve_efficient_serving_for_generative_recommendation_models_with_hierarchical_caches_summary.md`
+- `src/content/paper_summaries/generative_retrieval/nezha_zero_sacrifice_hyperspeed_decoding_generative_recommendations_summary.md`
+- `src/content/paper_summaries/generative_retrieval/on_generative_agents_in_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/on_the_equivalence_between_auto_regressive_next_token_prediction_and_full_item_vocabulary_maxim_summary.md`
+- `src/content/paper_summaries/generative_retrieval/onerec_unifying_retrieve_rank_iterative_preference_alignment_summary.md`
+- `src/content/paper_summaries/generative_retrieval/orbit_preserving_foundational_language_capabilities_in_genretrieval_via_origin_regulated_mergin_summary.md`
+- `src/content/paper_summaries/generative_retrieval/pinrec_outcome_conditioned_multi_token_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/position_aware_drafting_for_inference_acceleration_in_llm_based_generative_list_wise_recommenda_summary.md`
+- `src/content/paper_summaries/generative_retrieval/preference_discerning_llm_enhanced_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/purely_semantic_indexing_llm_based_generative_recommendation_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/ragr_review_augmented_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/rcllm_accelerating_generative_recommendation_via_beyond_prefix_kv_caching_summary.md`
+- `src/content/paper_summaries/generative_retrieval/rclrec_reverse_curriculum_learning_for_modeling_sparse_conversions_in_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/recast_recasting_learning_signals_for_reinforcement_learning_in_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/rqvae_autoregressive_image_generation_residual_quantization_summary.md`
+- `src/content/paper_summaries/generative_retrieval/sapo_step_aligned_policy_optimization_for_reasoning_based_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/seal_autoregressive_search_engines_summary.md`
+- `src/content/paper_summaries/generative_retrieval/syngr_unleashing_the_potential_of_cross_modal_synergy_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/synthetic_data_strategies_domain_specific_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/synthetic_datasets_collaborative_filtering_gans_summary.md`
+- `src/content/paper_summaries/generative_retrieval/tbgrecall_generative_retrieval_model_ecommerce_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/tencent_advertising_algorithm_challenge_2025_all_modality_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/text2tracks_prompt_based_music_recommendation_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/tiger_recommender_systems_with_generative_retrieval_summary.md`
+- `src/content/paper_summaries/generative_retrieval/towards_generalizable_and_efficient_large_scale_generative_recommenders_summary.md`
+- `src/content/paper_summaries/generative_retrieval/towards_sustainable_growth_a_multi_value_aware_retrieval_framework_for_e_commerce_search_summary.md`
+- `src/content/paper_summaries/generative_retrieval/trialigngr_triangular_multitask_alignment_with_multimodal_deep_interest_mining_for_generative_r_summary.md`
+- `src/content/paper_summaries/generative_retrieval/turbogr_an_accelerated_training_system_for_large_scale_generative_recommendation_summary.md`
+- `src/content/paper_summaries/generative_retrieval/twistar_think_fast_think_slow_then_act_generative_recommendation_with_adaptive_reasoning_summary.md`
+- `src/content/paper_summaries/generative_retrieval/unified_value_alignment_for_generative_recommendation_in_industrial_advertising_summary.md`
+- `src/content/paper_summaries/generative_retrieval/vectorizing_trie_efficient_constrained_decoding_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/a_simple_contrastive_framework_of_item_tokenization_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/actions_speak_louder_than_words_trillion_parameter_sequential_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/asi_towards_distributionally_balanced_end_to_end_generative_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/asymmetric_generative_recommendation_via_multi_expert_projection_and_multi_faceted_hierarchical_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/better_generalization_with_semantic_ids_a_case_study_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/beyond_static_collision_handling_adaptive_semantic_id_learning_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/birds_of_a_feather_cluster_nearby_a_proximity_aware_geo_codebook_for_local_service_recommendati_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/bloger_bi_level_optimization_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/bridging_search_and_recommendation_in_generative_retrieval_does_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/card_non_uniform_quantization_of_visual_semantic_unit_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/cat_id2_category_tree_integrated_document_identifier_learning_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/cofirec_coarse_to_fine_tokenization_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/conditional_memory_enhanced_item_representation_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/das_dual_aligned_semantic_ids_empowered_industrial_recommender_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/deploying_semantic_id_based_generative_retrieval_for_large_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/dimerec_a_unified_framework_for_enhanced_sequential_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/discrimination_is_generation_unifying_ranking_and_retrieval_from_a_tokenizer_perspective_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/dos_dual_flow_orthogonal_semantic_ids_for_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/drift_aware_continual_tokenization_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/efficient_optimization_of_hierarchical_identifiers_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/enhancing_item_tokenization_for_generative_recommendation_through_self_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/entity_aware_generative_retrieval_for_personalized_contexts_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/expressiveness_limits_of_autoregressive_semantic_id_generation_in_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/forge_forming_semantic_identifiers_for_generative_retrieval_in_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/from_head_to_tail_asymmetric_knowledge_transfer_in_long_tail_recommendation_with_generative_sem_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/from_ids_to_semantics_a_generative_framework_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/fusid_modality_fused_semantic_ids_for_generative_music_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generate_what_you_prefer_reshaping_sequential_recommendation_via_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generating_long_semantic_ids_in_parallel_for_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_flow_network_for_listwise_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_news_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_next_poi_recommendation_with_semantic_id_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/generative_recommendation_with_semantic_ids_a_practitioner_s_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/genrec_a_preference_oriented_generative_framework_for_large_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/gensar_unifying_balanced_search_and_recommendation_with_generative_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/glass_a_generative_recommender_for_long_sequence_modeling_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/grace_generative_recommendation_via_journey_aware_sparse_attention_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/grounded_token_initialization_for_new_vocabulary_in_lms_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/harmonizing_generative_retrieval_and_ranking_in_chain_of_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/hid_vae_interpretable_generative_recommendation_via_hierarchical_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/how_reliable_are_semantic_id_tokenizer_comparisons_in_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/intent_driven_semantic_id_generation_for_grounded_conversational_news_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/intrr_a_framework_for_integrating_sid_redistribution_and_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/learning_category_trees_for_id_based_recommendation_exploring_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/learning_variable_length_tokenization_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/llm_aligned_geographic_item_tokenization_for_local_life_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/mitigating_collaborative_semantic_id_staleness_in_generative_retrieval_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/mmq_multimodal_mixture_of_quantization_tokenization_for_semantic_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/momorec_a_multi_agent_motivation_generation_framework_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/mtgrec_multi_identifier_item_tokenization_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/multimodal_generative_retrieval_model_with_staged_pretraining_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/order_agnostic_identifier_for_large_language_model_based_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/pctx_tokenizing_personalized_context_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/pit_a_dynamic_personalized_item_tokenizer_for_end_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/plum_adapting_pre_trained_language_models_for_industrial_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/prompt_to_slate_diffusion_models_for_prompt_conditioned_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/r3_vae_reference_vector_guided_rating_residual_quantization_vae_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/reasoning_over_semantic_ids_enhances_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/reinforcement_learning_driven_generative_retrieval_with_semantic_aligned_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/rethinking_generative_recommender_tokenizer_recsys_native_encoding_and_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_joint_generative_search_and_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_music_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/semantic_ids_for_recommender_systems_at_snapchat_use_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/semantic_trimming_and_auxiliary_multi_step_prediction_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/sid_coord_coordinating_semantic_ids_for_id_based_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/stop_treating_collisions_equally_qualification_aware_semantic_id_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/store_semantic_tokenization_orthogonal_rotation_and_efficient_attention_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/store_streamlining_semantic_tokenization_and_generative_recommendation_with_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/the_best_of_the_two_worlds_harmonizing_semantic_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/tokenrec_learning_to_tokenize_id_for_llm_based_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/towards_context_aware_reasoning_enhanced_generative_searching_in_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/towards_large_generative_recommendation_a_tokenization_perspective_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/towards_scalable_semantic_representation_for_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/trierec_trie_aware_transformers_for_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/understanding_generative_recommendation_with_semantic_ids_from_a_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/unified_semantic_and_id_representation_learning_for_deep_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/unigrec_unified_generative_recommendation_with_soft_identifiers_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/unirec_bridging_the_expressive_gap_between_generative_and_discriminative_recommendation_via_cha_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/unisearch_rethinking_search_system_with_a_unified_generative_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/universal_item_tokenization_for_transferable_generative_recommendation_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/unleash_the_potential_of_long_semantic_ids_for_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/uxsid_semantic_aware_user_interests_modeling_for_ultra_long_sequence_summary.md`
+- `src/content/paper_summaries/semantic_ids_tokenization_indexing/when_text_as_vision_meets_semantic_ids_in_summary.md`

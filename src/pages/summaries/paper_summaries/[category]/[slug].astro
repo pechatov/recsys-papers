@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from 'astro:content';
+import SummaryLayout from '../../../../layouts/SummaryLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('paperSummaries');
+
+  return entries.map((entry) => ({
+    params: {
+      category: entry.data.category,
+      slug: entry.data.slug
+    },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<SummaryLayout title={entry.data.title} paperUrl={entry.data.paperUrl} catalogId={entry.data.catalogId}>
+  <Content />
+</SummaryLayout>
