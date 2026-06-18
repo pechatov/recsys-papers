@@ -23,8 +23,8 @@
       document.documentElement.dataset.theme = storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : systemTheme;
     } catch (_) {}
   </script>
-<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --panel:rgba(255,255,255,.96); --link:#0b66c3; --link-strong:#0f4f9e; --label:#526173; --row-alt:#fbfcfe; --pill-bg:#f8fafc; --pill-muted:#64748b; --pill-dot:#94a3b8; --pill-dot-ring:#e2e8f0; --focus:#93c5fd; --shadow:rgba(15, 23, 42, .06); --shadow-strong:rgba(15, 23, 42, .12); --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; --reading:#b45309; --reading-bg:#fff7ed; --reading-border:#fed7aa; --new:#7c2d12; --new-bg:#ffedd5; --new-border:#fdba74; --gutter-bg:rgba(255,255,255,.92); --gutter-left:linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); --gutter-right:linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
-:root[data-theme="dark"] { color-scheme: dark; --fg:#e5e7eb; --muted:#94a3b8; --border:#334155; --bg:#0f172a; --soft:#172033; --panel:rgba(15,23,42,.94); --link:#7dd3fc; --link-strong:#bae6fd; --label:#cbd5e1; --row-alt:#111c2f; --pill-bg:#111827; --pill-muted:#cbd5e1; --pill-dot:#64748b; --pill-dot-ring:#334155; --focus:#38bdf8; --shadow:rgba(0,0,0,.25); --shadow-strong:rgba(0,0,0,.38); --industry:#5eead4; --industry-bg:#0f2f2c; --industry-border:#0f766e; --reading:#fdba74; --reading-bg:#332417; --reading-border:#9a5a19; --new:#fed7aa; --new-bg:#3a2415; --new-border:#9a3412; --gutter-bg:rgba(15,23,42,.92); --gutter-left:linear-gradient(90deg, rgba(125,211,252,.10), rgba(125,211,252,0)); --gutter-right:linear-gradient(270deg, rgba(125,211,252,.10), rgba(125,211,252,0)); }
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --panel:rgba(255,255,255,.96); --link:#0b66c3; --link-strong:#0f4f9e; --label:#526173; --row-alt:#fbfcfe; --pill-bg:#f8fafc; --pill-muted:#64748b; --pill-dot:#94a3b8; --pill-dot-ring:#e2e8f0; --focus:#93c5fd; --shadow:rgba(15, 23, 42, .06); --shadow-strong:rgba(15, 23, 42, .12); --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; --reading:#b45309; --reading-bg:#fff7ed; --reading-border:#fed7aa; --gutter-bg:rgba(255,255,255,.92); --gutter-left:linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); --gutter-right:linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+:root[data-theme="dark"] { color-scheme: dark; --fg:#e5e7eb; --muted:#94a3b8; --border:#334155; --bg:#0f172a; --soft:#172033; --panel:rgba(15,23,42,.94); --link:#7dd3fc; --link-strong:#bae6fd; --label:#cbd5e1; --row-alt:#111c2f; --pill-bg:#111827; --pill-muted:#cbd5e1; --pill-dot:#64748b; --pill-dot-ring:#334155; --focus:#38bdf8; --shadow:rgba(0,0,0,.25); --shadow-strong:rgba(0,0,0,.38); --industry:#5eead4; --industry-bg:#0f2f2c; --industry-border:#0f766e; --reading:#fdba74; --reading-bg:#332417; --reading-border:#9a5a19; --gutter-bg:rgba(15,23,42,.92); --gutter-left:linear-gradient(90deg, rgba(125,211,252,.10), rgba(125,211,252,0)); --gutter-right:linear-gradient(270deg, rgba(125,211,252,.10), rgba(125,211,252,0)); }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
 main { max-width: 980px; margin: 0 auto; padding: 72px 24px 72px; }
@@ -40,7 +40,6 @@ th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align:
 th { background: var(--soft); text-align: left; }
 tr:nth-child(even) td { background: var(--row-alt); }
 .badge { display:inline-block; background: var(--soft); border:1px solid var(--border); border-radius: 4px; padding:.08rem .35rem; margin:.1rem .2rem .1rem 0; font-size:.88em; color: var(--label); }
-.badge.new-paper { color: var(--new); background: var(--new-bg); border-color: var(--new-border); font-weight: 700; }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 .takeaway { margin-top: .25rem; }
 .takeaway div { margin: .16rem 0; }
@@ -63,12 +62,11 @@ tr:nth-child(even) td { background: var(--row-alt); }
 :root[data-theme="dark"] .theme-toggle:hover { box-shadow: 0 10px 26px rgba(0,0,0,.45); }
 .theme-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .read-stats { color: var(--muted); font-size: .92rem; white-space: nowrap; }
-.read-status-item, .fresh-status-item { color: var(--fg); }
+.read-status-item { color: var(--fg); }
 .status-control { display: inline-flex; align-items: center; border: 0; padding: 0; background: transparent; cursor: pointer; user-select: none; vertical-align: middle; font: inherit; }
 .status-pill { display: inline-flex; align-items: center; gap: .42rem; min-height: 1.75rem; padding: .18rem .62rem; border: 1px solid var(--border); border-radius: 4px; background: var(--pill-bg); color: var(--pill-muted); font-size: .88rem; font-weight: 700; line-height: 1; transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease; }
 .status-pill::before { content: ""; width: .48rem; height: .48rem; border-radius: 999px; background: var(--pill-dot); box-shadow: 0 0 0 3px var(--pill-dot-ring); }
 .read-status-pill::after { content: "Не прочитано"; }
-.fresh-status-pill::after { content: "Старая"; }
 .status-control:hover .status-pill { border-color: var(--pill-dot); box-shadow: 0 0 0 4px var(--shadow); }
 .status-control:focus-visible .status-pill { outline: 2px solid var(--focus); outline-offset: 3px; }
 .read-status-control[data-status="reading"] .read-status-pill { border-color: var(--reading-border); background: var(--reading-bg); color: var(--reading); box-shadow: 0 1px 3px var(--shadow); }
@@ -77,9 +75,6 @@ tr:nth-child(even) td { background: var(--row-alt); }
 .read-status-control[data-status="read"] .read-status-pill { border-color: var(--industry-border); background: var(--industry-bg); color: var(--industry); box-shadow: 0 1px 3px var(--shadow); }
 .read-status-control[data-status="read"] .read-status-pill::before { width: .56rem; height: .32rem; border-radius: 0; background: transparent; border: solid var(--industry); border-width: 0 0 2px 2px; box-shadow: none; transform: rotate(-45deg) translateY(-.04rem); }
 .read-status-control[data-status="read"] .read-status-pill::after { content: "Прочитано"; }
-.fresh-status-control[data-freshness="new"] .fresh-status-pill { border-color: var(--new-border); background: var(--new-bg); color: var(--new); box-shadow: 0 1px 3px var(--shadow); }
-.fresh-status-control[data-freshness="new"] .fresh-status-pill::before { width: .52rem; height: .52rem; background: var(--new); box-shadow: 0 0 0 3px var(--new-border); }
-.fresh-status-control[data-freshness="new"] .fresh-status-pill::after { content: "Новая"; }
 main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > strong > a { color: var(--pill-muted); }
 .empty-state { display: none; margin: 1rem 0 2rem; padding: .85rem 1rem; color: var(--muted); background: var(--soft); border: 1px solid var(--border); border-radius: 8px; }
 .is-hidden-by-filter { display: none; }
@@ -110,14 +105,14 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <label><input name="paper-read-filter" type="radio" value="reading"/>Читаются</label>
 <label><input name="paper-read-filter" type="radio" value="read"/>Прочитанные</label>
 </div>
-<div aria-label="Показывать статьи по новизне" class="filter-group" role="radiogroup">
-<label><input checked="" name="paper-freshness-filter" type="radio" value="all"/>Все</label>
-<label><input name="paper-freshness-filter" type="radio" value="new"/>Новые</label>
-<label><input name="paper-freshness-filter" type="radio" value="old"/>Не новые</label>
+<div aria-label="Показывать статьи по наличию саммари" class="filter-group" role="radiogroup">
+<label><input checked="" name="paper-summary-filter" type="radio" value="all"/>Все</label>
+<label><input name="paper-summary-filter" type="radio" value="with"/>Есть саммари</label>
+<label><input name="paper-summary-filter" type="radio" value="missing"/>Саммари пропущено</label>
 </div>
 </div>
 <div class="control-meta">
-<div class="read-stats" id="read-stats">Новые: 0; прочитано: 0 из 331</div>
+<div class="read-stats" id="read-stats">Прочитано: 0 из 331</div>
 </div>
 </div>
 <p class="empty-state" id="empty-state">Нет статей для выбранных фильтров.</p>
@@ -846,165 +841,165 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) aligns with advances in generative AI by casting next-item prediction as token-level generation rather than score-based ranking. Most GR methods adopt a two-stage pipeline: (i) \textit{item tokenization}, which maps each item to a sequence of discrete, hierarchically organized tokens; and (ii) \textit{autoregressive generation}, which predicts the next item's tokens conditioned on the tokens of user's interaction history. Although hierarchical tokenization induces a prefix tree (trie) over items, standard autoregressive modeling with conventional Transformers often flattens item tokens into a linear stream and overlooks the underlying topology. To address this, we propose TrieRec, a trie-aware generative recommendation method that augments Transformers with structural inductive biases via two positional encodings. First, a \textit{trie-aware absolute positional encoding} aggregates a token's (node's) local structural context (\eg depth, ancestors, and descendants) into the token representation. Second, a \textit{topology-aware relative positional encoding} injects pairwise structural relations into self-attention to capture topology-induced semantic relatedness. TrieRec is also model-agnostic, efficient, and hyperparameter-free. In our experiments, we implement TrieRec within three representative GR backbones, achieving notably improvements of 8.83\% on average across four real-world datasets.</div></div></li>
 </ul>
-<ol id="paper-how_reliable_are_semantic_id_tokenizer_comparisons_in_generative_recommendation_summary" start="76"><li><strong><a href="https://arxiv.org/abs/2605.25330">How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-how_reliable_are_semantic_id_tokenizer_comparisons_in_generative_recommendation_summary" start="76"><li><strong><a href="https://arxiv.org/abs/2605.25330">How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-25</li>
 <li><strong>Аффилиации:</strong> School of Computing, University of Otago; University of New South Wales</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> In Semantic-ID (SID) based generative recommendation, each item is represented as a sequence of discrete codes, and an autoregressive model is trained to generate the SID sequence of the next item; top-K performance is then measured by checking whether the SID sequence of the target item appears among the generated sequences. This evaluation protocol equates SID-level matching with item-level recommendation, an equivalence that holds only when every SID sequence maps to a single item. We show this assumption breaks down in practice: because tokenizers compress item features into a code space, semantically similar but collaboratively distinct items are frequently assigned the same SID sequence. Across four datasets and five representative tokenizers, the fraction of items involved in such collisions reaches 30.5%, so matching a shared SID sequence identifies only a collision group rather than the target item. Consequently, SID-level metrics overestimate item-level performance (Hit@10 is inflated by up to 103.36%), and the inflation grows with the collision rate. To support faithful comparison, we develop collision-aware item-level metrics computed directly from generated SID sequences, together with a post-tokenizer procedure that reassigns last-level SIDs at minimum cost to obtain a collision-free assignment for any existing tokenizer. Our results indicate that SID-level rankings in prior work should be interpreted with caution, and that reliable tokenizer evaluation requires either item-level correction or collision-free SID assignments.</div></div></li>
 </ul>
-<ol id="paper-from_head_to_tail_asymmetric_knowledge_transfer_in_long_tail_recommendation_with_generative_sem_summary" start="77"><li><strong><a href="https://arxiv.org/abs/2605.23310">From Head to Tail: Asymmetric Knowledge Transfer in Long-tail Recommendation with Generative Semantic IDs</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-from_head_to_tail_asymmetric_knowledge_transfer_in_long_tail_recommendation_with_generative_sem_summary" start="77"><li><strong><a href="https://arxiv.org/abs/2605.23310">From Head to Tail: Asymmetric Knowledge Transfer in Long-tail Recommendation with Generative Semantic IDs</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-22</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Alibaba Group</span>; Beijing University</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Long-tail recommendation in real-world e-commerce platforms remains challenging due to severe data imbalance. Existing methods often struggle to combine content-based multimodal features with collaborative signals. Many of these methods also ignore an important asymmetry in knowledge transfer between head and tail IDs: noisy signals from tail IDs can hurt representation learning for head IDs. This paper presents AKT-Rec, a framework for Asymmetric Knowledge Transfer in long-tail Recommendation that uses LLM-generated semantic IDs. AKT-Rec uses Multimodal LLMs (MLLMs) with supervised fine-tuning to align content representations with collaborative information for both items and users, producing semantic representations. It then discretizes these representations into semantic IDs with a Residual-Quantized VAE (RQ-VAE), which yields semantic clusters of similar entities. AKT-Rec has two main components: (1) Cluster-Guided Adaptive Embedding, which decomposes each ID representation into a cluster-level embedding that captures shared semantics and an individual embedding. Through an asymmetric contrastive objective and an activity-aware gating mechanism, this module directs knowledge transfer from head to tail IDs. (2) Hierarchical Feature Aggregation, which builds parallel feature views and adaptively fuses them to optimize predictions for samples with varying activity levels. Extensive experiments on a large-scale industrial dataset and online A/B testing on the Alibaba Tmall platform demonstrate the effectiveness of AKT-Rec. AKT-Rec improves offline performance by 0.35% in AUC and 1.53% in GAUC, outperforming several competitive baselines. In online A/B testing, AKT-Rec achieves a 2.76% increase in CTR and a 3.47% increase in GMV, validating its utility in real-world production environments.</div></div></li>
 </ul>
-<ol id="paper-learning_variable_length_tokenization_for_generative_recommendation_summary" start="78"><li><strong><a href="https://arxiv.org/abs/2605.17779">Learning Variable-Length Tokenization for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-learning_variable_length_tokenization_for_generative_recommendation_summary" start="78"><li><strong><a href="https://arxiv.org/abs/2605.17779">Learning Variable-Length Tokenization for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-18</li>
 <li><strong>Аффилиации:</strong> East China Normal University; Shanghai Innovation Institute</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation reformulates recommendation as next-token prediction over discrete semantic identifiers (IDs). A fundamental yet unexplored design choice is that existing methods employ fixed-length tokenization for all items, implicitly assuming uniform encoding capacity regardless of item characteristics. Through systematic experiments across four datasets, we discover the Popularity-Length Paradox: popular items achieve optimal performance with short IDs, while tail items require substantially longer codes to capture discriminative semantics. This reveals a critical mismatch where popular items benefit from abundant collaborative signals and require minimal semantic detail, whereas tail items must rely on fine-grained content features due to sparse interaction data. To address this, we propose VarLenRec, a framework for learning variable-length tokenization. We develop Popularity-Weighted Information Budget Allocation (PIBA), an information-theoretic framework proving that optimal ID length should scale as a negative power of popularity. Directly implementing variable-length allocation faces two technical challenges: standard Euclidean residual quantization lacks geometric capacity to support diverse code lengths without distortion, and discrete length decisions are non-differentiable. We address these through Hyperbolic Residual Quantization, which leverages the exponential volume growth of the Poincaré ball to naturally stratify encoding capacity, and a Soft Length Controller, which enables differentiable length prediction via continuous layer retention probabilities regularized by PIBA-derived priors. Extensive experiments demonstrate that VarLenRec achieves significant improvements over state-of-the-art methods in recommendation accuracy and training/inference efficiency, revealing the importance of adaptive encoding capacity in generative recommendation.</div></div></li>
 </ul>
-<ol id="paper-discrimination_is_generation_unifying_ranking_and_retrieval_from_a_tokenizer_perspective_summary" start="79"><li><strong><a href="https://arxiv.org/abs/2605.14853">Discrimination Is Generation: Unifying Ranking and Retrieval from a Tokenizer Perspective</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-discrimination_is_generation_unifying_ranking_and_retrieval_from_a_tokenizer_perspective_summary" start="79"><li><strong><a href="https://arxiv.org/abs/2605.14853">Discrimination Is Generation: Unifying Ranking and Retrieval from a Tokenizer Perspective</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-14</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Meituan</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Semantic IDs (SIDs) define the generation space of generative recommendation and directly determine its personalization ceiling. However, existing tokenizers are trained independently with retrieval objectives, leaving personalization signals fully decoupled from the SID construction process -- a fundamental gap that causes generative retrieval to persistently lag behind discriminative ranking. In this paper, we rethink the essence of SIDs: \emph{ranking seeks argmax in item space while retrieval seeks argmax in token space; both are the same problem solved at different granularities.} Based on this insight, we propose \DIG (\textbf{D}iscrimination \textbf{I}s \textbf{G}eneration), which embeds the tokenizer inside a discriminative ranking model for end-to-end training -- the ranker naturally becomes a retrieval model, yielding two models from a single training run. \DIG is organized around a \emph{feature assignment taxonomy}: item-intrinsic static features are encoded into SIDs, user-item cross features (u2i) implicitly drive codebook boundaries toward recommendation decision boundaries during training, and an MLP$_\mathrm{u2t}$ distillation module approximates u2i at the token level for inference. Experiments on three public benchmarks and two industrial datasets demonstrate that \DIG simultaneously improves ranking, retrieval, and unified retrieval-ranking quality.</div></div></li>
 </ul>
-<ol id="paper-asymmetric_generative_recommendation_via_multi_expert_projection_and_multi_faceted_hierarchical_summary" start="80"><li><strong><a href="https://arxiv.org/abs/2605.14512">Asymmetric Generative Recommendation via Multi-Expert Projection and Multi-Faceted Hierarchical Quantization</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-asymmetric_generative_recommendation_via_multi_expert_projection_and_multi_faceted_hierarchical_summary" start="80"><li><strong><a href="https://arxiv.org/abs/2605.14512">Asymmetric Generative Recommendation via Multi-Expert Projection and Multi-Faceted Hierarchical Quantization</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-14</li>
 <li><strong>Аффилиации:</strong> Tsinghua University; BNRist; <span class="industry">Tencent</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GenRec) models reformulate recommendation as a sequence generation task, representing items as discrete Semantic IDs used symmetrically as both inputs and prediction targets. We identify a critical dual-stage information bottleneck in this design: (1) the Input Bottleneck, where lossy quantization degrades fine-grained semantics, while popularity bias skews the learned representations toward frequent items, and (2) the Output Bottleneck, where imprecise discrete targets limit supervision quality. To address these issues, we propose AsymRec, an asymmetric continuous-discrete framework that decouples input and output representations. Specifically, Multi-expert Semantic Projection (MSP) maps continuous embeddings into the Transformer's hidden space via expert-specialized projections, preserving semantic richness and improving generalization to infrequent items. Multi-faceted Hierarchical Quantization (MHQ) constructs high-capacity, structured discrete targets through multi-view and multi-level quantization with semantic regularization, preventing dimensional collapse while retaining fine-grained distinctions. Extensive experiments demonstrate that AsymRec consistently outperforms state-of-the-art generative recommenders by an average of 15.8 %. The code will be released.</div></div></li>
 </ul>
-<ol id="paper-conditional_memory_enhanced_item_representation_for_generative_recommendation_summary" start="81"><li><strong><a href="https://arxiv.org/abs/2605.11447">Conditional Memory Enhanced Item Representation for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-conditional_memory_enhanced_item_representation_for_generative_recommendation_summary" start="81"><li><strong><a href="https://arxiv.org/abs/2605.11447">Conditional Memory Enhanced Item Representation for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-12</li>
 <li><strong>Аффилиации:</strong> City University of Hong Kong; Independent Researcher; Tsinghua University</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) has emerged as a promising paradigm that predicts target items by autoregressively generating their semantic identifiers (SID). Most GR methods follow a quantization-representation-generation pipeline, first assigning each item a SID, then constructing input representations from SID-token embeddings, and finally predicting the target SID through autoregressive generation. Existing item-level representation constructions mainly take two forms: directly merging SID-token embeddings into a compact vector, or enriching item-level representations with external inputs through additional networks. However, these item-level constructors still expose two practical challenges: direct merging may amplify the information loss caused by quantization and ID collision while obscuring SID code relations, whereas external-input-based methods can strengthen item semantics but cannot reliably preserve the SID-structured evidence required for token-level generation. These limitations make representation construction an underexplored bottleneck, leading to two severe problems, \ie{} the Identity-Structure Preservation Conflict and Input-Output Granularity Mismatch. To this end, we propose ComeIR, a Conditional Memory enhanced Item Representation framework that reconstructs SID-token embeddings into item-aware inputs and restores the token granularity during SID decoding. Specifically, MM-guided token scoring adaptively estimates the contribution of each code within the SID, dual-level Engram memory captures intra-item code composition and inter-item transition patterns, and a memory-restoring prediction head reuses the memories during SID decoding. Extensive experiments demonstrate the effectiveness and flexibility of ComeIR, and further reveal scalable gains from enlarging conditional memory.</div></div></li>
 </ul>
-<ol id="paper-uxsid_semantic_aware_user_interests_modeling_for_ultra_long_sequence_summary" start="82"><li><strong><a href="https://arxiv.org/abs/2605.09040">UxSID: Semantic-Aware User Interests Modeling for Ultra-Long Sequence</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-uxsid_semantic_aware_user_interests_modeling_for_ultra_long_sequence_summary" start="82"><li><strong><a href="https://arxiv.org/abs/2605.09040">UxSID: Semantic-Aware User Interests Modeling for Ultra-Long Sequence</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-09</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Modeling ultra-long user sequences involves a difficult trade-off between efficiency and effectiveness. While current paradigms rely on either item-specific search or item-agnostic compression, we propose UxSID, a framework exploring a third path: semantic-group shared interest memory. By utilizing Semantic IDs (SIDs) and a dual-level attention strategy, UxSID captures target-aware preferences without the heavy cost of item-specific models. This end-to-end architecture balances computational parsimony with semantic awareness, achieving state-of-the-art performance and a 0.337% revenue lift in large-scale advertising A/B test.</div></div></li>
 </ul>
-<ol id="paper-intent_driven_semantic_id_generation_for_grounded_conversational_news_recommendation_summary" start="83"><li><strong><a href="https://arxiv.org/abs/2605.07613">Intent-Driven Semantic ID Generation for Grounded Conversational News Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-intent_driven_semantic_id_generation_for_grounded_conversational_news_recommendation_summary" start="83"><li><strong><a href="https://arxiv.org/abs/2605.07613">Intent-Driven Semantic ID Generation for Grounded Conversational News Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-08</li>
 <li><strong>Аффилиации:</strong> Sun Yat-sen University, Shenzhen Campus; <span class="industry">Tencent</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Conversational news recommendation requires grounding each suggestion in a rapidly evolving article corpus while addressing implicit user intents that lack explicit retrievable keywords. To characterize this scenario, we identify 6 intent types from production dialogues: five are implicit and pose fundamental challenges to standard RAG pipelines, forming a critical retrieve-first bottleneck. To address these issues, we introduce intent-driven Semantic ID (SID) generation under a Generate-then-Match paradigm. With two-stage training that consists of multi-task SID alignment and GPT-4 Chain-of-Thought distillation, an LLM maps diverse intents to hierarchical SID prefixes, which are then fuzzy-matched to the current news pool to guarantee fully grounded recommendations. Profile-Aware Dual-Signal Reasoning (PADR) further enables cold-start users to obtain valid recommendations using only profiles. On a mainstream Chinese news platform, our 7B model achieves 0% hallucination and 12.4% L1 match in the 152K open-generation SID space (4x random baseline). It matches GPT-4+Hybrid RAG on L1 while surpassing it on finer-grained metrics (L2 2x, Category +1.2pp) at ~100x lower cost. Cold-start users, where existing baselines score 0%, achieve 18.0% L1 (6x random), the highest among all user groups.</div></div></li>
 </ul>
-<ol id="paper-expressiveness_limits_of_autoregressive_semantic_id_generation_in_generative_recommendation_summary" start="84"><li><strong><a href="https://arxiv.org/abs/2605.06331">Expressiveness Limits of Autoregressive Semantic ID Generation in Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-expressiveness_limits_of_autoregressive_semantic_id_generation_in_generative_recommendation_summary" start="84"><li><strong><a href="https://arxiv.org/abs/2605.06331">Expressiveness Limits of Autoregressive Semantic ID Generation in Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-07</li>
 <li><strong>Аффилиации:</strong> University of California San Diego</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) models generate items by autoregressively producing a sequence of discrete tokens that jointly index the target item. However, this autoregressive generation process also induces a structured decoding space whose impact on model expressiveness remains underexplored. Specifically, token-by-token generation can be viewed as traversing a decoding tree induced by semantic ID tokens, where leaf nodes correspond to candidate items. We observe that the item probabilities produced by GR models are strongly correlated with this tree structure: items that are close in the tree tend to receive similar probabilities for any given user, making it difficult to distinguish among them based on user-specific preferences. We further show theoretically that such structural correlations prevent GR models from representing even simple patterns that can be well captured by conventional collaborative filtering models. To mitigate this issue, we propose Latte, a simple modification that injects a latent token before each semantic ID, reshaping the decoding space from a single tree into multiple latent-token-conditioned trees. This design creates multiple paths with varying tree distances between items, relaxing tree-induced probability coupling and yielding an average of 3.45% relative improvement on NDCG@10. Our code is available at https://github.com/hyp1231/Latte.</div></div></li>
 </ul>
-<ol id="paper-capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary" start="85"><li><strong><a href="https://arxiv.org/abs/2605.05096">CapsID: Soft-Routed Variable-Length Semantic IDs for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary" start="85"><li><strong><a href="https://arxiv.org/abs/2605.05096">CapsID: Soft-Routed Variable-Length Semantic IDs for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-06</li>
 <li><strong>Аффилиации:</strong> аффилиации не раскрыты в arXiv source</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation maps each item to a sequence of Semantic IDs (SIDs) and recasts retrieval as autoregressive token generation. In this paradigm the main bottleneck is the tokenizer rather than the Transformer: residual vector quantization with a hard nearest-neighbor assignment at every layer collapses multi-faceted item semantics at cluster boundaries and propagates early errors to later SID positions. A common workaround is to append a dense vector or attribute prefix to the SID, but this dual-representation design inflates inference cost and gives up the simplicity of a generative interface. We address the bottleneck at the tokenizer itself. CAPSID replaces hard residual quantization with capsule routing: at each layer an item probabilistically routes to several semantic capsules, the residual is updated by the routed reconstruction rather than by a single winning code, and the SID terminates once the active capsule's confidence is high enough. On top of CAPSID, SEMANTICBPE composes adjacent SID tokens into reusable subwords by combining their co-occurrence with their embedding compatibility. On Amazon Beauty, Sports, Toys, and a 35M-item proprietary industrial catalog, CAPSID+SEMANTICBPE improves Recall at 10 by 9.6% on average over ReSID, the strongest single-representation baseline, and matches or exceeds a COBRA-style sparse-dense system on every public benchmark while running at 51% of its inference latency. Ablations show that soft routing, iterative agreement, and confidence-driven length each contribute independently, and the gains are largest on tail items where boundary semantics dominate.</div></div></li>
 </ul>
-<ol id="paper-card_non_uniform_quantization_of_visual_semantic_unit_for_generative_recommendation_summary" start="86"><li><strong><a href="https://arxiv.org/abs/2604.26427">CARD: Non-Uniform Quantization of Visual Semantic Unit for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-card_non_uniform_quantization_of_visual_semantic_unit_for_generative_recommendation_summary" start="86"><li><strong><a href="https://arxiv.org/abs/2604.26427">CARD: Non-Uniform Quantization of Visual Semantic Unit for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-29</li>
 <li><strong>Аффилиации:</strong> University of Electronic Science and Technology of China; Southwestern University of Finance and Economics</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation frameworks typically represent items as discrete Semantic IDs (SIDs). While existing studies have sought to enhance SID construction by incorporating multimodal content, collaborative signals, or more advanced quantization techniques, learning high-quality SIDs still faces two key challenges: (1) The two-stage generative recommendation paradigm (SID construction and autoregressive generation) provides insufficient supervision for heterogeneous fusion, which hinders learning high-quality SIDs, and (2) non-uniform embeddings lead to codeword imbalance and generation bias. To address these challenges, we propose a novel generative recommendation framework, called CARD. CARD introduces a visual semantic unit that unifies textual, visual, and collaborative signals into a structured visual representation prior to encoding, enabling holistic semantic modeling and effectively alleviating the semantic gap, thereby reducing the reliance on supervision signals during SID learning. Furthermore, to deal with the highly non-uniform distribution of item semantic embeddings in recommendation scenarios, we develop a non-uniform quantization framework (NU-RQ-VAE), which incorporates a learnable and invertible non-uniform transformation into the quantization process to map skewed semantic distributions into a more balanced latent space, thereby significantly improving codebook utilization and quantization accuracy. Experiments on multiple datasets show that CARD consistently outperforms baseline methods under various settings; meanwhile, the proposed non-uniform transformation module is plug-and-play and remains robust across different quantization schemes. Code is available at https://github.com/HAI-UESTC/CARD.</div></div></li>
 </ul>
-<ol id="paper-birds_of_a_feather_cluster_nearby_a_proximity_aware_geo_codebook_for_local_service_recommendati_summary" start="87"><li><strong><a href="https://arxiv.org/abs/2604.23156">Birds of a Feather Cluster Nearby: a Proximity-Aware Geo-Codebook for Local Service Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-birds_of_a_feather_cluster_nearby_a_proximity_aware_geo_codebook_for_local_service_recommendati_summary" start="87"><li><strong><a href="https://arxiv.org/abs/2604.23156">Birds of a Feather Cluster Nearby: a Proximity-Aware Geo-Codebook for Local Service Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-25</li>
 <li><strong>Аффилиации:</strong> Beijing University of Posts and Telecommunications; <span class="industry">Meituan</span>; Beijing Institute of Technology</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation systems are increasingly adopted in local service platforms, where semantic relevance alone is insufficient without strict geographic feasibility. A key technical challenge lies in semantic ID (SID) tokenization, which directly impacts the recommendation performance. However, existing semantic codebooks neglect geographic constraints, often resulting in recommendations that are semantically relevant yet geographically unreachable. To address this limitation, we propose Pro-GEO, a Proximity-aware GEO-codebook. Pro-GEO establishes a geo-centroid local coordinate system to capture intra-cluster spatial relationships and a geo-rotary position encoding mechanism that models geographic proximity as orthogonal rotational transformations in the high-dimensional embedding. This design enables semantic and spatial signals to be jointly modeled in a balanced manner, without reducing geographic information to a weak auxiliary feature. Extensive experiments conducted on a large-scale industrial dataset reveal that Pro-GEO significantly outperforms state-of-the-art methods. In particular, Pro-GEO reduces the average geographic clustering distance by 45.60% and achieves a 1.87% improvement in Hit@50, highlighting its effectiveness for real-world local service recommendation.</div></div></li>
 </ul>
-<ol id="paper-unirec_bridging_the_expressive_gap_between_generative_and_discriminative_recommendation_via_cha_summary" start="88"><li><strong><a href="https://arxiv.org/abs/2604.12234">UniRec: Bridging the Expressive Gap between Generative and Discriminative Recommendation via Chain-of-Attribute</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-unirec_bridging_the_expressive_gap_between_generative_and_discriminative_recommendation_via_cha_summary" start="88"><li><strong><a href="https://arxiv.org/abs/2604.12234">UniRec: Bridging the Expressive Gap between Generative and Discriminative Recommendation via Chain-of-Attribute</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-14</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Shopee</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GR) reframes retrieval and ranking as autoregressive decoding over Semantic IDs (SIDs), unifying the multi-stage pipeline into a single model. Yet a fundamental expressive gap persists: discriminative models score items with direct feature access enabling explicit user-item crossing, whereas GR decodes over compact SID tokens without item-side signal. We formalize this via Bayes' theorem: ranking by p(y|f,u) is equivalent to ranking by p(f|y,u), which factorizes autoregressively over item features, showing that a generative model with full feature access matches its discriminative counterpart, with any practical gap stemming solely from incomplete feature coverage. We propose UniRec with Chain-of-Attribute (CoA) as its core mechanism. CoA prefixes each SID sequence with structured attribute tokens:category, seller, brand, before decoding the SID, recovering the item-side feature crossing that discriminative models exploit. Since items sharing identical attributes cluster in adjacent SID regions, attribute conditioning yields a measurable per-step entropy reduction H(s_k|s&lt;k,a) &lt; H(s_k|s&lt;k), narrowing the search space and stabilizing beam search. We further address two deployment challenges: Capacity-constrained SID introduces exposure-weighted capacity penalties into residual quantization to suppress token collapse and the Matthew effect; Conditional Decoding Context (CDC) combines Task-Conditioned BOS with hash-based Content Summaries to inject scenario signals at each decoding step. A joint RFT and DPO framework aligns the model with business objectives beyond distribution matching. Experiments show UniRec outperforms the strongest baseline by +22.6% HR@50 overall and +15.5% on high-value orders. Deployed on Shopee's e-commerce platform, online A/B tests confirm significant gains in PVCTR (+5.37%), orders (+4.76%), and GMV (+5.60%).</div></div></li>
 </ul>
-<ol id="paper-r3_vae_reference_vector_guided_rating_residual_quantization_vae_for_generative_recommendation_summary" start="89"><li><strong><a href="paper_summaries/semantic_ids_tokenization_indexing/r3_vae_reference_vector_guided_rating_residual_quantization_vae_for_generative_recommendation_summary.html">R3-VAE: Reference Vector-Guided Rating Residual Quantization VAE for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-r3_vae_reference_vector_guided_rating_residual_quantization_vae_for_generative_recommendation_summary" start="89"><li><strong><a href="paper_summaries/semantic_ids_tokenization_indexing/r3_vae_reference_vector_guided_rating_residual_quantization_vae_for_generative_recommendation_summary.html">R3-VAE: Reference Vector-Guided Rating Residual Quantization VAE for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-13</li>
 <li><strong>Аффилиации:</strong> аффилиации не раскрыты в arXiv source</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2604.11440">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div>Главная идея: R3-VAE стабилизирует SID generation для GR, заменяя слабое STE-обучение на reference-vector и rating-based residual quantization.</div><div>Алгоритм: Reference vector служит semantic anchor, dot-product rating передает более информативные градиенты, а Semantic Cohesion/Preference Discrimination становятся proxy-метриками SID quality.</div><div>Evidence: На шести public benchmarks авторы заявляют +14.5% Recall@10 и +15.5% NDCG@10; на Toutiao есть offline MRR и online StayTime/U gains, а CTR cold-start click volume растет на 15.36%.</div><div>Ограничение: Аффилиации в source не раскрыты; кроме того, proxy-метрики нужно валидировать вне их industrial setup.</div><div>Итог: Статья полезна для быстрой оценки tokenizer iteration: SID quality нельзя мерить только downstream GR после полного обучения.</div></div></li>
 </ul>
-<ol id="paper-semantic_trimming_and_auxiliary_multi_step_prediction_for_generative_recommendation_summary" start="90"><li><strong><a href="https://arxiv.org/abs/2604.05329">Semantic Trimming and Auxiliary Multi-step Prediction for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-semantic_trimming_and_auxiliary_multi_step_prediction_for_generative_recommendation_summary" start="90"><li><strong><a href="https://arxiv.org/abs/2604.05329">Semantic Trimming and Auxiliary Multi-step Prediction for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-07</li>
 <li><strong>Аффилиации:</strong> Zhejiang University; <span class="industry">Alibaba</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GR) has recently transitioned from atomic item-indexing to Semantic ID (SID)-based frameworks to capture intrinsic item relationships and enhance generalization. However, the adoption of high-granularity SIDs leads to two critical challenges: prohibitive training overhead due to sequence expansion and unstable performance reliability characterized by non-monotonic accuracy fluctuations. We identify that these disparate issues are fundamentally rooted in the Semantic Dilution Effect, where redundant tokens waste massive computation and dilute the already sparse learning signals in recommendation. To counteract this, we propose STAMP (Semantic Trimming and Auxiliary Multi-step Prediction), a framework utilizing a dual-end optimization strategy. We argue that effective SID learning requires simultaneously addressing low input information density and sparse output supervision. On the input side, Semantic Adaptive Pruning (SAP) dynamically filters redundancy during the forward pass, converting noise-laden sequences into compact, information-rich representations. On the output side, Multi-step Auxiliary Prediction (MAP) employs a multi-token objective to densify feedback, strengthening long-range dependency capture and ensuring robust learning signals despite compressed inputs. Unifying input purification and signal amplification, STAMP enhances both training efficiency and representation capability. Experiments on public Amazon and large-scale industrial datasets show STAMP achieves 1.23--1.38$\times$ speedup and 17.2\%--54.7\% VRAM reduction while maintaining or improving performance across multiple architectures.</div></div></li>
 </ul>
-<ol id="paper-crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary" start="91"><li><strong><a href="paper_summaries/semantic_ids_tokenization_indexing/crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary.html">CRAB: Codebook Rebalancing for Bias Mitigation in Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary" start="91"><li><strong><a href="paper_summaries/semantic_ids_tokenization_indexing/crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary.html">CRAB: Codebook Rebalancing for Bias Mitigation in Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-06</li>
 <li><strong>Аффилиации:</strong> Stony Brook University</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">quantization</span> <span class="badge">generative recommendation</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2604.05113">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div>Главная идея: CRAB диагностирует popularity bias в GeneRec как следствие imbalanced tokenization и training, которое переучивает popular tokens.</div><div>Алгоритм: Post-hoc rebalance split-ит over-popular codebook tokens, сохраняя hierarchy, и добавляет tree-structured regularizer для semantic consistency.</div><div>Evidence: На real-world datasets CRAB улучшает recommendation performance и снижает popularity bias.</div><div>Ограничение: Post-hoc split может изменить mapping и потребовать переобучения/миграции generator; важно оценить head-quality trade-off.</div><div>Итог: Статья важна для codebook auditing: collapse и popularity bias появляются на уровне tokens, не только на уровне ranker loss.</div></div></li>
 </ul>
-<ol id="paper-grounded_token_initialization_for_new_vocabulary_in_lms_for_generative_recommendation_summary" start="92"><li><strong><a href="https://arxiv.org/abs/2604.02324">Grounded Token Initialization for New Vocabulary in LMs for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-grounded_token_initialization_for_new_vocabulary_in_lms_for_generative_recommendation_summary" start="92"><li><strong><a href="https://arxiv.org/abs/2604.02324">Grounded Token Initialization for New Vocabulary in LMs for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-02</li>
 <li><strong>Аффилиации:</strong> University of Wisconsin-Madison; Northeastern University; University of California, Davis</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Language models (LMs) are increasingly extended with new learnable vocabulary tokens for domain-specific tasks, such as Semantic-ID tokens in generative recommendation. The standard practice initializes these new tokens as the mean of existing vocabulary embeddings, then relies on supervised fine-tuning to learn their representations. We present a systematic analysis of this strategy: through spectral and geometric diagnostics, we show that mean initialization collapses all new tokens into a degenerate subspace, erasing inter-token distinctions that subsequent fine-tuning struggles to fully recover. These findings suggest that \emph{token initialization} is a key bottleneck when extending LMs with new vocabularies. Motivated by this diagnosis, we propose the \emph{Grounded Token Initialization Hypothesis}: linguistically grounding novel tokens in the pretrained embedding space before fine-tuning better enables the model to leverage its general-purpose knowledge for novel-token domains. We operationalize this hypothesis as GTI (Grounded Token Initialization), a lightweight grounding stage that, prior to fine-tuning, maps new tokens to distinct, semantically meaningful locations in the pretrained embedding space using only paired linguistic supervision. Despite its simplicity, GTI outperforms both mean initialization and existing auxiliary-task adaptation methods in the majority of evaluation settings across multiple generative recommendation benchmarks, including industry-scale and public datasets. Further analyses show that grounded embeddings produce richer inter-token structure that persists through fine-tuning, corroborating the hypothesis that initialization quality is a key bottleneck in vocabulary extension.</div></div></li>
 </ul>
-<ol id="paper-drift_aware_continual_tokenization_for_generative_recommendation_summary" start="93"><li><strong><a href="https://arxiv.org/abs/2603.29705">Drift-Aware Continual Tokenization for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-drift_aware_continual_tokenization_for_generative_recommendation_summary" start="93"><li><strong><a href="https://arxiv.org/abs/2603.29705">Drift-Aware Continual Tokenization for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-03-31</li>
 <li><strong>Аффилиации:</strong> Fudan University; <span class="industry">Microsoft Research Asia</span></li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">tokenization</span> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation commonly adopts a two-stage pipeline in which a learnable tokenizer maps items to discrete token sequences (i.e. identifiers) and an autoregressive generative recommender model (GRM) performs prediction based on these identifiers. Recent tokenizers further incorporate collaborative signals so that items with similar user-behavior patterns receive similar codes, substantially improving recommendation quality. However, real-world environments evolve continuously: new items cause identifier collision and shifts, while new interactions induce collaborative drift in existing items (e.g., changing co-occurrence patterns and popularity). Fully retraining both tokenizer and GRM is often prohibitively expensive, yet naively fine-tuning the tokenizer can alter token sequences for the majority of existing items, undermining the GRM's learned token-embedding alignment. To balance plasticity and stability for collaborative tokenizers, we propose DACT, a Drift-Aware Continual Tokenization framework with two stages: (i) tokenizer fine-tuning, augmented with a jointly trained Collaborative Drift Identification Module (CDIM) that outputs item-level drift confidence and enables differentiated optimization for drifting and stationary items; and (ii) hierarchical code reassignment using a relaxed-to-strict strategy to update token sequences while limiting unnecessary changes. Experiments on three real-world datasets with two representative GRMs show that DACT consistently achieves better performance than baselines, demonstrating effective adaptation to collaborative evolution with reduced disruption to prior knowledge. Our implementation is publicly available at https://github.com/HomesAmaranta/DACT for reproducibility.</div></div></li>
 </ul>
@@ -1245,331 +1240,331 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Outfit Recommendation (OR) in the fashion domain has evolved through two stages: Pre-defined Outfit Recommendation and Personalized Outfit Composition. However, both stages are constrained by existing fashion products, limiting their effectiveness in addressing users' diverse fashion needs. Recently, the advent of AI-generated content provides the opportunity for OR to transcend these limitations, showcasing the potential for personalized outfit generation and recommendation.</div></div></li>
 </ul>
-<ol id="paper-purely_semantic_indexing_llm_based_generative_recommendation_retrieval_summary" start="30"><li><strong><a href="https://arxiv.org/abs/2509.16446">Purely Semantic Indexing for LLM-based Generative Recommendation and Retrieval</a></strong> <span class="badge new-paper">новое из ссылок</span></li></ol>
+<ol id="paper-purely_semantic_indexing_llm_based_generative_recommendation_retrieval_summary" start="30"><li><strong><a href="https://arxiv.org/abs/2509.16446">Purely Semantic Indexing for LLM-based Generative Recommendation and Retrieval</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2025</li>
 <li><strong>Аффилиации:</strong> University of California San Diego</li>
-<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative retrieval</span> <span class="badge">collision handling</span> <span class="badge new-paper">новое из ссылок</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">generative retrieval</span> <span class="badge">collision handling</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Semantic identifiers (IDs) have proven effective in adapting large language models for generative recommendation and retrieval. However, existing methods often suffer from semantic ID conflicts, where semantically similar documents (or items) are assigned identical IDs. A common strategy to avoid conflicts is to append a non-semantic token to distinguish them, which introduces randomness and expands the search space, therefore hurting performance. In this paper, we propose purely semantic indexing to generate unique, semantic-preserving IDs without appending non-semantic tokens. We enable unique ID assignment by relaxing the strict nearest-centroid selection and introduce two model-agnostic algorithms: exhaustive candidate matching (ECM) and recursive residual searching (RRS). Extensive experiments on sequential recommendation, product search, and document retrieval tasks demonstrate that our methods improve both overall and cold-start performance, highlighting the effectiveness of ensuring ID uniqueness.</div></div></li>
 </ul>
-<ol id="paper-masked_diffusion_generative_recommendation_summary" start="31"><li><strong><a href="https://arxiv.org/abs/2511.23021">Masked Diffusion for Generative Recommendation</a></strong> <span class="badge new-paper">новое из ссылок</span></li></ol>
+<ol id="paper-masked_diffusion_generative_recommendation_summary" start="31"><li><strong><a href="https://arxiv.org/abs/2511.23021">Masked Diffusion for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2025</li>
 <li><strong>Аффилиации:</strong> University of Texas at Austin; <span class="industry">Snap Inc.</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">masked diffusion</span> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое из ссылок</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">masked diffusion</span> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) with semantic IDs (SIDs) has emerged as a promising alternative to traditional recommendation approaches due to its performance gains, capitalization on semantic information provided through language model embeddings, and inference and storage efficiency. Existing GR with SIDs works frame the probability of a sequence of SIDs corresponding to a user's interaction history using autoregressive modeling. While this has led to impressive next item prediction performances in certain settings, these autoregressive GR with SIDs models suffer from expensive inference due to sequential token-wise decoding, potentially inefficient use of training data and bias towards learning short-context relationships among tokens. Inspired by recent breakthroughs in NLP, we propose to instead model and learn the probability of a user's sequence of SIDs using masked diffusion. Masked diffusion employs discrete masking noise to facilitate learning the sequence distribution, and models the probability of masked tokens as conditionally independent given the unmasked tokens, allowing for parallel decoding of the masked tokens. We demonstrate through thorough experiments that our proposed method consistently outperforms autoregressive modeling. This performance gap is especially pronounced in data-constrained settings and in terms of coarse-grained recall, consistent with our intuitions. Moreover, our approach allows the flexibility of predicting multiple SIDs in parallel during inference while maintaining superior performance to autoregressive modeling.</div></div></li>
 </ul>
-<ol id="paper-nezha_zero_sacrifice_hyperspeed_decoding_generative_recommendations_summary" start="32"><li><strong><a href="https://arxiv.org/abs/2511.18793">NEZHA: A Zero-sacrifice and Hyperspeed Decoding Architecture for Generative Recommendations</a></strong> <span class="badge new-paper">новое из ссылок</span></li></ol>
+<ol id="paper-nezha_zero_sacrifice_hyperspeed_decoding_generative_recommendations_summary" start="32"><li><strong><a href="https://arxiv.org/abs/2511.18793">NEZHA: A Zero-sacrifice and Hyperspeed Decoding Architecture for Generative Recommendations</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2025</li>
 <li><strong>Аффилиации:</strong> City University of Hong Kong; <span class="industry">Alibaba Group</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">speculative decoding</span> <span class="badge">industrial deployment</span> <span class="badge new-paper">новое из ссылок</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">speculative decoding</span> <span class="badge">industrial deployment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GR), powered by Large Language Models (LLMs), represents a promising new paradigm for industrial recommender systems. However, their practical application is severely hindered by high inference latency, which makes them infeasible for high-throughput, real-time services and limits their overall business impact. While Speculative Decoding (SD) has been proposed to accelerate the autoregressive generation process, existing implementations introduce new bottlenecks: they typically require separate draft models and model-based verifiers, requiring additional training and increasing the latency overhead. In this paper, we address these challenges with NEZHA, a novel architecture that achieves hyperspeed decoding for GR systems without sacrificing recommendation quality. Specifically, NEZHA integrates a nimble autoregressive draft head directly into the primary model, enabling efficient self-drafting. This design, combined with a specialized input prompt structure, preserves the integrity of sequence-to-sequence generation. Furthermore, to tackle the critical problem of hallucination, a major source of performance degradation, we introduce an efficient, model-free verifier based on a hash set. We demonstrate the effectiveness of NEZHA through extensive experiments on public datasets and have successfully deployed the system on Taobao since October 2025, driving the billion-level advertising revenue and serving hundreds of millions of daily active users.</div></div></li>
 </ul>
-<ol id="paper-act_with_think_chunk_autoregressive_modeling_generative_recommendation_summary" start="33"><li><strong><a href="https://arxiv.org/abs/2506.23643">Act-With-Think: Chunk Auto-Regressive Modeling for Generative Recommendation</a></strong> <span class="badge new-paper">новое из ссылок</span></li></ol>
+<ol id="paper-act_with_think_chunk_autoregressive_modeling_generative_recommendation_summary" start="33"><li><strong><a href="https://arxiv.org/abs/2506.23643">Act-With-Think: Chunk Auto-Regressive Modeling for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2025</li>
 <li><strong>Аффилиации:</strong> Huazhong University of Science and Technology; <span class="industry">Huawei Noah’s Ark Lab</span>; <span class="industry">Huawei Technologies</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">chunk autoregression</span> <span class="badge">semantic IDs</span> <span class="badge new-paper">новое из ссылок</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">chunk autoregression</span> <span class="badge">semantic IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) typically encodes behavioral or semantic aspects of item information into discrete tokens, leveraging the standard autoregressive (AR) generation paradigm to make predictions. However, existing methods tend to overlook their intrinsic relationship, that is, the semantic usually provides some reasonable explainability "$\textbf{why}$" for the behavior "$\textbf{what}$", which may constrain the full potential of GR. To this end, we present Chunk AutoRegressive Modeling (CAR), a new generation paradigm following the decision pattern that users usually think semantic aspects of items (e.g. brand) and then take actions on target items (e.g. purchase). Our CAR, for the $\textit{first time}$, incorporates semantics (SIDs) and behavior (UID) into a single autoregressive transformer from an ``act-with-think'' dual perspective via chunk-level autoregression. Specifically, CAR packs SIDs and UID into a conceptual chunk for item unified representation, allowing each decoding step to make a holistic prediction. Experiments show that our CAR significantly outperforms existing methods based on traditional AR, improving Recall@5 by 7.93% to 22.30%. Furthermore, we verify the scaling effect between model performance and SIDs bit number, demonstrating that CAR preliminary emulates a kind of slow-thinking style mechanism akin to the reasoning processes observed in large language models (LLMs).</div></div></li>
 </ul>
-<ol id="paper-text2tracks_prompt_based_music_recommendation_generative_retrieval_summary" start="34"><li><strong><a href="https://arxiv.org/abs/2503.24193">Text2Tracks: Prompt-based Music Recommendation via Generative Retrieval</a></strong> <span class="badge new-paper">новое из ссылок</span></li></ol>
+<ol id="paper-text2tracks_prompt_based_music_recommendation_generative_retrieval_summary" start="34"><li><strong><a href="https://arxiv.org/abs/2503.24193">Text2Tracks: Prompt-based Music Recommendation via Generative Retrieval</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2025</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Spotify</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">music recommendation</span> <span class="badge">semantic track IDs</span> <span class="badge new-paper">новое из ссылок</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">music recommendation</span> <span class="badge">semantic track IDs</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> In recent years, Large Language Models (LLMs) have enabled users to provide highly specific music recommendation requests using natural language prompts (e.g. "Can you recommend some old classics for slow dancing?"). In this setup, the recommended tracks are predicted by the LLM in an autoregressive way, i.e. the LLM generates the track titles one token at a time. While intuitive, this approach has several limitation. First, it is based on a general purpose tokenization that is optimized for words rather than for track titles. Second, it necessitates an additional entity resolution layer that matches the track title to the actual track identifier. Third, the number of decoding steps scales linearly with the length of the track title, slowing down inference. In this paper, we propose to address the task of prompt-based music recommendation as a generative retrieval task. Within this setting, we introduce novel, effective, and efficient representations of track identifiers that significantly outperform commonly used strategies. We introduce Text2Tracks, a generative retrieval model that learns a mapping from a user's music recommendation prompt to the relevant track IDs directly. Through an offline evaluation on a dataset of playlists with language inputs, we find that (1) the strategy to create IDs for music tracks is the most important factor for the effectiveness of Text2Tracks and semantic IDs significantly outperform commonly used strategies that rely on song titles as identifiers (2) provided with the right choice of track identifiers, Text2Tracks outperforms sparse and dense retrieval solutions trained to retrieve tracks from language prompts.</div></div></li>
 </ul>
-<ol id="paper-towards_generalizable_and_efficient_large_scale_generative_recommenders_summary" start="35"><li><strong><a href="https://arxiv.org/abs/2605.23312">Towards Generalizable and Efficient Large-Scale Generative Recommenders</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-towards_generalizable_and_efficient_large_scale_generative_recommenders_summary" start="35"><li><strong><a href="https://arxiv.org/abs/2605.23312">Towards Generalizable and Efficient Large-Scale Generative Recommenders</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-22</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Netflix Research</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation models can model user behavior as sequences of events and provide a shared backbone for multiple recommendation tasks. In production, however, pre-training gains do not automatically translate into downstream application improvements: task headroom, repeated-training cost, serving latency, and item freshness all affect transfer. We describe our experience scaling a generative recommender from 2M to 1B backbone parameters, excluding embedding and decoding layers, in a production-scale title recommendation setting. Across multiple downstream tasks, we observe task-dependent scaling behavior: some tasks approach an empirical ceiling within the observed scale range, while others continue to benefit from additional capacity. This motivates using offset scaling-law fits as a diagnostic for where additional model scale may be more or less useful. We then study production constraints that arise when applying the model in practice. Frequent retraining over trillions of behavior tokens makes training and decoding efficiency important; cached serving can make the immediate next-token target stale; and newly launched titles may need to be scored from semantic metadata before collaborative ID embeddings are reliable. We address these issues with multi-token prediction for serving-latency alignment, sampled softmax and a projected decoding head for efficient repeated training, and semantic item towers with collaborative-embedding masking for cold-start adaptation. In a one-week production-shadow evaluation over 1M users, the 1B-backbone model achieves higher MRR than the 2M-backbone baseline across all reported tasks. Overall, the results support treating model scale as one component of a production transfer problem, alongside task headroom, decoding cost, serving-latency alignment, and item generalization.</div></div></li>
 </ul>
-<ol id="paper-integrating_chain_of_thought_into_generative_retrieval_a_preliminary_study_summary" start="36"><li><strong><a href="https://arxiv.org/abs/2605.22358">Integrating Chain-of-Thought into Generative Retrieval: A Preliminary Study</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-integrating_chain_of_thought_into_generative_retrieval_a_preliminary_study_summary" start="36"><li><strong><a href="https://arxiv.org/abs/2605.22358">Integrating Chain-of-Thought into Generative Retrieval: A Preliminary Study</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-21</li>
 <li><strong>Аффилиации:</strong> Shandong University</li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> While generative retrieval (GR) demonstrates competitive performance on standard retrieval benchmarks, existing approaches directly map queries to document identifiers (docids) without intermediate deliberation, limiting their effectiveness for complex queries that require multi-step reasoning. As a preliminary study on integrating chain-of-thought (CoT) into generative retrieval, we introduce ThinkGR, a unified framework that interleaves CoT with docid generation, enabling iterative thinking and retrieval within a single generative process. To bridge the gap between free-form thought generation and structured retrieval targets, we design (1) a hybrid decoding strategy that dynamically switches between unconstrained thought generation and constrained docid decoding, and (2) a two-phase training approach that first aligns thought-retrieval patterns through supervised fine-tuning, then optimizes thought quality via retrieval-grounded reinforcement learning. Experiments on four multi-hop retrieval benchmarks demonstrate that ThinkGR achieves state-of-the-art performance with an average improvement of +6.86\%. Our work opens new avenues for enhancing generative retrieval with explicit deliberation capabilities, with promising implications for retrieval tasks requiring complex reasoning.</div></div></li>
 </ul>
-<ol id="paper-generative_conversational_recommender_system_summary" start="37"><li><strong><a href="https://arxiv.org/abs/2605.21987">Generative Conversational Recommender System</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-generative_conversational_recommender_system_summary" start="37"><li><strong><a href="https://arxiv.org/abs/2605.21987">Generative Conversational Recommender System</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-21</li>
 <li><strong>Аффилиации:</strong> Nanyang Technological University</li>
-<li><strong>Теги:</strong> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Conversational recommender systems aim to provide personalized recommendations via natural language interactions. However, existing approaches either decouple recommendation from dialog generation or rely on retrieval-based pipelines, limiting the integration between recommendation and response generation and leading to suboptimal modeling of user intent. In this paper, we propose a fully generative conversational recommender system that unifies recommendation and dialog generation within a single autoregressive framework. Our approach represents items as discrete semantic IDs and integrates them directly into the generation process, enabling joint prediction of items and responses via next-token modeling. We further introduce a structured generation paradigm that factorizes conversational recommendation into a sequence of interdependent decisions, where the model first predicts the response intent and the recommendation target, and then generates the response conditioned on them. This design enables end-to-end optimization, enforces a more coherent dependency structure, and supports faithful item generation via constrained decoding. Extensive experiments demonstrate that our method consistently improves recommendation performance, achieving gains of up to 29% on Recall@1 over strong baselines, while maintaining competitive dialog quality.</div></div></li>
 </ul>
-<ol id="paper-syngr_unleashing_the_potential_of_cross_modal_synergy_for_generative_recommendation_summary" start="38"><li><strong><a href="https://arxiv.org/abs/2605.18920">SynGR: Unleashing the Potential of Cross-Modal Synergy for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-syngr_unleashing_the_potential_of_cross_modal_synergy_for_generative_recommendation_summary" start="38"><li><strong><a href="https://arxiv.org/abs/2605.18920">SynGR: Unleashing the Potential of Cross-Modal Synergy for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-18</li>
 <li><strong>Аффилиации:</strong> Beihang University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GR) has emerged as a promising paradigm by formulating item recommendation as a sequence-to-sequence generation task over item identifiers. Recent studies have incorporated multimodal signals to provide richer token-level evidence for generation. However, existing approaches largely rely on alignment-centric fusion and underexplore synergistic information across modalities. In practice, synergistic information plays a critical role in capturing emergent item properties that cannot be inferred from any single modality alone. Such properties encode intrinsic item semantics and guide user preferences, enabling models to move beyond surface-level feature matching. To address this limitation, we propose \textbf{SynGR}, a synergistic generative recommendation framework that explicitly encourages the exploitation of cross-modal dependencies during generation. By constraining overreliance on dominant modalities, SynGR enables the model to capture emergent item semantics beyond shared or modality-specific signals. Extensive experiments across three benchmark datasets demonstrate that SynGR achieves superior performance.</div></div></li>
 </ul>
-<ol id="paper-towards_sustainable_growth_a_multi_value_aware_retrieval_framework_for_e_commerce_search_summary" start="39"><li><strong><a href="https://arxiv.org/abs/2605.17994">Towards Sustainable Growth: A Multi-Value-Aware Retrieval Framework for E-Commerce Search</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-towards_sustainable_growth_a_multi_value_aware_retrieval_framework_for_e_commerce_search_summary" start="39"><li><strong><a href="https://arxiv.org/abs/2605.17994">Towards Sustainable Growth: A Multi-Value-Aware Retrieval Framework for E-Commerce Search</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-18</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Taobao &amp; Tmall Group, Alibaba</span></li>
-<li><strong>Теги:</strong> <span class="badge">industrial</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">industrial</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> New item growth is critical for maintaining a healthy ecosystem in large-scale e-commerce platforms. However, existing systems tend to prioritize presenting users with already popular items, a phenomenon often referred to as the "Matthew effect". In the context of search retrieval, current cold-start models suffer from the misalignment between training objectives and online business metrics, and they lack effective mechanisms to measure an item's growth potential. In this paper, we propose a Multi-Value-Aware retrieval framework tailored for e-commerce search, designed to better align with the cascaded online values across different stages of the search system while balancing immediate conversion and long-term item growth. Our framework GrowthGR consists of two key components: an Item Long-term Transaction Value Prediction (ItemLTV) module and a Multi-Value-Aware Generative Retrieval (MultiGR) module. First, in the ItemLTV module, we employ counterfactual inference to quantify the long-term value increment attributable to a single user interaction. Second, in the MultiGR module, building upon a semantic-ID-based generative retrieval architecture, we leverage structured samples with the search cascade signals and adopt a Multi-Value-Aware Policy Optimization (MoPO) training paradigm to align with multi-stage online values, while explicitly balancing short-term transactional value and long-term growth potential estimated by ItemLTV. We successfully deployed GrowthGR on Taobao's production platform, achieving a substantial 5.3% lift in new item GMV while delivering a non-trivial 0.3% gain in overall search GMV. Extensive online analysis and A/B testing demonstrate its positive impact on the overall ecosystem value.</div></div></li>
 </ul>
-<ol id="paper-sapo_step_aligned_policy_optimization_for_reasoning_based_generative_recommendation_summary" start="40"><li><strong><a href="https://arxiv.org/abs/2605.17648">SAPO: Step-Aligned Policy Optimization for Reasoning-Based Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-sapo_step_aligned_policy_optimization_for_reasoning_based_generative_recommendation_summary" start="40"><li><strong><a href="https://arxiv.org/abs/2605.17648">SAPO: Step-Aligned Policy Optimization for Reasoning-Based Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-17</li>
 <li><strong>Аффилиации:</strong> University of Virginia; <span class="industry">Nokia</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation treats next-item prediction as autoregressive item-identifier generation. Specifically, items are encoded as semantic identifiers (SIDs), which are short coarse-to-fine token sequences whose early tokens capture broad semantics and later tokens refine them. Recent work augments this paradigm with reasoning traces and optimizes them via reinforcement learning with verifiable rewards, typically outcome-reward algorithm with exact-match feedback on the generated SID. However, in large-catalog recommendation, exact-match feedback on the generated SID only reports whether the final item is correct; when a generated SID mismatches, outcome-reward cannot identify which SID-token prediction caused the mismatch and may penalize matched SID-token positions together with the mismatched position. We identify that the natural unit of credit assignment in this setting is a single reasoning step (one thinking block paired with one SID token). We instantiate this idea in SAPO (Step-Aligned Policy Optimization): rather than broadcasting one advantage to the whole response, SAPO computes a separate group-relative advantage for each reasoning step and applies it only to the corresponding thinking block and SID token. Across three real-world recommendation datasets, SAPO stabilizes reinforcement-learning training and consistently improves over existing generative recommendation baselines, with the largest gains where sparse exact-match feedback makes reasoning-step credit assignment important. Our results suggest that reinforcement-learning objectives for structured generation should mirror the decoder's own decomposition of the output.</div></div></li>
 </ul>
-<ol id="paper-dual_diffusional_generative_fashion_recommendation_summary" start="41"><li><strong><a href="https://arxiv.org/abs/2605.17357">Dual-Diffusional Generative Fashion Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-dual_diffusional_generative_fashion_recommendation_summary" start="41"><li><strong><a href="https://arxiv.org/abs/2605.17357">Dual-Diffusional Generative Fashion Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-17</li>
 <li><strong>Аффилиации:</strong> Singapore Management University; Shandong University</li>
-<li><strong>Теги:</strong> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Personalized generative recommender systems have emerged as a promising solution for fashion recommendation. However, existing methods primarily rely on implicit visual embeddings from historical interactions, which often contain preference-irrelevant information and result in insufficient user behavior modeling. Moreover, these models typically generate only item images, providing limited interpretability. To address these limitations, we propose DualFashion, a Dual-Diffusional Generative Fashion Recommendation Architecture that jointly models image and text modalities for personalized and explainable recommendation. DualFashion adopts a dual-diffusion Transformer with image and text branches, where structured attribute-level captions and visual outfit information are jointly used as conditioning signals to model user behavior. The proposed architecture produces both fashion item images and textual descriptions, ensuring visual compatibility while providing explicit semantic interpretability. Furthermore, we introduce a text-augmented fine-tuning strategy that enhances generation diversity and enables effective cross-modal knowledge transfer without incurring heavy computational costs. Extensive experiments on iFashion and Polyvore-U across Personalized Fill-in-the-Blank and Generative Outfit Recommendation tasks demonstrate that DualFashion achieves strong performance in behavior modeling, interpretability, and efficiency compared to state-of-the-art methods. Our code and model checkpoints are available at https://github.com/LinkMingzhe/DualFashion.</div></div></li>
 </ul>
-<ol id="paper-ragr_review_augmented_generative_recommendation_summary" start="42"><li><strong><a href="https://arxiv.org/abs/2605.17267">RAGR: Review-Augmented Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-ragr_review_augmented_generative_recommendation_summary" start="42"><li><strong><a href="https://arxiv.org/abs/2605.17267">RAGR: Review-Augmented Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-17</li>
 <li><strong>Аффилиации:</strong> Dalian University of Technology; City University of Hong Kong; <span class="industry">Huawei Technologies</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Sequential recommendation (SR) is traditionally formulated as next-item prediction over chronological item interactions. Although recent generative recommendation (GR) methods introduce new machinery, such as semantic IDs, autoregressive decoding, and unified token spaces, they largely inherit the same item-only modeling assumption. We argue that this design constitutes a structural bottleneck, because user decision-making is not purely behavioral: while item interactions reveal what users choose, review feedback often explains why they choose it by exposing latent evaluative factors. Motivated by this observation, we propose Review-Augmented Generative Recommendation (RAGR), a novel GR framework that incorporates review feedback into the generative user sequence rather than treating reviews as auxiliary side information. Specifically, RAGR introduces a Review-Augmented User Sequence Modeling mechanism that interleaves item semantic IDs and review semantic IDs in chronological order to construct a mixed behavioral-semantic sequence, enabling review signals to participate directly in autoregressive next-token generation. To preserve the recommendation objective, we further introduce an Item-Centric Task Generation Alignment strategy based on direct preference optimization (DPO), encouraging the model to favor item tokens over review tokens at prediction positions. Experiments on three real-world datasets show that RAGR yields consistent and significant gains over strong GR backbones. Our code is available at https://github.com/Zhang-Yingyi/RAGR.</div></div></li>
 </ul>
-<ol id="paper-echoes_in_filter_bubble_diagnosing_and_curing_popularity_bias_in_generative_recommenders_summary" start="43"><li><strong><a href="https://arxiv.org/abs/2605.16825">Echoes in Filter Bubble: Diagnosing and Curing Popularity Bias in Generative Recommenders</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-echoes_in_filter_bubble_diagnosing_and_curing_popularity_bias_in_generative_recommenders_summary" start="43"><li><strong><a href="https://arxiv.org/abs/2605.16825">Echoes in Filter Bubble: Diagnosing and Curing Popularity Bias in Generative Recommenders</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-16</li>
 <li><strong>Аффилиации:</strong> Hong Kong Polytechnic University; Central South University; National Super Computing Center, Tianjin; City University of Macau; Griffith University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Recently, Generative Recommenders (GRs), characterized by a unified end-to-end framework, have exhibited astonishing potential in transforming the recommendation paradigm. Despite their effectiveness, we recognize that GRs are still susceptible to the long-standing issue of popularity bias that has pervaded the recommendation community. Although a few studies have attempted to extend traditional debiasing methods to GRs, their effectiveness is marginal, and the fundamental reason why GRs suffer from popularity bias remains under-explored. To bridge this gap, this study focuses on two core aspects in GRs: the optimization of generative framework and the item tokenization based on semantic index. Based on theoretical analyses, we identify that the severe popularity bias emerges from the confluence of a token-level optimization flaw and the undifferentiated property of item tokenization. Accordingly, this study develops a novel generative recommender system, called Ghost, by designing the asymmetric unlikelihood optimization and the skeleton-founded tokenization. Extensive empirical evaluations across three datasets, alongside multiple SOTA baselines, reveal that Ghost substantially alleviates popularity bias and promotes fairer recommendations, while incurring slight degradation to the overall recommendation utility.</div></div></li>
 </ul>
-<ol id="paper-efficient_generative_retrieval_for_e_commerce_search_with_semantic_cluster_ids_and_expert_guide_summary" start="44"><li><strong><a href="https://arxiv.org/abs/2605.14434">Efficient Generative Retrieval for E-commerce Search with Semantic Cluster IDs and Expert-Guided RL</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-efficient_generative_retrieval_for_e_commerce_search_with_semantic_cluster_ids_and_expert_guide_summary" start="44"><li><strong><a href="https://arxiv.org/abs/2605.14434">Efficient Generative Retrieval for E-commerce Search with Semantic Cluster IDs and Expert-Guided RL</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-14</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Taobao &amp; Tmall Group, Alibaba</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">efficiency</span> <span class="badge">industrial</span> <span class="badge">alignment</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">efficiency</span> <span class="badge">industrial</span> <span class="badge">alignment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative retrieval offers a promising alternative by unifying the fragmented multi-stage retrieval process into a single end-to-end model. However, its practical adoption in industrial e-commerce search remains challenging, given the massive and dynamic product catalogs, strict latency requirements, and the need to align retrieval with downstream ranking goals. In this work, we propose a retrieval framework tailored for real-world recall scenarios, positioning generative retrieval as a recall-stage supplement rather than an end-to-end replacement. Our method, CQ-SID (Category-and-Query constrained Semantic ID), employs category-aware and query-item contrastive learning along with Residual Quantized VAEs to encode items into hierarchical semantic cluster identifiers, significantly reducing beam search complexity. Additionally, we develop EG-GRPO (Expert-Guided Group Relative Policy Optimization), a reinforcement learning approach that aligns generative recall with downstream ranking under sparse rewards by injecting ground-truth samples to stabilize training. Offline experiments on TmallAPP search logs show that CQ-SID achieves up to 26.76% and 11.11% relative gains in semantic and personalized click hitrate over RQ-VAE baselines, while halving beam search size. EG-GRPO further improves multi-objective performance. Online A/B tests confirm gains in GMV (+1.15%) and UCTCVR (+0.40%). The generative recall channel now contributes substantially in production, accounting for over 50.25% of exposures, 58.96% of clicks, and 72.63% of purchases, demonstrating a viable path for deploying generative retrieval in real-world e-commerce systems.</div></div></li>
 </ul>
-<ol id="paper-turbogr_an_accelerated_training_system_for_large_scale_generative_recommendation_summary" start="45"><li><strong><a href="https://arxiv.org/abs/2605.13433">TurboGR: An Accelerated Training System for Large-Scale Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-turbogr_an_accelerated_training_system_for_large_scale_generative_recommendation_summary" start="45"><li><strong><a href="https://arxiv.org/abs/2605.13433">TurboGR: An Accelerated Training System for Large-Scale Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-13</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Huawei</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) has emerged as a promising paradigm that replaces fragmented, scenario-specific architectures with unified Transformer-based models, exhibiting scaling-law behavior where recommendation quality improves systematically with increased model capacity and training data. However, deploying GR at scale on Ascend NPUs faces fundamental system-level challenges. These challenges are further exacerbated on Ascend NPUs due to the absence of high-performance implementations for jagged operators and the architectural mismatch between irregular sparse primitives and NPU's dense-computation-optimized design. In this paper, we present \model, an Ascend-affinity training system for generative recommendation that systematically addresses these bottlenecks through three core innovations: (i) Ascend-affinity jagged acceleration, including fusion operators that eliminate padding redundancy and dynamic load balancing that reduces inter-device imbalance from 47\% to 2.4\%; (ii) distributed communication optimization, comprising hierarchical sparse parallelism, semi-asynchronous training with proven convergence guarantees, and fine-grained pipeline orchestration that sustains 94\% NPU utilization; and (iii) negative sampling optimization via asynchronous offloading, jaggedness-aware FP16 quantization, and intra-batch logit sharing that expand the effective negative space without additional embedding lookups. Evaluated on the KuaiRand-27K dataset, \model supports training at up to 0.2B parameters and achieves 54.71\% MFU with near-linear scalability (0.97).</div></div></li>
 </ul>
-<ol id="paper-mlps_are_efficient_distilled_generative_recommenders_summary" start="46"><li><strong><a href="https://arxiv.org/abs/2605.12617">MLPs are Efficient Distilled Generative Recommenders</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-mlps_are_efficient_distilled_generative_recommenders_summary" start="46"><li><strong><a href="https://arxiv.org/abs/2605.12617">MLPs are Efficient Distilled Generative Recommenders</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-12</li>
 <li><strong>Аффилиации:</strong> University of California San Diego</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation models employing Semantic IDs (SIDs) exhibit strong potential, yet their practical deployment is bottlenecked by the high inference latency of beam-expanded autoregressive decoding. In this work, we identify that standard attention-heavy Transformer decoders represent a structural overkill for this task: the hierarchical nature of SIDs makes prediction difficulty drops sharply after the first token, rendering repeated attention computations highly redundant. Driven by this insight, we propose SID-MLP, a lightweight MLP-centric distillation framework that fundamentally simplifies the decoding paradigm for GR. Instead of executing complex, step-by-step attention mechanisms, our approach captures the global user context in a single operation, decoupled from sequential token prediction. We then distill the heavy autoregressive teacher into position-specific MLP heads, eliminating the dense attention overhead while preserving prefix and context dependencies. Extensive experiments demonstrate that SID-MLP matches the accuracy of teacher models while accelerating inference by 8.74x. Crucially, this distillation strategy can serve as a plug-and-play accelerator for different backbones and tokenizer settings. Furthermore, we introduce SID-MLP++, extending our distillation framework to replace the Transformer encoder, unlocking further latency reductions. Ultimately, our work reveals that decoder-side MLPs distillation is an effective acceleration path for structured SID recommendation, while full encoder replacement offers an additional speed--accuracy trade-off.</div></div></li>
 </ul>
-<ol id="paper-orbit_preserving_foundational_language_capabilities_in_genretrieval_via_origin_regulated_mergin_summary" start="47"><li><strong><a href="paper_summaries/generative_retrieval/orbit_preserving_foundational_language_capabilities_in_genretrieval_via_origin_regulated_mergin_summary.html">ORBIT: Preserving Foundational Language Capabilities in GenRetrieval via Origin-Regulated Merging</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-orbit_preserving_foundational_language_capabilities_in_genretrieval_via_origin_regulated_mergin_summary" start="47"><li><strong><a href="paper_summaries/generative_retrieval/orbit_preserving_foundational_language_capabilities_in_genretrieval_via_origin_regulated_mergin_summary.html">ORBIT: Preserving Foundational Language Capabilities in GenRetrieval via Origin-Regulated Merging</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-12</li>
 <li><strong>Аффилиации:</strong> Johns Hopkins University; <span class="industry">Google DeepMind</span>; <span class="industry">Google</span></li>
-<li><strong>Теги:</strong> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span></li>
+<li><strong>Теги:</strong> <span class="badge">efficiency</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2605.12419">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div>Главная идея: ORBIT борется с catastrophic forgetting LLM abilities при fine-tuning for GenRetrieval.</div><div>Алгоритм: Метод отслеживает distance от исходных weights и при превышении threshold делает origin-regulated weight averaging, ограничивая drift.</div><div>Evidence: ORBIT лучше continual-learning/regularization baselines сохраняет и language, и retrieval performance.</div><div>Ограничение: Баланс между retrieval specialization и сохранением language capability зависит от threshold и base model.</div><div>Итог: Полезна для LLM-GR: retrieval fine-tuning может разрушать foundation capabilities, особенно если модель нужна еще и для language reasoning.</div></div></li>
 </ul>
-<ol id="paper-twistar_think_fast_think_slow_then_act_generative_recommendation_with_adaptive_reasoning_summary" start="48"><li><strong><a href="https://arxiv.org/abs/2605.11553">TwiSTAR:Think Fast, Think Slow, Then Act,Generative Recommendation with Adaptive Reasoning</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-twistar_think_fast_think_slow_then_act_generative_recommendation_with_adaptive_reasoning_summary" start="48"><li><strong><a href="https://arxiv.org/abs/2605.11553">TwiSTAR:Think Fast, Think Slow, Then Act,Generative Recommendation with Adaptive Reasoning</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-12</li>
 <li><strong>Аффилиации:</strong> Shenzhen International Graduate School, Tsinghua University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation with Semantic IDs (SIDs) has emerged as a promising paradigm, yet existing methods apply a fixed inference strategy, either fast direct generation or slow chain-of-thought reasoning, uniformly across all user histories. This approach creates a trade-off: fast recommendation model produces suboptimal accuracy on hard samples, while always invoking slow reasoning incurs prohibitive latency and wastes computation on easy cases. To address this, we propose Think Fast, Think Slow, Then Act, a framework that learns to adaptively allocate reasoning effort per user sequence. Our system equips an LLM with three complementary tools: a fast SID-based retriever, a lightweight candidate ranker, and a slow reasoning model that generates explicit rationales before recommending. Crucially, we inject collaborative commonsense into the slow model by transforming item-to-item knowledge into natural language explanations. A planner, trained through supervised warm-up followed by agentic reinforcement learning, dynamically decides which tool to invoke. Experiments on three datasets demonstrate that our method outperforms strong baselines, achieving consistent accuracy gains while reducing inference latency compared to uniform slow reasoning.</div></div></li>
 </ul>
-<ol id="paper-lasar_latent_adaptive_semantic_aligned_reasoning_for_generative_recommendation_summary" start="49"><li><strong><a href="https://arxiv.org/abs/2605.10207">LASAR: Latent Adaptive Semantic Aligned Reasoning for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-lasar_latent_adaptive_semantic_aligned_reasoning_for_generative_recommendation_summary" start="49"><li><strong><a href="https://arxiv.org/abs/2605.10207">LASAR: Latent Adaptive Semantic Aligned Reasoning for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-11</li>
 <li><strong>Аффилиации:</strong> Beihang University; <span class="industry">Baidu</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Large Language Models (LLMs) have demonstrated powerful reasoning capabilities through Chain-of-Thought (CoT) in various tasks, yet the inefficiency of token-by-token generation hinders real-world deployment in latency-sensitive recommender systems. Latent reasoning has emerged as an effective paradigm in LLMs, performing multi-step inference in a continuous hidden-state space to achieve stronger reasoning at lower cost. However, this paradigm remains underexplored in mainstream generative recommendation. Adapting it reveals three unique challenges: (1) the gap between prior-less Semantic ID (SID) symbols and continuous latent reasoning - SIDs lack pre-trained semantics, hindering joint optimization; (2) representation drift due to a lack of reasoning chain supervision; and (3) the suboptimality of applying a globally fixed reasoning depth. To address these, we propose LASAR (Latent Adaptive Semantic Aligned Reasoning), an SFT-then-RL framework. First, we bridge this gap via two-stage training: Stage 1 grounds SID semantics before Stage 2 introduces latent reasoning, ensuring efficient convergence. Second, we mitigate representation drift through explicit CoT semantic alignment. Step-wise bidirectional KL divergence constrains the latent reasoning trajectory using hidden-state anchors extracted from CoT text, while a Policy Head predicts per-sample reasoning depth. Third, during the GRPO-based RL phase, terminal-only KL alignment accommodates variable-length reasoning, and REINFORCE optimizes the Policy Head to dynamically allocate steps. This nearly halves the average latent step count while simultaneously improving recommendation quality. Experiments on three real-world datasets demonstrate that LASAR outperforms all baselines. It adds marginal inference latency and is roughly 20 times faster than generating explicit CoT text.</div></div></li>
 </ul>
-<ol id="paper-rcllm_accelerating_generative_recommendation_via_beyond_prefix_kv_caching_summary" start="50"><li><strong><a href="https://arxiv.org/abs/2605.07443">RcLLM: Accelerating Generative Recommendation via Beyond-Prefix KV Caching</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-rcllm_accelerating_generative_recommendation_via_beyond_prefix_kv_caching_summary" start="50"><li><strong><a href="https://arxiv.org/abs/2605.07443">RcLLM: Accelerating Generative Recommendation via Beyond-Prefix KV Caching</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-08</li>
 <li><strong>Аффилиации:</strong> Hong Kong Baptist University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Large Language Models (LLMs) are transforming recommendation from ranking into a generative task, but industrial deployment remains limited by the high latency of processing long, personalized prompts. Standard prefix caching provides limited benefit because reuse in recommendation workloads is often non-contiguous across user histories and item contexts. We present RcLLM, a distributed inference system for generative recommendation with Beyond-Prefix KV Caching. RcLLM decomposes prompts into reusable blocks and supports large item catalogs with a stratified distributed storage design: compact user-history caches are replicated for zero-latency retrieval, while massive item caches are sharded using similarity-aware placement. To reduce redundant quadratic attention computation, RcLLM combines an affinity-based global scheduler that improves data locality with a selective attention mechanism that corrects approximation errors. Experiments on real-world datasets show that RcLLM reduces Time-To-First-Token (TTFT) by 1.31x-9.51x compared with state-of-the-art prefix caching systems, enabling real-time serving with negligible impact on recommendation accuracy.</div></div></li>
 </ul>
-<ol id="paper-unified_value_alignment_for_generative_recommendation_in_industrial_advertising_summary" start="51"><li><strong><a href="https://arxiv.org/abs/2605.05803">Unified Value Alignment for Generative Recommendation in Industrial Advertising</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-unified_value_alignment_for_generative_recommendation_in_industrial_advertising_summary" start="51"><li><strong><a href="https://arxiv.org/abs/2605.05803">Unified Value Alignment for Generative Recommendation in Industrial Advertising</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-07</li>
 <li><strong>Аффилиации:</strong> Wuhan University; <span class="industry">Tencent Inc.</span>; Peking University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge">alignment</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge">alignment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative Recommendation (GR) reformulates recommendation as a next-token generation problem and has shown promise in industrial applications. However, extending GR to industrial advertising is non-trivial because the system must optimize not only user interest but also commercial value. Existing GR pipelines remain largely semantics-centric, making it difficult to align value signals across tokenization, decoding, and online serving. To address this issue, we propose UniVA, a Unified Value Alignment framework for advertising recommendation. We first introduce a Commercial SID tokenizer that injects value-related attributes into SID construction, yielding value-discriminative item representations. We then develop a Generation-as-Ranking SID Decoder jointly optimized by supervised learning and eCPM-aware reinforcement learning, which fuses value scores into next-item SID generation to perform generation and ranking in one decoding process. Finally, we design a value-guided personalized beam search that reuses generation-as-ranking logits as online value guidance and applies a personalized trie tree to constrain decoding to request-valid SID paths. Experiments on the Tencent WeChat Channels advertising platform show that UniVA achieves a 37.04\% improvement in offline Hit Rate@100 over the baseline and a 1.5\% GMV lift in online A/B tests.</div></div></li>
 </ul>
-<ol id="paper-trialigngr_triangular_multitask_alignment_with_multimodal_deep_interest_mining_for_generative_r_summary" start="52"><li><strong><a href="https://arxiv.org/abs/2605.05249">TriAlignGR: Triangular Multitask Alignment with Multimodal Deep Interest Mining for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-trialigngr_triangular_multitask_alignment_with_multimodal_deep_interest_mining_for_generative_r_summary" start="52"><li><strong><a href="https://arxiv.org/abs/2605.05249">TriAlignGR: Triangular Multitask Alignment with Multimodal Deep Interest Mining for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-05-05</li>
 <li><strong>Аффилиации:</strong> Southeast University; Swinburne University of Technology; Tsinghua University; Shenzhen University; Fudan University; Zhejiang University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> We introduce TriAlignGR, a unified multitask-multimodal framework for generative recommendation that establishes two-stage multimodal semantic propagation: (i) encoding visual semantics directly into SIDs via multimodal embeddings, and (ii) enabling the model to decode these semantics through visual description tasks. Existing Semantic ID (SID) pipelines suffer from two fundamental but underexplored problems: \textbf{SID Content Degradation (SCD)}, where cascaded encoding and residual quantization discard critical multimodal and interest-level semantics; and \textbf{SID Semantic Opacity (SSO)}, where models autoregressively generate SID sequences without truly comprehending their underlying meaning, leading to hallucination and poor generalization. Prior work addresses at most text-SID alignment, leaving visual semantics and latent user interests entirely unexploited. TriAlignGR resolves both problems through three tightly integrated components: (1)~\textbf{Cross-Modal Semantic Alignment (CMSA)} integrates visual content into SID construction through both VLM-generated textual descriptions and a multimodal embedding model that directly encodes image features alongside text, ensuring that SIDs inherently carry multimodal semantics; (2)~\textbf{Multimodal Deep Interest Mining (MDIM)} leverages LLM Chain-of-Thought reasoning to extract latent user intents (\eg ``productivity-focused lifestyle'' from noise-canceling headphones) beyond surface attributes, enriching SID semantics before discretization; and (3)~\textbf{Triangular Multitask (TMT)} jointly trains on eight complementary generation tasks under a single autoregressive loss -- including two novel visual-semantic tasks (VisDesc$\to$SID, VisDesc$\to$Title) that map VLM-generated image descriptions to SIDs and titles, completing the SID-Text-Image triangle -- without requiring task-specific towers or complex loss weighting.</div></div></li>
 </ul>
-<ol id="paper-position_aware_drafting_for_inference_acceleration_in_llm_based_generative_list_wise_recommenda_summary" start="53"><li><strong><a href="https://arxiv.org/abs/2604.27747">Position-Aware Drafting for Inference Acceleration in LLM-Based Generative List-Wise Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-position_aware_drafting_for_inference_acceleration_in_llm_based_generative_list_wise_recommenda_summary" start="53"><li><strong><a href="https://arxiv.org/abs/2604.27747">Position-Aware Drafting for Inference Acceleration in LLM-Based Generative List-Wise Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-30</li>
 <li><strong>Аффилиации:</strong> University of Science and Technology of China; Zhongguancun Academy; Independent Researcher</li>
-<li><strong>Теги:</strong> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Large language model (LLM)-based generative list-wise recommendation has advanced rapidly, but decoding remains sequential and thus latency-prone. To accelerate inference without changing the target distribution, speculative decoding (SD) uses a small draft model to propose several next tokens at once and a target LLM to verify and accept the longest prefix, skipping multiple steps per round. In generative recommendation, however, each item is represented by multiple semantic-ID tokens, often with separators, and current drafts typically treat these tokens uniformly. This overlooks two practical facts: (i) a token's semantics depend on its within-item slot, and (ii) uncertainty tends to increase with speculation depth. Without modeling these effects, SD's speedups can be limited. We introduce PAD-Rec, Position-Aware Drafting for generative Recommendation, a lightweight module that augments the draft model with two complementary signals. Item position embeddings explicitly encode the within-item slot of each token, strengthening structural awareness. Step position embeddings encode the draft step, allowing the model to adapt to depth-dependent uncertainty and improve proposal quality. To harmonize these signals with base features, we add simple gates: a learnable coefficient for item slots and a context-driven gate for draft steps. The module is trainable, easy to integrate with standard draft models, and adds negligible inference overhead. Extensive experiments on four real-world datasets show up to 3.1x wall-clock speedup and about 5% average wall-clock speedup gain over strong SD baselines, while largely preserving recommendation quality.</div></div></li>
 </ul>
-<ol id="paper-modeling_behavioral_intensity_and_transitions_for_generative_recommendation_summary" start="54"><li><strong><a href="https://arxiv.org/abs/2604.24472">Modeling Behavioral Intensity and Transitions for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-modeling_behavioral_intensity_and_transitions_for_generative_recommendation_summary" start="54"><li><strong><a href="https://arxiv.org/abs/2604.24472">Modeling Behavioral Intensity and Transitions for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-27</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Ant Group</span>; Fudan University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Multi-behavior recommendation aims to predict user conversions by modeling various interaction types that carry distinct intent signals. Recently, generative sequence modeling methods have emerged as an important paradigm for multi-behavior recommendation by achieving flexible sequence generation. However, existing generative methods typically treat behaviors as auxiliary token features and feed them into unified attention mechanisms. These models implicitly assume uniform activation of dependencies among historical behaviors, thereby failing to discern differences in intensity or capture transition patterns. To address these limitations, we propose BITRec, a novel generative multi-behavior recommendation framework that introduces structured behavioral modeling through selective dependency activation. BITRec incorporates (i) Hierarchical Behavior Aggregation (HBA), which explicitly models behavioral intensity differences through separated exploration and commitment pathways, and (ii) Transition Relation Encoding (TRE), which encodes transition structures through explicit learnable relation matrices. Experiments on four large-scale datasets (RetailRocket, Taobao, Tmall, Insurance Dataset) with millions of interactions achieve consistent improvements of 15-23% across multiple metrics, with peak gains of 22.79% MRR on Tmall and 17.83% HR@10, 17.55% NDCG@10 on Taobao.</div></div></li>
 </ul>
-<ol id="paper-lost_in_decoding_reproducing_and_stress_testing_the_look_ahead_prior_in_generative_retrieval_summary" start="55"><li><strong><a href="https://arxiv.org/abs/2604.23396">Lost in Decoding? Reproducing and Stress-Testing the Look-Ahead Prior in Generative Retrieval</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-lost_in_decoding_reproducing_and_stress_testing_the_look_ahead_prior_in_generative_retrieval_summary" start="55"><li><strong><a href="https://arxiv.org/abs/2604.23396">Lost in Decoding? Reproducing and Stress-Testing the Look-Ahead Prior in Generative Retrieval</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-25</li>
 <li><strong>Аффилиации:</strong> University of Amsterdam</li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative retrieval (GR) ranks documents by autoregressively generating document identifiers. Because many GR methods rely on trie-constrained beam search, they are vulnerable to early pruning of relevant prefixes under finite-beam decoding. Planning Ahead in Generative Retrieval (PAG) mitigates this failure mode by using simultaneous decoding to compute a document-level look-ahead prior that guides subsequent sequential decoding. We reproduce PAG at inference time and stress-test its decoding behavior. Using the authors' released checkpoint and identifier/trie artifacts under the reported decoding setup, we reproduce the main effectiveness results on MS MARCO Dev and TREC-DL 2019/2020, and corroborate the reported beam-size-latency trade-off in our hardware setting. Beyond reproduction, we introduce plan drift diagnostics that quantify how intent-preserving query variations alter the planner's top-n candidate set and highest-weight planner tokens, and how these changes affect guided decoding. We find that PAG's planning signal is brittle under lexical surface-form variation: intent-preserving typos can trigger plan collapse, where the planned candidate pool shifts enough that the look-ahead bonus provides little useful guidance, effectively reverting decoding toward weaker unguided search. We further evaluate fixed-index cross-lingual robustness using non-English mMARCO queries against an English index, and assess query-side mitigation strategies that require no re-indexing; query translation provides the strongest recovery in our setting. Overall, our results confirm PAG's reported effectiveness and the benefit of planning-guided decoding under the released inference setup, while showing that these gains depend on the stability of the planning signal under realistic query variation and query-document mismatch.</div></div></li>
 </ul>
-<ol id="paper-a_parametric_memory_head_for_continual_generative_retrieval_summary" start="56"><li><strong><a href="https://arxiv.org/abs/2604.23388">A Parametric Memory Head for Continual Generative Retrieval</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-a_parametric_memory_head_for_continual_generative_retrieval_summary" start="56"><li><strong><a href="https://arxiv.org/abs/2604.23388">A Parametric Memory Head for Continual Generative Retrieval</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-25</li>
 <li><strong>Аффилиации:</strong> University of Amsterdam</li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative information retrieval (GenIR) consolidates retrieval into a single neural model that decodes document identifiers (docids) directly from queries. While this model-as-index paradigm offers architectural simplicity, it is poorly suited to dynamic document collections. Unlike modular systems, where indexes are easily updated, GenIR's knowledge is parametrically encoded in its weights; consequently, standard adaptation methods such as full and parameter-efficient fine-tuning can induce catastrophic forgetting. We show that sequential adaptation improves retrieval on newly added documents but substantially degrades performance on earlier slices, exposing a pronounced stability-plasticity trade-off. To address this, we propose post-adaptation memory tuning (PAMT), a memory-only stabilization stage that augments an adapted model with a modular parametric memory head (PMH). PAMT freezes the backbone and attaches a product-key memory with fixed addressing. During prefix-trie constrained decoding, decoder hidden states sparsely query PMH to produce residual corrections in hidden space; these corrections are mapped to score adjustments via the frozen output embedding matrix, computed only over trie-valid tokens. This guides docid generation while keeping routing and backbone parameters fixed. To limit cross-slice interference, PAMT updates only a fixed budget of memory values selected using decoding-time access statistics, prioritizing entries frequently activated by the current slice and rarely used in prior sessions. Experiments on MS MARCO and Natural Questions under sequential, disjoint corpus increments show that PAMT substantially improves retention on earlier slices with minimal impact on retrieval performance for newly added documents, while modifying only a sparse subset of memory values per session.</div></div></li>
 </ul>
-<ol id="paper-mtserve_efficient_serving_for_generative_recommendation_models_with_hierarchical_caches_summary" start="57"><li><strong><a href="https://arxiv.org/abs/2604.22881">MTServe: Efficient Serving for Generative Recommendation Models with Hierarchical Caches</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-mtserve_efficient_serving_for_generative_recommendation_models_with_hierarchical_caches_summary" start="57"><li><strong><a href="https://arxiv.org/abs/2604.22881">MTServe: Efficient Serving for Generative Recommendation Models with Hierarchical Caches</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-24</li>
 <li><strong>Аффилиации:</strong> Wuhan University; <span class="industry">Meituan</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) offers superior modeling capabilities but suffers from prohibitive inference costs due to the repeated encoding of long user histories. While cross-request Key-Value (KV) cache reuse presents a significant optimization opportunity, the massive scale of individual user states creates a storage explosion that far exceeds physical GPU limits. We propose MTServe, a hierarchical cache management system that virtualizes GPU memory by leveraging host RAM as a scalable backup store. To bridge the I/O gap between tiers, MTServe introduces a suite of system-level optimizations, including a hybrid storage layout, an asynchronous data transfer pipeline, and a locality-driven replacement policy. On both public and production datasets, MTServe delivers up to 3.1* speedup while maintaining near-perfect hit ratios (&gt;98.5%).</div></div></li>
 </ul>
-<ol id="paper-recast_recasting_learning_signals_for_reinforcement_learning_in_generative_recommendation_summary" start="58"><li><strong><a href="https://arxiv.org/abs/2604.22169">ReCast: Recasting Learning Signals for Reinforcement Learning in Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-recast_recasting_learning_signals_for_reinforcement_learning_in_generative_recommendation_summary" start="58"><li><strong><a href="https://arxiv.org/abs/2604.22169">ReCast: Recasting Learning Signals for Reinforcement Learning in Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-24</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Huawei Technologies</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generic group-based RL assumes that sampled rollout groups are already usable learning signals. We show that this assumption breaks down in sparse-hit generative recommendation, where many sampled groups never become learnable at all. We propose ReCast, a repair-then-contrast learning-signal framework that first restores minimal learnability for all-zero groups and then replaces full-group reward normalization with a boundary-focused contrastive update on the strongest positive and the hardest negative. ReCast leaves the outer RL framework unchanged, modifies only within-group signal construction, and partially decouples rollout search width from actor-side update width. Across multiple generative recommendation tasks, ReCast consistently outperforms OpenOneRec-RL, achieving up to 36.6% relative improvement in Pass@1. Its matched-budget advantage is substantially larger: ReCast reaches the baseline's target performance with only 4.1% of the rollout budget, and this advantage widens with model scale. The same design also yields direct system-level gains, reducing actor-side update time by 16.60x, lowering peak allocated memory by 16.5%, and improving actor MFU by 14.2%. Mechanism analysis shows that ReCast mitigates the persistent all-zero / single-hit regime, restores learnability when natural positives are scarce, and converts otherwise wasted rollout budget into more stable policy updates. These results suggest that, for generative recommendation, the decisive RL problem is not only how to assign rewards, but how to construct learnable optimization events from sparse, structured supervision.</div></div></li>
 </ul>
-<ol id="paper-on_the_equivalence_between_auto_regressive_next_token_prediction_and_full_item_vocabulary_maxim_summary" start="59"><li><strong><a href="https://arxiv.org/abs/2604.15739">On the Equivalence Between Auto-Regressive Next Token Prediction and Full-Item-Vocabulary Maximum Likelihood Estimation in Generative Recommendation--A Short Note</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-on_the_equivalence_between_auto_regressive_next_token_prediction_and_full_item_vocabulary_maxim_summary" start="59"><li><strong><a href="https://arxiv.org/abs/2604.15739">On the Equivalence Between Auto-Regressive Next Token Prediction and Full-Item-Vocabulary Maximum Likelihood Estimation in Generative Recommendation--A Short Note</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-17</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Kuaishou Technology</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) has emerged as a widely adopted paradigm in industrial sequential recommendation. Current GR systems follow a similar pipeline: tokenization for item indexing, next-token prediction as the training objective and auto-regressive decoding for next-item generation. However, existing GR research mainly focuses on architecture design and empirical performance optimization, with few rigorous theoretical explanations for the working mechanism of auto-regressive next-token prediction in recommendation scenarios. In this work, we formally prove that \textbf{the k-token auto-regressive next-token prediction (AR-NTP) paradigm is strictly mathematically equivalent to full-item-vocabulary maximum likelihood estimation (FV-MLE)}, under the core premise of a bijective mapping between items and their corresponding k-token sequences. We further show that this equivalence holds for both cascaded and parallel tokenizations, the two most widely used schemes in industrial GR systems. Our result provides the first formal theoretical foundation for the dominant industrial GR paradigm, and offers principled guidance for future GR system optimization.</div></div></li>
 </ul>
-<ol id="paper-lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary" start="60"><li><strong><a href="https://arxiv.org/abs/2605.18771">LWGR: Lagrangian-Constrained Personalized World Knowledge for Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary" start="60"><li><strong><a href="https://arxiv.org/abs/2605.18771">LWGR: Lagrangian-Constrained Personalized World Knowledge for Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-16</li>
 <li><strong>Аффилиации:</strong> Institute of Information Engineering, Chinese Academy of Sciences; <span class="industry">Alibaba International Digital Commerce Group</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">alignment</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Recent progress in large language model (LLM) based generative recommendation (GR) shows that leveraging LLM world knowledge can substantially improve performance. However, existing methods rely on fixed, manually designed instructions to generate semantic knowledge and directly incorporate it into GR, which has two limitations. First, fixed instructions cannot capture the multidimensional heterogeneity of user interests. Second, uncontrollable knowledge fusion may conflict with behavioral signals and harm recommendations. To address these limitations, we propose LWGR, a framework that leverages Lagrangian constraints to transfer users' personalized world knowledge from LLMs into generative recommendation. LWGR enhances GR along two axes: knowledge extraction and fusion. It builds personalized soft instructions to extract behavior-relevant LLM world knowledge, and formulates knowledge fusion as an optimization problem with explicitly bounded performance degradation, which is solved by a Lagrangian primal-dual method to selectively incorporate beneficial knowledge. We further design two training strategies for different LLM scales and a deployment scheme that combines nearline precomputation with lightweight online serving. Experiments on multiple public datasets and one industrial dataset show that LWGR outperforms eight state-of-the-art baselines by up to 11.23% and brings a 1.35% revenue lift on a large-scale advertising platform, demonstrating its effectiveness and practicality.</div></div></li>
 </ul>
-<ol id="paper-from_relevance_to_authority_authority_aware_generative_retrieval_in_web_search_engines_summary" start="61"><li><strong><a href="https://arxiv.org/abs/2604.13468">From Relevance to Authority: Authority-aware Generative Retrieval in Web Search Engines</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-from_relevance_to_authority_authority_aware_generative_retrieval_in_web_search_engines_summary" start="61"><li><strong><a href="https://arxiv.org/abs/2604.13468">From Relevance to Authority: Authority-aware Generative Retrieval in Web Search Engines</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-15</li>
 <li><strong>Аффилиации:</strong> Sungkyunkwan University; <span class="industry">Naver Corporation</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative information retrieval (GenIR) formulates the retrieval process as a text-to-text generation task, leveraging the vast knowledge of large language models. However, existing works primarily optimize for relevance while often overlooking document trustworthiness. This is critical in high-stakes domains like healthcare and finance, where relying solely on semantic relevance risks retrieving unreliable information. To address this, we propose an Authority-aware Generative Retriever (AuthGR), the first framework that incorporates authority into GenIR. AuthGR consists of three key components: (i) Multimodal Authority Scoring, which employs a vision-language model to quantify authority from textual and visual cues; (ii) a Three-stage Training Pipeline to progressively instill authority awareness into the retriever; and (iii) a Hybrid Ensemble Pipeline for robust deployment. Offline evaluations demonstrate that AuthGR successfully enhances both authority and accuracy, with our 3B model matching a 14B baseline. Crucially, large-scale online A/B tests and human evaluations conducted on the commercial web search platform confirm significant improvements in real-world user engagement and reliability.</div></div></li>
 </ul>
-<ol id="paper-efficient_dataset_selection_for_continual_adaptation_of_generative_recommenders_summary" start="62"><li><strong><a href="https://arxiv.org/abs/2604.07739">Efficient Dataset Selection for Continual Adaptation of Generative Recommenders</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-efficient_dataset_selection_for_continual_adaptation_of_generative_recommenders_summary" start="62"><li><strong><a href="https://arxiv.org/abs/2604.07739">Efficient Dataset Selection for Continual Adaptation of Generative Recommenders</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-09</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Spotify</span>; Carnegie Mellon University</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">efficiency</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Recommendation systems must continuously adapt to evolving user behavior, yet the volume of data generated in large-scale streaming environments makes frequent full retraining impractical. This work investigates how targeted data selection can mitigate performance degradation caused by temporal distributional drift while maintaining scalability. We evaluate a range of representation choices and sampling strategies for curating small but informative subsets of user interaction data. Our results demonstrate that gradient-based representations, coupled with distribution-matching, improve downstream model performance, achieving training efficiency gains while preserving robustness to drift. These findings highlight data curation as a practical mechanism for scalable monitoring and adaptive model updates in production-scale recommendation systems.</div></div></li>
 </ul>
-<ol id="paper-tencent_advertising_algorithm_challenge_2025_all_modality_generative_recommendation_summary" start="63"><li><strong><a href="https://arxiv.org/abs/2604.04976">Tencent Advertising Algorithm Challenge 2025: All-Modality Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-tencent_advertising_algorithm_challenge_2025_all_modality_generative_recommendation_summary" start="63"><li><strong><a href="https://arxiv.org/abs/2604.04976">Tencent Advertising Algorithm Challenge 2025: All-Modality Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-04</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Tencent Inc.</span>; Chinese University of Hong Kong</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommender systems are rapidly emerging as a new paradigm for recommendation, where collaborative identifiers and/or multi-modal content are mapped into discrete token spaces and user behavior is modelled with autoregressive sequence models. Despite progress on multi-modal recommendation datasets, there is still a lack of public benchmarks that jointly offer large-scale, realistic and fully all-modality data designed specifically for generative recommendation (GR) in industrial advertising. To foster research in this direction, we organised the Tencent Advertising Algorithm Challenge 2025, a global competition built on top of two all-modality datasets for GR: TencentGR-1M and TencentGR-10M. Both datasets are constructed from real de-identified Tencent Ads logs and contain rich collaborative IDs and multi-modal representations extracted with state-of-the-art embedding models. The preliminary track (TencentGR-1M) provides 1 million user sequences with up to 100 interacted items each, where each interaction is labeled with exposure and click signals, while the final track (TencentGR-10M) scales this to 10 million users and explicitly distinguishes between click and conversion events at both the sequence and target level. This paper presents the task definition, data construction process, feature schema, baseline GR model, evaluation protocol, and key findings from top-ranked and award-winning solutions. Our datasets focus on multi-modal sequence generation in an advertising setting and introduce weighted evaluation for high-value conversion events. We release our datasets at https://huggingface.co/datasets/TAAC2025 and baseline implementations at https://github.com/TencentAdvertisingAlgorithmCompetition/baseline_2025 to enable future research on all-modality generative recommendation at an industrial scale. The official website is https://algo.qq.com/2025.</div></div></li>
 </ul>
-<ol id="paper-mbgr_multi_business_prediction_for_generative_recommendation_at_meituan_summary" start="64"><li><strong><a href="https://arxiv.org/abs/2604.02684">MBGR: Multi-Business Prediction for Generative Recommendation at Meituan</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-mbgr_multi_business_prediction_for_generative_recommendation_at_meituan_summary" start="64"><li><strong><a href="https://arxiv.org/abs/2604.02684">MBGR: Multi-Business Prediction for Generative Recommendation at Meituan</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-04-03</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Meituan</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge">industrial</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative recommendation (GR) has recently emerged as a promising paradigm for industrial recommendations. GR leverages Semantic IDs (SIDs) to reduce the encoding-decoding space and employs the Next Token Prediction (NTP) framework to explore scaling laws. However, existing GR methods suffer from two critical issues: (1) a \textbf{seesaw phenomenon} in multi-business scenarios arises due to NTP's inability to capture complex cross-business behavioral patterns; and (2) a unified SID space causes \textbf{representation confusion} by failing to distinguish distinct semantic information across businesses. To address these issues, we propose Multi-Business Generative Recommendation (MBGR), the first GR framework tailored for multi-business scenarios. Our framework comprises three key components. First, we design a Business-aware semantic ID (BID) module that preserves semantic integrity via domain-aware tokenization. Then, we introduce a Multi-Business Prediction (MBP) structure to provide business-specific prediction capabilities. Furthermore, we develop a Label Dynamic Routing (LDR) module that transforms sparse multi-business labels into dense labels to further enhance the multi-business generation capability. Extensive offline and online experiments on Meituan's food delivery platform validate MBGR's effectiveness, and we have successfully deployed it in production.</div></div></li>
 </ul>
-<ol id="paper-cold_starts_in_generative_recommendation_a_reproducibility_study_summary" start="65"><li><strong><a href="https://arxiv.org/abs/2603.29845">Cold-Starts in Generative Recommendation: A Reproducibility Study</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-cold_starts_in_generative_recommendation_a_reproducibility_study_summary" start="65"><li><strong><a href="https://arxiv.org/abs/2603.29845">Cold-Starts in Generative Recommendation: A Reproducibility Study</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-03-31</li>
 <li><strong>Аффилиации:</strong> Shandong University; Leiden University; <span class="industry">Baidu Inc.</span>; University of Amsterdam</li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Cold-start recommendation remains a central challenge in dynamic, open-world platforms, requiring models to recommend for newly registered users (user cold-start) and to recommend newly introduced items to existing users (item cold-start) under sparse or missing interaction signals. Recent generative recommenders built on pre-trained language models (PLMs) are often expected to mitigate cold-start by using item semantic information (e.g., titles and descriptions) and test-time conditioning on limited user context. However, cold-start is rarely treated as a primary evaluation setting in existing studies, and reported gains are difficult to interpret because key design choices, such as model scale, identifier design, and training strategy, are frequently changed together. In this work, we present a systematic reproducibility study of generative recommendation under a unified suite of cold-start protocols.</div></div></li>
 </ul>
-<ol id="paper-rclrec_reverse_curriculum_learning_for_modeling_sparse_conversions_in_generative_recommendation_summary" start="66"><li><strong><a href="https://arxiv.org/abs/2603.28124">RCLRec: Reverse Curriculum Learning for Modeling Sparse Conversions in Generative Recommendation</a></strong> <span class="badge new-paper">новое за 2 месяца</span></li></ol>
+<ol id="paper-rclrec_reverse_curriculum_learning_for_modeling_sparse_conversions_in_generative_recommendation_summary" start="66"><li><strong><a href="https://arxiv.org/abs/2603.28124">RCLRec: Reverse Curriculum Learning for Modeling Sparse Conversions in Generative Recommendation</a></strong></li></ol>
 <ul>
 <li><strong>Год:</strong> 2026</li>
 <li><strong>Дата arXiv:</strong> 2026-03-30</li>
 <li><strong>Аффилиации:</strong> <span class="industry">Alibaba International Digital Commerce Group</span>; Guangdong Laboratory of Artificial Intelligence and Digital Economy; <span class="industry">Alibaba Group</span></li>
-<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge new-paper">новое за 2 месяца</span> <span class="badge summary-missing">саммари пропущено</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative recommendation</span> <span class="badge summary-missing">саммари пропущено</span></li>
 
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Conversion objectives in large-scale recommender systems are sparse, making them difficult to optimize. Generative recommendation (GR) partially alleviates data sparsity by organizing multi-type behaviors into a unified token sequence with shared representations, but conversion signals remain insufficiently modeled. While recent behavior-aware GR models encode behavior types and employ behavior-aware attention to highlight decision-related intermediate behaviors, they still rely on standard attention over the full history and provide no additional supervision for conversions, leaving conversion sparsity largely unresolved. To address these challenges, we propose RCLRec, a reverse curriculum learning-based GR framework for sparse conversion supervision. For each conversion target, RCLRec constructs a short curriculum by selecting a subsequence of conversion-related items from the history in reverse. Their semantic tokens are fed to the decoder as a prefix, together with the target conversion tokens, under a joint generation objective. This design provides additional instance-specific intermediate supervision, alleviating conversion sparsity and focusing the model on the user's critical decision process. We further introduce a curriculum quality-aware loss to ensure that the selected curricula are informative for conversion prediction. Experiments on offline datasets and an online A/B test show that RCLRec achieves superior performance, with +2.09% advertising revenue and +1.86% orders in online deployment.</div></div></li>
 </ul>
@@ -2683,19 +2678,14 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <script>
 (() => {
   const storagePrefix = 'recsys-papers-read:';
-  const freshnessStoragePrefix = 'recsys-papers-freshness:';
   const filterKey = 'recsys-papers-filter';
-  const freshnessFilterKey = 'recsys-papers-freshness-filter';
+  const summaryFilterKey = 'recsys-papers-summary-filter';
   const themeKey = 'recsys-papers-theme';
   const statusOrder = ['unread', 'reading', 'read'];
   const statusLabels = {
     unread: 'Не прочитано',
     reading: 'Читается',
     read: 'Прочитано'
-  };
-  const freshnessLabels = {
-    new: 'Новая',
-    old: 'Старая'
   };
   const themeToggle = document.getElementById('theme-toggle');
 
@@ -2741,41 +2731,11 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     else localStorage.removeItem(key);
   };
 
-  const normalizeFreshness = (value, fallback) =>
-    value === 'new' || value === 'old' ? value : fallback;
-
-  const persistFreshness = (key, freshness) => {
-    localStorage.setItem(key, freshness);
-  };
-
   const setStatus = (paper, status) => {
     paper.status = status;
     paper.control.dataset.status = status;
     paper.control.title = `Статус: ${statusLabels[status]}`;
     paper.control.setAttribute('aria-label', `Статус статьи "${paper.title}": ${statusLabels[status]}. Нажмите, чтобы изменить.`);
-  };
-
-  const setFreshness = (paper, freshness) => {
-    paper.freshness = freshness;
-    paper.freshnessControl.dataset.freshness = freshness;
-    paper.freshnessControl.title = `Новизна: ${freshnessLabels[freshness]}`;
-    paper.freshnessControl.setAttribute('aria-label', `Новизна статьи "${paper.title}": ${freshnessLabels[freshness]}. Нажмите, чтобы изменить.`);
-  };
-
-  const removeNewPaperBadges = (titleList, metaList) => {
-    const scopes = [titleList, metaList].filter(Boolean);
-    const badges = scopes.flatMap((scope) => Array.from(scope.querySelectorAll('.badge.new-paper')));
-    badges.forEach((badge) => {
-      const tagItem = metaList && badge.closest('li');
-      const isTagItem = tagItem
-        && tagItem.parentElement === metaList
-        && tagItem.querySelector('strong')?.textContent.trim() === 'Теги:';
-
-      badge.remove();
-
-      if (isTagItem && !tagItem.querySelector('.badge')) tagItem.remove();
-    });
-    return badges.length > 0;
   };
 
   const papers = Array.from(document.querySelectorAll('main > ol[start]')).map((titleList, index) => {
@@ -2786,9 +2746,9 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     const title = link ? link.textContent.trim() : `paper-${index + 1}`;
     const articleLink = metaList ? metaList.querySelector('a.paper-link[href]') : null;
     const href = articleLink ? articleLink.getAttribute('href') : (link ? link.getAttribute('href') : title);
+    const titleHref = link ? link.getAttribute('href') : '';
+    const hasSummary = Boolean(titleHref && titleHref.includes('paper_summaries/'));
     const key = `${storagePrefix}${href}`;
-    const freshnessKey = `${freshnessStoragePrefix}${href}`;
-    const defaultFreshness = removeNewPaperBadges(titleList, metaList) ? 'new' : 'old';
 
     const control = document.createElement('button');
     control.type = 'button';
@@ -2797,25 +2757,12 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     control.lastElementChild.className = 'status-pill read-status-pill';
     control.lastElementChild.setAttribute('aria-hidden', 'true');
 
-    const freshnessControl = document.createElement('button');
-    freshnessControl.type = 'button';
-    freshnessControl.className = 'status-control fresh-status-control';
-    freshnessControl.append(document.createElement('span'));
-    freshnessControl.lastElementChild.className = 'status-pill fresh-status-pill';
-    freshnessControl.lastElementChild.setAttribute('aria-hidden', 'true');
-
     const statusItem = document.createElement('li');
     statusItem.className = 'read-status-item';
     statusItem.append(document.createElement('strong'), document.createTextNode(' '), control);
     statusItem.firstElementChild.textContent = 'Статус:';
 
-    const freshnessItem = document.createElement('li');
-    freshnessItem.className = 'fresh-status-item';
-    freshnessItem.append(document.createElement('strong'), document.createTextNode(' '), freshnessControl);
-    freshnessItem.firstElementChild.textContent = 'Новизна:';
-
     if (metaList) {
-      metaList.prepend(freshnessItem);
       metaList.prepend(statusItem);
     }
 
@@ -2824,11 +2771,9 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       titleList,
       metaList,
       control,
-      freshnessControl,
       key,
-      freshnessKey,
-      status: 'unread',
-      freshness: defaultFreshness
+      hasSummary,
+      status: 'unread'
     };
 
     try {
@@ -2837,17 +2782,11 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       setStatus(paper, 'unread');
     }
 
-    try {
-      setFreshness(paper, normalizeFreshness(localStorage.getItem(freshnessKey), defaultFreshness));
-    } catch (_) {
-      setFreshness(paper, defaultFreshness);
-    }
-
     return paper;
   });
 
   const filters = Array.from(document.querySelectorAll('input[name="paper-read-filter"]'));
-  const freshnessFilters = Array.from(document.querySelectorAll('input[name="paper-freshness-filter"]'));
+  const summaryFilters = Array.from(document.querySelectorAll('input[name="paper-summary-filter"]'));
   const stats = document.getElementById('read-stats');
   const emptyState = document.getElementById('empty-state');
   const scrollTopGutter = document.querySelector('.scroll-top-gutter');
@@ -2889,8 +2828,8 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     return selected ? selected.value : 'all';
   };
 
-  const getFreshnessFilter = () => {
-    const selected = freshnessFilters.find((input) => input.checked);
+  const getSummaryFilter = () => {
+    const selected = summaryFilters.find((input) => input.checked);
     return selected ? selected.value : 'all';
   };
 
@@ -2917,33 +2856,34 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 
   const applyFilter = () => {
     const filter = getFilter();
-    const freshnessFilter = getFreshnessFilter();
+    const summaryFilter = getSummaryFilter();
     let readCount = 0;
     let readingCount = 0;
-    let freshCount = 0;
+    let summaryCount = 0;
     let visibleCount = 0;
 
     papers.forEach((paper) => {
       const isRead = paper.status === 'read';
       const isReading = paper.status === 'reading';
-      const isFresh = paper.freshness === 'new';
       if (isRead) readCount += 1;
       if (isReading) readingCount += 1;
-      if (isFresh) freshCount += 1;
+      if (paper.hasSummary) summaryCount += 1;
       const visibleByReadStatus = filter === 'all' || filter === paper.status;
-      const visibleByFreshness = freshnessFilter === 'all' || freshnessFilter === paper.freshness;
-      const visible = visibleByReadStatus && visibleByFreshness;
+      const visibleBySummary = summaryFilter === 'all'
+        || (summaryFilter === 'with' && paper.hasSummary)
+        || (summaryFilter === 'missing' && !paper.hasSummary);
+      const visible = visibleByReadStatus && visibleBySummary;
       if (visible) visibleCount += 1;
       setVisible(paper, visible);
     });
 
-    if (stats) stats.textContent = `Новые: ${freshCount}; читается: ${readingCount}; прочитано: ${readCount} из ${papers.length}`;
+    if (stats) stats.textContent = `Саммари: ${summaryCount}; читается: ${readingCount}; прочитано: ${readCount} из ${papers.length}`;
     if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
     refreshCategoryVisibility();
 
     try {
       localStorage.setItem(filterKey, filter);
-      localStorage.setItem(freshnessFilterKey, freshnessFilter);
+      localStorage.setItem(summaryFilterKey, summaryFilter);
     } catch (_) {}
   };
 
@@ -2956,28 +2896,18 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       } catch (_) {}
       applyFilter();
     });
-
-    paper.freshnessControl.addEventListener('click', () => {
-      try {
-        const nextFreshness = paper.freshness === 'new' ? 'old' : 'new';
-        setFreshness(paper, nextFreshness);
-        persistFreshness(paper.freshnessKey, nextFreshness);
-      } catch (_) {}
-      applyFilter();
-    });
   });
 
   filters.forEach((input) => input.addEventListener('change', applyFilter));
-  freshnessFilters.forEach((input) => input.addEventListener('change', applyFilter));
+  summaryFilters.forEach((input) => input.addEventListener('change', applyFilter));
 
   try {
     const savedFilter = localStorage.getItem(filterKey);
     const savedInput = filters.find((input) => input.value === savedFilter);
     if (savedInput) savedInput.checked = true;
-
-    const savedFreshnessFilter = localStorage.getItem(freshnessFilterKey);
-    const savedFreshnessInput = freshnessFilters.find((input) => input.value === savedFreshnessFilter);
-    if (savedFreshnessInput) savedFreshnessInput.checked = true;
+    const savedSummaryFilter = localStorage.getItem(summaryFilterKey);
+    const savedSummaryInput = summaryFilters.find((input) => input.value === savedSummaryFilter);
+    if (savedSummaryInput) savedSummaryInput.checked = true;
   } catch (_) {}
 
   applyFilter();
