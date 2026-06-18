@@ -15,10 +15,18 @@
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; --reading:#b45309; --reading-bg:#fff7ed; --reading-border:#fed7aa; --new:#7c2d12; --new-bg:#ffedd5; --new-border:#fdba74; }
+  <script>
+    try {
+      const storedTheme = localStorage.getItem('recsys-papers-theme');
+      const systemTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : systemTheme;
+    } catch (_) {}
+  </script>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --panel:rgba(255,255,255,.96); --link:#0b66c3; --link-strong:#0f4f9e; --label:#526173; --row-alt:#fbfcfe; --pill-bg:#f8fafc; --pill-muted:#64748b; --pill-dot:#94a3b8; --pill-dot-ring:#e2e8f0; --focus:#93c5fd; --shadow:rgba(15, 23, 42, .06); --shadow-strong:rgba(15, 23, 42, .12); --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; --reading:#b45309; --reading-bg:#fff7ed; --reading-border:#fed7aa; --new:#7c2d12; --new-bg:#ffedd5; --new-border:#fdba74; --gutter-bg:rgba(255,255,255,.92); --gutter-left:linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); --gutter-right:linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+:root[data-theme="dark"] { color-scheme: dark; --fg:#e5e7eb; --muted:#94a3b8; --border:#334155; --bg:#0f172a; --soft:#172033; --panel:rgba(15,23,42,.94); --link:#7dd3fc; --link-strong:#bae6fd; --label:#cbd5e1; --row-alt:#111c2f; --pill-bg:#111827; --pill-muted:#cbd5e1; --pill-dot:#64748b; --pill-dot-ring:#334155; --focus:#38bdf8; --shadow:rgba(0,0,0,.25); --shadow-strong:rgba(0,0,0,.38); --industry:#5eead4; --industry-bg:#0f2f2c; --industry-border:#0f766e; --reading:#fdba74; --reading-bg:#332417; --reading-border:#9a5a19; --new:#fed7aa; --new-bg:#3a2415; --new-border:#9a3412; --gutter-bg:rgba(15,23,42,.92); --gutter-left:linear-gradient(90deg, rgba(125,211,252,.10), rgba(125,211,252,0)); --gutter-right:linear-gradient(270deg, rgba(125,211,252,.10), rgba(125,211,252,0)); }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+main { max-width: 980px; margin: 0 auto; padding: 72px 24px 72px; }
 h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
 h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
 h2 { font-size: 1.45rem; }
@@ -29,61 +37,87 @@ li { margin: .3rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
 th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
 th { background: var(--soft); text-align: left; }
-.badge { display:inline-block; background: var(--soft); border:1px solid var(--border); border-radius: 4px; padding:.08rem .35rem; margin:.1rem .2rem .1rem 0; font-size:.88em; color:#334155; }
+tr:nth-child(even) td { background: var(--row-alt); }
+.badge { display:inline-block; background: var(--soft); border:1px solid var(--border); border-radius: 4px; padding:.08rem .35rem; margin:.1rem .2rem .1rem 0; font-size:.88em; color: var(--label); }
 .badge.new-paper { color: var(--new); background: var(--new-bg); border-color: var(--new-border); font-weight: 700; }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 .takeaway { margin-top: .25rem; }
 .takeaway div { margin: .16rem 0; }
-.catalog-controls { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 1.5rem; padding: .65rem .7rem; background: rgba(255,255,255,.96); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px rgba(15, 23, 42, .06); backdrop-filter: blur(8px); }
+.catalog-controls { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 1.5rem; padding: .65rem .7rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px var(--shadow); backdrop-filter: blur(8px); }
+.filter-panel { display: inline-flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .filter-group { display: inline-flex; flex-wrap: wrap; gap: .15rem; padding: .18rem; background: var(--soft); border: 1px solid var(--border); border-radius: 8px; }
-.filter-group label { display: inline-flex; align-items: center; min-height: 2rem; padding: .28rem .72rem; border-radius: 6px; cursor: pointer; font-weight: 650; color: #526173; transition: background .15s ease, color .15s ease, box-shadow .15s ease; }
+.filter-group label { display: inline-flex; align-items: center; min-height: 2rem; padding: .28rem .72rem; border-radius: 6px; cursor: pointer; font-weight: 650; color: var(--label); transition: background .15s ease, color .15s ease, box-shadow .15s ease; }
 .filter-group input { position: absolute; opacity: 0; pointer-events: none; }
-.filter-group label:has(input:focus-visible) { outline: 2px solid #93c5fd; outline-offset: 2px; }
-.filter-group label:has(input:checked) { background: var(--bg); color: #0f4f9e; box-shadow: 0 1px 4px rgba(15, 23, 42, .12); }
+.filter-group label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.filter-group label:has(input:checked) { background: var(--bg); color: var(--link-strong); box-shadow: 0 1px 4px var(--shadow-strong); }
+.control-meta { display: inline-flex; align-items: center; gap: .75rem; flex-wrap: wrap; justify-content: flex-end; }
+.theme-toggle { position: fixed; left: 14px; top: 14px; z-index: 30; width: 78px; height: 40px; border: 0; border-radius: 999px; padding: 0; background: #ff6b00; color: #fff; cursor: pointer; box-shadow: 0 8px 24px rgba(15,23,42,.18); transition: background .18s ease, box-shadow .18s ease, transform .18s ease; }
+.theme-toggle::after { content: ""; position: absolute; top: 5px; right: 5px; width: 30px; height: 30px; border-radius: 999px; background: #fff; box-shadow: 0 2px 8px rgba(15,23,42,.22); }
+.theme-symbol { position: absolute; left: 20px; top: 50%; width: 12px; height: 12px; border-radius: 999px; background: #fff; transform: translateY(-50%); box-shadow: 0 -11px 0 -8px #fff, 0 11px 0 -8px #fff, 11px 0 0 -8px #fff, -11px 0 0 -8px #fff, 8px 8px 0 -8px #fff, -8px -8px 0 -8px #fff, 8px -8px 0 -8px #fff, -8px 8px 0 -8px #fff; }
+:root[data-theme="dark"] .theme-toggle { background: #020617; box-shadow: 0 8px 24px rgba(0,0,0,.38); }
+:root[data-theme="dark"] .theme-symbol { left: 22px; width: 18px; height: 18px; background: #fff; box-shadow: none; }
+:root[data-theme="dark"] .theme-symbol::after { content: ""; position: absolute; top: -2px; right: -3px; width: 18px; height: 18px; border-radius: 999px; background: #020617; }
+:root[data-theme="dark"] .theme-symbol::before { content: ""; position: absolute; left: -8px; top: 2px; width: 4px; height: 4px; border-radius: 999px; background: #fff; box-shadow: 8px -6px 0 -1px #fff, 10px 9px 0 -1px #fff; }
+.theme-toggle:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(15,23,42,.22); }
+:root[data-theme="dark"] .theme-toggle:hover { box-shadow: 0 10px 26px rgba(0,0,0,.45); }
+.theme-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .read-stats { color: var(--muted); font-size: .92rem; white-space: nowrap; }
-.read-status-item { color: var(--fg); }
-.read-status-control { display: inline-flex; align-items: center; border: 0; padding: 0; background: transparent; cursor: pointer; user-select: none; vertical-align: middle; font: inherit; }
-.read-status-pill { display: inline-flex; align-items: center; gap: .42rem; min-height: 1.75rem; padding: .18rem .62rem; border: 1px solid var(--border); border-radius: 4px; background: #f8fafc; color: #64748b; font-size: .88rem; font-weight: 700; line-height: 1; transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease; }
-.read-status-pill::before { content: ""; width: .48rem; height: .48rem; border-radius: 999px; background: #94a3b8; box-shadow: 0 0 0 3px #e2e8f0; }
+.read-status-item, .fresh-status-item { color: var(--fg); }
+.status-control { display: inline-flex; align-items: center; border: 0; padding: 0; background: transparent; cursor: pointer; user-select: none; vertical-align: middle; font: inherit; }
+.status-pill { display: inline-flex; align-items: center; gap: .42rem; min-height: 1.75rem; padding: .18rem .62rem; border: 1px solid var(--border); border-radius: 4px; background: var(--pill-bg); color: var(--pill-muted); font-size: .88rem; font-weight: 700; line-height: 1; transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease; }
+.status-pill::before { content: ""; width: .48rem; height: .48rem; border-radius: 999px; background: var(--pill-dot); box-shadow: 0 0 0 3px var(--pill-dot-ring); }
 .read-status-pill::after { content: "Не прочитано"; }
-.read-status-control:hover .read-status-pill { border-color: #94a3b8; box-shadow: 0 0 0 4px rgba(148, 163, 184, .14); }
-.read-status-control:focus-visible .read-status-pill { outline: 2px solid #93c5fd; outline-offset: 3px; }
-.read-status-control[data-status="reading"] .read-status-pill { border-color: var(--reading-border); background: var(--reading-bg); color: var(--reading); box-shadow: 0 1px 3px rgba(15, 23, 42, .08); }
+.fresh-status-pill::after { content: "Старая"; }
+.status-control:hover .status-pill { border-color: var(--pill-dot); box-shadow: 0 0 0 4px var(--shadow); }
+.status-control:focus-visible .status-pill { outline: 2px solid var(--focus); outline-offset: 3px; }
+.read-status-control[data-status="reading"] .read-status-pill { border-color: var(--reading-border); background: var(--reading-bg); color: var(--reading); box-shadow: 0 1px 3px var(--shadow); }
 .read-status-control[data-status="reading"] .read-status-pill::before { width: .52rem; height: .52rem; background: var(--reading); box-shadow: 0 0 0 3px var(--reading-border); }
 .read-status-control[data-status="reading"] .read-status-pill::after { content: "Читается"; }
-.read-status-control[data-status="read"] .read-status-pill { border-color: var(--industry-border); background: var(--industry-bg); color: var(--industry); box-shadow: 0 1px 3px rgba(15, 23, 42, .08); }
+.read-status-control[data-status="read"] .read-status-pill { border-color: var(--industry-border); background: var(--industry-bg); color: var(--industry); box-shadow: 0 1px 3px var(--shadow); }
 .read-status-control[data-status="read"] .read-status-pill::before { width: .56rem; height: .32rem; border-radius: 0; background: transparent; border: solid var(--industry); border-width: 0 0 2px 2px; box-shadow: none; transform: rotate(-45deg) translateY(-.04rem); }
 .read-status-control[data-status="read"] .read-status-pill::after { content: "Прочитано"; }
-main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > strong > a { color: #64748b; }
+.fresh-status-control[data-freshness="new"] .fresh-status-pill { border-color: var(--new-border); background: var(--new-bg); color: var(--new); box-shadow: 0 1px 3px var(--shadow); }
+.fresh-status-control[data-freshness="new"] .fresh-status-pill::before { width: .52rem; height: .52rem; background: var(--new); box-shadow: 0 0 0 3px var(--new-border); }
+.fresh-status-control[data-freshness="new"] .fresh-status-pill::after { content: "Новая"; }
+main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > strong > a { color: var(--pill-muted); }
 .empty-state { display: none; margin: 1rem 0 2rem; padding: .85rem 1rem; color: var(--muted); background: var(--soft); border: 1px solid var(--border); border-radius: 8px; }
 .is-hidden-by-filter { display: none; }
 .scroll-top-gutter { position: fixed; inset: 0 auto 0 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
-.scroll-top-gutter::after { content: "Наверх"; position: fixed; left: 12px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; }
-.scroll-top-gutter:hover, .scroll-top-gutter:focus-visible { opacity: 1; background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); outline: none; }
+.scroll-top-gutter::after { content: "Наверх"; position: fixed; left: 12px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: var(--gutter-bg); font-size: .82rem; font-weight: 700; letter-spacing: .02em; }
+.scroll-top-gutter:hover, .scroll-top-gutter:focus-visible { opacity: 1; background: var(--gutter-left); outline: none; }
 @media (max-width: 1120px) { .scroll-top-gutter { display: none; } }
 .scroll-section-end-gutter { position: fixed; inset: 0 0 0 auto; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
-.scroll-section-end-gutter::after { content: "В конец раздела"; position: fixed; right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: right center; padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
-.scroll-section-end-gutter:hover, .scroll-section-end-gutter:focus-visible { opacity: 1; background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); outline: none; }
+.scroll-section-end-gutter::after { content: "В конец раздела"; position: fixed; right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: right center; padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: var(--gutter-bg); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.scroll-section-end-gutter:hover, .scroll-section-end-gutter:focus-visible { opacity: 1; background: var(--gutter-right); outline: none; }
 @media (max-width: 1120px) { .scroll-section-end-gutter { display: none; } }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } .catalog-controls { align-items: stretch; flex-direction: column; } .read-stats { white-space: normal; } }</style>
+@media (max-width: 640px) { main { padding: 72px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } .catalog-controls { align-items: stretch; flex-direction: column; } .filter-panel { align-items: stretch; flex-direction: column; } .control-meta { justify-content: flex-end; } .read-stats { white-space: normal; } }</style>
 </head>
 <body>
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему" aria-pressed="false"><span class="theme-symbol" aria-hidden="true"></span></button>
 <button class="scroll-top-gutter" type="button" aria-label="Прокрутить страницу наверх"></button>
 <button class="scroll-section-end-gutter" type="button" aria-label="Прокрутить к концу текущего раздела"></button>
 <main>
 <h1>Объединенный каталог статей по RecSys, Semantic IDs и generative retrieval</h1>
-<p><a href="index.html">&larr; К общей странице summaries</a></p>
 <p>Обновлено 2026-05-26.</p>
-<div class="catalog-controls" aria-label="Фильтр статей по статусу чтения">
-  <div class="filter-group" role="radiogroup" aria-label="Показывать статьи">
-    <label><input type="radio" name="paper-read-filter" value="all" checked>Все</label>
-    <label><input type="radio" name="paper-read-filter" value="unread">Непрочитанные</label>
-    <label><input type="radio" name="paper-read-filter" value="reading">Читаются</label>
-    <label><input type="radio" name="paper-read-filter" value="read">Прочитанные</label>
+<div class="catalog-controls" aria-label="Фильтры статей">
+  <div class="filter-panel">
+    <div class="filter-group" role="radiogroup" aria-label="Показывать статьи по статусу чтения">
+      <label><input type="radio" name="paper-read-filter" value="all" checked>Все</label>
+      <label><input type="radio" name="paper-read-filter" value="unread">Непрочитанные</label>
+      <label><input type="radio" name="paper-read-filter" value="reading">Читаются</label>
+      <label><input type="radio" name="paper-read-filter" value="read">Прочитанные</label>
+    </div>
+    <div class="filter-group" role="radiogroup" aria-label="Показывать статьи по новизне">
+      <label><input type="radio" name="paper-freshness-filter" value="all" checked>Все</label>
+      <label><input type="radio" name="paper-freshness-filter" value="new">Новые</label>
+      <label><input type="radio" name="paper-freshness-filter" value="old">Не новые</label>
+    </div>
   </div>
-  <div class="read-stats" id="read-stats">Прочитано: 0 из 331</div>
+  <div class="control-meta">
+    <div class="read-stats" id="read-stats">Новые: 0; прочитано: 0 из 331</div>
+  </div>
 </div>
-<p class="empty-state" id="empty-state">Нет статей для выбранного фильтра.</p>
+<p class="empty-state" id="empty-state">Нет статей для выбранных фильтров.</p>
 <h2>Сводка по категориям</h2>
 <table><thead><tr><th>Категория</th><th>Количество</th></tr></thead><tbody>
 <tr><td><a href="#category-foundations">Обзоры и базовые работы</a></td><td>15</td></tr>
@@ -2638,13 +2672,51 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <script>
 (() => {
   const storagePrefix = 'recsys-papers-read:';
+  const freshnessStoragePrefix = 'recsys-papers-freshness:';
   const filterKey = 'recsys-papers-filter';
+  const freshnessFilterKey = 'recsys-papers-freshness-filter';
+  const themeKey = 'recsys-papers-theme';
   const statusOrder = ['unread', 'reading', 'read'];
   const statusLabels = {
     unread: 'Не прочитано',
     reading: 'Читается',
     read: 'Прочитано'
   };
+  const freshnessLabels = {
+    new: 'Новая',
+    old: 'Старая'
+  };
+  const themeToggle = document.getElementById('theme-toggle');
+
+  const getSystemTheme = () =>
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+  const normalizeTheme = (value) => (value === 'dark' || value === 'light' ? value : getSystemTheme());
+
+  const applyTheme = (theme) => {
+    document.documentElement.dataset.theme = theme;
+    if (!themeToggle) return;
+    const isDark = theme === 'dark';
+    themeToggle.setAttribute('aria-label', isDark ? 'Включить светлую тему' : 'Включить темную тему');
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.title = isDark ? 'Переключить на светлую тему' : 'Переключить на темную тему';
+  };
+
+  let currentTheme = getSystemTheme();
+  try {
+    currentTheme = normalizeTheme(localStorage.getItem(themeKey));
+  } catch (_) {}
+  applyTheme(currentTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      currentTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(currentTheme);
+      try {
+        localStorage.setItem(themeKey, currentTheme);
+      } catch (_) {}
+    });
+  }
 
   const normalizeStatus = (value) => {
     if (value === '1' || value === 'read') return 'read';
@@ -2658,11 +2730,41 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     else localStorage.removeItem(key);
   };
 
+  const normalizeFreshness = (value, fallback) =>
+    value === 'new' || value === 'old' ? value : fallback;
+
+  const persistFreshness = (key, freshness) => {
+    localStorage.setItem(key, freshness);
+  };
+
   const setStatus = (paper, status) => {
     paper.status = status;
     paper.control.dataset.status = status;
     paper.control.title = `Статус: ${statusLabels[status]}`;
     paper.control.setAttribute('aria-label', `Статус статьи "${paper.title}": ${statusLabels[status]}. Нажмите, чтобы изменить.`);
+  };
+
+  const setFreshness = (paper, freshness) => {
+    paper.freshness = freshness;
+    paper.freshnessControl.dataset.freshness = freshness;
+    paper.freshnessControl.title = `Новизна: ${freshnessLabels[freshness]}`;
+    paper.freshnessControl.setAttribute('aria-label', `Новизна статьи "${paper.title}": ${freshnessLabels[freshness]}. Нажмите, чтобы изменить.`);
+  };
+
+  const removeNewPaperBadges = (titleList, metaList) => {
+    const scopes = [titleList, metaList].filter(Boolean);
+    const badges = scopes.flatMap((scope) => Array.from(scope.querySelectorAll('.badge.new-paper')));
+    badges.forEach((badge) => {
+      const tagItem = metaList && badge.closest('li');
+      const isTagItem = tagItem
+        && tagItem.parentElement === metaList
+        && tagItem.querySelector('strong')?.textContent.trim() === 'Теги:';
+
+      badge.remove();
+
+      if (isTagItem && !tagItem.querySelector('.badge')) tagItem.remove();
+    });
+    return badges.length > 0;
   };
 
   const papers = Array.from(document.querySelectorAll('main > ol[start]')).map((titleList, index) => {
@@ -2674,22 +2776,49 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     const articleLink = metaList ? metaList.querySelector('a.paper-link[href]') : null;
     const href = articleLink ? articleLink.getAttribute('href') : (link ? link.getAttribute('href') : title);
     const key = `${storagePrefix}${href}`;
+    const freshnessKey = `${freshnessStoragePrefix}${href}`;
+    const defaultFreshness = removeNewPaperBadges(titleList, metaList) ? 'new' : 'old';
 
     const control = document.createElement('button');
     control.type = 'button';
-    control.className = 'read-status-control';
+    control.className = 'status-control read-status-control';
     control.append(document.createElement('span'));
-    control.lastElementChild.className = 'read-status-pill';
+    control.lastElementChild.className = 'status-pill read-status-pill';
     control.lastElementChild.setAttribute('aria-hidden', 'true');
+
+    const freshnessControl = document.createElement('button');
+    freshnessControl.type = 'button';
+    freshnessControl.className = 'status-control fresh-status-control';
+    freshnessControl.append(document.createElement('span'));
+    freshnessControl.lastElementChild.className = 'status-pill fresh-status-pill';
+    freshnessControl.lastElementChild.setAttribute('aria-hidden', 'true');
 
     const statusItem = document.createElement('li');
     statusItem.className = 'read-status-item';
     statusItem.append(document.createElement('strong'), document.createTextNode(' '), control);
     statusItem.firstElementChild.textContent = 'Статус:';
 
-    if (metaList) metaList.prepend(statusItem);
+    const freshnessItem = document.createElement('li');
+    freshnessItem.className = 'fresh-status-item';
+    freshnessItem.append(document.createElement('strong'), document.createTextNode(' '), freshnessControl);
+    freshnessItem.firstElementChild.textContent = 'Новизна:';
 
-    const paper = { title, titleList, metaList, control, key, status: 'unread' };
+    if (metaList) {
+      metaList.prepend(freshnessItem);
+      metaList.prepend(statusItem);
+    }
+
+    const paper = {
+      title,
+      titleList,
+      metaList,
+      control,
+      freshnessControl,
+      key,
+      freshnessKey,
+      status: 'unread',
+      freshness: defaultFreshness
+    };
 
     try {
       setStatus(paper, normalizeStatus(localStorage.getItem(key)));
@@ -2697,10 +2826,17 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       setStatus(paper, 'unread');
     }
 
+    try {
+      setFreshness(paper, normalizeFreshness(localStorage.getItem(freshnessKey), defaultFreshness));
+    } catch (_) {
+      setFreshness(paper, defaultFreshness);
+    }
+
     return paper;
   });
 
   const filters = Array.from(document.querySelectorAll('input[name="paper-read-filter"]'));
+  const freshnessFilters = Array.from(document.querySelectorAll('input[name="paper-freshness-filter"]'));
   const stats = document.getElementById('read-stats');
   const emptyState = document.getElementById('empty-state');
   const scrollTopGutter = document.querySelector('.scroll-top-gutter');
@@ -2742,6 +2878,11 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     return selected ? selected.value : 'all';
   };
 
+  const getFreshnessFilter = () => {
+    const selected = freshnessFilters.find((input) => input.checked);
+    return selected ? selected.value : 'all';
+  };
+
   const setVisible = (paper, visible) => {
     paper.titleList.classList.toggle('is-hidden-by-filter', !visible);
     if (paper.metaList) paper.metaList.classList.toggle('is-hidden-by-filter', !visible);
@@ -2765,26 +2906,33 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 
   const applyFilter = () => {
     const filter = getFilter();
+    const freshnessFilter = getFreshnessFilter();
     let readCount = 0;
     let readingCount = 0;
+    let freshCount = 0;
     let visibleCount = 0;
 
     papers.forEach((paper) => {
       const isRead = paper.status === 'read';
       const isReading = paper.status === 'reading';
+      const isFresh = paper.freshness === 'new';
       if (isRead) readCount += 1;
       if (isReading) readingCount += 1;
-      const visible = filter === 'all' || filter === paper.status;
+      if (isFresh) freshCount += 1;
+      const visibleByReadStatus = filter === 'all' || filter === paper.status;
+      const visibleByFreshness = freshnessFilter === 'all' || freshnessFilter === paper.freshness;
+      const visible = visibleByReadStatus && visibleByFreshness;
       if (visible) visibleCount += 1;
       setVisible(paper, visible);
     });
 
-    if (stats) stats.textContent = `Читается: ${readingCount}; прочитано: ${readCount} из ${papers.length}`;
+    if (stats) stats.textContent = `Новые: ${freshCount}; читается: ${readingCount}; прочитано: ${readCount} из ${papers.length}`;
     if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
     refreshCategoryVisibility();
 
     try {
       localStorage.setItem(filterKey, filter);
+      localStorage.setItem(freshnessFilterKey, freshnessFilter);
     } catch (_) {}
   };
 
@@ -2797,14 +2945,28 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       } catch (_) {}
       applyFilter();
     });
+
+    paper.freshnessControl.addEventListener('click', () => {
+      try {
+        const nextFreshness = paper.freshness === 'new' ? 'old' : 'new';
+        setFreshness(paper, nextFreshness);
+        persistFreshness(paper.freshnessKey, nextFreshness);
+      } catch (_) {}
+      applyFilter();
+    });
   });
 
   filters.forEach((input) => input.addEventListener('change', applyFilter));
+  freshnessFilters.forEach((input) => input.addEventListener('change', applyFilter));
 
   try {
     const savedFilter = localStorage.getItem(filterKey);
     const savedInput = filters.find((input) => input.value === savedFilter);
     if (savedInput) savedInput.checked = true;
+
+    const savedFreshnessFilter = localStorage.getItem(freshnessFilterKey);
+    const savedFreshnessInput = freshnessFilters.find((input) => input.value === savedFreshnessFilter);
+    if (savedFreshnessInput) savedFreshnessInput.checked = true;
   } catch (_) {}
 
   applyFilter();

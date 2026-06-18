@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+BASE = ROOT / sys.argv[1] if len(sys.argv) > 1 else ROOT / 'summaries'
 
 class P(HTMLParser):
     def __init__(self):
@@ -17,7 +18,7 @@ class P(HTMLParser):
 
 def main() -> int:
     missing=[]
-    for f in ROOT.glob('summaries/**/*.html'):
+    for f in BASE.glob('**/*.html'):
         p=P(); p.feed(f.read_text(encoding='utf-8'))
         for kind, vals in [('img', p.imgs), ('href', p.links)]:
             for v in vals:
