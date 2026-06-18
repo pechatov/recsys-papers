@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diffusion Models for Generative Outfit Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; } * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; } main { max-width:980px; margin:0 auto; padding:40px 24px 72px; } h1,h2,h3 { line-height:1.25; margin:1.55em 0 .55em; } h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; } h2 { font-size:1.45rem; } h3 { font-size:1.15rem; } p { margin:.75rem 0; } a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; } ul,ol { padding-left:1.55rem; } li { margin:.3rem 0; } blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); } table { border-collapse:collapse; width:100%; margin:1rem 0; } th,td { border:1px solid var(--border); padding:.45rem .6rem; vertical-align:top; } th { background:var(--soft); text-align:left; } code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem .28rem; border-radius:4px; } .nav { margin-top:-.25rem; } .industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0 .25rem; font-weight:600; } @media (max-width:640px) { main { padding:24px 16px 56px; } body { font-size:15px; } h1 { font-size:1.65rem; } }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+<h1><a href="https://doi.org/10.1145/3626772.3657719">Diffusion Models for Generative Outfit Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-diffusion_models_generative_outfit_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+  <p><strong>Авторы:</strong> Yiyan Xu, Wenjie Wang, Fuli Feng, Yunshan Ma, Jizhi Zhang, Xiangnan He.</p>
+  <p><strong>Аффилиации:</strong> University of Science and Technology of China; National University of Singapore.</p>
+  <p><strong>Публикация:</strong> SIGIR 2024, Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval, pp. 1350-1359.</p>
+  <p><strong>Источники:</strong> <a href="https://doi.org/10.1145/3626772.3657719">ACM DOI</a>, <a href="https://arxiv.org/abs/2402.17279">arXiv:2402.17279</a>, <a href="https://dblp.org/rec/conf/sigir/XuWFMZ024">DBLP</a>, <a href="https://github.com/YiyanXu/DiFashion">официальный GitHub</a>.</p>
+</blockquote>
+
+<h2>1. Коротко</h2>
+<p>Статья вводит задачу <strong>Generative Outfit Recommendation (GOR)</strong>: вместо выбора готового outfit'а или сборки из существующих fashion items система должна <strong>сгенерировать новые изображения предметов одежды</strong> и составить из них персонализированный, совместимый outfit.</p>
+<p>Предложенная модель <strong>DiFashion</strong> адаптирует diffusion models, чтобы параллельно генерировать несколько fashion images. Три цели GOR: high fidelity, compatibility внутри outfit'а и personalization под пользователя. Для этого DiFashion использует category condition, mutual condition через encoder совместимости и history condition из пользовательских прошлых взаимодействий; на inference применяется classifier-free guidance.</p>
+
+<h2>2. Контекст</h2>
+<p>Outfit recommendation обычно развивался в два этапа: pre-defined outfit recommendation и personalized outfit composition. Первый выбирает готовый комплект, второй собирает комплект из существующих items. Оба ограничены каталогом: если нужного сочетания нет среди текущих products, recommender не может предложить truly new outfit.</p>
+<p>Diffusion models дают другой режим: recommendation как генерация новых visual items. Это сильнее обычного retrieval, но и сложнее: нужно одновременно соблюдать визуальное качество, категорийные constraints, совместимость всех частей комплекта и пользовательские вкусы.</p>
+
+<h2>3. Метод и pipeline</h2>
+<ol>
+  <li><strong>GOR formulation.</strong> На входе user information, history и designated categories. На выходе набор fashion images, образующих совместимый outfit.</li>
+  <li><strong>Diffusion backbone.</strong> DiFashion основан на Stable Diffusion style denoising: forward process добавляет Gaussian noise к outfit images, reverse process восстанавливает изображения через U-Net.</li>
+  <li><strong>Category condition.</strong> Категория предмета направляет fidelity и соответствие нужному типу одежды.</li>
+  <li><strong>Mutual encoder.</strong> Для каждого item'а модель смотрит на incomplete outfit из остальных noisy items и кодирует compatibility information. Это условие помогает генерировать предмет, согласованный с остальными.</li>
+  <li><strong>History encoder.</strong> Пользовательская история взаимодействий кодируется как personalization signal.</li>
+  <li><strong>Classifier-free guidance.</strong> Условия иногда маскируются на training, а на inference guidance scales усиливают alignment с category, mutual и history conditions.</li>
+  <li><strong>Tasks.</strong> Проверяются Personalized Fill-In-The-Blank (PFITB), где нужно сгенерировать missing item, и полный GOR, где генерируется целый outfit.</li>
+</ol>
+
+<h2>4. Результаты и evidence</h2>
+<p>Два датасета:</p>
+<table>
+  <thead><tr><th>Dataset</th><th>Users</th><th>Outfits</th><th>Items</th><th>Interactions</th></tr></thead>
+  <tbody>
+    <tr><td>iFashion</td><td>12,806</td><td>19,882</td><td>344,186</td><td>107,396</td></tr>
+    <tr><td>Polyvore-U</td><td>517</td><td>33,906</td><td>119,202</td><td>33,908</td></tr>
+  </tbody>
+</table>
+<p>Generative baselines: OutfitGAN, SD-v1.5, SD-v2, SD-naive и ControlNet. Retrieval-based baselines: Random, HFN, HFGN, BGN и BGN-Trans. Метрики разделены на image generation quality (FID, IS, CLIP Score), fashion metrics (CIS, LPIPS, compatibility, personalization) и retrieval grounding accuracy.</p>
+<p>В generative comparison DiFashion получает лучший или близкий к лучшему результат на большинстве метрик. Например, на iFashion PFITB FID снижается до 34.06 против 42.47 у fine-tuned SD-v1.5, IS растёт до 29.99, compatibility достигает 0.58, personalization - 55.86. На iFashion GOR FID равен 20.21 против 28.31 у SD-v1.5, personalization - 55.54.</p>
+<p>В сравнении с retrieval-based методами на PFITB DiFashion конкурентоспособен даже в zero-shot retrieval setting: на iFashion Retrieval = 0.76, Comp. = 0.78, Per. = 64.93; на Polyvore-U Retrieval ниже HFGN, но personalization выше. Human evaluation на iFashion показывает, что DiFashion чаще предпочитают SD-v1.5/SD-v2 по fidelity, compatibility и personalization.</p>
+
+<h2>5. Ограничения</h2>
+<ul>
+  <li>Training дорогой: авторы указывают, что DiFashion обычно требует около одного A100 GPU day.</li>
+  <li>Для iFashion оставлены outfits длины 4 ради вычислительных ресурсов; более длинные outfits заявлены как поддерживаемые, но основной эксперимент ограничен.</li>
+  <li>Оценка generated fashion images опирается на proxy metrics и trained evaluators; они не полностью заменяют реальные покупки или пользовательские A/B tests.</li>
+  <li>Модель генерирует изображения, а не обязательно доступные к покупке SKU; grounding generated image в существующий catalog остаётся отдельной задачей.</li>
+</ul>
+
+<h2>6. Связь с GR/SID</h2>
+<p>DiFashion - это generative recommendation в буквальном смысле: output не ID, а новые изображения items. С SID-based GR связь опосредованная, но важная: обе линии пытаются выйти за пределы retrieve-from-fixed-catalog. TIGER-подобные модели генерируют discrete semantic item identifiers, а DiFashion генерирует visual item content. Для будущих систем возможен гибрид: diffusion model создаёт candidate visual concepts, затем SID/GR слой связывает их с реальными SKU или catalog regions.</p>
+
+<p><a href="../../papers.html#paper-diffusion_models_generative_outfit_recommendation_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

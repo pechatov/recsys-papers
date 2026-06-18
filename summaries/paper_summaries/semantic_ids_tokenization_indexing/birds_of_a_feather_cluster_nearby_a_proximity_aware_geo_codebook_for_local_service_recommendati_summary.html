@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Birds of a Feather Cluster Nearby: a Proximity-Aware Geo-Codebook for Local Service Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2604.23156">Birds of a Feather Cluster Nearby: a Proximity-Aware Geo-Codebook for Local Service Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-birds_of_a_feather_cluster_nearby_a_proximity_aware_geo_codebook_for_local_service_recommendati_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Tian He, Chen Yang, Jiawei Zhang, Lin Guo, Wei Lin, Zhuqing Jiang.</p>
+<p><strong>Аффилиации:</strong> Beijing University of Posts and Telecommunications; <span class="industry">Meituan</span>; Beijing Institute of Technology.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2604.23156">arXiv 2604.23156</a> · дата metadata: 2026-04-25.</p>
+<p><strong>Категория/теги:</strong> semantic IDs, quantization, efficiency, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/scilab/scilab">https://github.com/scilab/scilab</a><br><a href="https://github.com/CGAL/cgal/">https://github.com/CGAL/cgal/</a><br><a href="https://github.com/rdicosmo/parmap">https://github.com/rdicosmo/parmap</a><br><a href="https://github.com/nuprl/tag-sound;visit=swh:1:snp:7967bc0abee8bf3bfffb9252207a07b73538525a;anchor=swh:1:rev:4cc09ca228947a99c8f4ac45eefb76e96ee96e53">https://github.com/nuprl/tag-sound;visit=swh:1:snp:7967bc0abee8bf3bfffb9252207a07b73538525a;anchor=swh:1:rev:4cc09ca228947a99c8f4ac45eefb76e96ee96e53</a><br><a href="https://github.com/nuprl/tag-sound">https://github.com/nuprl/tag-sound</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: Pro-GEO добавляет географическую достижимость в SID/codebook для local service recommendation.</li>
+<li>Алгоритм: Geo-centroid local coordinates и geo-rotary position encoding заставляют semantic codebook учитывать spatial proximity, а не использовать distance как слабую auxiliary feature.</li>
+<li>Evidence: На крупном industrial dataset Pro-GEO снижает average geographic clustering distance на 45.60% и дает +1.87% Hit@50.</li>
+<li>Ограничение: Метод доменно специфичен: география полезна в local services, но может быть нерелевантна в обычном e-commerce/media.</li>
+<li>Итог: Важна как пример domain-aware tokenizer: хорошие identifiers должны отражать физические constraints задачи.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>A key technical challenge lies in semantic ID (SID) tokenization, which directly impacts the recommendation performance.</td></tr>
+<tr><th>Предложение авторов</th><td>To address this limitation, we propose Pro-GEO, a Proximity-aware GEO-codebook.</td></tr>
+<tr><th>Главный evidence claim</th><td>Extensive experiments conducted on a large-scale industrial dataset reveal that Pro-GEO significantly outperforms state-of-the-art methods.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>objective не выражен стандартным ключевым словом; смотреть method/training sections</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Yelp, Meituan</td></tr>
+<tr><th>Metrics</th><td>Hit</td></tr>
+<tr><th>Baselines</th><td>TIGER, OneRec, RQ-VAE, VQ-VAE, LC-Rec</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Item Tokenization:</span> The tokenization has become the predominant approach in generative recommendation, aiming to compress rich item semantics into fixed-length discrete symbol sequences li2025survey.</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Item Tokenization:</span> The transition from VQ-VAE van2017neural to its variant RQ-VAE marked a decisive milestone, enabling SID tokenization to overcome the expressiveness limitation of single-codebook quantization and become integral to modern generative recommender systems. Representative frameworks such as TIGER rajput2023recommender and LC-Rec zheng2024adapting typically...</li>
+<li><strong>Learning signal.</strong> <span class="anchor">Methodology:</span> Our Pro-GEO is based on the consensus that geographical proximity critically influences user experience, The framework is shown in Fig.. Let P = p 1, p 2,..., p N represent the set of N POIs, respectively. Each POI is characterized by a tuple p N = (s,, ), where s contains rich semantic information such as category, brand, rating, and price, and...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> objective не выражен стандартным ключевым словом; смотреть method/training sections.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>j_i^ l = _j r_i^ l-1 ^ c_j^ l \| r_i^ l-1 \|_2 \| c_j^ l \|_2,</code></li>
+<li><code>O_p^j = ( _0, _0) = ( 1| S| _s S _s, 1| S| _s S _s ).</code></li>
+<li><code>aligned d_p &amp;= 2R ( ^2 ( _p - _02 ) + _0 _p ^2 ( _p - _02 ) ), \\ _p &amp;= (x + i y ), aligned</code></li>
+<li><code>aligned x &amp;= _0 _p - _0 _p ( _p - _0), \\ y &amp;= ( _p - _0) _p. aligned</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Illustration of local lifestyle recommendation.</li>
+<li>The overview of the ProGEO. It includes two standard codebook layers and a geo-codebook layer. The standard codebook layers use RQ-Kmeans to cluster mixed feature vectors, while the geo-codebook layer enhances spatial features from the residuals of semantic IDs. Each POI’s global coordinates $( _p, _p)$ are converted into geo-center local coordinates $(d_p,...</li>
+<li>Comparison between global and local Coordinate Systems. The global system expresses locations in absolute coordinates, which may obscure local spatial relationships. In contrast, the Geo-Centroid local system anchors positions relative to a centroid, enabling more accurate and interpretable modeling of local spatial patterns.</li>
+<li>Comparison of different methods on multiple metrics.</li>
+<li>Comparison of global and local geographic representation strategies.</li>
+<li>Comparison of Geo-RoPE integration strategies at different clustering layers.</li>
+<li>Comparison of different geographic attribute combinations on quantization and recommendation metrics. The best values are highlighted in bold, while the second-best values are denoted by italic underline. The unit for Avg. Dist., p90 Dist., and p95 Dist. is kilometers (km). $^ $ indicates our proposed Pro-GEO method. $ $ and $ $ indicate that higher and...</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Yelp, Meituan</td></tr>
+<tr><th>Metrics</th><td>Hit</td></tr>
+<tr><th>Baselines</th><td>TIGER, OneRec, RQ-VAE, VQ-VAE, LC-Rec</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На крупном industrial dataset Pro-GEO снижает average geographic clustering distance на 45.60% и дает +1.87% Hit@50.</li>
+<li>Experiments: In this section, extensive experiments are conducted on an industrial dataset to evaluate the effectiveness of our proposed Pro-GEO. Specifically, we aim to address the following questions:</li>
+<li>Experiments: Q4: How do geographical clustering in the codebook and visualization of recommendation results provide evidence for the effectiveness of Pro-GEO?</li>
+<li>Ablation Study (Q2): To evaluate the contribution of each component within the Pro-GEO framework, we conduct comprehensive ablation studies, guided by the following sub-questions:</li>
+<li>Ablation Study (Q2): Q2.1: Which type of geographic information serves as the most effective reference standard for local service recommendation?</li>
+<li>Extensive experiments conducted on a large-scale industrial dataset reveal that Pro-GEO significantly outperforms state-of-the-art methods.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: Pro-GEO добавляет географическую достижимость в SID/codebook для local service recommendation.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Geo-centroid local coordinates и geo-rotary position encoding заставляют semantic codebook учитывать spatial proximity, а не использовать distance как слабую auxiliary feature.</li>
+<li><strong>Empirical:</strong> Evidence: На крупном industrial dataset Pro-GEO снижает average geographic clustering distance на 45.60% и дает +1.87% Hit@50.</li>
+<li><strong>Practical:</strong> Ограничение: Метод доменно специфичен: география полезна в local services, но может быть нерелевантна в обычном e-commerce/media.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Yelp, Meituan.</li>
+<li>Метрики: Hit.</li>
+<li>Baselines и parity settings: TIGER, OneRec, RQ-VAE, VQ-VAE, LC-Rec.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Важна как пример domain-aware tokenizer: хорошие identifiers должны отражать физические constraints задачи.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: Pro-GEO добавляет географическую достижимость в SID/codebook для local service recommendation.</li>
+<li>Алгоритм: Geo-centroid local coordinates и geo-rotary position encoding заставляют semantic codebook учитывать spatial proximity, а не использовать distance как слабую auxiliary feature.</li>
+<li>Evidence: На крупном industrial dataset Pro-GEO снижает average geographic clustering distance на 45.60% и дает +1.87% Hit@50.</li>
+<li>Ограничение: Метод доменно специфичен: география полезна в local services, но может быть нерелевантна в обычном e-commerce/media.</li>
+<li>Итог: Важна как пример domain-aware tokenizer: хорошие identifiers должны отражать физические constraints задачи.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>Local service platforms such as Meituan, DoorDash and Yelp have become integral to daily life jiang2025plug,wang2025fim,hu2025dynamic, where user satisfaction hinges not only on semantic relevance and personalization, but also on strict geographic...</td></tr>
+<tr><td>Related works</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Item Tokenization</td><td>The tokenization has become the predominant approach in generative recommendation, aiming to compress rich item semantics into fixed-length discrete symbol sequences li2025survey.</td></tr>
+<tr><td>Generative recommendation</td><td>Initial research rajput2023recommender, geng2022recommendation, cui2022m6 explores the direct application of powerful conversational large language models (LLMs) to recommendation systems. Subsequent research focuses on the fine-grained modeling of user...</td></tr>
+<tr><td>Methodology</td><td>Our Pro-GEO is based on the consensus that geographical proximity critically influences user experience, The framework is shown in Fig.. Let P = p 1, p 2,..., p N represent the set of N POIs, respectively. Each POI is characterized by a tuple p N =...</td></tr>
+<tr><td>Semantic Codebook Clustering</td><td>Given POI representations X = x i R M i=1 N, the conventional RQ-Kmeans algorithm relies on Euclidean distance for similarity measurement, which is ill-suited for high-dimensional embedding spaces. Euclidean distance becomes less discriminative due to the...</td></tr>
+<tr><td>Geo-Centroid Local Coordinate Mapping</td><td>Global geographic coordinates present two challenges in local spatial modeling: (1) Minor coordinate variations may correspond to vast distances in the real world; (2) Lack of reference standards supporting relative positioning within regions. To overcome...</td></tr>
+<tr><td>Geo-Rotary Position Encoding</td><td>RoPE su2024roformer is a self-attention position encoding mechanism originally designed for Transformers, which models the relative position between sequence elements via orthogonal rotations. We extend RoPE to the spatial domain, formalizing geographic...</td></tr>
+<tr><td>Experiments</td><td>In this section, extensive experiments are conducted on an industrial dataset to evaluate the effectiveness of our proposed Pro-GEO. Specifically, we aim to address the following questions:</td></tr>
+<tr><td>Experimental Setup</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Performance Analysis (Q1)</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Ablation Study (Q2)</td><td>To evaluate the contribution of each component within the Pro-GEO framework, we conduct comprehensive ablation studies, guided by the following sub-questions:</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-birds_of_a_feather_cluster_nearby_a_proximity_aware_geo_codebook_for_local_service_recommendati_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

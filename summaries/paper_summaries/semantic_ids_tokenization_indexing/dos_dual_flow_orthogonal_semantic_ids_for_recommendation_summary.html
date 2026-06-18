@@ -39,17 +39,29 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 .math { overflow-x: auto; padding: .35rem 0; }
 .nav { margin: -.35rem 0 1.25rem; color: var(--muted); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }</style>
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
 
 </head>
 
 <body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
 
 <main>
 
 <h1><a href="https://arxiv.org/abs/2602.04460">DOS: Dual-Flow Orthogonal Semantic IDs for Recommendation in Meituan</a></h1>
 
-<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<p class="nav"><a href="../../papers.html#paper-dos_dual_flow_orthogonal_semantic_ids_for_recommendation_summary">← К общему списку статей</a></p>
 
 <p>Подробное саммари статьи:</p>
 
@@ -248,8 +260,26 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <li>arXiv abstract/source/PDF: <a href="https://arxiv.org/abs/2602.04460">2602.04460</a>.</li>
 </ul>
 
+
+
+<p class="nav"><a href="../../papers.html#paper-dos_dual_flow_orthogonal_semantic_ids_for_recommendation_summary">← К общему списку статей</a></p>
 </main>
 
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
 </body>
 
 </html>

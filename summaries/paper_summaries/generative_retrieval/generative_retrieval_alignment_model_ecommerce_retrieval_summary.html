@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generative Retrieval and Alignment Model: A New Paradigm for E-commerce Retrieval</title>
+  <style>
+    body { margin: 0; color: #1f2933; font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+    h1 { margin-top: 0; font-size: 2rem; line-height: 1.25; border-bottom: 1px solid #d8dee9; padding-bottom: .55rem; }
+    h2 { margin-top: 1.6em; font-size: 1.45rem; line-height: 1.25; } h3 { font-size: 1.15rem; }
+    a { color: #0b66c3; } blockquote { margin: 1rem 0; padding: .7rem 1rem; color: #65758b; background: #f6f8fb; border-left: 4px solid #d8dee9; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; } th, td { border: 1px solid #d8dee9; padding: .45rem .6rem; vertical-align: top; } th { background: #f6f8fb; text-align: left; }
+    ul { padding-left: 1.5rem; } li { margin: .3rem 0; }
+  
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+  <h1><a href="https://arxiv.org/abs/2504.01403">Generative Retrieval and Alignment Model: A New Paradigm for E-commerce Retrieval</a></h1>
+  <p class="nav"><a href="../../papers.html#paper-generative_retrieval_alignment_model_ecommerce_retrieval_summary">&larr; К общему списку статей</a></p>
+
+  <blockquote>
+    <strong>Авторы:</strong> Ming Pang, Chunyuan Yuan, Xiaoyu He, Zheng Fang, Donghao Xie, Fanyi Qu, Xue Jiang, Changping Peng, Zhangang Lin, Ching Law, Jingping Shao.<br>
+    <strong>Аффилиация:</strong> JD.com, Beijing, China.<br>
+    <strong>Источник:</strong> arXiv:2504.01403, 2025.
+  </blockquote>
+
+  <h2>1. Коротко</h2>
+  <p>GRAM предлагает generative retrieval для e-commerce search, где модель генерирует не opaque item IDs, а структурированные текстовые коды товара/запроса. Главная идея: использовать LLM для генерации атрибутивных codes, а затем выровнять query-code-product пространство так, чтобы retrieval и pre-ranking работали как единый pipeline.</p>
+  <p>В отличие от SID-подходов с beam search по learned token IDs, GRAM опирается на осмысленные product attributes: бренд, категория, серия, модель, материал, стиль, цвет, спецификации, аудитория, сценарии применения, marketing terms и т.п.</p>
+
+  <h2>2. Контекст</h2>
+  <p>Авторы критикуют sparse/dense retrieval в e-commerce за слабую работу с fine-grained interaction и memory. ID-based GR требует изучать новую систему идентификаторов и дорого декодировать top-k через beam search. Строковые/n-gram идентификаторы используют знания LLM, но query/product language mismatch и контроль качества кодов остаются проблемой.</p>
+
+  <h2>3. Метод / pipeline</h2>
+  <h3>Structured text codes</h3>
+  <p>Коды строятся из 16 типов атрибутов. Coarse code содержит 1-2 атрибута, medium - 3, fine - более 3. Начальные коды получают из экспертно размеченных запросов: BERT NER обучается на примерно 3 млн запросов и извлекает attributes из query/product/click logs. Начальное обучение покрывает около 6 млн уникальных запросов и 8 млн товаров.</p>
+  <h3>Query-code и product-code generation</h3>
+  <p>Открытая/внутренняя 0.5B LLM обучается генерировать codes для запросов и товаров. Product generator создает коды для активных товаров; query generator генерирует до 10 codes на связанный запрос; relevance filter добавляет в обучение только качественные пары.</p>
+  <h3>Alignment</h3>
+  <ul>
+    <li><strong>Code co-alignment:</strong> DPO на query-product pair; positive code - пересечение query/product tags, negative - разность.</li>
+    <li><strong>Query-product alignment through code:</strong> после code matching товар скорится через token-level Jensen-Shannon divergence между вероятностями query-code и product-code.</li>
+    <li><strong>Pre-ranking weights:</strong> code-granular weights обучаются pairwise margin loss.</li>
+  </ul>
+  <p>В production GRAM объединяет intent recognition, retrieval и pre-ranking; новые товары получают codes nearline.</p>
+
+  <h2>4. Результаты и evidence</h2>
+  <p>Данные SFT: 184.8M query-code pairs, 459.7M product-code pairs, 6.2M unique queries, 8.4M products, 7.4M codes. Alignment: 67.4M query-code, 134.8M product-code, 1.5M queries, 15.6M products, 452.7K codes.</p>
+  <table>
+    <thead><tr><th>Model</th><th>Recall@10</th><th>Recall@100</th><th>Recall@300</th><th>RelR</th></tr></thead>
+    <tbody>
+      <tr><td>BM25</td><td>3.01%</td><td>10.52%</td><td>15.23%</td><td>35.78%</td></tr>
+      <tr><td>DPR</td><td>3.89%</td><td>11.26%</td><td>17.92%</td><td>30.96%</td></tr>
+      <tr><td>LC-Rec</td><td>4.35%</td><td>7.16%</td><td>7.33%</td><td>23.94%</td></tr>
+      <tr><td><strong>GRAM</strong></td><td>2.85%</td><td><strong>12.54%</strong></td><td><strong>21.13%</strong></td><td><strong>40.18%</strong></td></tr>
+    </tbody>
+  </table>
+  <p>GRAM не лучший на Recall@10, но выигрывает Recall@100/300 и relevance rate. Ablation показывает вклад alignment: full GRAM 2.85/12.54/21.13/40.18; без code alignment 1.80/11.37/20.23/33.51; без co-training и code alignment 1.57/7.64/12.89/33.36.</p>
+  <p>Online A/B на JD search: 5% трафика против 5% baseline, минимум неделя, beam size 10, до 300 ads. GRAM дал +0.74% ad impressions, +1.27% CTR, +0.45% CPC и +2.46% ad revenue, p &lt; 0.05.</p>
+
+  <h2>5. Ограничения</h2>
+  <ul>
+    <li>Данные, taxonomy атрибутов и traffic logs закрытые; воспроизводимость ограничена.</li>
+    <li>Recall@10 ниже LC-Rec и DPR, то есть модель полезнее для широкого candidate generation, чем для сверхточного top-10.</li>
+    <li>Качество зависит от NER, product attributes и relevance filter; ошибки в каталожной разметке напрямую влияют на retrieval.</li>
+    <li>В тексте статьи масштаб deployment описан не вполне единообразно: встречается формулировка про millions и hundreds of millions retrievals.</li>
+  </ul>
+
+  <h2>6. Связь с GR/SID</h2>
+  <p>GRAM - альтернатива learned semantic IDs: идентификатор остается генерируемой последовательностью, но она человеко-читаемая и привязана к e-commerce attributes. Для SID это полезный контраст: интерпретируемый code может упростить alignment и контроль relevance, но требует сильной доменной схемы.</p>
+
+  <p class="nav"><a href="../../papers.html#paper-generative_retrieval_alignment_model_ecommerce_retrieval_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

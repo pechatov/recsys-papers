@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRAB: Codebook Rebalancing for Bias Mitigation in Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2604.05113">CRAB: Codebook Rebalancing for Bias Mitigation in Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Zezhong Fan, Ziheng Chen, Luyi Ma, Jin Huang, Lalitesh Morishetti, Kaushiki Nag, Sushant Kumar, Kannan Achan.</p>
+<p><strong>Аффилиации:</strong> Stony Brook University.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2604.05113">arXiv 2604.05113</a> · дата metadata: 2026-04-06.</p>
+<p><strong>Категория/теги:</strong> semantic IDs, quantization, generative recommendation, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> не найдено явных repository/dataset links в arXiv source.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: CRAB диагностирует popularity bias в GeneRec как следствие imbalanced tokenization и training, которое переучивает popular tokens.</li>
+<li>Алгоритм: Post-hoc rebalance split-ит over-popular codebook tokens, сохраняя hierarchy, и добавляет tree-structured regularizer для semantic consistency.</li>
+<li>Evidence: На real-world datasets CRAB улучшает recommendation performance и снижает popularity bias.</li>
+<li>Ограничение: Post-hoc split может изменить mapping и потребовать переобучения/миграции generator; важно оценить head-quality trade-off.</li>
+<li>Итог: Статья важна для codebook auditing: collapse и popularity bias появляются на уровне tokens, не только на уровне ranker loss.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>Despite its strong performance across multiple recommendation tasks, existing GeneRec approaches still suffer from severe popularity bias and may even exacerbate it.</td></tr>
+<tr><th>Предложение авторов</th><td>Building on these insights, we propose CRAB, a post-hoc debiasing strategy for GeneRec that alleviates popularity bias by mitigating frequency imbalance among semantic tokens.</td></tr>
+<tr><th>Главный evidence claim</th><td>Despite its strong performance across multiple recommendation tasks, existing GeneRec approaches still suffer from severe popularity bias and may even exacerbate it.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>objective не выражен стандартным ключевым словом; смотреть method/training sections</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Office</td></tr>
+<tr><th>Metrics</th><td>NDCG, HR</td></tr>
+<tr><th>Baselines</th><td>TIGER, CoST, OneRec, SASRec, RQ-VAE</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Residual Quantization:</span> For each item i I, its textual description is first passed through a frozen encoder to obtain a continuous embedding z i. We aim to quantize it using L hierarchical tokens with L codebooks in a coarse-to-fine generation manner. At the l -th level, the codebook C l = c k l | k=1, K consists of K codeword embeddings c k l. When l=1, the initial residual...</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Model Optimization:</span> To mitigate popularity bias in GeneRec, we jointly optimize the recommendation loss L Rec and the hierarchical regularizer L T: equation aligned L = L Rec + L T aligned equation where is a hyperparameter controlling the strength of regularization. During optimization, we update the embedding layers for both existing and newly introduced tokens. To...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> objective не выражен стандартным ключевым словом; смотреть method/training sections.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>Ch(c_k^l) = \ c_j^\,l+1 C^l+1 \; |\; c_k^l c_j^\,l+1 \.</code></li>
+<li><code>P(c^l_k(m)) = ^| Ch(c_k^l)| _j=1 z_j[m]P(c^l+1_j),\: L_bal= _m=1^M (P(c^l_k(m))- P )^2</code></li>
+<li><code>aligned _ z \;\; &amp; _m=1^M ^| Ch(c_k^l)|_j=1 z_j[m]n_j \| r^l_j - _m \|^2+ L_bal, n_j=| I_c_j^l+1|\\ s.t. \;\; &amp; z_j[m] \0,1\, _m=1^M z_j[m] = 1, \, c_j^\,l+1 Ch(c_k^l), aligned</code></li>
+<li><code>_i=1^n_j \| r^l_i - _m\|^2 = _i=1^n_j \| r^l_i- r^l_j\|^2 + n_j \| r^l_j\ - _m\|^2,\: r^l_j= _i=1^n_j r^l_in_j</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Illustration of CRAB with a three-level codebook in MOR. Over-popular tokens are split by redistributing their child tokens via regularized Kmeans. For clarity, we denote $c_i^1$, $c_j^2$, and $c_k^3$ as $ A_i$, $ B_j$, and $ C_k$, respectively.</li>
+<li>Performance and Efficiency Comparison on Industrial and Office Datasets.</li>
+<li>Left: Popularity bias of GeneRec on the industrial dataset, with the x-axis representing item groups by popularity. Right: The GU of item groups grouped by token popularity.</li>
+<li>PS($ $), PN($ $), and EC($ $) of factual and counterfactual explanations generated by GREASE, PGExplainer, PersonalRank, and Random for top-$10$, top-$15$, and top-$20$ recommended items according to LightGCN, NGCF, and GCMC GNN-based recommender systems trained on LastFM, Yelp, and Gowalla datasets.</li>
+<li>$HR@10 100$ for different attacks with $80\</li>
+<li>Unlearning effectivenss and model performance on Movie and Goodreads.</li>
+<li>Left: MOR performance under different splitting ratios ($5\</li>
+<li>Left: Effect of $ $ Right: Effect of LoRA</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Office</td></tr>
+<tr><th>Metrics</th><td>NDCG, HR</td></tr>
+<tr><th>Baselines</th><td>TIGER, CoST, OneRec, SASRec, RQ-VAE</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На real-world datasets CRAB улучшает recommendation performance и снижает popularity bias.</li>
+<li>Theoretical Analysis: We provide a theoretical analysis of CURE to indicate that a single gradient update on the model parameters of CURE achieves lower loss than normal gradient descent. Let =,, denote the parameters of components in selected circuits. After applying CURE, the model parameters are =,,. An one step gradient update of is: equation...</li>
+<li>Theoretical Analysis:. We iteratively update each parameter group while fixing the others. The loss difference between the conventional update and CURE is analyzed via two components, A and B: equation aligned &amp; ( ) - ( ) ( - ) ( + ) &amp; + ( - ) + ( - ) &amp;= - A &amp; + ( - ) + ( - ) B aligned equation</li>
+<li>Experimental Settings: Datasets Experiments are carried out on two real-world datasets Office and Industrial. Following kong2025minionerec, we first filter out users and items with fewer than five interactions. For each dataset, interactions are split chronologically into training, validation, and test sets with an 8:1:1 ratio. Evaluation Metrics subsec:metric Following...</li>
+<li>Experimental Settings: Implementation We implement CRAB based on the MOR framework using Qwen2-0.5B as the backbone. The model is trained on 4 NVIDIA A100 GPUs for 10 epochs. We employ the AdamW optimizer with a global batch size of 128. The learning rate is set to 1 10 -4 with a weight decay of 0.01. To efficiently train the model, we utilize LoRA hu2022lora with the rank r=8,...</li>
+<li>Despite its strong performance across multiple recommendation tasks, existing GeneRec approaches still suffer from severe popularity bias and may even exacerbate it.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: CRAB диагностирует popularity bias в GeneRec как следствие imbalanced tokenization и training, которое переучивает popular tokens.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Post-hoc rebalance split-ит over-popular codebook tokens, сохраняя hierarchy, и добавляет tree-structured regularizer для semantic consistency.</li>
+<li><strong>Empirical:</strong> Evidence: На real-world datasets CRAB улучшает recommendation performance и снижает popularity bias.</li>
+<li><strong>Practical:</strong> Ограничение: Post-hoc split может изменить mapping и потребовать переобучения/миграции generator; важно оценить head-quality trade-off.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Система ускоряет inference, но не улучшает модельное качество сама по себе; важно проверять stale-cache и quality-latency frontier.</li>
+<li>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Office.</li>
+<li>Метрики: NDCG, HR.</li>
+<li>Baselines и parity settings: TIGER, CoST, OneRec, SASRec, RQ-VAE.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Статья важна для codebook auditing: collapse и popularity bias появляются на уровне tokens, не только на уровне ranker loss.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: CRAB диагностирует popularity bias в GeneRec как следствие imbalanced tokenization и training, которое переучивает popular tokens.</li>
+<li>Алгоритм: Post-hoc rebalance split-ит over-popular codebook tokens, сохраняя hierarchy, и добавляет tree-structured regularizer для semantic consistency.</li>
+<li>Evidence: На real-world datasets CRAB улучшает recommendation performance и снижает popularity bias.</li>
+<li>Ограничение: Post-hoc split может изменить mapping и потребовать переобучения/миграции generator; важно оценить head-quality trade-off.</li>
+<li>Итог: Статья важна для codebook auditing: collapse и popularity bias появляются на уровне tokens, не только на уровне ranker loss.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td> Generative recommendation (GeneRec) wang2024learnable, han2025mtgr, liu2025onerec has emerged as a promising paradigm for sequential recommendation, demonstrating strong empirical performance across diverse domains...</td></tr>
+<tr><td>Background and Preliminaries</td><td> We consider the sequential recommendation task. Let U denote the set of users and I the set of items. Given a user u U with a chronologically ordered interaction history H u = i 1,, i T, the goal is to predict the next item i T+1. Following...</td></tr>
+<tr><td>Residual Quantization</td><td>For each item i I, its textual description is first passed through a frozen encoder to obtain a continuous embedding z i. We aim to quantize it using L hierarchical tokens with L codebooks in a coarse-to-fine generation manner. At the l -th level, the...</td></tr>
+<tr><td>Autoregressive Generation</td><td>By applying the residual quantization to each item in H u, the input is transformered into a flattened token sequence X. Accordingly, the target next item i T+1 is also encoded as Y: [ X =, Y =[ s T+1 1,s 2 T+1, s L T+1 i T+1 ] ] where s l i denotes the...</td></tr>
+<tr><td>Motivation</td><td>Mechanistically, this issue stems from the codebook construction process. Semantically similar items are mapped to the same token; when such items are popular, their interactions accumulate on that token, further increasing its frequency. After training on...</td></tr>
+<tr><td>Method</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Rebalancing the Codebook</td><td>The hierarchical token assignment in Equation induces a parent–child relation between tokens at consecutive levels, denoted by c k l c j l+1 if there exists at least one item whose l -th and (l+1) -th tokens are c k l and c j l+1, respectively....</td></tr>
+<tr><td>Hierarchical Semantic Alignment</td><td>Splitting the token c k l introduces M new tokens. To adapt the LLM to the rebalanced codebook and mitigate bias, we introduce a tree-structure-aware regularizer L T that promotes representation consistency among tokens sharing the same parent. equation...</td></tr>
+<tr><td>Model Optimization</td><td>To mitigate popularity bias in GeneRec, we jointly optimize the recommendation loss L Rec and the hierarchical regularizer L T: equation aligned L = L Rec + L T aligned equation where is a hyperparameter controlling the strength of regularization....</td></tr>
+<tr><td>Theoretical Analysis</td><td> We provide a theoretical analysis of CURE to indicate that a single gradient update on the model parameters of CURE achieves lower loss than normal gradient descent. Let =,, denote the parameters of components in selected circuits. After applying...</td></tr>
+<tr><td>Experiments</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Experimental Settings</td><td>Datasets Experiments are carried out on two real-world datasets Office and Industrial. Following kong2025minionerec, we first filter out users and items with fewer than five interactions. For each dataset, interactions are split chronologically into...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-crab_codebook_rebalancing_for_bias_mitigation_in_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

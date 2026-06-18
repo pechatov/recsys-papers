@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CapsID: Soft-Routed Variable-Length Semantic IDs for Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.05096">CapsID: Soft-Routed Variable-Length Semantic IDs for Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Wenzhuo Cheng, Menghang Gong, Qixin Guo, Hang Zheng, Zhaobin Yang, Jianguo Lou, Zhengwei Zheng.</p>
+<p><strong>Аффилиации:</strong> аффилиации не раскрыты в arXiv source.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.05096">arXiv 2605.05096</a> · дата metadata: 2026-05-06.</p>
+<p><strong>Категория/теги:</strong> semantic IDs, generative recommendation, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> не найдено явных repository/dataset links в arXiv source.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: предлагает CapsID: variable-length SID tokenizer с soft routing вместо hard nearest-neighbor residual quantization.</li>
+<li>Алгоритм: На каждом уровне item route-ится в несколько semantic capsules; residual обновляется взвешенной реконструкцией, длина кода останавливается по confidence, а SemanticBPE склеивает совместимые соседние SID tokens.</li>
+<li>Evidence: На Amazon Beauty/Sports/Toys и 35M-item industrial catalog CapsID+SemanticBPE дает +9.6% Recall@10 над ReSID и работает примерно на 51% latency COBRA-like sparse-dense system.</li>
+<li>Ограничение: Аффилиации в source не раскрыты; claims по industrial catalog и latency нужно проверять по полному setup.</li>
+<li>Итог: Это сильный tokenizer paper: он атакует boundary items и tail items без добавления dense side channel.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>In this paradigm the main bottleneck is the tokenizer rather than the Transformer: residual vector quantization with a hard nearest-neighbor assignment at every layer collapses multi-faceted item semantics at cluster boundaries and propagates early errors to later SID positions.</td></tr>
+<tr><th>Предложение авторов</th><td>Generative recommendation maps each item to a sequence of Semantic IDs (SIDs) and recasts retrieval as autoregressive token generation.</td></tr>
+<tr><th>Главный evidence claim</th><td>On Amazon Beauty, Sports, Toys, and a 35M-item proprietary industrial catalog, CAPSID+SEMANTICBPE improves Recall at 10 by 9.6% on average over ReSID, the strongest single-representation baseline, and matches or exceeds a COBRA-style sparse-dense system on every public benchmark while running at 51% of its inference latency.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>reconstruction, softmax</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Sports, Toys</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, latency, MAP, accuracy</td></tr>
+<tr><th>Baselines</th><td>TIGER, LETTER, CoST, ReSID, ETEGRec, OneRec, SASRec, BERT4Rec, HSTU, RQ-VAE, LC-Rec</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Method:</span> Let x i d denote the representation of item i, constructed from content, collaborative, or multi-modal encoders depending on the dataset. The goal is to map x i into a variable-length SID s i=(s i,1,,s i,L i ) that is compact, predictive, and collision-resistant. Figure summarizes the pipeline.</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Method:</span> Design desiderata. The tokenizer is designed around three invariants. First, the emitted representation must remain a finite discrete sequence so that all existing constrained decoding machinery applies. Second, uncertainty should be represented before discretization, not only after decoding; otherwise all uncertainty has already been collapsed into a wrong...</li>
+<li><strong>Learning signal.</strong> <span class="anchor">Training objective:</span> We use a two-stage protocol inspired by recommender-native tokenizer studies liang2026resid. Stage 1 (tokenizer pretraining) learns the item projection, capsule transforms W k, and the merge MLP using only the tokenizer-side losses (reconstruction, spread, length, and a frequency-based BPE warm-up); the sequence generator is not trained. Stage 2...</li>
+<li><strong>Inference / deployment path.</strong> <span class="anchor">Training objective:</span> Why two stages rather than full joint training? A fully joint objective lets the generator chase a moving target while the tokenizer changes the target sequence. ReSID and ETEGRec-style analyses suggest that this self-referential training can be unstable. We therefore first learn a recommendation-sufficient code geometry and then adapt the generator to that...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> reconstruction, softmax.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>u_i, k= W_ k r_i, -1+ b_ k.</code></li>
+<li><code>s_i, = _k c_i, k^(T), q_i, = _k c_i, k^(T)\| o_i, ^(T)\|.</code></li>
+<li><code>r_i, = r_i, -1- _k c_i, k^(T) o_i, k.</code></li>
+<li><code>L_i = \: q_i, \; or\; \| r_i, \|_2 \; or\; =L_ \.</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Design space of SID tokenizers for generative recommendation. "Soft assign."$=$probabilistic capsule/component routing instead of argmax; "Iter. refine"$=$multiple agreement rounds at each layer; "Var. length"$=$item-dependent number of SID tokens; "Sub-word"$=$semantic-aware token merging; "Single-rep."$=$emits only discrete IDs without a parallel dense...</li>
+<li>Overview of +. Top: item features pass through a stack of capsule layers with confidence-driven early stopping, merges semantically compatible adjacent tokens, and an autoregressive Transformer generates the next item's SID via trie-constrained beam search. Bottom left: inside one layer, soft routing replaces hard $ $; votes are reconciled over a few...</li>
+<li>CapsID Tokenizer Forward (one item)</li>
+<li>Datasets used in the evaluation. Amazon datasets follow 5-core filtering with leave-one-out splitting. The proprietary industrial dataset uses a 35M-item catalog with multi-modal item features.</li>
+<li>Main results on Beauty/Sports/Toys: Recall@$k$ and NDCG@$k$ for $k\! \!\5,10\$ (mean over three seeds). Best is in bold, second best is underlined. $^ $ marks patch-route methods that consume extra dense or attribute information at inference time.</li>
+<li>Patching vs tokenizer-centric design on Beauty. Inference cost is normalized to TIGER beam search ($B\!=\!50$); $^ $ marks methods that add a dense or attribute path on top of the SID. Numbers are mean over three seeds; std $\!&lt;\!1\</li>
+<li>Ablation on Beauty (mean over three seeds). Relative drops are measured from +.</li>
+<li>Variable-length behaviour of. (a) SID length distribution per dataset: mode $L\!=\!3$, mean $ L\! \![3.41, 3.89]$. (b) Fractions of the three stopping rules that fire per dataset; the hard cap $L_ $ accounts for $ \!10\</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Sports, Toys</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, latency, MAP, accuracy</td></tr>
+<tr><th>Baselines</th><td>TIGER, LETTER, CoST, ReSID, ETEGRec, OneRec, SASRec, BERT4Rec, HSTU, RQ-VAE, LC-Rec</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На Amazon Beauty/Sports/Toys и 35M-item industrial catalog CapsID+SemanticBPE дает +9.6% Recall@10 над ReSID и работает примерно на 51% latency COBRA-like sparse-dense system.</li>
+<li>Theoretical analysis: algorithm [!htbp] CapsID Tokenizer Forward (one item) algorithmic [1] item embedding x i, capsule transforms W k,b k, hyperparameters T,,,L SID sequence s i != !(s i,1,,s i,L i ), confidences q i, r i,0 x i / |x i | 2 normalize = 1,, L compute votes u i, k != !W k r i, -1 +b k for all k Eq. (1) initialize agreement logits a i, k (0) ! !0...</li>
+<li>Theoretical analysis: We give three results that connect the design choices in Sections -- to the quantities reported in </li>
+<li>Experiments: We answer four questions. (Q1) Does soft routing improve recommendation accuracy over hard residual quantization at the same SID budget? (Q2) Does a routed-SID generator close the gap to dense-patch systems without inheriting their inference cost? (Q3) Which design choices (soft residual update, iterative agreement, confidence-driven length, or semantic...</li>
+<li>Main results (Q1): Takeaways. The largest gap in the ranking is between hard-SID tokenizers and: replacing with soft routing gives a 4 -- 7</li>
+<li>Main results (Q1): Statistical significance. We performed paired two-sided t -tests across the three seeds. + is significantly better than every single-representation baseline at p&lt;0.01 on all three datasets, and significantly better than COBRA at p&lt;0.05 on Beauty and Sports and at p&lt;0.10 on Toys. (no SemBPE) is significantly better than ReSID at p&lt;0.01 on Beauty, Sports, and...</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: предлагает CapsID: variable-length SID tokenizer с soft routing вместо hard nearest-neighbor residual quantization.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: На каждом уровне item route-ится в несколько semantic capsules; residual обновляется взвешенной реконструкцией, длина кода останавливается по confidence, а SemanticBPE склеивает совместимые соседние SID tokens.</li>
+<li><strong>Empirical:</strong> Evidence: На Amazon Beauty/Sports/Toys и 35M-item industrial catalog CapsID+SemanticBPE дает +9.6% Recall@10 над ReSID и работает примерно на 51% latency COBRA-like sparse-dense system.</li>
+<li><strong>Practical:</strong> Ограничение: Аффилиации в source не раскрыты; claims по industrial catalog и latency нужно проверять по полному setup.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</li>
+<li>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Amazon, Beauty, Sports, Toys.</li>
+<li>Метрики: Recall, NDCG, latency, MAP, accuracy.</li>
+<li>Baselines и parity settings: TIGER, LETTER, CoST, ReSID, ETEGRec, OneRec, SASRec, BERT4Rec, HSTU, RQ-VAE, LC-Rec.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Это сильный tokenizer paper: он атакует boundary items и tail items без добавления dense side channel.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: предлагает CapsID: variable-length SID tokenizer с soft routing вместо hard nearest-neighbor residual quantization.</li>
+<li>Алгоритм: На каждом уровне item route-ится в несколько semantic capsules; residual обновляется взвешенной реконструкцией, длина кода останавливается по confidence, а SemanticBPE склеивает совместимые соседние SID tokens.</li>
+<li>Evidence: На Amazon Beauty/Sports/Toys и 35M-item industrial catalog CapsID+SemanticBPE дает +9.6% Recall@10 над ReSID и работает примерно на 51% latency COBRA-like sparse-dense system.</li>
+<li>Ограничение: Аффилиации в source не раскрыты; claims по industrial catalog и latency нужно проверять по полному setup.</li>
+<li>Итог: Это сильный tokenizer paper: он атакует boundary items и tail items без добавления dense side channel.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>Generative recommendation (GR) has recently emerged as a unified alternative to retrieval-and-ranking pipelines: an item is converted into a short sequence of Semantic IDs (SIDs), and a sequence model generates the SID of the next item a user may consume...</td></tr>
+<tr><td>Related Work</td><td>Semantic IDs for generative recommendation. TIGER introduced RQ-VAE SIDs for generative retrieval and established the standard recipe of content encoding, residual quantization, and autoregressive SID prediction rajput2024tiger, building on vector...</td></tr>
+<tr><td>Method</td><td>Let x i d denote the representation of item i, constructed from content, collaborative, or multi-modal encoders depending on the dataset. The goal is to map x i into a variable-length SID s i=(s i,1,,s i,L i ) that is compact, predictive, and...</td></tr>
+<tr><td>Soft residual routing</td><td>At SID layer, we maintain K capsules. Capsule k has a pose transform W k and bias b k. Given residual r i, -1 with r i,0 =x i, each capsule produces a vote equation u i, k =W k r i, -1 +b k. equation Routing starts from logits a i, k (0) =0 and iterates...</td></tr>
+<tr><td>Confidence-driven variable length</td><td>Fixed-length SIDs impose the same token budget on easy and ambiguous items. stops when the residual has been sufficiently explained: equation L i =: q i,; or; |r i, | 2; or; =L. equation This design combines three forward stopping rules (a hard cap L,...</td></tr>
+<tr><td>SemanticBPE composition</td><td>Given the SID sequence from, learns whether adjacent tokens should be merged into a reusable subword. For pair (s j,s j+1 ), we compute equation m(s j,s j+1 ) =, freq (s j,s j+1 ) + (1- ), (e s j,e s j+1 ), equation where the second term prevents...</td></tr>
+<tr><td>Training objective</td><td>We use a two-stage protocol inspired by recommender-native tokenizer studies liang2026resid. Stage 1 (tokenizer pretraining) learns the item projection, capsule transforms W k, and the merge MLP using only the tokenizer-side losses (reconstruction, spread,...</td></tr>
+<tr><td>Theoretical analysis</td><td>algorithm [!htbp] CapsID Tokenizer Forward (one item) algorithmic [1] item embedding x i, capsule transforms W k,b k, hyperparameters T,,,L SID sequence s i != !(s i,1,,s i,L i ), confidences q i, r i,0 x i / |x i | 2 normalize = 1,, L...</td></tr>
+<tr><td>Experiments</td><td>We answer four questions. (Q1) Does soft routing improve recommendation accuracy over hard residual quantization at the same SID budget? (Q2) Does a routed-SID generator close the gap to dense-patch systems without inheriting their inference cost? (Q3) Which...</td></tr>
+<tr><td>Setup</td><td>Datasets. We use the public benchmarks standard in generative recommendation: Amazon Beauty, Sports, and Toys mcauley2015amazon, all under leave-one-out evaluation with 5-core filtering. For scale analysis, we further evaluate on a 35M-item proprietary...</td></tr>
+<tr><td>Main results (Q1)</td><td>Takeaways. The largest gap in the ranking is between hard-SID tokenizers and: replacing with soft routing gives a 4 -- 7</td></tr>
+<tr><td>Patching vs tokenizer-centric design: are dense patches still needed? (Q2)</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-capsid_soft_routed_variable_length_semantic_ids_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

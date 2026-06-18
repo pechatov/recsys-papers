@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEZHA: A Zero-sacrifice and Hyperspeed Decoding Architecture for Generative Recommendations</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2511.18793">NEZHA: A Zero-sacrifice and Hyperspeed Decoding Architecture for Generative Recommendations</a></h1>
+<p class="nav"><a href="../../papers.html#paper-nezha_zero_sacrifice_hyperspeed_decoding_generative_recommendations_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Yejing Wang, Shengyu Zhou, Jinyu Lu, Ziwei Liu, Langming Liu, Maolin Wang, Wenlin Zhang, Feng Li, Wenbo Su, Pengjie Wang, Jian Xu, Xiangyu Zhao.</p>
+<p><strong>Аффилиации:</strong> City University of Hong Kong; <span class="industry">Alibaba Group</span>.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2511.18793">arXiv 2511.18793</a> · дата metadata: 2025-11-24.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, speculative decoding, industrial deployment, новое из ссылок.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/Applied-Machine-Learning-Lab/WWW2026">https://github.com/Applied-Machine-Learning-Lab/WWW2026</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: NEZHA ускоряет industrial GR decoding без отдельного draft model и без потери recommendation quality.</li>
+<li>Алгоритм: В primary model добавлен nimble autoregressive draft head для self-drafting, а hallucination/validity проверяется model-free hash-set verifier.</li>
+<li>Evidence: Система развернута на Taobao с октября 2025 и, по авторам, обслуживает сотни миллионов DAU и влияет на billion-level ad revenue.</li>
+<li>Ограничение: Эффект сильно зависит от structured ID space и production verifier; tokenizer quality сам по себе не улучшается.</li>
+<li>Итог: Это production serving paper: speculative decoding для GR должен учитывать valid-ID verification, а не только language-model speed.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>serving/decoding/system efficiency</em>; поэтому основной audit должен смотреть на latency, throughput, memory footprint, cache hit ratio, training cost и отсутствие деградации item-level quality.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>However, their practical application is severely hindered by high inference latency, which makes them infeasible for high-throughput, real-time services and limits their overall business impact.</td></tr>
+<tr><th>Предложение авторов</th><td>Furthermore, to tackle the critical problem of hallucination, a major source of performance degradation, we introduce an efficient, model-free verifier based on a hash set.</td></tr>
+<tr><th>Главный evidence claim</th><td>We demonstrate the effectiveness of NEZHA through extensive experiments on public datasets and have successfully deployed the system on Taobao since October 2025, driving the billion-level advertising revenue and serving hundreds of millions of daily active users.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>serving/decoding/system efficiency</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>cross-entropy</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Yelp, Taobao</td></tr>
+<tr><th>Metrics</th><td>NDCG, Hit, HR, revenue, latency, throughput, MAP, accuracy</td></tr>
+<tr><th>Baselines</th><td>baseline list нужно сверить в experiments; автоматический extractor не нашел устойчивые названия</td></tr>
+<tr><th>Ключевое предположение</th><td>Workload/decoding setup должен иметь достаточную locality или parallelism, а ускорение не должно менять candidate distribution.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Methodology:</span> This section provides a detailed exposition of our proposed method,. We begin with a high-level overview of the framework. Subsequently, we examine its two core components: nimble drafting and efficient verification. The section concludes by detailing the training and inference pipeline.</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Methodology:</span> fig/Frame.pdf An illustration of the framework for L=3,K=3. The diagram differentiates between the training path (green dotted lines), the inference path (red dotted lines), and the shared computations (black solid lines). </li>
+<li><strong>Learning signal.</strong> <span class="anchor">Training and Inference:</span> This section details the pipeline of, summarized in Algorithm, including the training and inference processes. While both processes share the architecture, their objectives differ, leading to distinct approaches for token selection and state transition.</li>
+<li><strong>Inference / deployment path.</strong> <span class="anchor">Training and Inference:</span> During training, the model learns to predict the ground-truth semantic ID using a teacher-forcing approach. For a given training instance with label y=[t y 1,,t y L]: LLM first initializes the representations with a single call(line 2). At each step l, the model uses Equation to compute the probability distribution p l (line 5). For the...</li>
+<li><strong>Проверяемая деталь.</strong> <span class="anchor">Training and Inference:</span> In contrast, the goal of inference is to find the most probable semantic IDs, which we achieve using beam search. The process begins by prefilling the specialized prompt (line 13). Then, we initialize the step index l and the context state s 1, and set up the prediction set Y 0 and the state set S 0 to track the candidate beams and their respective states...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> cross-entropy.</p>
+<p>Явные equations не удалось надежно извлечь автоматически; при ручной проверке смотреть loss/objective в method/training subsections.</p>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>An illustration of the framework for $L=3,K=3$. The diagram differentiates between the training path (green dotted lines), the inference path (red dotted lines), and the shared computations (black solid lines).</li>
+<li>The Pipeline: Training and Inference.</li>
+<li>Serving latency decomposition.</li>
+<li>The statistics of the preprocessed datasets</li>
+<li>Overall performance of. The boldface refers to beating all baselines. " *" indicates the statistically significant improvements (i.e., one-sided t-test with $p&lt;0.05$). For performance metrics, the higher is better. For "LT", the lower is better.</li>
+<li>Ablation study on Yelp with Llama.</li>
+<li>Ablation study on production data. We present the normalized performance for confidentiality.</li>
+<li>Illustration of the method's deployment in Taobao Search. The example shows results for the query "Dress" (top left, in the red box). Advertisements are identified by an orange label in the bottom-right corner of each product. Sensitive information has been obscured for confidentiality.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Yelp, Taobao</td></tr>
+<tr><th>Metrics</th><td>NDCG, Hit, HR, revenue, latency, throughput, MAP, accuracy</td></tr>
+<tr><th>Baselines</th><td>baseline list нужно сверить в experiments; автоматический extractor не нашел устойчивые названия</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: Система развернута на Taobao с октября 2025 и, по авторам, обслуживает сотни миллионов DAU и влияет на billion-level ad revenue.</li>
+<li>Experiment: To demonstrate the generalizability and robustness of, this section presents an evaluation on public benchmark datasets.</li>
+<li>We demonstrate the effectiveness of NEZHA through extensive experiments on public datasets and have successfully deployed the system on Taobao since October 2025, driving the billion-level advertising revenue and serving hundreds of millions of daily active users.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: NEZHA ускоряет industrial GR decoding без отдельного draft model и без потери recommendation quality.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: В primary model добавлен nimble autoregressive draft head для self-drafting, а hallucination/validity проверяется model-free hash-set verifier.</li>
+<li><strong>Empirical:</strong> Evidence: Система развернута на Taobao с октября 2025 и, по авторам, обслуживает сотни миллионов DAU и влияет на billion-level ad revenue.</li>
+<li><strong>Practical:</strong> Ограничение: Эффект сильно зависит от structured ID space и production verifier; tokenizer quality сам по себе не улучшается.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</li>
+<li>Workload/decoding setup должен иметь достаточную locality или parallelism, а ускорение не должно менять candidate distribution.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Amazon, Beauty, Yelp, Taobao.</li>
+<li>Метрики: NDCG, Hit, HR, revenue, latency, throughput, MAP, accuracy.</li>
+<li>Baselines и parity settings: baseline list нужно сверить в experiments; автоматический extractor не нашел устойчивые названия.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Это production serving paper: speculative decoding для GR должен учитывать valid-ID verification, а не только language-model speed.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: NEZHA ускоряет industrial GR decoding без отдельного draft model и без потери recommendation quality.</li>
+<li>Алгоритм: В primary model добавлен nimble autoregressive draft head для self-drafting, а hallucination/validity проверяется model-free hash-set verifier.</li>
+<li>Evidence: Система развернута на Taobao с октября 2025 и, по авторам, обслуживает сотни миллионов DAU и влияет на billion-level ad revenue.</li>
+<li>Ограничение: Эффект сильно зависит от structured ID space и production verifier; tokenizer quality сам по себе не улучшается.</li>
+<li>Итог: Это production serving paper: speculative decoding для GR должен учитывать valid-ID verification, а не только language-model speed.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>The extraordinary capabilities of Large Language Models (LLMs) have catalyzed a wide range of applications in recommender systems that leverage LLMs' abilities zhu2025rankmixer,zhang2025onetrans,zhai2024actions, including world knowledge integration...</td></tr>
+<tr><td>Preliminary</td><td>This section provides the necessary background on the standard deployment of GR and existing acceleration techniques for autoregressive decoding, with a focus on SD.</td></tr>
+<tr><td>Generative Recommendation (GR)</td><td>The typical process for constructing a GR system consists of three steps: item tokenization, LLM training, and LLM serving:</td></tr>
+<tr><td>Speculative Decoding (SD)</td><td>Beyond KV-Caching, SD has emerged as the primary choice for algorithm-level acceleration techniques xia2024unlocking,zhang2025surveyparallel. It has garnered significant attention in academia lin2025efficient,cai2024medusa,li2024eagle and recently seen...</td></tr>
+<tr><td>Methodology</td><td>This section provides a detailed exposition of our proposed method,. We begin with a high-level overview of the framework. Subsequently, we examine its two core components: nimble drafting and efficient verification. The section concludes by detailing the...</td></tr>
+<tr><td>Overview</td><td>First, uses a specialized input prompt. Instead of the default format, we append L special placeholder tokens (e.g., "&lt;SP 1&gt;" for the first ID token), visualized as cyan rectangles, to represent the positions of the ground-truth semantic ID. This unique...</td></tr>
+<tr><td>Nimble Drafting</td><td>Existing SD applications typically rely on an external draft model zagyva2025speed,xi2025efficiency,lin2025efficient, which introduces significant maintenance overhead and deployment complexity. To circumvent these issues, we adopt a self-drafting...</td></tr>
+<tr><td>Efficient Verification</td><td>Conventional SD verification requires a computationally expensive forward pass of the target model M p to evaluate complex grammar and semantics cai2024medusa,leviathan2023fast,li2024eagle. This step can be a primary latency bottleneck in online systems.</td></tr>
+<tr><td>Training and Inference</td><td> This section details the pipeline of, summarized in Algorithm, including the training and inference processes. While both processes share the architecture, their objectives differ, leading to distinct approaches for token...</td></tr>
+<tr><td>Experiment</td><td>To demonstrate the generalizability and robustness of, this section presents an evaluation on public benchmark datasets.</td></tr>
+<tr><td>Settings</td><td>Datasets. We evaluate on three public datasets widely used as benchmarks for GR: Yelp, Amazon Beauty, and Amazon Games wang2024learnable,zheng2024adapting. These datasets are particularly suitable as they contain rich contextual information, such as textual...</td></tr>
+<tr><td>Overall Performance</td><td>We test with two LLM backbones and compare it with the original beam search and efficient decoding baseline to evaluate its effectiveness. The results are listed in Table, which consistently presents the satisfactory performance with outstanding...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-nezha_zero_sacrifice_hyperspeed_decoding_generative_recommendations_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

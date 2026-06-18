@@ -36,12 +36,24 @@
     code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--soft); padding: .1rem .25rem; border-radius: 4px; }
     .note { color: var(--muted); }
     @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
-  </style>
+  
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
 </head>
 <body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
 <main>
 <h1><a href="https://arxiv.org/abs/2510.07784">PLUM: Adapting Pre-trained Language Models for Industrial-scale Generative Recommendations</a></h1>
-<p class="nav"><a href="../../papers.html">← К общему списку статей</a></p>
+<p class="nav"><a href="../../papers.html#paper-plum_adapting_pre_trained_language_models_for_industrial_summary">← К общему списку статей</a></p>
 <section class="meta">
   <p><strong>Авторы:</strong> Ruining He, Lukasz Heldt, Lichan Hong, Raghunandan Keshavan, Shifan Mao, Nikhil Mehta, Zhengyang Su, Alicia Tsai, Yueqi Wang, Shao-Chuan Wang, Xinyang Yi, Lexi Baugher, Baykal Cakici, Ed Chi, Cristos Goodrow, Ningren Han, He Ma, Romer Rosales, Abby Van Soest, Devansh Tandon, Su-Lin Wu и др.</p>
   <p><strong>Аффилиации:</strong> <span class="industry">Google DeepMind</span>; <span class="industry">YouTube</span>.</p>
@@ -196,6 +208,24 @@ return map_sids_to_videos(candidates)</code></pre>
   </tbody>
 </table>
 <p class="note">Примечание: если в источнике не раскрыты приватные production details, summary явно помечает такие ограничения и не выдумывает закрытые числа.</p>
+
+
+<p class="nav"><a href="../../papers.html#paper-plum_adapting_pre_trained_language_models_for_industrial_summary">← К общему списку статей</a></p>
 </main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
 </body>
 </html>

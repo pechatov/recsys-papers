@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep research: selected Semantic ID directions</title>
+<style>:root {
+  color-scheme: light;
+  --fg: #1f2933;
+  --muted: #65758b;
+  --border: #d8dee9;
+  --bg: #ffffff;
+  --soft: #f6f8fb;
+  --link: #0b66c3;
+  --accent: #0f766e;
+  --accent-bg: #e6fffb;
+  --accent-border: #99f6e4;
+  --warn: #b45309;
+  --warn-bg: #fff7ed;
+  --warn-border: #fed7aa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 1120px; margin: 0 auto; padding: 36px 24px 72px; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+a:hover { text-decoration-thickness: .14em; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .6rem; }
+h2 { font-size: 1.45rem; border-bottom: 1px solid var(--border); padding-bottom: .28rem; }
+h3 { font-size: 1.12rem; }
+h4 { font-size: 1rem; color: #334155; }
+p { margin: .72rem 0; }
+ul, ol { padding-left: 1.45rem; }
+li { margin: .28rem 0; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
+pre code { padding: 0; background: transparent; color: inherit; }
+blockquote { margin: 1rem 0; padding: .75rem 1rem; color: #334155; background: var(--soft); border-left: 4px solid var(--border); }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.4rem; font-size: .94rem; }
+th, td { border: 1px solid var(--border); padding: .48rem .62rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+tr:nth-child(even) td { background: #fbfcfe; }
+.topnav { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1.25rem; padding: .55rem; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,.96); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(8px); }
+.topnav a { display: inline-flex; align-items: center; min-height: 2rem; padding: .25rem .68rem; border: 1px solid transparent; border-radius: 6px; color: #334155; text-decoration: none; font-weight: 650; }
+.topnav a:hover { border-color: var(--border); background: var(--soft); }
+.meta { color: var(--muted); margin-top: -.35rem; }
+.toc { margin: 1.25rem 0 1.5rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
+.toc strong { display: block; margin-bottom: .35rem; }
+.toc ul { margin: .35rem 0 0; columns: 2; }
+.toc li { break-inside: avoid; margin: .18rem 0; }
+.hero-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; margin: 1.25rem 0 1.75rem; }
+.card { border: 1px solid var(--border); border-radius: 8px; padding: 1rem; background: #fff; }
+.card h2, .card h3 { margin-top: 0; border: 0; padding: 0; }
+.card p { color: #526173; }
+.card .action { display: inline-flex; margin-top: .35rem; font-weight: 700; }
+.badge { display: inline-block; padding: .1rem .38rem; border: 1px solid var(--accent-border); background: var(--accent-bg); color: var(--accent); border-radius: 4px; font-weight: 700; font-size: .86rem; }
+.badge.warn { border-color: var(--warn-border); background: var(--warn-bg); color: var(--warn); }
+.links-table td:first-child { width: 32%; font-weight: 650; }
+.scroll-top { position: fixed; inset: auto 18px 18px auto; z-index: 10; border: 1px solid var(--border); border-radius: 6px; padding: .45rem .65rem; background: rgba(255,255,255,.95); color: var(--muted); text-decoration: none; font-weight: 700; box-shadow: 0 6px 18px rgba(15,23,42,.08); }
+@media (max-width: 760px) {
+  main { padding: 24px 16px 56px; }
+  body { font-size: 15px; }
+  h1 { font-size: 1.65rem; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .toc ul { columns: 1; }
+  .topnav { position: static; }
+}</style>
+</head>
+<body>
+<main id="top">
+<nav class="topnav" aria-label="Основная навигация">
+  <a href="index.html">Главная</a>
+  <a href="papers.html">Каталог статей</a>
+  <a href="papers_wiki.html">Wiki-таблица</a>
+  <a href="semantic_ids_research_proposals.html">20 proposals</a>
+  <a href="semantic_ids_deep_research_selected_directions.html">Deep research</a>
+</nav>
+<h1>Deep research: selected Semantic ID directions</h1>
+<p class="meta">Пять выбранных направлений с related work, экспериментальными планами и critique-блоками.</p>
+<section class="toc"><strong>Содержание</strong><ul><li><a href="#общая-позиция">Общая позиция</a></li><li><a href="#1-collision-aware-evaluation-benchmark-for-sid-recommenders">1. Collision-aware evaluation benchmark for SID recommenders</a></li><li><a href="#2-stability-aware-continual-tokenization-for-live-catalogs">2. Stability-aware continual tokenization for live catalogs</a></li><li><a href="#3-discriminative-to-generative-tokenizer-distillation">3. Discriminative-to-generative tokenizer distillation</a></li><li><a href="#4-collaborative-signal-aware-sid-construction">4. Collaborative-signal-aware SID construction</a></li><li><a href="#5-dynamic-level-wise-codebook-sizing-and-merge-like-adaptive-indexing">5. Dynamic level-wise codebook sizing and MERGE-like adaptive indexing</a></li><li><a href="#cross-direction-experiment-roadmap">Cross-direction experiment roadmap</a></li><li><a href="#strongest-near-term-bets">Strongest near-term bets</a></li><li><a href="#independent-cs-idea-critic-outputs">Independent cs-idea-critic outputs</a></li><li><a href="#source-list">Source list</a></li></ul></section>
+<p>Обновлено: 2026-05-26.</p>
+<p>Документ развивает 5 направлений:</p>
+<ol>
+<li>Collision-aware evaluation benchmark for SID recommenders.</li>
+<li>Stability-aware continual tokenization for live catalogs.</li>
+<li>Discriminative-to-generative tokenizer distillation.</li>
+<li>Collaborative-signal-aware SID construction.</li>
+<li>Dynamic level-wise codebook sizing and MERGE-like adaptive indexing.</li>
+</ol>
+<p>Основа: 93 статьи из раздела <code>Semantic IDs, tokenization и indexing</code> в <code>summaries/papers.html</code>, локальные expanded summaries и дополнительная проверка arXiv/ACM источников.</p>
+<h2 id="общая-позиция">Общая позиция</h2>
+<p>В Semantic ID literature быстро появилась типичная проблема зрелого домена: почти каждая новая работа меняет не один компонент, а сразу tokenizer objective, item features, collision handling, generator, decoding и metrics. Поэтому сильная работа на 3-6 месяцев должна быть не &quot;еще один SID tokenizer&quot;, а хорошо изолированная постановка с проверяемыми diagnostics.</p>
+<p>Для всех пяти направлений стоит держать единый экспериментальный каркас:</p>
+<ul>
+<li>datasets: Amazon Reviews 2023/2018 subsets, Yelp, MIND для news freshness, дополнительно MovieLens/KuaiRec если нужен ranking/exposure setup;</li>
+<li>splits: chronological leave-one-out для static experiments и rolling snapshots для lifecycle experiments;</li>
+<li>backbones: TIGER-like small Transformer, LC-Rec/Qwen-LoRA style для LLM-GR только как второй этап, плюс SASRec/DeepFM/DIN/DCNv2-like ranker для ranking-driven experiments;</li>
+<li>tokenizers: random/hash IDs, RQ-VAE, LETTER-style collaborative regularization, CoST/SimCIT contrastive tokenizer, ReSID-like recsys-native tokenizer, dynamic/MERGE-like tokenizer variants;</li>
+<li>invariant logging: item-to-SID map, SID-to-item inverse map, collision groups, per-level utilization, per-level Gini, changed-prefix rate, valid generation rate, decoding budget, item-level Recall/NDCG.</li>
+</ul>
+<h2 id="1-collision-aware-evaluation-benchmark-for-sid-recommenders">1. Collision-aware evaluation benchmark for SID recommenders</h2>
+<h3 id="core-question">Core question</h3>
+<p>Насколько существующие SID-tokenizer comparisons завышают качество из-за SID-level evaluation, и как построить item-level/collision-aware benchmark, который не ломает полезное semantic sharing?</p>
+<h3 id="related-work-matrix">Related work matrix</h3>
+<table>
+<thead><tr><th>Paper</th><th>Что делает</th><th>Что уже закрывает</th><th>Что остается открытым</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2605.25330">How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?</a></td><td>Вводит collision-aware item-level metrics и zero-collision reassignment последнего SID level.</td><td>Показывает, что SID-level Hit/NDCG может сильно завышать item-level качество; collision groups нельзя считать exact hit.</td><td>Не решает, как оценивать benign collisions, substitutes и business-level group relevance.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2509.20904">FORGE</a></td><td>Industrial benchmark для SID formation, utilization/collision diagnostics, proxy SID metrics.</td><td>Показывает, что SID quality можно диагностировать до полного GR training; важны utilization, Gini, collision control.</td><td>Полная воспроизводимость ограничена индустриальными данными; proxy metrics не покрывают strict item-level correction.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2603.00632">QuaSID</a></td><td>Qualification-aware collision learning: разные collision pairs получают разные penalties.</td><td>Закрывает идею, что не все collisions вредны одинаково; предлагает HaMR/CVPM.</td><td>Это training method, не evaluation standard; public taxonomy benign/harmful collisions пока не устоялась.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.23522">AdaSID</a></td><td>Adaptive collision regulation: semantic relaxation, load-aware pressure, training-progress rebalancing.</td><td>Показывает, что collision handling должен быть semantic/load/training-aware.</td><td>Сложно отделить эффект collision handling от multimodal features и industrial setup.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.05113">CRAB</a></td><td>Rebalances over-popular codebook tokens to mitigate popularity bias.</td><td>Связывает token imbalance и popularity bias на уровне generated IDs.</td><td>Не является общей collision-aware evaluation методикой; post-hoc split меняет mapping.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2507.22224">GRID handbook</a></td><td>Modular benchmarking framework for GR with SIDs.</td><td>Дает компонентную рамку для сравнения SID pipelines.</td><td>Нужно расширить item-level collision metrics и churn/lifecycle metrics.</td></tr>
+</tbody></table>
+<h3 id="what-seems-already-answered">What seems already answered</h3>
+<ul>
+<li>SID-level exact match не эквивалентен item-level recommendation, если один SID maps to multiple items.</li>
+<li>Collision rate сам по себе недостаточен: важны group size, group purity, head/tail composition и whether collided items are collaboratively distinct.</li>
+<li>Полное zero-collision назначение возможно через last-level reassignment, но это меняет nature semantic sharing.</li>
+<li>Utilization/Gini/collision diagnostics надо логировать до обучения generator, иначе плохой tokenizer маскируется downstream model capacity.</li>
+</ul>
+<h3 id="still-open-research-questions">Still-open research questions</h3>
+<ul>
+<li>Как оценивать collisions, если items являются почти дубликатами, variants, substitutes или бизнес-эквивалентными товарами?</li>
+<li>Может ли tokenizer с большим числом &quot;benign collisions&quot; быть лучше strict collision-free tokenizer&#x27;а по business utility, diversity или tail sharing?</li>
+<li>Какие metrics предсказывают harm: group size, category purity, behavior divergence, popularity skew, title/image similarity или tree distance?</li>
+<li>Как collision-aware evaluation меняет ranking existing methods: RQ-VAE, LETTER, CoST, QuaSID, AdaSID, ReSID?</li>
+<li>Нужно ли считать probability mass внутри collision group равномерной, по popularity prior, по item ranker score или по generator&#x27;s hidden state?</li>
+</ul>
+<h3 id="proposed-contribution">Proposed contribution</h3>
+<p>Сделать open evaluation suite: <code>SIDBench-Collision</code>, который считает conventional SID-level metrics, corrected item-level metrics и graded collision-aware metrics. Главное отличие от &quot;How Reliable...&quot; -- не только strict correction, но и decomposition collision harm по semantic/behavioral/business группам.</p>
+<h3 id="experiment-plan">Experiment plan</h3>
+<p><strong>E0. Reproducible base.</strong></p>
+<ul>
+<li>Datasets: Amazon Beauty/Sports/Toys/Scientific, Yelp, MIND-small.</li>
+<li>Tokenizers: random balanced tree, RQ-VAE, LETTER-style, CoST-style, ReSID-like if feasible, zero-collision reassignment.</li>
+<li>Generator: one fixed TIGER-like Transformer; same beam width, same max length, same constrained decoding.</li>
+</ul>
+<p><strong>E1. Metric inflation audit.</strong></p>
+<ul>
+<li>Measure SID Hit/NDCG vs item Hit/NDCG.</li>
+<li>Compute inflation ratio by dataset, tokenizer, popularity bucket and collision group size.</li>
+<li>Report tokenizer rank inversions: when tokenizer A wins SID-level but loses item-level.</li>
+</ul>
+<p><strong>E2. Collision taxonomy.</strong></p>
+<ul>
+<li>Classify collision pairs/groups by category match, text/image similarity, co-click/co-purchase overlap, substitute/complement proxy, popularity skew.</li>
+<li>Compute harmful collision rate rather than raw collision rate.</li>
+<li>Test whether harmful collision rate correlates with downstream item-level NDCG better than raw collision rate.</li>
+</ul>
+<p><strong>E3. Collision resolution policies.</strong></p>
+<ul>
+<li>Native SID.</li>
+<li>Last-level zero-collision reassignment.</li>
+<li>Group-aware disambiguation with a lightweight ranker inside SID group.</li>
+<li>Popularity-prior disambiguation.</li>
+<li>Behavior-similarity-prior disambiguation.</li>
+</ul>
+<p><strong>E4. Stress tests.</strong></p>
+<ul>
+<li>Artificially inject collisions: random collisions, same-category collisions, high-popularity collisions, tail-sharing collisions.</li>
+<li>Measure quality degradation and metric inflation under controlled collision types.</li>
+</ul>
+<h3 id="metrics">Metrics</h3>
+<ul>
+<li>Recommendation: item-level Recall/NDCG/HR/MRR, SID-level Recall/NDCG, delta/inflation.</li>
+<li>Collision: collision rate, avg/max group size, group entropy, harmful collision rate, category purity, behavior divergence.</li>
+<li>Fairness/long-tail: tail Recall, coverage, popularity exposure.</li>
+<li>Practical: inverse map size, decode-time disambiguation cost, invalid SID rate.</li>
+</ul>
+<h3 id="3-6-month-feasibility">3-6 month feasibility</h3>
+<p>This is the most realistic short paper. It can be run mostly with public data, small models and strong diagnostics. The highest risk is not implementation, but defining collision taxonomy in a way reviewers accept as not arbitrary. Mitigation: report both strict item-level metrics and multiple graded taxonomies.</p>
+<h2 id="2-stability-aware-continual-tokenization-for-live-catalogs">2. Stability-aware continual tokenization for live catalogs</h2>
+<h3 id="core-question-2">Core question</h3>
+<p>Как обновлять collaborative/semantic IDs в evolving catalog without breaking the generator&#x27;s learned token semantics?</p>
+<h3 id="related-work-matrix-2">Related work matrix</h3>
+<table>
+<thead><tr><th>Paper</th><th>Что делает</th><th>Что уже закрывает</th><th>Что остается открытым</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2603.29705">DACT</a></td><td>Drift-Aware Continual Tokenization with CDIM and relaxed-to-strict hierarchical reassignment.</td><td>Показывает, что tokenizer must balance plasticity/stability; distinguishes drifting vs stationary items.</td><td>Не дает общего benchmark для разных drift regimes и cost/rollback constraints.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.13273">Mitigating Collaborative Semantic ID Staleness</a></td><td>Rebuilds fresh collaborative SIDs, aligns new vocabulary to old via Greedy/Hungarian matching, warm-starts retriever.</td><td>Показывает, что naive fresh SIDs могут быть хуже stale SIDs; token-space alignment matters.</td><td>Matching assumes overlap items provide enough signal; new-item handling and partial drift are limited.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2601.20199">MERGE</a></td><td>Streaming-native item indexing: thresholded assignment, new clusters, occupancy monitoring, fine-to-coarse hierarchy.</td><td>Shows fixed VQ forced assignment is a bad abstraction for streaming skewed item distributions.</td><td>Not yet a generative SID/token sequence method; use as index path rather than GR vocabulary.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2509.20904">FORGE</a></td><td>Industrial SID lifecycle with online convergence analysis and continued pretraining.</td><td>Shows deployment needs SID refresh and online adaptation, not only static offline metrics.</td><td>Public replication remains limited.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2504.02137">Meta semantic ID stability case</a></td><td>Uses semantic IDs as stable sparse representation for ranking.</td><td>Positions SID stability as ranking infrastructure, not only generative retrieval.</td><td>Details are production-specific; not a public continual protocol.</td></tr>
+</tbody></table>
+<h3 id="what-seems-already-answered-2">What seems already answered</h3>
+<ul>
+<li>Collaborative SIDs can outperform content-only SIDs but become stale as co-occurrence/popularity changes.</li>
+<li>Full retraining is expensive, but naive tokenizer fine-tuning can change too many codes and destroy GRM token-embedding alignment.</li>
+<li>Token remapping/alignment can preserve compatibility with old checkpoints.</li>
+<li>Later SID levels are safer to update than early coarse prefixes if the serving system relies on prefix/trie semantics.</li>
+</ul>
+<h3 id="still-open-research-questions-2">Still-open research questions</h3>
+<ul>
+<li>How much code movement is useful drift adaptation vs harmful churn?</li>
+<li>Should stable content prefix and adaptive collaborative suffix be separated by design?</li>
+<li>Can local reindexing update only affected subtrees/codebook regions without global reassignment?</li>
+<li>What is the rollback story when a tokenizer update worsens a slice?</li>
+<li>How should continual tokenization handle new items with no collaborative history?</li>
+</ul>
+<h3 id="proposed-contribution-2">Proposed contribution</h3>
+<p><code>SID-Lifecycle</code> benchmark and method: a stability-aware tokenizer update protocol that explicitly optimizes quality, churn and warm-start compatibility. Methodically, combine drift detection, prefix-preserving reassignment and local codebook updates.</p>
+<h3 id="experiment-plan-2">Experiment plan</h3>
+<p><strong>E0. Temporal data construction.</strong></p>
+<ul>
+<li>Use chronological snapshots: <code>T0, T1, T2, ...</code>.</li>
+<li>Datasets: Amazon Reviews, Yelp, MIND; if available, KuaiRec or VK-like public sequential logs.</li>
+<li>At each snapshot: old items, new items, disappeared items, old interactions, new interactions.</li>
+</ul>
+<p><strong>E1. Baseline lifecycle policies.</strong></p>
+<ul>
+<li>Frozen old tokenizer + GRM fine-tune.</li>
+<li>Full retrain tokenizer + full retrain GRM.</li>
+<li>Fresh tokenizer + old GRM warm-start without alignment.</li>
+<li>Fresh tokenizer + Greedy/Hungarian token alignment.</li>
+<li>DACT-like drift-aware update.</li>
+<li>MERGE-inspired local cluster split/merge update.</li>
+</ul>
+<p><strong>E2. Drift detector variants.</strong></p>
+<ul>
+<li>Popularity delta.</li>
+<li>Item embedding movement.</li>
+<li>Co-occurrence neighbor Jaccard distance.</li>
+<li>Sequence-transition distribution shift.</li>
+<li>Learned CDIM-like classifier.</li>
+</ul>
+<p><strong>E3. Stability constraints.</strong></p>
+<ul>
+<li>No stability.</li>
+<li>Full code edit-distance penalty.</li>
+<li>Prefix preservation penalty.</li>
+<li>Suffix-only update.</li>
+<li>Local subtree update only.</li>
+</ul>
+<p><strong>E4. New-item insertion.</strong></p>
+<ul>
+<li>Content-only insertion.</li>
+<li>Nearest collaborative proxy insertion.</li>
+<li>MERGE-like threshold: insert into existing cluster only if confidence passes threshold; otherwise create/hold new cluster.</li>
+<li>Delayed collaborative update after enough interactions.</li>
+</ul>
+<h3 id="metrics-2">Metrics</h3>
+<ul>
+<li>Quality: item Recall/NDCG/HR, cold/new item Recall, tail Recall.</li>
+<li>Stability: changed-item rate, changed-prefix rate, average SID edit distance, per-level churn.</li>
+<li>Compatibility: warm-start loss spike, GRM token-embedding alignment degradation, valid generation rate.</li>
+<li>Cost: tokenizer update time, GRM fine-tune time, number of affected trie nodes, rollback size.</li>
+<li>Drift diagnostics: detected vs actual high-drift items, false positives/false negatives.</li>
+</ul>
+<h3 id="3-6-month-feasibility-2">3-6 month feasibility</h3>
+<p>Good full-paper candidate if scoped carefully. The first deliverable can be a benchmark/report; the method can be a simple prefix-stability regularizer plus local reassignment. Main risk: public data may not show strong drift. Mitigation: use both natural rolling windows and controlled synthetic drift injection.</p>
+<h2 id="3-discriminative-to-generative-tokenizer-distillation">3. Discriminative-to-generative tokenizer distillation</h2>
+<h3 id="core-question-3">Core question</h3>
+<p>Can a strong discriminative ranker teach a SID tokenizer the decision boundaries needed for generative retrieval, instead of relying only on reconstruction or content/collaborative similarity?</p>
+<h3 id="related-work-matrix-3">Related work matrix</h3>
+<table>
+<thead><tr><th>Paper</th><th>Что делает</th><th>Что уже закрывает</th><th>Что остается открытым</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2605.14853">Discrimination Is Generation</a></td><td>Embeds tokenizer inside discriminative ranker and uses ranking objective to learn SID boundaries; uses u2i to u2t distillation.</td><td>Makes the strongest conceptual bridge: ranking argmax and token-space retrieval argmax are same problem at different granularity.</td><td>Relies on strong u2i/exposure features; public replication may be hard.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.12234">UniRec</a></td><td>Adds chain-of-attribute tokens and ranking/RFT/DPO style business alignment.</td><td>Shows attributes and business objectives can be generated as part of path.</td><td>Industrial-heavy; leakage and attribute quality need control.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.25787">RecoChain</a></td><td>Chains generative retrieval and ranking in one sequence: generate SID, then score candidate-aware segment.</td><td>Shows ranking head can be integrated after SID generation.</td><td>Does not fix candidate starvation; if retrieval misses item, reranker cannot recover it.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.10471">SID-Coord</a></td><td>Uses semantic IDs as features in ID-based ranking with multi-resolution fusion and HID/SID gating.</td><td>Shows SIDs help mature rankers, especially long-tail/cold-ish items.</td><td>Tokenizer remains external; ranker learns to consume SIDs, not construct them.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2511.18805">STORE ranking</a></td><td>Applies semantic tokenization to high-cardinality ranking features to scale ranking models.</td><td>Demonstrates SID-like decomposition is useful beyond GR output space.</td><td>Ranking AUC gain does not imply generated token paths are good identifiers.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2306.08121">Better Generalization with Semantic IDs</a></td><td>Uses semantic IDs to replace random hashed video IDs in ranking.</td><td>Early evidence that SIDs improve generalization in ranking.</td><td>Closed production data; no generative tokenizer objective.</td></tr>
+</tbody></table>
+<h3 id="what-seems-already-answered-3">What seems already answered</h3>
+<ul>
+<li>SID is not only a retrieval target; it can be a ranker feature and a compression layer for sparse IDs.</li>
+<li>Ranking signal can improve identifier usefulness because it sees the final decision boundary.</li>
+<li>A single pipeline can combine retrieval generation and candidate-aware ranking, but retrieval recall remains a hard ceiling.</li>
+<li>User-item cross features are powerful but hard to preserve at token-level inference.</li>
+</ul>
+<h3 id="still-open-research-questions-3">Still-open research questions</h3>
+<ul>
+<li>How to distill ranking decision boundaries into item-only SIDs without leaking target/user-specific labels?</li>
+<li>How much of a ranker&#x27;s gain comes from u2i features that cannot exist in item tokenizer inference?</li>
+<li>Can we learn SIDs that help both retrieval and ranking, or do ranker-optimal tokens overfit exposure/popularity?</li>
+<li>What is the minimal public setup to evaluate this without proprietary exposure logs?</li>
+<li>Can a teacher ranker produce pairwise/listwise constraints for tokenizer assignment more cleanly than end-to-end ranker-tokenizer training?</li>
+</ul>
+<h3 id="proposed-contribution-3">Proposed contribution</h3>
+<p><code>Rank2SID</code>: a two-stage distillation framework where a trained ranker generates item-pair/list constraints, and the SID tokenizer learns code assignments preserving ranker-induced neighborhoods and separation. This is simpler and more reproducible than fully embedding the tokenizer inside a production ranker.</p>
+<h3 id="experiment-plan-3">Experiment plan</h3>
+<p><strong>E0. Build teacher rankers.</strong></p>
+<ul>
+<li>Sequential teacher: SASRec/BERT4Rec scoring next item.</li>
+<li>Feature/ranking teacher: DeepFM/DCNv2/DIN-like model on synthetic exposure or sampled negatives.</li>
+<li>Optional LTR teacher: listwise loss using chronological positives plus hard negatives.</li>
+</ul>
+<p><strong>E1. Tokenizer objectives.</strong></p>
+<ul>
+<li>RQ-VAE reconstruction.</li>
+<li>CoST/SimCIT contrastive.</li>
+<li>LETTER collaborative regularization.</li>
+<li>Rank2SID pairwise: items with similar teacher response under user contexts share prefixes; items separated by teacher are pushed apart.</li>
+<li>Rank2SID listwise: preserve top-k teacher neighborhood per user/history.</li>
+<li>DIG-style end-to-end as upper-bound if feasible.</li>
+</ul>
+<p><strong>E2. Distillation signal variants.</strong></p>
+<ul>
+<li>Item-item teacher similarity averaged over users.</li>
+<li>Context-conditioned teacher similarity clustered into intent buckets.</li>
+<li>Pairwise margin: teacher score gap becomes code-distance target.</li>
+<li>Prefix-level target: coarse prefix preserves broad teacher clusters, suffix preserves fine ranking distinctions.</li>
+</ul>
+<p><strong>E3. Evaluation.</strong></p>
+<ul>
+<li>Train the same GRM on all tokenizers.</li>
+<li>Evaluate retrieval Recall/NDCG and reranked NDCG with a fixed downstream ranker.</li>
+<li>Measure &quot;ranker-token gap&quot;: how well token path scores approximate teacher item-space scores.</li>
+</ul>
+<h3 id="metrics-3">Metrics</h3>
+<ul>
+<li>Retrieval: item Recall/NDCG/HR, candidate coverage before ranking.</li>
+<li>Ranking: AUC/NDCG after rerank, calibration, ranker-token score correlation.</li>
+<li>Tokenizer: collision harm, per-level utilization, prefix mutual information with teacher clusters, tail/head split.</li>
+<li>Robustness: sparse users/items, cold-start metadata-only items, popularity bias.</li>
+</ul>
+<h3 id="3-6-month-feasibility-3">3-6 month feasibility</h3>
+<p>A strong 3-month version avoids fully reproducing DIG and instead tests ranker-logit distillation into SID. A 6-month version can add a differentiable tokenization head in the ranker. Main risk: public datasets lack real exposure logs. Mitigation: use sequential teacher + hard negative sampling and report this limitation clearly.</p>
+<h2 id="4-collaborative-signal-aware-sid-construction">4. Collaborative-signal-aware SID construction</h2>
+<h3 id="core-question-4">Core question</h3>
+<p>Where and how should collaborative signal enter SID construction: item embeddings, tokenizer loss, code assignment, dual user-item tokenization or post-hoc alignment?</p>
+<h3 id="related-work-matrix-4">Related work matrix</h3>
+<table>
+<thead><tr><th>Paper</th><th>Что делает</th><th>Что уже закрывает</th><th>Что остается открытым</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2405.07314">LETTER</a></td><td>Combines hierarchical semantics, collaborative regularization and assignment diversity.</td><td>Establishes collaborative regularization as a core requirement for item tokenization.</td><td>Depends on pretrained CF model; if CF is noisy, alignment can hurt.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2406.10450">TokenRec</a></td><td>Quantizes masked user/item CF representations into LLM-compatible tokens.</td><td>Shows high-order collaborative knowledge can be discretized for users and items.</td><td>Drift, grounding and unseen item behavior remain hard.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2602.02338">ReSID</a></td><td>Recsys-native representation and quantization focused on sequential predictability, not LLM semantics.</td><td>Strong critique of semantic-centric pipeline; codes should reduce autoregressive uncertainty.</td><td>Needs careful replication; not all domains have rich structured fields.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2508.10584">DAS</a></td><td>One-stage dual alignment of semantic IDs and collaborative signals with multi-view contrastive alignment.</td><td>Shows u2i, i2i/u2u and co-occurrence alignment are industrially valuable.</td><td>Industrial ads setup; public reproduction of user/ad dual quantization is hard.</td></tr>
+<tr><td><a href="https://ojs.aaai.org/index.php/AAAI/article/view/38685">MusicRec</a></td><td>Multimodal semantic-enhanced identifier with collaborative signals for music GR.</td><td>Combines multimodal shared/specific fusion with collaborative guidance.</td><td>Domain-specific; music metadata and consumption patterns may not generalize.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2603.00632">QuaSID</a> / <a href="https://arxiv.org/abs/2604.23522">AdaSID</a></td><td>Use collaborative pairs and collision-aware losses.</td><td>Collaborative signal also helps decide which overlaps are valid or harmful.</td><td>Still mostly pairwise; intent/session-specific relations are underexplored.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2509.20904">FORGE</a></td><td>Adds i2i relations and multimodal/item-side features in industrial SID construction.</td><td>Practical evidence that multimodal + collaborative SID is stronger than pure content.</td><td>Full industrial pipeline is hard to reproduce.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2308.16761">CAGE</a></td><td>Learns differentiable category trees from ID-only recommendation signal.</td><td>Shows discrete hierarchy can emerge even without text/content.</td><td>Not a full generative retrieval method; stability/interpretablity limited.</td></tr>
+</tbody></table>
+<h3 id="what-seems-already-answered-4">What seems already answered</h3>
+<ul>
+<li>Pure text/content SIDs miss important recommendation semantics: complements, substitutes, co-consumption, popularity and intent.</li>
+<li>CF embeddings or i2i co-occurrence can improve SID usefulness, especially for warm items and ranking/retrieval alignment.</li>
+<li>Collaborative signal can enter as representation, contrastive regularization, user-item dual tokenization or collision qualification.</li>
+<li>Collaborative SIDs are more drift-prone than content SIDs.</li>
+</ul>
+<h3 id="still-open-research-questions-4">Still-open research questions</h3>
+<ul>
+<li>How to avoid confusing substitutes and complements when using co-occurrence positives?</li>
+<li>How to inject collaborative signal without destroying cold-start generalization from content?</li>
+<li>Which collaborative graph is best for SID: item-item co-click, co-purchase, sequential transition, user-user, user-item matrix factorization or ranker-derived similarity?</li>
+<li>Should collaborative signal affect only suffix levels while content/taxonomy controls prefix levels?</li>
+<li>How to debias popularity before quantization so collaborative SIDs do not simply encode exposure frequency?</li>
+</ul>
+<h3 id="proposed-contribution-4">Proposed contribution</h3>
+<p><code>CollabSID-Ablation</code>: a systematic study of collaborative signal placement. The contribution is not one new loss, but a controlled map of where collaborative information helps, hurts or drifts.</p>
+<h3 id="experiment-plan-4">Experiment plan</h3>
+<p><strong>E0. Signals to construct.</strong></p>
+<ul>
+<li>Content embeddings from titles/descriptions/categories/images if available.</li>
+<li>Item-item co-occurrence graph.</li>
+<li>Sequential transition graph.</li>
+<li>CF embeddings from SASRec/LightGCN/matrix factorization.</li>
+<li>Popularity-debiased co-occurrence graph.</li>
+<li>Optional user clusters/intent clusters.</li>
+</ul>
+<p><strong>E1. Injection points.</strong></p>
+<ul>
+<li>Early fusion: concatenate/project content + CF embedding before quantization.</li>
+<li>Loss-level alignment: contrastive positives from behavior graph, negatives debiased for false negatives.</li>
+<li>Code assignment regularizer: behavior-neighbor prefix sharing, behavior-distant collision penalty.</li>
+<li>Prefix/suffix split: content/taxonomy prefix, collaborative suffix.</li>
+<li>Dual tokenization: user tokens + item tokens, TokenRec/DAS-like.</li>
+</ul>
+<p><strong>E2. Positive/negative design.</strong></p>
+<ul>
+<li>Positives: same category, co-click, co-purchase, next-in-session, same user cluster, teacher-ranker top neighbors.</li>
+<li>Negatives: random, same-category hard negatives, high co-view but low conversion, temporal false positives.</li>
+<li>Special ablation: substitutes vs complements if metadata allows.</li>
+</ul>
+<p><strong>E3. Compare tokenizers.</strong></p>
+<ul>
+<li>Content-only RQ-VAE.</li>
+<li>CF-only tokenizer.</li>
+<li>Early-fusion tokenizer.</li>
+<li>LETTER-style collaborative regularizer.</li>
+<li>ReSID-like recsys-native tokenizer.</li>
+<li>Prefix content + suffix collaborative tokenizer.</li>
+</ul>
+<p><strong>E4. Stability/cold-start tests.</strong></p>
+<ul>
+<li>Warm items.</li>
+<li>New items with content only.</li>
+<li>Old items with changed behavior.</li>
+<li>Tail items with sparse interactions.</li>
+<li>Domain transfer: train tokenizer on one Amazon category, adapt to another.</li>
+</ul>
+<h3 id="metrics-4">Metrics</h3>
+<ul>
+<li>Accuracy: Recall/NDCG/HR.</li>
+<li>Semantic preservation: category/title/image neighborhood preservation.</li>
+<li>Collaborative preservation: top-k behavior-neighbor preservation, transition predictability, prefix-conditional entropy.</li>
+<li>Cold-start/tail: new item Recall, tail Recall, coverage.</li>
+<li>Bias: popularity exposure, head dominance in codebooks.</li>
+<li>Lifecycle: drift/churn under rolling snapshots.</li>
+</ul>
+<h3 id="3-6-month-feasibility-4">3-6 month feasibility</h3>
+<p>This can become either a method paper or a benchmark paper. The tractable first version should answer: &quot;Does collaborative signal belong in prefix, suffix, or loss only?&quot; The main risk is false positive construction: co-click can mean substitute, complement or exposure artifact. Mitigation: report multiple graph definitions and debiased variants.</p>
+<h2 id="5-dynamic-level-wise-codebook-sizing-and-merge-like-adaptive-indexing">5. Dynamic level-wise codebook sizing and MERGE-like adaptive indexing</h2>
+<h3 id="core-question-5">Core question</h3>
+<p>Can Semantic ID codebooks have dynamic/non-uniform size per level and adapt to streaming catalog skew, instead of using fixed <code>L x K</code> residual quantization?</p>
+<h3 id="related-work-matrix-5">Related work matrix</h3>
+<table>
+<thead><tr><th>Paper</th><th>Что делает</th><th>Что уже закрывает</th><th>Что остается открытым</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2601.20199">MERGE</a></td><td>Streaming-native clusters: thresholded assignment, new cluster creation, occupancy monitoring, fine-to-coarse hierarchy.</td><td>Strong evidence that forced VQ assignment fails for skewed/non-stationary item streams.</td><td>Not yet used as autoregressive SID vocabulary for generative retrieval.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2509.20904">FORGE</a></td><td>Studies SID layouts, levels and capacities in industrial GR.</td><td>Shows 2/3/4-level design and non-uniform layouts matter; 3-level may be best compromise in that setup.</td><td>No general rule for choosing <code>K_l</code> per level or updating it over time.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2405.14280">ASI++</a></td><td>Distributionally balanced end-to-end generative retrieval.</td><td>Makes ID occupancy part of objective.</td><td>Balance alone does not guarantee semantic locality or item-level disambiguation.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.05113">CRAB</a></td><td>Splits over-popular tokens post-hoc while preserving hierarchy.</td><td>Shows post-hoc codebook rebalancing can reduce popularity bias.</td><td>Split changes mapping and may require generator migration/retraining.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2512.18434">Efficient Optimization of Hierarchical Identifiers</a></td><td>Greedy/hybrid construction for balanced tree identifiers.</td><td>Shows tree construction cost and top-level split quality matter.</td><td>Offline tree construction, not streaming dynamic codebook sizing.</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2605.05096">CapsID</a></td><td>Soft-routed variable-length SIDs and SemanticBPE.</td><td>Shows hard fixed-depth routing is not always necessary; boundary/tail items need adaptive routing.</td><td>Source details/industrial claims need verification; not a simple codebook-size policy.</td></tr>
+</tbody></table>
+<h3 id="what-seems-already-answered-5">What seems already answered</h3>
+<ul>
+<li>Fixed <code>K</code> at every level is a convenience, not an optimality principle.</li>
+<li>Upper-level bad splits are especially costly because autoregressive decoding commits early.</li>
+<li>Occupancy imbalance, dead codes and overloaded tokens are first-class failures.</li>
+<li>Split/merge/rebalance can help, but mapping churn and generator compatibility are real costs.</li>
+<li>MERGE-style thresholded assignment is a useful alternative to forced nearest centroid.</li>
+</ul>
+<h3 id="still-open-research-questions-5">Still-open research questions</h3>
+<ul>
+<li>How should <code>K_l</code> be chosen per level under fixed decoding/latency budget?</li>
+<li>Should upper levels be small/stable and lower levels large/adaptive, or should dense top-level regions get more children?</li>
+<li>Can a MERGE-like index be converted into valid autoregressive token sequences without exploding trie complexity?</li>
+<li>What is the right policy for split/merge: occupancy, semantic purity, collaborative entropy, item-level evaluation harm or popularity bias?</li>
+<li>How to migrate generator embeddings when codebook sizes change?</li>
+</ul>
+<h3 id="proposed-contribution-5">Proposed contribution</h3>
+<p><code>DynSID</code>: dynamic level-wise codebook allocation for generative recommendation. Start with a small stable prefix, allocate larger/adaptive suffix capacity to overloaded or behaviorally heterogeneous regions, and use MERGE-like cluster health metrics to trigger split/merge.</p>
+<h3 id="experiment-plan-5">Experiment plan</h3>
+<p><strong>E0. Static layout baseline.</strong></p>
+<ul>
+<li>RQ-VAE with fixed layouts: <code>[256,256,256]</code>, <code>[512,512,512]</code>.</li>
+<li>Non-uniform layouts: <code>[64,512,4096]</code>, <code>[128,1024,4096]</code>, <code>[1024,4096,32768]</code> where feasible.</li>
+<li>Balanced tree identifiers with fixed branching.</li>
+</ul>
+<p><strong>E1. Data-driven <code>K_l</code> selection.</strong></p>
+<ul>
+<li>Choose per-level capacity by target occupancy and residual variance explained.</li>
+<li>Allocate more lower-level capacity to dense/high-entropy prefixes.</li>
+<li>Compare global non-uniform vs per-prefix adaptive branching.</li>
+</ul>
+<p><strong>E2. MERGE-like dynamic index.</strong></p>
+<ul>
+<li>Thresholded assignment: if nearest centroid confidence below threshold, do not force assignment.</li>
+<li>New-cluster buffer: unmatched items form new clusters.</li>
+<li>Occupancy health: reset underfilled clusters, split overloaded clusters, merge semantically close underfilled clusters.</li>
+<li>Fine-to-coarse hierarchy: build stable fine clusters, then merge to coarse tokens.</li>
+</ul>
+<p><strong>E3. Generator compatibility.</strong></p>
+<ul>
+<li>Freeze old generator and update only new token embeddings.</li>
+<li>Warm-start generator after split/merge.</li>
+<li>Prefix-stable updates only.</li>
+<li>Compare full retrain, local retrain and no retrain.</li>
+</ul>
+<p><strong>E4. Controlled skew.</strong></p>
+<ul>
+<li>Create synthetic catalog skew: dense categories, many near-duplicates, rapidly growing category, disappearing category.</li>
+<li>Measure when dynamic codebooks beat fixed layouts.</li>
+</ul>
+<h3 id="metrics-5">Metrics</h3>
+<ul>
+<li>Index health: per-level occupancy, empty-code rate, top-1 load, Gini, I2C similarity, C2C separation, residual variance.</li>
+<li>GR quality: item-level Recall/NDCG, valid generation rate, beam efficiency, candidate coverage.</li>
+<li>Lifecycle: changed-prefix rate, split/merge count, affected trie nodes, generator warm-start loss.</li>
+<li>Bias: popularity exposure, tail coverage.</li>
+<li>Cost: indexing time, memory, decoding latency, rebuild/update cost.</li>
+</ul>
+<h3 id="3-6-month-feasibility-5">3-6 month feasibility</h3>
+<p>The cleanest 3-month version is static non-uniform layout + post-hoc split/merge diagnostics. The 6-month version adds streaming MERGE-like updates and generator migration. Main risk: dynamic branching complicates constrained decoding. Mitigation: start with a trie that supports variable branching but fixed maximum depth; measure trie size and beam cost explicitly.</p>
+<h2 id="cross-direction-experiment-roadmap">Cross-direction experiment roadmap</h2>
+<h3 id="month-1-shared-infrastructure">Month 1: shared infrastructure</h3>
+<ul>
+<li>Implement or reuse RQ-VAE/TIGER baseline.</li>
+<li>Export item-to-SID and SID-to-item maps for every run.</li>
+<li>Add collision-aware item-level evaluation.</li>
+<li>Add per-level utilization/Gini/churn diagnostics.</li>
+</ul>
+<h3 id="month-2-benchmark-baselines">Month 2: benchmark baselines</h3>
+<ul>
+<li>Run fixed tokenizers on Amazon/Yelp/MIND.</li>
+<li>Reproduce basic SID-level vs item-level gap.</li>
+<li>Build temporal snapshots.</li>
+<li>Train a simple ranker teacher.</li>
+</ul>
+<h3 id="month-3-first-paper-shaped-result">Month 3: first paper-shaped result</h3>
+<ul>
+<li>Finish collision-aware evaluation benchmark.</li>
+<li>Add strict vs graded collision metrics.</li>
+<li>Report tokenizer rank inversions and collision taxonomy.</li>
+</ul>
+<h3 id="months-4-6-method-extensions">Months 4-6: method extensions</h3>
+<ul>
+<li>Stability-aware updates on rolling snapshots.</li>
+<li>Ranker-distilled SID objective.</li>
+<li>Collaborative prefix/suffix ablation.</li>
+<li>Dynamic codebook layout and MERGE-like update prototype.</li>
+</ul>
+<h2 id="strongest-near-term-bets">Strongest near-term bets</h2>
+<ol>
+<li><strong>Collision-aware evaluation</strong> is the safest first result: high methodological value, low compute risk, clearly timely after the May 2026 paper.</li>
+<li><strong>Collaborative signal placement</strong> is the best method paper candidate if experiments are clean.</li>
+<li><strong>Dynamic codebook sizing</strong> is the most novel systems/indexing angle, but it has the highest implementation risk because decoding/trie migration become part of the claim.</li>
+<li><strong>Continual tokenization</strong> is production-relevant and can reuse the same diagnostics from collision/dynamic-codebook work.</li>
+<li><strong>Ranker-to-SID distillation</strong> is conceptually strong but needs careful public-data design to avoid looking like a proprietary-ranker replication.</li>
+</ol>
+<h2 id="independent-cs-idea-critic-outputs">Independent cs-idea-critic outputs</h2>
+<p>Ниже сохранены отдельные critique-блоки для пяти направлений. Каждый блок был подготовлен независимо в формате <code>cs-idea-critic</code>: claim, novelty, closest prior work, feasibility risks, minimum viable study, baselines/ablations, reviewer objections и refined version.</p>
+<h3 id="critic-1-collision-aware-evaluation-benchmark">Critic 1: Collision-aware evaluation benchmark</h3>
+<h4 id="one-sentence-claim">One-sentence claim</h4>
+<p>Публичный collision-aware benchmark для SID recommenders нужен не как еще один набор метрик, а как проверка гипотезы: <code>SID-level</code> качество систематически завышает <code>item-level</code> качество, а вред коллизий лучше объясняется типом collision group, чем raw collision rate.</p>
+<h4 id="novelty-assessment">Novelty assessment</h4>
+<p>Новизна <strong>средняя-низкая</strong>, если формулировать как “добавим item-level metrics”: это уже почти напрямую закрыто работой <em>How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?</em>, где показаны SID-level inflation, item-level correction и zero-collision reassignment.</p>
+<p>Новизна становится <strong>средней и publishable</strong>, если сузить вклад до: graded/proxy-stratified collision taxonomy, controlled collision injection, rank inversion analysis и открытый evaluation harness поверх существующих SID pipelines. На 3-6 месяцев это реалистично как <strong>workshop / short paper / benchmark paper</strong>. Для сильного full paper за 3-6 месяцев риск высокий: reviewers спросят, почему это не appendix к <code>How Reliable...</code>.</p>
+<h4 id="closest-prior-work">Closest prior work</h4>
+<ul>
+<li><em>How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?</em> - прямой конкурент: уже показывает, что SID-level metrics завышают item-level performance, collisions can involve up to 30.5% items, Hit@10 inflation can exceed 100%, и предлагает collision-aware item-level metrics plus last-level reassignment. Source: https://arxiv.org/abs/2605.25330</li>
+<li><em>FORGE</em> - industrial benchmark for SID formation, utilization/collision diagnostics и proxy SID metrics without full GR training; близок по benchmark framing, но не фокусируется на strict item-level correction. Source: https://arxiv.org/abs/2509.20904</li>
+<li><em>QuaSID</em> - важен как prior на идею, что collisions heterogeneous: не все collisions одинаково вредны, часть можно считать benign/protocol-induced. Source: https://arxiv.org/abs/2603.00632</li>
+<li><em>GRID</em> - модульный open framework для generative recommendation with SIDs; если новый benchmark не интегрируется с GRID-like API, это будет слабее. Source: https://arxiv.org/abs/2507.22224</li>
+<li><em>CRAB</em> - показывает связь token imbalance/popularity bias и codebook rebalancing; нужен как baseline или diagnostic slice по popularity exposure. Source: https://arxiv.org/abs/2604.05113</li>
+<li><em>ReSID</em> и <em>CapsID</em> - свежие сильные tokenizers; без хотя бы одного recsys-native / recent tokenizer benchmark будет выглядеть устаревшим. Sources: https://arxiv.org/abs/2602.02338 and https://arxiv.org/abs/2605.05096</li>
+</ul>
+<h4 id="feasibility-risks">Feasibility risks</h4>
+<ul>
+<li>Главный риск не implementation, а <strong>arbitrary taxonomy</strong>: category/title/image/co-click similarity легко выглядят как hand-crafted proxies, а не ground truth benign collisions.</li>
+<li>Public datasets плохо поддерживают “business-equivalent items”: Amazon/Yelp/MIND дают слабые surrogate labels, не реальные SKU variants/substitutes.</li>
+<li>Полная матрица <code>datasets x tokenizers x generators x seeds</code> быстро раздуется; за 3-6 месяцев лучше меньше tokenizers, но жестче controls.</li>
+<li><code>How Reliable...</code> уже забирает low-hanging fruit; надо явно не продавать strict item-level correction как новый вклад.</li>
+<li>Disambiguation policy может смешать evaluation и serving: popularity/ranker-inside-group policy уже меняет recommender, а не только metric.</li>
+<li>Rank inversions могут быть variance artifact; нужны seeds/confidence intervals.</li>
+</ul>
+<h4 id="minimum-viable-study">Minimum viable study</h4>
+<ol>
+<li>Взять 3-4 public datasets: Amazon Beauty/Sports/Toys плюс Yelp или MIND.</li>
+<li>Зафиксировать один TIGER-like generator, одинаковый beam, одинаковые splits, 3 seeds.</li>
+<li>Tokenizers minimum: random/hash balanced, RQ-VAE/RQ-KMeans, one collaborative/contrastive tokenizer, ReSID if reproducible.</li>
+<li>Посчитать: SID-level HR/NDCG, strict item-level HR/NDCG, inflation ratio, rank inversions, collision group size, group purity, behavior divergence, popularity skew.</li>
+<li>Сделать controlled injection: random collisions, same-category collisions, behavior-similar collisions, head-tail collisions.</li>
+<li>Проверить claim: harmful-collision proxies должны лучше предсказывать item-level degradation, чем raw collision rate.</li>
+<li>Выпустить artifact: item-to-SID maps, collision groups, metric code, configs, reproduction commands.</li>
+</ol>
+<h4 id="required-baselines-ablations">Required baselines/ablations</h4>
+<ul>
+<li>Baselines: SID-level evaluation, strict item-level evaluation, zero-collision reassignment, unique item IDs/hash tree, random disambiguation, popularity disambiguation, oracle-in-group upper bound.</li>
+<li>Tokenizer baselines: RQ-VAE/RQ-KMeans, LETTER/CoST-style if feasible, ReSID, optionally QuaSID/AdaSID/CapsID only if code is usable.</li>
+<li>Ablations: remove category proxy, remove behavior proxy, remove popularity proxy, vary collision thresholds, per-level collision analysis, beam size sensitivity, popularity bucket slices, tail/head slices.</li>
+<li>Negative controls: random taxonomy labels, collision groups matched by size, same-category but behavior-divergent collisions.</li>
+</ul>
+<h4 id="strong-reviewer-objections">Strong reviewer objections</h4>
+<ul>
+<li>“This is already solved by <code>How Reliable...</code>.” Answer only works if the paper is positioned as taxonomy + controlled collision stress tests + public benchmark, not just corrected metrics.</li>
+<li>“Benign collision is subjective.” Do not claim true benignness. Call it <code>proxy-stratified collision analysis</code>, validate against downstream item-level loss, and include threshold robustness.</li>
+<li>“A benchmark without a model is not enough.” Then the contribution must be unusually reproducible: code, maps, configs, rank inversion tables, failure cases, and standardized reporting.</li>
+<li>“Zero-collision reassignment is sufficient.” You need evidence that collision-free is a baseline, not the whole story: e.g. it changes tokenizer rankings, tail sharing, or decode/disambiguation tradeoffs.</li>
+<li>“Your taxonomy overfits Amazon metadata.” Need at least one non-Amazon dataset and cross-domain stability checks.</li>
+</ul>
+<h4 id="refined-version">Refined version</h4>
+<p>Сузить идею до <strong>SID Collision Audit Suite: strict and proxy-stratified evaluation for semantic-ID recommenders</strong>.</p>
+<p>Core claim: strict item-level metrics are mandatory, but insufficient for understanding tokenizer behavior; collision harm should be decomposed by behavior divergence, popularity skew, and semantic/category proximity, with controlled collision injection as validation.</p>
+<p>Publishability на 3-6 месяцев: <strong>medium-high for a focused short/workshop benchmark</strong>, <strong>medium-low for a full paper</strong> unless results show non-obvious rank inversions, robust taxonomy correlation with item-level degradation, and include recent strong tokenizers.</p>
+<h3 id="critic-2-stability-aware-continual-tokenization">Critic 2: Stability-aware continual tokenization</h3>
+<h4 id="one-sentence-claim-2">One-sentence claim</h4>
+<p>A publishable version must claim a measurable <strong>quality-churn frontier</strong>: under rolling catalog updates, a tokenizer update policy improves future item-level Recall/NDCG for drifted/new items while keeping prefix churn, warm-start loss spike, and reindex cost below explicit budgets.</p>
+<h4 id="novelty-assessment-2">Novelty assessment</h4>
+<p>As stated, novelty is <strong>weak-to-medium</strong>. “Stability-aware continual tokenization” is now directly occupied by <a href="https://arxiv.org/abs/2603.29705">DACT</a>, <a href="https://arxiv.org/abs/2604.13273">SID staleness alignment</a>, <a href="https://arxiv.org/abs/2602.08530">PIT</a>, <a href="https://arxiv.org/abs/2601.20199">MERGE</a>, and production lifecycle work like <a href="https://arxiv.org/abs/2509.20904">FORGE</a>. A method-only paper saying “detect drift + preserve prefixes + locally update codes” will look incremental.</p>
+<p>The publishable angle in 3-6 months is not “continual tokenization exists”; it is one of:</p>
+<ul>
+<li>a reproducible <strong>SID lifecycle benchmark</strong> with drift regimes, churn/cost/rollback metrics;</li>
+<li>a simple but well-isolated <strong>budgeted local refresh algorithm</strong> that produces a better Pareto frontier than DACT/alignment/retrain/frozen;</li>
+<li>a convincing study of <strong>new-item and partial-drift failure modes</strong>, which current papers only partially cover.</li>
+</ul>
+<p>Publishability estimate: <strong>3 months: strong workshop / short paper if benchmark/report is clean; 6 months: plausible main-track submission only if you release code, protocol, and show a clear Pareto improvement over DACT and SID alignment.</strong></p>
+<h4 id="closest-prior-work-2">Closest prior work</h4>
+<ul>
+<li><a href="https://arxiv.org/abs/2603.29705">DACT: Drift-Aware Continual Tokenization</a>: closest direct competitor. It already has drift identification, differentiated update for drifting/stationary items, and hierarchical relaxed-to-strict reassignment. Any new method must beat this or expose regimes where it fails.</li>
+<li><a href="https://arxiv.org/abs/2604.13273">Mitigating Collaborative Semantic ID Staleness</a>: closest compatibility baseline. It rebuilds fresh collaborative SIDs, aligns new vocabulary to old token space, and warm-starts retriever. Your work must not ignore alignment baselines.</li>
+<li><a href="https://arxiv.org/abs/2602.08530">PIT</a>: dynamic tokenizer with co-evolution and one-to-many beam index. It weakens the need for a single stable canonical SID, so reviewers may ask why your stricter setup is preferable.</li>
+<li><a href="https://arxiv.org/abs/2601.20199">MERGE</a>: strongest streaming-indexing prior. Not a generative SID sequence method, but it covers thresholded assignment, new clusters, occupancy monitoring, and online skew.</li>
+<li><a href="https://arxiv.org/abs/2509.20904">FORGE</a>: lifecycle and industrial SID diagnostics. It raises the bar for utilization, collision, online convergence, and cost reporting.</li>
+</ul>
+<h4 id="feasibility-risks-2">Feasibility risks</h4>
+<ul>
+<li>Public temporal datasets may not contain enough natural drift to make the problem visible. You need controlled drift injection, not just rolling Amazon splits.</li>
+<li>DACT is already a strong anchor; beating it on average may be hard. Safer target: beat it under fixed churn/cost budgets or on new-item/high-drift slices.</li>
+<li>“Stability” can become a self-serving metric. Reviewers will reject lower churn if quality gains vanish.</li>
+<li>Prefix preservation may reduce adaptability exactly where coarse intent changes. Need show when prefix stability helps and when it hurts.</li>
+<li>New items with no collaborative history are a hard case. A method that only handles old-item drift is too narrow.</li>
+<li>Leakage risk is high: tokenizer refresh must not see future interactions from the evaluation block.</li>
+<li>Implementation scope can balloon: tokenizer, GRM, constrained decoding, rolling snapshots, mapping versioning, collision logs.</li>
+</ul>
+<h4 id="minimum-viable-study-2">Minimum viable study</h4>
+<p>Run a compact lifecycle benchmark:</p>
+<ul>
+<li>Datasets: Amazon Beauty/Toys/Sports or Tools, Yelp, MIND-small/news if freshness matters.</li>
+<li>Split: <code>T0</code> train, then <code>T1..T4</code> rolling updates; evaluation always on the next future block.</li>
+<li>Backbone: one TIGER-like small Transformer first; optional LC-Rec/LLM only after the core result works.</li>
+<li>Tokenizer: RQ-VAE or LETTER-like collaborative tokenizer with saved item-to-SID maps per snapshot.</li>
+<li>Method: budgeted local refresh: detect drifted items/subtrees, preserve early prefixes by default, update suffixes or local subtrees only when drift score exceeds threshold, and support new-item content-first insertion.</li>
+<li>Main plot: item-level NDCG/Recall vs changed-prefix rate / SID edit distance / update time.</li>
+<li>Success criterion: your method dominates frozen, full fine-tune, full rebuild+warm-start, alignment update, and DACT-like update on at least one meaningful quality-churn frontier.</li>
+</ul>
+<h4 id="required-baselines-ablations-2">Required baselines/ablations</h4>
+<p>Baselines:</p>
+<ul>
+<li>frozen tokenizer + GRM fine-tune;</li>
+<li>full tokenizer rebuild + full GRM retrain;</li>
+<li>fresh tokenizer + warm-start without alignment;</li>
+<li>fresh tokenizer + Greedy/Hungarian alignment;</li>
+<li>DACT-style drift-aware update;</li>
+<li>MERGE-inspired threshold/new-cluster insertion if implemented;</li>
+<li>content-only stable SID for cold/new-item control.</li>
+</ul>
+<p>Ablations:</p>
+<ul>
+<li>no drift detector;</li>
+<li>random drift selection with same update budget;</li>
+<li>no prefix preservation;</li>
+<li>suffix-only update;</li>
+<li>full edit-distance penalty vs prefix-specific penalty;</li>
+<li>global reassignment vs local subtree reassignment;</li>
+<li>no new-item special handling;</li>
+<li>natural drift only vs synthetic drift injection;</li>
+<li>different churn budgets, e.g. 1%, 5%, 10%, 25% changed-prefix rate.</li>
+</ul>
+<h4 id="strong-reviewer-objections-2">Strong reviewer objections</h4>
+<ul>
+<li>“DACT already solves this.” Answer requires either a new benchmark dimension DACT lacks or a clear Pareto win under cost/churn/rollback constraints.</li>
+<li>“This is engineering, not research.” Answer with a formal lifecycle protocol, controlled drift regimes, and falsifiable metrics.</li>
+<li>“Synthetic drift is arbitrary.” Use it only as stress testing; report natural rolling windows separately.</li>
+<li>“Prefix stability may preserve stale semantics.” Include failure cases and an adaptive policy that can break prefixes when coarse drift is detected.</li>
+<li>“The gains come from more compute or easier candidate space.” Equalize update budget, decoding beam, candidate universe, and GRM fine-tuning steps.</li>
+<li>“SID-level metrics hide collisions.” Report item-level metrics, collision groups, valid generation rate, and inverse-map diagnostics.</li>
+<li>“No production system would accept this without rollback.” Include versioned mappings, rollback size, and affected trie nodes as first-class metrics.</li>
+</ul>
+<h4 id="refined-version-2">Refined version</h4>
+<p>Rename the idea to:</p>
+<p><strong>Budgeted Local SID Refresh for Generative Recommendation Lifecycles</strong></p>
+<p>Refined claim:</p>
+<blockquote><p>Under rolling catalog updates, a budgeted local SID refresh policy that preserves stable prefixes, updates only drifted suffix/subtree regions, and inserts new items through confidence-thresholded content-to-collaborative routing achieves a better item-level quality vs churn/cost frontier than frozen, full rebuild, SID alignment, and DACT-style continual tokenization.</p></blockquote>
+<p>This is sharper because it defines the unit of contribution: <strong>not another tokenizer</strong>, but a lifecycle update policy with explicit budgets, rollback-aware metrics, and stress-tested drift regimes.</p>
+<h3 id="critic-3-discriminative-to-generative-tokenizer-distillation">Critic 3: Discriminative-to-generative tokenizer distillation</h3>
+<h4 id="one-sentence-claim-3">One-sentence claim</h4>
+<p>Сильный discriminative ranker можно использовать как teacher для построения item-only Semantic IDs, которые лучше сохраняют retrieval-relevant decision boundaries, чем reconstruction/content/collaborative tokenizers, и поэтому дают выше item-level retrieval при том же GRM.</p>
+<h4 id="novelty-assessment-3">Novelty assessment</h4>
+<p>Новизна в широком виде слабая: “оптимизировать tokenizer recommendation/ranking signal” уже закрывают DIG, BLOGER, DIGER, ETEGRec и LETTER. Самый опасный prior - DIG: он прямо встраивает tokenizer в discriminative ranker и использует u2t distillation для переноса user-item cross features в token space.</p>
+<p>Publishability на 3-6 месяцев: умеренная, но только если сузить claim. Не продавать как “ranking teaches generation”; это уже занято. Продавать как <strong>decoupled, public-data, teacher-agnostic ranker-logit distillation for SIDs</strong>, с диагностикой того, какая часть ranker boundary реально переносима в item-only tokens. 3 месяца: хороший workshop/short или сильный diagnostic paper. 6 месяцев: возможен main-track, если есть честное сравнение с end-to-end/differentiable baselines и clear win по простоте, reproducibility или compute.</p>
+<h4 id="closest-prior-work-3">Closest prior work</h4>
+<ul>
+<li><a href="https://arxiv.org/abs/2605.14853">Discrimination Is Generation / DIG</a>: прямой конкурент. Paper уже утверждает, что ranking argmax и token-space retrieval argmax - одна задача на разной гранулярности; tokenizer обучается внутри ranker, а u2t module approximates u2i features.</li>
+<li><a href="https://arxiv.org/abs/2510.21242">BLOGER</a>: bi-level optimization, где tokenizer обновляется с учетом recommendation loss; закрывает общий objective-mismatch argument.</li>
+<li><a href="https://arxiv.org/abs/2601.19711">DIGER</a>: differentiable SID learning с Gumbel exploration; показывает, что recommendation gradients можно напрямую пускать в SID learning.</li>
+<li><a href="https://arxiv.org/abs/2409.05546">ETEGRec</a>: end-to-end tokenizer + generator alignment через sequence-item и preference-semantic objectives.</li>
+<li><a href="https://arxiv.org/abs/2405.07314">LETTER</a>: collaborative regularization, diversity loss и ranking-guided generation; это baseline, который нельзя пропустить.</li>
+<li><a href="https://arxiv.org/abs/2510.21276">Pctx</a>: важный objection к item-only SID: один фиксированный item mapping может быть неверной абстракцией, потому что item meaning зависит от user context.</li>
+</ul>
+<h4 id="feasibility-risks-3">Feasibility risks</h4>
+<ul>
+<li>Teacher ranker может использовать user-item cross features, которые item-only tokenizer принципиально не способен представить. Усреднение logits по пользователям легко превратит метод в popularity/collaborative clustering.</li>
+<li>Public datasets почти не имеют честных exposure logs; sampled negatives могут сделать teacher boundaries артефактом sampling policy.</li>
+<li>Pairwise/listwise distillation быстро становится дорогой: много users x items x negatives, плюс дискретная quantization objective нестабильна.</li>
+<li>Улучшение downstream ranking не доказывает улучшение generative retrieval. Нужны candidate coverage и item-level Recall/NDCG до rerank.</li>
+<li>Если сравнить только с RQ-VAE, reviewers скажут, что baseline слабый. Нужны LETTER/CoST/ETEGRec/DIGER/BLOGER или честное объяснение, почему часть baselines infeasible.</li>
+<li>Collision harm может замаскировать результат: ranker-distilled tokenizer может улучшать teacher-neighborhood purity, но создавать вредные SID collisions.</li>
+</ul>
+<h4 id="minimum-viable-study-3">Minimum viable study</h4>
+<p>Сделать <code>Rank2SID</code> как two-stage pipeline:</p>
+<ol>
+<li>Train teacher rankers: SASRec/BERT4Rec next-item teacher и один feature ranker типа DCNv2/DeepFM только если есть надежные features.</li>
+<li>Extract teacher constraints: top-k teacher neighborhoods per user/history, score-gap pairwise margins, item-item similarity averaged over contexts.</li>
+<li>Train fixed-layout SID tokenizer: например 3-level RQ-style tokenizer с дополнительной loss на code distance / prefix sharing.</li>
+<li>Train один и тот же TIGER-like GRM на всех token maps.</li>
+<li>Evaluate на Amazon Reviews subsets + Yelp/MIND, chronological split.</li>
+</ol>
+<p>Минимально убедительный результат: <code>Rank2SID</code> улучшает item-level Recall/NDCG и candidate coverage относительно content-only RQ-VAE, LETTER-like collaborative regularization и teacher-embedding clustering, при этом показывает меньший <code>ranker-token gap</code>: token path scores лучше аппроксимируют teacher item-space scores.</p>
+<h4 id="required-baselines-ablations-3">Required baselines/ablations</h4>
+<ul>
+<li>Baselines: random/hash SID, content RQ-VAE, collaborative LETTER-style, CoST/SimCIT-style, teacher item-embedding clustering + RQ/k-means, ETEGRec/DIGER/BLOGER если код доступен.</li>
+<li>Direct competitor: DIG-style end-to-end ranker-tokenizer хотя бы как partial reproduction или clearly marked upper bound.</li>
+<li>Ablations: pairwise vs listwise distillation; top-k neighborhood vs score-margin; prefix-only vs suffix-only constraints; content+teacher vs teacher-only; teacher strength; negative sampling policy; popularity-debiased teacher scores.</li>
+<li>Diagnostics: per-level utilization/Gini, collision rate/harm, prefix mutual information with teacher clusters, head/tail Recall, cold/sparse item performance, candidate coverage before rerank.</li>
+<li>Negative controls: shuffled teacher logits, popularity-only teacher, same-category-only teacher. Без этого reviewers не поверят, что метод учит decision boundaries.</li>
+</ul>
+<h4 id="strong-reviewer-objections-3">Strong reviewer objections</h4>
+<ul>
+<li>“DIG already does this more directly; your method is a weaker offline version.”</li>
+<li>“Your teacher uses information unavailable to item-only SID inference, so the distillation target is ill-posed.”</li>
+<li>“The gains are just popularity bias or collaborative co-occurrence, not ranker decision boundaries.”</li>
+<li>“Public sampled negatives do not approximate real ranking/exposure; teacher logits are not trustworthy.”</li>
+<li>“You improved reranked NDCG but not retrieval recall; candidate starvation remains.”</li>
+<li>“The paper adds another tokenizer objective without explaining when it helps or fails.”</li>
+<li>“No comparison to recent end-to-end/differentiable tokenizer methods.”</li>
+</ul>
+<h4 id="refined-version-3">Refined version</h4>
+<p>Frame it as:</p>
+<p><strong>Rank2SID: Decoupled Ranker-Logit Distillation for Reproducible Semantic ID Construction.</strong></p>
+<p>Main claim: not “better than DIG universally”, but “a simple offline distillation objective can recover part of ranker-aligned SID benefits on public data, with lower implementation coupling and clear diagnostics of what item-only SIDs can and cannot absorb from discriminative teachers.”</p>
+<p>The strongest publishable angle is a limitation-aware method paper: quantify the transferability gap from discriminative rankers to generative item tokens. If the method wins, good; if it only wins under certain teacher/negative/context settings, that is still a useful 3-6 month result if the diagnostics are sharp.</p>
+<h3 id="critic-4-collaborative-signal-aware-sid-construction">Critic 4: Collaborative-signal-aware SID construction</h3>
+<h4 id="one-sentence-claim-4">One-sentence claim</h4>
+<p>Collaborative signal should not be injected everywhere in SID construction: the publishable claim is that <strong>content-grounded prefixes + debiased collaborative suffix/loss alignment</strong> improve warm/tail item-level retrieval while preserving cold-start generalization better than full early fusion or CF-only SIDs.</p>
+<h4 id="novelty-assessment-4">Novelty assessment</h4>
+<p>Raw idea is <strong>not novel enough</strong>. LETTER already combines hierarchical semantics, collaborative signals, and assignment diversity; TokenRec tokenizes user/item CF representations; DAS does one-stage dual user-item/ad alignment; MusicRec explicitly builds multimodal identifiers with collaborative signals; ReSID reframes SID tokenization around recommendation-native predictability rather than generic semantics.</p>
+<p>Novelty becomes defensible only if the paper answers a sharper question: <strong>where should collaborative signal enter the SID hierarchy, and when does it hurt?</strong> That can be publishable in 3-6 months as a controlled ablation/diagnostic paper. As a new-loss method paper, the bar is higher and likely weak unless the method clearly beats LETTER/ReSID-style baselines and explains failures.</p>
+<p>Publishability estimate: <strong>medium for workshop/short paper in 3 months; borderline-to-good full-paper potential in 6 months</strong> if you produce clean public experiments, collision-aware item metrics, cold-start/stability slices, and a simple placement rule that wins consistently.</p>
+<h4 id="closest-prior-work-4">Closest prior work</h4>
+<ul>
+<li><strong>LETTER</strong> is the closest direct baseline: it already adds collaborative regularization to RQ-VAE-style item tokenization and frames collaborative signal as a core identifier requirement. Source: https://arxiv.org/abs/2405.07314</li>
+<li><strong>TokenRec</strong> is the closest dual-tokenization competitor: it quantizes masked user/item CF representations into LLM-compatible discrete tokens. Source: https://arxiv.org/abs/2406.10450</li>
+<li><strong>DAS</strong> is the strongest industrial threat: one-stage dual alignment, multi-view contrastive alignment, CF debiasing, and user/ad dual quantization. Source: https://arxiv.org/abs/2508.10584</li>
+<li><strong>ReSID</strong> is the strongest conceptual threat: it argues semantic-centric tokenization is misaligned and optimizes item representations/quantization for sequential predictability. Source: https://arxiv.org/abs/2602.02338</li>
+<li><strong>MusicRec</strong> overlaps in title-level claim: multimodal semantic-enhanced identifiers guided by collaborative signals. Source: https://ojs.aaai.org/index.php/AAAI/article/view/38685</li>
+<li><strong>UTGRec</strong> already uses co-occurrence alignment/reconstruction for collaborative knowledge in transferable item tokenization. Source: https://arxiv.org/abs/2504.04405</li>
+<li><strong>QuaSID/AdaSID</strong> matter if you touch collisions: they already argue overlaps should be qualified/adaptive, not uniformly penalized. Sources: https://arxiv.org/abs/2603.00632 and https://arxiv.org/abs/2604.23522</li>
+<li><strong>FORGE</strong> raises the evaluation bar for SID construction diagnostics and proxy metrics. Source: https://arxiv.org/abs/2509.20904</li>
+</ul>
+<h4 id="feasibility-risks-4">Feasibility risks</h4>
+<p>The biggest risk is scope creep: evaluating every signal, every injection point, and every tokenizer becomes a grid search without a paper thesis.</p>
+<p>False positives are central. Co-click, co-view, co-purchase, and next-item transitions do not mean the same thing; they mix substitutes, complements, exposure bias, popularity, and session intent.</p>
+<p>Leakage is easy: if CF embeddings or behavior graphs use future interactions relative to the chronological test split, reviewers will reject the gains.</p>
+<p>Cold-start can get worse. A collaborative-heavy SID may improve warm items while destroying the main advantage of semantic/content identifiers.</p>
+<p>Strong baselines are expensive. ReSID, LETTER, TokenRec-like dual tokenization, and DAS-like multi-view alignment are nontrivial to reproduce fairly.</p>
+<p>SID-level metrics are insufficient. You need item-level Recall/NDCG plus collision diagnostics, otherwise gains can be metric artifacts.</p>
+<h4 id="minimum-viable-study-4">Minimum viable study</h4>
+<p>Run a narrow placement study, not a general “collaborative SID” paper.</p>
+<p>Use 3-4 public datasets: Amazon Reviews 2023 categories plus Yelp or MIND. Use chronological leave-one-out. Build all collaborative graphs only from training history.</p>
+<p>Compare five tokenizers under one fixed TIGER-like generator:</p>
+<ol>
+<li>Content-only RQ-VAE or CoST-style tokenizer.</li>
+<li>CF-only tokenizer from SASRec/LightGCN item embeddings.</li>
+<li>Early fusion: content + CF before quantization.</li>
+<li>LETTER-style loss-level collaborative alignment.</li>
+<li>Proposed: content/taxonomy prefix + collaborative suffix alignment within prefix buckets.</li>
+</ol>
+<p>Main metrics: item-level Recall/NDCG, SID-level vs item-level inflation, cold/new-item Recall, tail Recall, popularity exposure, code utilization/Gini, collision group size, behavior-neighbor preservation, category preservation, and changed-code rate under rolling snapshots.</p>
+<p>The minimum publishable result is a placement matrix: <strong>prefix-only content, suffix-only collaborative, all-level collaborative, loss-only collaborative</strong>, with clear wins/losses by warm/tail/cold slices.</p>
+<h4 id="required-baselines-ablations-4">Required baselines/ablations</h4>
+<p>Required baselines:</p>
+<ul>
+<li>Random/hash or balanced tree IDs.</li>
+<li>TIGER-style content RQ-VAE.</li>
+<li>CoST/SimCIT-style contrastive tokenization.</li>
+<li>LETTER-style collaborative regularization.</li>
+<li>CF-only quantization from SASRec/LightGCN embeddings.</li>
+<li>ReSID or a clearly labeled ReSID-like approximation.</li>
+<li>Optional but valuable: TokenRec-like user/item dual tokens.</li>
+</ul>
+<p>Required ablations:</p>
+<ul>
+<li>Raw co-occurrence vs popularity-debiased PPMI/residual co-occurrence.</li>
+<li>Co-click/co-view vs sequential transition graph vs CF embedding neighbors.</li>
+<li>Collaborative signal on all levels vs suffix only vs loss only.</li>
+<li>Lambda sweep for collaborative loss strength.</li>
+<li>Content prefix depth: 0, 1, 2 levels.</li>
+<li>Cold-start fallback: content-only vs nearest collaborative proxy.</li>
+<li>Same-category hard negatives vs random negatives.</li>
+<li>Train-only graph vs intentionally leaked graph as a negative control.</li>
+<li>Collision-aware item metrics with and without SID-level reporting.</li>
+</ul>
+<h4 id="strong-reviewer-objections-4">Strong reviewer objections</h4>
+<ul>
+<li>“LETTER, DAS, MusicRec, and TokenRec already do collaborative-aware SID.” Answer: do not claim “adding collaborative signal” as the contribution. Claim controlled evidence about <strong>placement and failure modes</strong>.</li>
+<li>“Co-occurrence positives are noisy and semantically ambiguous.” Answer: evaluate multiple graph definitions, add popularity debiasing, and report substitute/complement failure slices instead of hiding them.</li>
+<li>“Your gains are just from a stronger CF encoder.” Answer: include CF-only tokenizer, early fusion, and loss-only variants using the same CF encoder.</li>
+<li>“Your tokenizer uses future information.” Answer: chronological construction only; graph and CF embeddings trained on pre-cutoff data.</li>
+<li>“SID-level metrics inflate performance.” Answer: lead with item-level metrics and collision-aware decomposition.</li>
+<li>“This is a benchmark, not a method.” Answer: include one simple method: suffix-gated collaborative alignment with content-prefix constraints and interaction-count gating.</li>
+</ul>
+<h4 id="refined-version-4">Refined version</h4>
+<p>Frame the project as <strong>CollabSID Placement: when should collaborative signal be allowed to move semantic IDs?</strong></p>
+<p>Method: learn a content-grounded prefix from text/category/image; build a popularity-debiased collaborative graph from training interactions; apply collaborative contrastive/assignment pressure only to suffix levels and only within compatible content-prefix regions; gate the collaborative weight by item interaction count so cold items remain content-driven.</p>
+<p>Core claim: <strong>full collaborative fusion overfits warm/popular behavior and hurts cold-start/stability, while suffix-gated collaborative alignment captures behavior where it is reliable without corrupting semantic prefixes.</strong></p>
+<p>This is much more publishable than “another collaborative SID tokenizer” because it gives reviewers a falsifiable placement hypothesis, strong negative controls, and actionable guidance for future SID construction.</p>
+<h3 id="critic-5-dynamic-level-wise-codebook-sizing-and-merge-like-adaptive-indexing">Critic 5: Dynamic level-wise codebook sizing and MERGE-like adaptive indexing</h3>
+<h4 id="one-sentence-claim-5">One-sentence claim</h4>
+<p><code>DynSID</code> утверждает, что при фиксированном decoding/latency budget генеративная рекомендация выигрывает от prefix-stable, level-wise/adaptive SID capacity: маленький стабильный верхний уровень, расширяемые suffix-ветви для перегруженных или поведенчески неоднородных регионов, плюс MERGE-like split/merge diagnostics.</p>
+<h4 id="novelty-assessment-5">Novelty assessment</h4>
+<p>Новизна есть, но узкая. Нельзя продавать это как “dynamic codebook” вообще: <a href="https://arxiv.org/abs/2601.20199">MERGE</a> уже делает streaming adaptive indexing, <a href="https://arxiv.org/abs/2509.20904">FORGE</a> уже показывает важность SID layouts/capacity, <a href="https://arxiv.org/abs/2604.05113">CRAB</a> уже split-ит over-popular tokens, а <a href="https://arxiv.org/abs/2605.05096">CapsID</a> уже атакует fixed-depth/hard-routing через variable-length SIDs.</p>
+<p>Публикуемый вклад должен быть уже: <strong>как сделать adaptive tree/codebook совместимым с autoregressive constrained decoding и migration generator embeddings</strong>. Без этого идея выглядит как перенос MERGE/CRAB в SID terminology.</p>
+<p>Publishability на 3 месяца: weak-to-moderate, скорее workshop/short paper, если ограничиться static non-uniform/adaptive layout + честные diagnostics.</p>
+<p>Publishability на 6 месяцев: moderate, если есть rolling snapshots, generator migration, equal-budget baselines и clear win по item-level metrics/latency/churn. Для сильного full paper нужен не только tokenizer gain, а доказанная operational story.</p>
+<h4 id="closest-prior-work-5">Closest prior work</h4>
+<ul>
+<li><a href="https://arxiv.org/abs/2601.20199">MERGE</a>: ближайший конкурент по adaptive/streaming indexing: thresholded assignment, new clusters, occupancy monitoring, fine-to-coarse hierarchy. Отличие DynSID должно быть в autoregressive SID/trie compatibility.</li>
+<li><a href="https://arxiv.org/abs/2509.20904">FORGE</a>: ближайший конкурент по SID layout/capacity. Уже изучает 2/3/4-level и non-uniform layouts; DynSID должен дать policy, а не еще одну таблицу layouts.</li>
+<li><a href="https://arxiv.org/abs/2604.05113">CRAB</a>: ближайший конкурент по split overloaded/popular tokens. DynSID должен показать split/merge как general adaptive capacity, не только popularity debiasing.</li>
+<li><a href="https://arxiv.org/abs/2605.05096">CapsID</a>: ближайший конкурент по отказу от fixed hard routing. Если CapsID доступен как baseline, его нужно сравнивать хотя бы концептуально или экспериментально.</li>
+<li><a href="https://arxiv.org/abs/2405.14280">ASI++</a>: occupancy/balance objective для learned IDs; важный baseline/ablation для “balance is enough?”.</li>
+<li><a href="https://arxiv.org/abs/2512.18434">Efficient Optimization of Hierarchical Identifiers</a>: конкурент по balanced tree identifiers и tree construction cost.</li>
+</ul>
+<h4 id="feasibility-risks-5">Feasibility risks</h4>
+<ul>
+<li>Dynamic branching ломает простую схему <code>L x K</code>: vocab, token embeddings, trie, valid path constraints и batching становятся сложнее.</li>
+<li>Split/merge меняет item-to-SID mapping; генератор может помнить старые paths. Без migration experiment это будет главным reviewer blocker.</li>
+<li>Public datasets могут быть слишком маленькими и статичными, чтобы MERGE-like adaptation выглядела нужной.</li>
+<li>Gains легко спутать с увеличением capacity. Нужно equal total leaves, equal beam/latency, equal max depth.</li>
+<li>Thresholds для MERGE-like assignment могут выглядеть как overfitting, если нет sensitivity analysis.</li>
+<li>Full streaming version за 3 месяца рискованна; static adaptive layout + controlled skew реалистичнее.</li>
+</ul>
+<h4 id="minimum-viable-study-5">Minimum viable study</h4>
+<p>Сделать не полный streaming MERGE, а <strong>Budgeted Adaptive SID Trie</strong>:</p>
+<ol>
+<li>Взять TIGER/RQ-VAE baseline на Amazon Beauty/Sports/Toys и Yelp или MIND.</li>
+<li>Зафиксировать max depth, total leaf budget и decoding beam.</li>
+<li>Построить маленький стабильный prefix, а suffix capacity распределять per-prefix по occupancy, residual variance и collaborative entropy.</li>
+<li>Добавить controlled skew: dense category, near-duplicates, growing category, disappearing category.</li>
+<li>Оценивать item-level Recall/NDCG, valid generation rate, per-level Gini, collision groups, tail coverage, trie size, decoding latency.</li>
+<li>Для 6-month версии добавить rolling snapshots и warm-start generator после suffix split.</li>
+</ol>
+<p>Минимальный publishable claim: “adaptive suffix allocation improves tail/collision/valid-generation trade-off under fixed decoding budget.” Не claim’ить online production adaptation без rolling evidence.</p>
+<h4 id="required-baselines-ablations-5">Required baselines/ablations</h4>
+<ul>
+<li>Fixed RQ-VAE/TIGER layouts: <code>[256,256,256]</code>, larger fixed, and FORGE-like non-uniform <code>[64,512,4096]</code>.</li>
+<li>Random/hash balanced tree with same number of leaves.</li>
+<li>Balanced hierarchical identifiers / SEATER-like tree if feasible.</li>
+<li>ASI++-style balance objective or at least occupancy-balanced variant.</li>
+<li>CRAB-style post-hoc split of overloaded/popular tokens.</li>
+<li>CapsID or variable-length soft-routing baseline if implementation is feasible.</li>
+<li>Ablations: global non-uniform vs per-prefix adaptive branching; occupancy trigger vs semantic entropy vs collaborative entropy; split-only vs split+merge; prefix-stable vs prefix-changing; full retrain vs warm-start vs new-token-only vs no retrain.</li>
+<li>Negative controls: random adaptive allocation, popularity-only allocation, shuffled collaborative signal, same final tree without dynamic policy.</li>
+</ul>
+<h4 id="strong-reviewer-objections-5">Strong reviewer objections</h4>
+<ul>
+<li>“This is MERGE with SID names.” Answer: show autoregressive trie constraints, valid generation, generator migration and item-level recommendation gains.</li>
+<li>“FORGE already studied non-uniform SID layouts.” Answer: provide automatic capacity policy under fixed budget, not manual layout sweep.</li>
+<li>“CRAB already splits overloaded tokens.” Answer: compare directly and show broader split/merge criteria beyond popularity.</li>
+<li>“CapsID already solves fixed-depth hard routing.” Answer: position DynSID as budgeted branching/trie adaptation, not soft routing.</li>
+<li>“Gains come from more capacity.” Answer: equalize leaves, params, beam, latency and max depth.</li>
+<li>“Dynamic mapping makes evaluation unfair or leaky.” Answer: chronological snapshots, frozen test future, explicit changed-prefix/churn metrics.</li>
+</ul>
+<h4 id="refined-version-5">Refined version</h4>
+<p>Refine the idea to:</p>
+<p><strong>Prefix-Stable Adaptive SID Tries for Generative Recommendation.</strong></p>
+<p>Keep upper-level SIDs fixed and small; allocate suffix capacity per prefix using train-only occupancy, residual variance and collaborative entropy; support suffix-only split/merge; evaluate under equal decoding budget and rolling generator warm-start.</p>
+<p>This is sharper than “dynamic codebook sizing” because it names the real contribution: <strong>adaptive capacity where it does not destroy autoregressive prefix semantics</strong>.</p>
+<h2 id="source-list">Source list</h2>
+<ul>
+<li>How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation? https://arxiv.org/abs/2605.25330</li>
+<li>Generative Recommendation with Semantic IDs: A Practitioner&#x27;s Handbook / GRID. https://arxiv.org/abs/2507.22224</li>
+<li>FORGE: Forming Semantic Identifiers for Generative Retrieval in Industrial Datasets. https://arxiv.org/abs/2509.20904</li>
+<li>Stop Treating Collisions Equally: Qualification-Aware Semantic ID Learning. https://arxiv.org/abs/2603.00632</li>
+<li>Beyond Static Collision Handling: Adaptive Semantic ID Learning. https://arxiv.org/abs/2604.23522</li>
+<li>CRAB: Codebook Rebalancing for Bias Mitigation in Generative Recommendation. https://arxiv.org/abs/2604.05113</li>
+<li>Drift-Aware Continual Tokenization for Generative Recommendation. https://arxiv.org/abs/2603.29705</li>
+<li>Mitigating Collaborative Semantic ID Staleness in Generative Retrieval. https://arxiv.org/abs/2604.13273</li>
+<li>MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation. https://arxiv.org/abs/2601.20199</li>
+<li>Enhancing Embedding Representation Stability in Recommendation Systems with Semantic ID. https://arxiv.org/abs/2504.02137</li>
+<li>Discrimination Is Generation: Unifying Ranking and Retrieval from a Tokenizer Perspective. https://arxiv.org/abs/2605.14853</li>
+<li>UniRec: Bridging the Expressive Gap between Generative and Discriminative Recommendation. https://arxiv.org/abs/2604.12234</li>
+<li>Harmonizing Generative Retrieval and Ranking in Chain-of-Recommendation. https://arxiv.org/abs/2604.25787</li>
+<li>SID-Coord: Coordinating Semantic IDs for ID-based Ranking in Short-Video Search. https://arxiv.org/abs/2604.10471</li>
+<li>STORE: Semantic Tokenization, Orthogonal Rotation and Efficient Attention for Scaling Up Ranking Models. https://arxiv.org/abs/2511.18805</li>
+<li>Learnable Item Tokenization for Generative Recommendation / LETTER. https://arxiv.org/abs/2405.07314</li>
+<li>CoST: Contrastive Quantization based Semantic Tokenization for Generative Recommendation. https://arxiv.org/abs/2404.14774</li>
+<li>TokenRec: Learning to Tokenize ID for LLM-based Generative Recommendation. https://arxiv.org/abs/2406.10450</li>
+<li>ReSID: Rethinking Generative Recommender Tokenizer. https://arxiv.org/abs/2602.02338</li>
+<li>DAS: Dual-Aligned Semantic IDs Empowered Industrial Recommender System. https://arxiv.org/abs/2508.10584</li>
+<li>MusicRec: Multi-modal Semantic-Enhanced Identifier with Collaborative Signals for Generative Recommendation. https://ojs.aaai.org/index.php/AAAI/article/view/38685</li>
+<li>CAGE: Learning Category Trees for ID-Based Recommendation. https://arxiv.org/abs/2308.16761</li>
+<li>ASI++: Towards Distributionally Balanced End-to-End Generative Retrieval. https://arxiv.org/abs/2405.14280</li>
+<li>Efficient Optimization of Hierarchical Identifiers for Generative Recommendation. https://arxiv.org/abs/2512.18434</li>
+<li>CapsID: Soft-Routed Variable-Length Semantic IDs for Generative Recommendation. https://arxiv.org/abs/2605.05096</li>
+</ul>
+</main>
+<a class="scroll-top" href="#top" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">Наверх</a>
+</body>
+</html>

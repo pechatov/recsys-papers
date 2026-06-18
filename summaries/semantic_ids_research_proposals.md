@@ -1,219 +1,299 @@
-# Research proposals: Semantic IDs and item tokenization for recommender systems
+# Research proposals: Semantic IDs, tokenization and indexing for recommender systems
 
-Этот файл собирает направления, которые выглядят реалистичными для проекта на 3-6 месяцев и могут вырасти в short paper или full paper для конференции по recommender systems / IR, например ECIR, KDD workshop, RecSys workshop, SIGIR short, CIKM short. Идеи специально сформулированы так, чтобы их можно было проверить на публичных датасетах и не требовать закрытого production-трафика. Обновлено 2026-05-17 после просмотра свежих работ по transferable, personalized, hierarchical и topology-aware semantic IDs.
+Обновлено: 2026-05-26. Список собран после просмотра 93 работ из раздела `Semantic IDs, tokenization и indexing` в `summaries/papers.html` и дополнительной проверки свежих arXiv/ACM источников. Фокус: идеи, которые реально проверить за 3-6 месяцев на публичных датасетах или аккуратном industrial-like replay без закрытого production traffic.
 
-## 1. Stability-aware Semantic ID: tokenizer, который оптимизирует не только качество, но и drift
+## Короткая карта домена
 
-**Вопрос.** Можно ли строить semantic IDs, которые дают хорошее downstream recommendation quality и при этом меньше меняются при периодическом переобучении tokenizer'а?
+Главный сдвиг за 2025-2026: semantic IDs перестали быть "preprocessing detail". Работы вроде TIGER/LETTER/CoST задали RQ-VAE/contrastive tokenizer baseline, но последние статьи двигают тему в сторону lifecycle, evaluation reliability, variable-length codes, end-to-end alignment, expressiveness of decoding trees, long-tail transfer, LLM vocabulary grounding и production-grade indexing.
 
-**Мотивация.** Большинство работ оптимизирует offline Recall/NDCG после tokenization. Но в реальной системе tokenizer переобучается, каталог обновляется, и item-to-code mapping drift может ломать совместимость с downstream model, cache, serving и historical features.
+Практический research gap: большинство top-line улучшений все еще трудно сравнивать, потому что меняются одновременно tokenizer, generator, metrics, decoding, collision handling, datasets и serving assumptions. Поэтому наиболее перспективны темы, где можно изолировать один bottleneck и дать воспроизводимый protocol.
 
-**Идея метода.** Добавить в tokenizer objective stability regularization: новые коды должны сохранять prefix или edit-distance proximity к предыдущей версии, если item embedding / content / behavior изменились незначительно. Для новых items можно разрешать свободное назначение, а для старых вводить мягкий penalty на code movement.
+## 1. Collision-aware evaluation benchmark for SID recommenders
 
-**Эксперимент.** Взять Amazon Reviews / Yelp / MIND, разбить историю по времени, обучать tokenizer на rolling windows. Измерять Recall/NDCG, code drift rate, prefix preservation, collision churn и degradation при использовании recommender, обученного на предыдущей версии кодов.
+**Вопрос.** Насколько результаты SID-based generative recommendation завышены из-за того, что SID-level hit засчитывает collision group, а не конкретный item?
 
-**Потенциальный вклад.** Новый evaluation protocol для lifecycle semantic IDs плюс простой stability-aware tokenizer, который лучше подходит для production retraining.
+**Мотивация.** Свежая работа "How Reliable Are Semantic-ID Tokenizer Comparisons in Generative Recommendation?" показывает, что SID-level метрики могут сильно расходиться с item-level метриками при коллизиях. Это ставит под вопрос честность сравнений tokenizer'ов.
 
-## 2. Collision taxonomy: не все коллизии semantic IDs одинаково вредны
+**Идея.** Собрать evaluation suite, который для каждого tokenizer'а считает: SID-level Recall/NDCG, item-level Recall/NDCG, collision group size, harmful collision rate, head/tail inflation и ranking flips между tokenizer'ами.
 
-**Вопрос.** Какие коллизии в semantic ID действительно вредят recommendation, а какие работают как полезное sharing между похожими items?
+**Эксперимент за 3-6 месяцев.** Amazon Reviews, Yelp, MIND. Tokenizers: random hash, RQ-VAE, CoST/SimCIT-style contrastive, balanced tree, variable-length. Для каждого сделать одинаковый generator и одинаковый constrained decoding.
 
-**Мотивация.** В literature коллизии часто считаются generic problem. Но production papers показывают, что семантически осмысленные collisions могут помогать tail items.
+**Потенциальный вклад.** Не новый tokenizer, а надежный evaluation protocol. Это хороший short paper/workshop paper, потому что он может переинтерпретировать существующие результаты.
 
-**Идея метода.** Построить taxonomy collisions: substitute collision, complement collision, popularity-dominated collision, category-only collision, false semantic collision. Затем ввести collision-aware loss, который штрафует только вредные пары и допускает полезные shared prefixes.
+**Ключевые источники.** How Reliable Are Semantic-ID Tokenizer Comparisons; FORGE; GRID handbook.
 
-**Эксперимент.** Использовать item co-occurrence graph, category metadata и embedding similarity. Сравнить random hash, RQ-VAE SID, balanced SID и collision-aware SID. Метрики: Recall/NDCG, tail Recall, collision purity, intra-code behavioral consistency.
+## 2. Stability-aware continual tokenization for live catalogs
 
-**Потенциальный вклад.** Более тонкая постановка collision handling и practically useful diagnostics для tokenizer evaluation.
+**Вопрос.** Можно ли обновлять semantic IDs при drift items/interactions без полной переиндексации и без разрушения compatibility с обученным generator'ом?
 
-## 3. Variable-length IDs under fixed inference budget
+**Мотивация.** DACT, collaborative SID staleness и MERGE показывают, что lifecycle важнее single-shot tokenization: catalog grows, item content changes, interactions drift, old codes become stale.
 
-**Вопрос.** Как выбирать длину semantic ID, если у системы есть жесткий token budget на decoding и latency?
+**Идея.** Tokenizer objective с двумя ограничениями: recommendation alignment и stability penalty. Старые items получают мягкий штраф за изменение prefix/edit distance, новые items вставляются через local split/merge, drifting items переassign'ятся selectively.
 
-**Мотивация.** Variable-length IDs экономят токены, но нужно понять, когда короткий код ухудшает disambiguation и как распределить budget между head/tail items.
+**Эксперимент.** Rolling temporal splits. Метрики: Recall/NDCG, drift rate, changed-prefix percentage, warm-start degradation, amount of retraining, collision churn.
 
-**Идея метода.** Обучать policy длины кода с constraint на average generated tokens. Length decision зависит от popularity, embedding density, collision risk и uncertainty. Можно сравнить heuristic length assignment против learned policy.
+**Потенциальный вклад.** Production-realistic protocol для continual SID lifecycle, где качество измеряется вместе со стоимостью миграции index.
 
-**Эксперимент.** Amazon/MIND/Yelp с fixed average token budget. Сравнить fixed-length, popularity-based variable length, uncertainty-based variable length. Метрики: Recall/NDCG, average decoding steps, item ambiguity, tail performance.
+**Ключевые источники.** DACT; Mitigating Collaborative Semantic ID Staleness; MERGE; Meta semantic ID stability case study.
 
-**Потенциальный вклад.** Практический protocol для semantic ID design под latency constraints.
+## 3. Variable-length SID under a fixed latency budget
 
-## 4. Semantic ID staleness in collaborative spaces
+**Вопрос.** Как распределять длину semantic ID между head, torso и tail items, если inference budget ограничен средним числом generated tokens?
 
-**Вопрос.** Как быстро устаревают semantic IDs, если они построены по collaborative signals, и можно ли обновлять их локально без полной переиндексации?
+**Мотивация.** Variable-Length Semantic IDs, VarLenRec, CapsID и IntRR сходятся в одном: fixed-length SID плохо использует capacity. Popular items часто можно кодировать короче, tail items требуют более детальной семантики.
 
-**Мотивация.** Content-based SIDs стабильнее, но хуже отражают behavior; collaborative SIDs релевантнее, но стареют при изменении user-item interactions.
+**Идея.** Сравнить три стратегии length allocation: popularity prior, uncertainty/density prior, learned soft length controller. Ввести constraint на среднюю длину и измерять accuracy-efficiency Pareto.
 
-**Идея метода.** Разделить code на stable content prefix и adaptive collaborative suffix. Prefix обновляется редко, suffix - часто и локально. Добавить staleness detector, который переassign'ит только items с большим behavioral shift.
+**Эксперимент.** Amazon Beauty/Sports/Toys, Yelp. Baselines: fixed RQ-VAE, VarLen heuristic, CapsID-like soft routing approximation, SemanticBPE/post-merge.
 
-**Эксперимент.** Rolling temporal splits. Метрики: downstream quality, number of reassigned items, prefix/suffix drift, retraining cost. Baselines: static SID, full retrain SID, content-only SID.
+**Потенциальный вклад.** Практическая recipe: какой length policy выбирать при заданном latency budget и long-tail profile.
 
-**Потенциальный вклад.** Hybrid lifecycle design для semantic IDs, который балансирует freshness и serving stability.
+**Ключевые источники.** Learning Variable-Length Tokenization; CapsID; Variable-Length Semantic IDs; IntRR.
 
-## 5. Behavior-aware contrastive tokenization beyond instance discrimination
+## 4. Latent-conditioned decoding trees for SID expressiveness
 
-**Вопрос.** Можно ли улучшить CoST-like contrastive tokenization, если positives/negatives выбирать по user behavior, а не только по instance identity?
+**Вопрос.** Ограничивает ли autoregressive SID tree способность модели различать user-specific preferences между близкими leaves?
 
-**Мотивация.** Instance discrimination заставляет каждый item отличаться от других batch items, но в recommendation похожие substitutes или complements не всегда должны разъезжаться.
+**Мотивация.** Latte показывает expressiveness limit: близкие leaves в decoding tree получают скоррелированные probabilities. Это может быть фундаментальным bottleneck не tokenizer'а, а factorization.
 
-**Идея метода.** Построить contrastive objective с несколькими типами positives: same category, co-click substitutes, co-purchase complements, same session intent. Negatives выбирать hard, но избегать false negatives.
+**Идея.** Сравнить способы ослабить tree-induced coupling: latent token before SID, multiple valid SID paths, order-agnostic generation, parallel long SID generation, stochastic path augmentation.
 
-**Эксперимент.** Сравнить MSE RQ-VAE, CoST, behavior-aware CoST. Метрики: Recall/NDCG, neighborhood preservation, category/substitute/complement retrieval, false-negative sensitivity.
+**Эксперимент.** Синтетический benchmark с контролируемыми substitute/complement pairs плюс real datasets. Метрики: pairwise preference separability, tree-distance/probability correlation, Recall/NDCG, beam efficiency.
 
-**Потенциальный вклад.** Retrieval-aware tokenizer objective, который лучше соответствует recommendation semantics.
+**Потенциальный вклад.** Теоретически и эмпирически чистая работа про то, когда SID tree помогает, а когда связывает руки generator'у.
 
-## 6. Multi-identifier training without multi-identifier serving
+**Ключевые источники.** Expressiveness Limits/Latte; SETRec; RPG; TrieRec.
 
-**Вопрос.** Насколько можно улучшить generative recommender, используя несколько identifiers на item только во время pretraining, но оставляя один canonical ID на inference?
+## 5. Discriminative-to-generative tokenizer distillation
 
-**Мотивация.** MTGRec показывает ценность multi-identifier augmentation. Остается пространство для более простых и более контролируемых variants.
+**Вопрос.** Можно ли построить SID tokenizer, который наследует decision boundary сильного ranker'а, а не только content/collaborative embedding geometry?
 
-**Идея метода.** Сравнить разные источники identifier variants: adjacent tokenizer checkpoints, stochastic quantization, dropout over code levels, semantic paraphrases, content-vs-collaborative tokenizers. На inference выбрать canonical tokenizer.
+**Мотивация.** "Discrimination Is Generation" и UniRec двигают мысль, что retrieval и ranking можно связать через tokenizer. Это особенно ценно, если в компании уже есть сильный ranker, но нужен generative retrieval interface.
 
-**Эксперимент.** Pretraining/fine-tuning setup на Amazon datasets. Измерять scale behavior при росте transformer layers, long-tail gains, robustness к tokenizer noise.
+**Идея.** Distill ranker logits/cross features into tokenizer assignment: items, которые ranker различает в данном user/context, не должны схлопываться в один SID; items с похожей ranker response могут share prefix.
 
-**Потенциальный вклад.** Четкий ablation study multi-identifier augmentation с practical recipe.
+**Эксперимент.** Обучить SASRec/DeepFM-like ranker, затем SID tokenizer с ranker-informed contrastive/assignment loss. Сравнить с RQ-VAE, CoST, DIG-style end-to-end.
 
-## 7. Order-robust semantic IDs for autoregressive decoding
+**Потенциальный вклад.** Мост между production discriminative stack и generative retrieval без полного отказа от существующего ranker'а.
 
-**Вопрос.** Должен ли порядок токенов semantic ID всегда идти coarse-to-fine, или можно сделать generation order adaptive/order-agnostic?
+**Ключевые источники.** Discrimination Is Generation; UniRec; RecoChain; SID-Coord.
 
-**Мотивация.** Coarse-to-fine естественен для hierarchy, но autoregressive model может ошибиться на раннем coarse token и заблокировать correct item. Другой порядок может быть устойчивее.
+## 6. Grounded initialization for new SID vocabulary tokens
 
-**Идея метода.** Обучить несколько generation orders: coarse-to-fine, fine-to-coarse, popularity-first, uncertainty-first, random-order with permutation objective. Добавить constrained decoding, который поддерживает множество валидных permutations.
+**Вопрос.** Насколько initialization новых SID tokens в pretrained LM влияет на sample efficiency, valid generation и semantic grounding?
 
-**Эксперимент.** Сравнить error propagation, prefix accuracy, final item Recall, beam efficiency. Отдельно оценить head/tail и dense/sparse catalog regions.
+**Мотивация.** GTI показывает, что mean initialization новых vocabulary tokens может загонять SID tokens в degenerate subspace. SIDReasoner и GRLM отдельно показывают, что SID-language alignment становится bottleneck для LLM-based recommenders.
 
-**Потенциальный вклад.** Новое понимание autoregressive factorization для semantic IDs.
+**Идея.** Сравнить initialization schemes: random, mean vocabulary, content-title grounding, category grounding, neighbor-contrastive grounding, prefix-aware grounding.
 
-## 8. Semantic ID diagnostics benchmark
+**Эксперимент.** T5/Qwen-style backbone, SID vocabulary от RQ-VAE/CoST. Low-data regimes: 1%, 5%, 10%, 100%. Метрики: Recall/NDCG, valid SID rate, convergence speed, SID-to-text probing accuracy.
 
-**Вопрос.** Какие tokenizer diagnostics предсказывают downstream recommendation quality до обучения дорогого recommender?
+**Потенциальный вклад.** Небольшая, хорошо изолированная работа про bottleneck, который легко упускают в LLM-GR papers.
 
-**Мотивация.** Сейчас tokenizer часто оценивают reconstruction loss и downstream NDCG. Между ними нужен дешевый набор proxy metrics.
+**Ключевые источники.** Grounded Token Initialization; SIDReasoner; GRLM/TID; STORE.
 
-**Идея метода.** Собрать benchmark метрик: code utilization, entropy, collision purity, prefix mutual information with categories, behavioral neighborhood preservation, tail sharing, temporal drift. Проверить correlation с downstream Recall/NDCG на разных tokenizer'ах.
+## 7. Domain-aware semantic codebooks
 
-**Эксперимент.** Обучить family tokenizer variants на нескольких datasets. Для каждого посчитать diagnostics и downstream quality. Построить predictive model или ranking of diagnostics.
+**Вопрос.** Какие domain constraints должны быть встроены в SID/codebook, а какие лучше оставить как обычные features?
 
-**Потенциальный вклад.** Практический evaluation suite для semantic ID research.
+**Мотивация.** Pro-GEO показывает пользу geographic proximity для local services, CARD -- non-uniform visual quantization, GRACE/UniRec -- attribute/CoT chains. Значит, "universal" SID может быть слабее domain-aware identifier.
 
-## 9. Hybrid semantic-hash identifiers for cold-start and tail items
+**Идея.** Создать framework для domain constraints в tokenizer: geo distance, visual similarity, taxonomy/category, seller/brand, temporal freshness. Сравнить feature-as-input vs feature-as-identifier-token.
 
-**Вопрос.** Можно ли объединить semantic IDs и hash IDs так, чтобы semantic sharing помогал tail/cold-start, а hash component сохранял individuality popular items?
+**Эксперимент.** POI/local dataset для geography, Amazon для visual/category/brand, MIND для news freshness. Метрики: Recall/NDCG, cold-start, domain-specific validity, code utilization.
 
-**Мотивация.** Чистые semantic IDs могут коллидировать там, где нужна точная item identity. Чистый hashing не переносит knowledge между похожими items.
+**Потенциальный вклад.** Практическая карта: когда domain semantics нужно кодировать в identifier path.
 
-**Идея метода.** Identifier состоит из semantic prefix и learned/hash suffix. Для head items suffix длиннее или точнее, для tail items больше reliance на semantic prefix. Length/suffix allocation зависит от popularity и ambiguity.
+**Ключевые источники.** Pro-GEO; CARD; GRACE; UniRec; HiD-VAE.
 
-**Эксперимент.** Cold-start split и long-tail split. Baselines: random hash, semantic-only, ID-only. Метрики: tail Recall, head precision, collision harmfulness, embedding stability.
+## 8. Qualification-aware collision taxonomy
 
-**Потенциальный вклад.** Простая production-friendly схема с понятным trade-off между sharing и identity.
+**Вопрос.** Какие collision pairs вредны, а какие дают полезное sharing между похожими items?
 
-## 10. Tokenization for multi-objective recommendation: relevance, diversity, novelty
+**Мотивация.** QuaSID и AdaSID показывают, что treating collisions equally слишком грубо. Но нужен reproducible public taxonomy, иначе collision handling остается industrial black box.
 
-**Вопрос.** Можно ли сделать semantic ID tokenizer, который помогает не только accuracy, но и diversity/novelty/calibration?
+**Идея.** Классифицировать collisions: substitutes, complements, category-only, popularity-dominated, false semantic, temporal/freshness collision. Добавить loss, который штрафует только harmful collisions.
 
-**Мотивация.** Generative recommenders часто оптимизируют next-item accuracy. Но структура token space может усиливать или ослаблять diversity выдачи.
+**Эксперимент.** Использовать co-click/co-purchase graph, taxonomy и embedding similarity. Отдельно оценить head/tail, substitute/complement retrieval и diversity.
 
-**Идея метода.** Добавить tokenizer regularization, которая контролирует distribution generated prefixes: не схлопывать все в популярные clusters, сохранять category coverage, novelty buckets или creator diversity.
+**Потенциальный вклад.** Более точная диагностика tokenizer quality, чем raw collision rate.
 
-**Эксперимент.** Sequence recommendation с reranking-free generation. Метрики: Recall/NDCG плюс coverage, intra-list diversity, novelty, popularity bias. Проверить, можно ли получить diversity без отдельного reranker.
+**Ключевые источники.** QuaSID; AdaSID; CRAB; FORGE.
 
-**Потенциальный вклад.** Связь semantic ID design с responsible/diverse recommendation.
+## 9. Canonical-plus-personalized semantic IDs
 
-## 11. LLM-native textual identifiers vs discrete semantic IDs
+**Вопрос.** Можно ли получить выгоду personalized/context-aware tokenization, сохранив canonical item index для serving/cache/trie?
 
-**Вопрос.** Когда structured textual identifiers лучше discrete SIDs, а когда компактные SIDs выигрывают?
+**Мотивация.** Pctx и PIT показывают, что fixed SID mapping игнорирует user intent: один item может быть близок к разным clusters для разных пользователей. Но полностью personalized IDs плохо deployable.
 
-**Мотивация.** GRLM/TID-like подходи используют native language vocabulary LLM, а TIGER-like подходи вводят discrete codes. Сравнения часто не изолируют факторы: length, hallucination, grounding, cold-start, domain transfer.
+**Идея.** Разделить identifier на canonical semantic prefix и personalized/context suffix. Prefix нужен для trie/constrained decoding/cache, suffix используется для local reranking или candidate disambiguation.
 
-**Идея метода.** Построить unified benchmark: один и тот же backbone, одинаковые data splits, несколько identifier types: title, generated TID, RQ-VAE SID, behavior-aware SID, hybrid TID+SID.
+**Эксперимент.** Сравнить static SID, fully personalized SID, canonical+personalized hybrid. Метрики: Recall/NDCG, number of codes per item, cache-hit proxy, valid generation, latency proxy.
 
-**Эксперимент.** In-domain, cross-domain, cold-start. Метрики: recommendation quality, valid generation rate, grounding accuracy, sequence length, decoding latency.
+**Потенциальный вклад.** Deployable compromise между personalization и stable indexing.
 
-**Потенциальный вклад.** Практическая карта выбора identifier type для LLM-based generative recommendation.
+**Ключевые источники.** Pctx; PIT; SETRec; Latte.
 
-## 12. Local re-indexing for streaming catalogs
+## 10. Tokenizer diagnostics that predict downstream quality
 
-**Вопрос.** Можно ли поддерживать semantic ID index в streaming catalog без полного retraining и без сильного degradation?
+**Вопрос.** Какие дешевые tokenizer metrics предсказывают downstream GR quality до дорогого обучения generator'а?
 
-**Мотивация.** Production catalogs постоянно меняются. MERGE-like systems поднимают вопрос dynamic indexing, но нужен воспроизводимый public protocol.
+**Мотивация.** GRID/FORGE/R3-VAE/CRAB показывают, что reconstruction loss недостаточен. Нужны proxy metrics, которые позволяют быстро отсеивать плохие tokenizers.
 
-**Идея метода.** Разработать local re-indexing algorithm: новые items назначаются существующим clusters, создают local split/merge только при threshold violation, а affected recommender components дообучаются локально.
+**Идея.** Собрать diagnostics: code utilization, entropy, collision purity, item-level collision inflation, prefix mutual information, behavioral neighborhood preservation, tail sharing, tree balance, drift.
 
-**Эксперимент.** Simulated streaming на temporal splits: items приходят батчами, часть исчезает. Сравнить full retrain, frozen index, local re-index. Метрики: quality, number of changed codes, compute cost, latency proxy.
+**Эксперимент.** Обучить family tokenizer variants и проверить correlation с downstream Recall/NDCG/valid rate на нескольких datasets.
 
-**Потенциальный вклад.** Public benchmark и baseline для streaming semantic ID lifecycle.
+**Потенциальный вклад.** Benchmark suite и practical checklist для SID tokenizer papers.
 
-## 13. Transferable semantic ID tokenizer with domain-incremental adaptation
+**Ключевые источники.** GRID handbook; FORGE; R3-VAE; CRAB; How Reliable Are SID Tokenizer Comparisons.
 
-**Вопрос.** Можно ли добавлять новый домен в universal semantic-ID tokenizer без ухудшения уже выученных доменов и без полной переиндексации?
+## 11. Hybrid semantic/hash/attribute identifiers
 
-**Мотивация.** UTGRec показывает ценность transferable tokenization, но открытым остается lifecycle-вопрос: что происходит, когда домены добавляются последовательно, а не доступны все сразу при pretraining.
+**Вопрос.** Можно ли совместить semantic sharing, exact identity memorization и interpretable attributes в одном deployable identifier?
 
-**Идея метода.** Использовать frozen shared codebook и domain adapters/projection matrices. Для нового домена обновлять только адаптеры и небольшую часть leaf codebook, добавляя regularization на сохранение старых item-code distributions.
+**Мотивация.** Semantic-only IDs помогают cold-start/tail, но могут терять individuality head items. Hash IDs дают identity, но не дают transfer. UniRec добавляет Chain-of-Attribute, а Best-of-Two-Worlds harmonizes semantic and hash IDs.
 
-**Эксперимент.** Amazon Reviews 2023: pretrain на 2-3 доменах, добавлять следующие домены по одному. Метрики: target-domain Recall/NDCG, backward transfer, forgetting по старым доменам, code drift, code utilization.
+**Идея.** Identifier path: attribute/category prefix, semantic middle levels, hash or learned suffix. Длина suffix зависит от popularity и ambiguity.
 
-**Потенциальный вклад.** Более реалистичный protocol для universal semantic IDs, где каталог растет по вертикалям.
+**Эксперимент.** Head/tail/cold split. Baselines: random hash, semantic-only, hash+semantic dual branch, attribute+SID. Метрики: head precision, tail Recall, collision harmfulness, interpretability.
 
-## 14. Personalized semantic IDs with canonical fallback for serving
+**Потенциальный вклад.** Production-friendly SID design для систем, где нельзя жертвовать exact identity популярных объектов.
 
-**Вопрос.** Можно ли получить выгоду Pctx-style personalized tokenization, не потеряв production-friendly canonical item index?
+**Ключевые источники.** Best of Two Worlds; UniRec; HiD-VAE; Better Generalization with Semantic IDs.
 
-**Мотивация.** Personalized IDs лучше отражают пользовательский intent, но ломают cache, trie и стабильный item-to-code mapping.
+## 12. Search-recommendation shared identifiers
 
-**Идея метода.** Представить item как canonical semantic prefix плюс personalized suffix или context delta. Retrieval идет по canonical prefix, а personalized suffix используется для reranking/generation внутри shortlist.
+**Вопрос.** Как должен выглядеть SID, если один generative model обслуживает и query search, и recommendation?
 
-**Эксперимент.** Amazon/MovieLens/Yelp. Сравнить static SID, fully personalized SID, canonical+personalized hybrid. Метрики: Recall/NDCG, valid generation rate, cache hit proxy, number of unique codes per item, latency proxy.
+**Мотивация.** Spotify SID for joint search/recommendation, GenSAR, UniSearch и bridging search+recommendation показывают, что shared model возможна, но task objectives конфликтуют: search требует query grounding, rec требует behavior prior.
 
-**Потенциальный вклад.** Компромисс между personalization и deployability, которого сейчас не хватает dynamic SID работам.
+**Идея.** Identifier с shared semantic/collaborative prefix и task-specific suffix. Для search suffix оптимизируется на query intent, для rec -- на sequential behavior.
 
-## 15. Trie topology diagnostics for semantic ID quality
+**Эксперимент.** Dataset с queries и interactions или synthetic query generation поверх Amazon/MIND. Метрики: search Recall/NDCG, rec Recall/NDCG, task interference, generated invalid IDs.
 
-**Вопрос.** Какие свойства prefix tree, индуцированного semantic IDs, предсказывают downstream GR quality?
+**Потенциальный вклад.** Clear ablation для unified generative retrieval, где task sharing проверяется через identifier design.
 
-**Мотивация.** TrieRec показывает, что topology важна для Transformer'а. Но tokenizer research редко оценивает качество дерева само по себе.
+**Ключевые источники.** Semantic IDs for Joint Generative Search and Recommendation; GenSAR; Bridging Search and Recommendation; UniSearch.
 
-**Идея метода.** Ввести набор trie diagnostics: depth balance, sibling semantic purity, prefix popularity skew, subtree entropy, behavioral consistency within subtree, collision concentration. Проверить корреляцию с GR quality до дорогого обучения recommender.
+## 13. SID-aware long-history memory
 
-**Эксперимент.** Сгенерировать SIDs разными tokenizer'ами: RQ-VAE, CoST, LETTER, HiD-VAE-like supervised hierarchy, random balanced tree. Обучить одинаковый GR backbone с/без TrieRec encodings.
+**Вопрос.** Как использовать semantic ID hierarchy для ultra-long user histories без превращения sequence в тысячи tokens?
 
-**Потенциальный вклад.** Дешевые topology-aware proxy metrics для выбора tokenizer'а.
+**Мотивация.** GLASS, UxSID, ACERec и STAMP атакуют overhead длинных SID/history sequences. Пока неясно, что лучше: compress input, trim tokens, group by SID prefix или use semantic memory.
 
-## 16. Bi-level tokenizer optimization with stability constraints
+**Идея.** Memory на уровне SID groups: долгосрочная история агрегируется по semantic prefixes, а short-term history остается item-level. Target-aware gate выбирает, какие groups раскрывать в full tokens.
 
-**Вопрос.** Можно ли объединить BLOGER-style recommendation alignment с production constraint на стабильность кодов?
+**Эксперимент.** Long-sequence datasets или synthetic long histories. Baselines: truncation, SID-Tier, token trimming, long SID merger. Метрики: Recall/NDCG vs tokens processed, tail performance, latency proxy.
 
-**Мотивация.** Bi-level optimization улучшает соответствие tokenizer и generator, но может часто менять item-to-code mapping, что опасно для обновляемого каталога.
+**Потенциальный вклад.** Efficiency-focused работа для realistic user histories.
 
-**Идея метода.** Добавить upper-level stability term: tokenizer получает recommendation gradient, но code movement ограничивается prefix-preservation или edit-distance penalty относительно предыдущего checkpoint.
+**Ключевые источники.** GLASS; UxSID; ACERec; STAMP.
 
-**Эксперимент.** Rolling temporal splits. Baselines: two-stage SID, BLOGER-like bi-level, stability-only SID. Метрики: Recall/NDCG, drift rate, degradation при warm-start generator, changed-prefix percentage.
+## 14. End-to-end tokenizer optimization with anti-collapse and stability
 
-**Потенциальный вклад.** Практичный вариант end-to-end semantic IDs для систем, где переиндексация стоит дорого.
+**Вопрос.** Можно ли совместить end-to-end recommendation gradients с codebook utilization и stable item-to-code mapping?
 
-## 17. Hierarchy supervision: taxonomy tags vs behavioral hierarchy
+**Мотивация.** ETEGRec, BLOGER, DIGER и UniGRec решают objective mismatch, но end-to-end updates часто рискуют code collapse, instability и train/inference gap.
 
-**Вопрос.** Что лучше для hierarchical semantic IDs: человеческая taxonomy, LLM-generated tags или hierarchy, выученная из behavior graph?
+**Идея.** Bi-level или differentiable tokenizer с тремя regularizers: exploration/anti-collapse, recommendation alignment, prefix stability относительно previous checkpoint.
 
-**Мотивация.** HiD-VAE делает semantic path интерпретируемым через tags, но потребительские intent'ы часто не совпадают с category tree.
+**Эксперимент.** Static split плюс rolling split. Метрики: Recall/NDCG, code utilization, changed-prefix rate, train/inference mismatch, generator warm-start degradation.
 
-**Идея метода.** Сравнить три источника hierarchy supervision: catalog taxonomy, LLM tags, clusters/coarsening user-item graph. Можно также обучить hybrid hierarchy, где верхние уровни taxonomy-based, а нижние behavior-based.
+**Потенциальный вклад.** Практически безопасный вариант end-to-end SID learning.
 
-**Эксперимент.** Датасеты с metadata и interaction logs. Метрики: Recall/NDCG, interpretability via tag accuracy, collision harmfulness, diversity, subtree behavioral purity.
+**Ключевые источники.** BLOGER; DIGER; UniGRec; ETEGRec; DACT.
 
-**Потенциальный вклад.** Практический ответ на вопрос, какую иерархию должен кодировать semantic ID.
+## 15. SID subword compression: SemanticBPE, trimming and token mergers
 
-## 18. Semantic-ID token embedding alignment for small-data adaptation
+**Вопрос.** Какие SID tokens действительно нужны на input/output side, а какие можно merge/trim без потери item identity?
 
-**Вопрос.** Насколько важна инициализация embeddings новых SID tokens при адаптации LLM к generative recommendation?
+**Мотивация.** CapsID+SemanticBPE, STAMP, IntRR и ACERec показывают, что длинные или high-granularity SIDs дают capacity, но создают overhead и semantic dilution.
 
-**Мотивация.** STAR указывает на token-embedding misalignment: mean-of-vocabulary initialization может сделать новые SID tokens слишком похожими и ухудшить sample efficiency. Работа пока менее устойчива как источник, но сама проблема сильная.
+**Идея.** Изучить compression operators: adjacent SID BPE, attention-based token merger, semantic adaptive pruning, last-level trimming. Важно отдельно оценивать input compression и output decoding compression.
 
-**Идея метода.** Сравнить initialization/alignment schemes: random, mean vocabulary, title-description contrastive alignment, item-neighborhood alignment, code-prefix-aware initialization. Основной фокус -- low-data и cold-start transfer.
+**Эксперимент.** Fixed tokenizer, разные compression policies. Метрики: Recall/NDCG, valid generation, collision inflation, average generated tokens, latency proxy.
 
-**Эксперимент.** Взять небольшой GR setup с T5/Qwen backbone и semantic IDs от RQ-VAE/LETTER. Ограничить training data долями 1%, 5%, 10%, 100%. Метрики: Recall/NDCG, token embedding diversity, valid generation rate, convergence speed.
+**Потенциальный вклад.** Простая engineering paper с сильной практической ценностью: меньше tokens при том же item-level quality.
 
-**Потенциальный вклад.** Недорогая и хорошо изолированная работа про то, как вводить SID vocabulary в pretrained LM без потери семантики.
+**Ключевые источники.** CapsID; STAMP; IntRR; ACERec; RPG.
+
+## 16. Codebook rebalancing for popularity bias and fairness
+
+**Вопрос.** Можно ли снижать popularity bias на уровне SID codebook, а не только reranker loss?
+
+**Мотивация.** CRAB показывает, что tokenization imbalance сам усиливает popularity bias. Это открывает отдельную линию: debiasing через restructuring identifier space.
+
+**Идея.** Post-hoc или online codebook rebalance: split over-popular tokens, merge underused semantically close subtrees, regularize subtree exposure. Сохранять semantic consistency и минимизировать mapping churn.
+
+**Эксперимент.** Long-tail splits. Метрики: Recall/NDCG, tail coverage, popularity exposure, head degradation, code churn.
+
+**Потенциальный вклад.** Fairness/bias angle внутри SID literature, где сейчас много accuracy-only работ.
+
+**Ключевые источники.** CRAB; AKT-Rec; variable-length SID papers; FORGE.
+
+## 17. Hierarchy supervision: taxonomy, behavior graph or LLM tags?
+
+**Вопрос.** Что лучше задает hierarchy для semantic IDs: catalog taxonomy, behavior co-occurrence graph или LLM-generated attributes?
+
+**Мотивация.** HiD-VAE, CAT-ID2, CoFiRec и UniRec используют разные источники hierarchy. Но taxonomy часто отражает merchant organization, а behavior graph -- реальные intents.
+
+**Идея.** Единый tokenizer, где supervision source меняется: taxonomy path, LLM tags, graph coarsening, hybrid taxonomy-prefix plus behavior-suffix.
+
+**Эксперимент.** Amazon/MIND/POI datasets с metadata. Метрики: Recall/NDCG, interpretability, subtree behavioral purity, collision harmfulness, diversity.
+
+**Потенциальный вклад.** Ответ на базовый design question: какую иерархию semantic ID должен кодировать.
+
+**Ключевые источники.** HiD-VAE; CAT-ID2; CoFiRec; UniRec.
+
+## 18. Continuous generative recommenders as a control arm for SID papers
+
+**Вопрос.** Когда discrete SID generation действительно лучше continuous diffusion/embedding generation с ANN retrieval?
+
+**Мотивация.** DreamRec, DimeRec и Prompt-to-Slate обходят discrete identifiers через continuous generation. Для SID papers это важный control: если дискретизация дает overhead и collisions, нужен честный baseline.
+
+**Идея.** Unified benchmark: same encoder/history model, two output heads -- SID generation and continuous next-interest vector. Сравнить quality, latency, update cost, cold-start и validity.
+
+**Эксперимент.** Sequential recommendation datasets. Добавить controlled catalog churn: для SID нужна reindexing, для continuous нужен ANN update.
+
+**Потенциальный вклад.** Честная граница применимости SID-based GR.
+
+**Ключевые источники.** DreamRec; DimeRec; Prompt-to-Slate; HSTU/action-native generative recommenders.
+
+## 19. Multi-identifier training with single-identifier serving
+
+**Вопрос.** Можно ли получить robustness от нескольких identifiers на item при обучении, но оставить один canonical SID на inference?
+
+**Мотивация.** MTGRec показывает ценность multi-identifier pretraining, а personalized/variable tokenizer papers показывают, что один SID не всегда достаточен. Но serving требует canonical mapping.
+
+**Идея.** Training augmentation: adjacent tokenizer checkpoints, stochastic quantization, multiple hierarchy sources, content-vs-collaborative SIDs. Serving: distill into one canonical tokenizer or choose canonical path by validation stability.
+
+**Эксперимент.** Compare no augmentation, multi-ID training, multi-ID serving, distilled single-ID serving. Метрики: Recall/NDCG, robustness to tokenizer noise, drift, inference cost.
+
+**Потенциальный вклад.** Практичный compromise между richer supervision и простым serving.
+
+**Ключевые источники.** MTGRec; Pctx; PIT; SETRec.
+
+## 20. Open SID lifecycle benchmark
+
+**Вопрос.** Как сравнивать SID methods не только по static offline quality, а по полному lifecycle: build, update, decode, migrate, rollback?
+
+**Мотивация.** Industrial papers постоянно упоминают latency, catalog churn, code collisions, index rebuild и online A/B, но public benchmarks редко это моделируют.
+
+**Идея.** Benchmark spec: temporal catalog snapshots, item additions/deletions, content edits, interaction drift, fixed training budget, fixed decoding budget. Метрики включают quality, build time, reindex ratio, changed-prefix ratio, collision inflation, serving memory, valid generation.
+
+**Эксперимент.** Начать с Amazon Reviews 2023 temporal snapshots и MIND news freshness, затем добавить Yelp/POI.
+
+**Потенциальный вклад.** Инфраструктурный paper/toolkit. Хорошо сочетается с GRID/FORGE и может стать базой для нескольких method papers.
+
+**Ключевые источники.** GRID handbook; FORGE; MERGE; DACT; How Reliable Are SID Tokenizer Comparisons.
+
+## Приоритет на ближайшие 3 месяца
+
+Если нужно выбрать не 20, а 5 самых сильных и реалистичных направлений:
+
+1. **Collision-aware evaluation benchmark** -- высокая новизна, легко воспроизводимо, актуально после майской работы 2026.
+2. **Stability-aware continual tokenization** -- production-relevant, есть много свежих anchors, можно делать на temporal splits.
+3. **Variable-length SID under latency budget** -- активная тема, понятный accuracy-efficiency протокол.
+4. **Grounded initialization for SID vocabulary** -- изолированный bottleneck для LLM-GR, дешевые эксперименты.
+5. **Tokenizer diagnostics that predict downstream quality** -- полезная инфраструктура, хорошо расширяет GRID/FORGE.

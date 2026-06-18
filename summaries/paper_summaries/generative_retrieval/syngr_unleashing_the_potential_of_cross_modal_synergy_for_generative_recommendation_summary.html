@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SynGR: Unleashing the Potential of Cross-Modal Synergy for Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.18920">SynGR: Unleashing the Potential of Cross-Modal Synergy for Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-syngr_unleashing_the_potential_of_cross_modal_synergy_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Wei Chen, Xingyu Guo, Shuang Li, Fuwei Zhang, Meng Yuan, Jing Fan, Zhao Zhang, Deqing Wang, Fuzhen Zhuang.</p>
+<p><strong>Аффилиации:</strong> Beihang University.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.18920">arXiv 2605.18920</a> · дата metadata: 2026-05-18.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/gxingyu/SynGR">https://github.com/gxingyu/SynGR</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: SynGR утверждает, что multimodal GR должен использовать synergy между modalities, а не только alignment/shared space.</li>
+<li>Алгоритм: Framework ограничивает overreliance на dominant modalities и поощряет cross-modal dependencies, которые кодируют emergent item properties.</li>
+<li>Evidence: На трех Amazon benchmarks SynGR превосходит baselines.</li>
+<li>Ограничение: Synergy сложно отделить от обычного fusion gain; нужны ablations по missing/dominant modalities.</li>
+<li>Итог: Полезна для multimodal catalogs: item meaning может возникать из комбинации image+text, а не из каждой modality отдельно.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>However, existing approaches largely rely on alignment-centric fusion and underexplore synergistic information across modalities.</td></tr>
+<tr><th>Предложение авторов</th><td>To address this limitation, we propose SynGR, a synergistic generative recommendation framework that explicitly encourages the exploitation of cross-modal dependencies during generation.</td></tr>
+<tr><th>Главный evidence claim</th><td>However, existing approaches largely rely on alignment-centric fusion and underexplore synergistic information across modalities.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>contrastive, masking</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Amazon</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, HR</td></tr>
+<tr><th>Baselines</th><td>TIGER, LETTER, SASRec, BERT4Rec, P5, GRU4Rec, RQ-VAE, LC-Rec</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Partial Information Decomposition Framework:</span> To analyze how different modalities in the user history contribute to the prediction of Y, we use the Partial Information Decomposition (PID) framework kolchinsky2022novel,dufumieralign to decompose the multivariate mutual information I(X v, X t; Y) into three distinct types:</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Partial Information Decomposition Framework:</span> (1) Uniqueness ( U v, U t ): This represents information provided exclusively by one modality stream across the history. For instance, U t captures purely textual patterns in user behavior that help predict the next item without needing visual cues. (2) Redundancy ( R ): This refers to the task-relevant information shared between the visual and textual...</li>
+<li><strong>Learning signal.</strong> <span class="anchor">Framework Overview:</span> Motivated by the theoretical analysis in Section SI, we propose SynGR, illustrated in Figure model, a framework designed to explicitly capture cross-modal semantics.</li>
+<li><strong>Inference / deployment path.</strong> <span class="anchor">Multimodal Tokenization via RQ-VAE:</span> To bridge the gap between continuous multimodal representations and the discrete input space required by generative models, we adopt a Residual-Quantized Variational AutoEncoder (RQ-VAE) lee2022autoregressive to discretize item content. For each item i, continuous embeddings from different modalities are first extracted using frozen encoders, such as LLaMA...</li>
+<li><strong>Проверяемая деталь.</strong> <span class="anchor">Multimodal Tokenization via RQ-VAE:</span> To achieve high-fidelity discretization, each latent vector z m is encoded through a D -level residual quantization process. Specifically, let C d = e k d k=1 K denotes the codebook at quantization depth d 1,, D, where K is the codebook size. At each depth, the residual is quantized by selecting the nearest codeword, and the residual is updated...</li>
+<li><strong>Проверяемая деталь.</strong> <span class="anchor">Multimodal Tokenization via RQ-VAE:</span> в source здесь находится широкая LaTeX-таблица; сырая таблица удалена из HTML summary, чтобы не ломать чтение.</li>
+<li><strong>Проверяемая деталь.</strong> <span class="anchor">Model Optimization:</span> SynGR is optimized via a unified objective coupling autoregressive generation with synergistic regularization. Specifically, we minimize the negative log-likelihood (NLL) lastras2019information for next-token prediction across the tripartite views H ori, H mask, H uni (Sec. ):</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> contrastive, masking.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>( X_ v, X_ t) X Transformer Z_ syn Predictor Y.</code></li>
+<li><code>_ I( Z_ syn; Y) s.t. _ _m \ v, t\ I( Z_ syn; Z_m),</code></li>
+<li><code>split c_m,d &amp;= arg\,min_k \| r_m,d-1 - e_k^d \|_2^2, \\ r_m,d &amp;= r_m,d-1 - e_c_m,d^d, split</code></li>
+<li><code>_i = 1M N _m=1^M _j=1^N A^(m)_j,i.</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>(a) Illustration of cross-modal information decomposition, where $ S, R, U_ t$ and $ U_ v$ denote synergistic, redundant, and modality-specific unique information, respectively. (b) Comparison of synergistic components estimated using a normalized PID-inspired performance decomposition. (c) The distribution of visual and textual attention across datasets.</li>
+<li>Overview of the proposed SynGR framework. (1) In the tokenization phase, continuous textual and visual features are discretized into a unified dictionary through respective quantizers. (2) The generation phase begins with saliency diagnosis, where a transformer encoder extracts attention maps to identify dominant modalities for adaptive top-r masking....</li>
+<li>Overall performance comparison across benchmark datasets. Best and second-best results are indicated in bold and underlined fonts respectively. Red font denotes the relative improvement of SynGR over the strongest baseline.</li>
+<li>The statistical overview of the three datasets. The "Avg. len.” represents the average length of item sequences.</li>
+<li>Efficiency and convergence analysis of SynGR and MACRec on two datasets. All experiments are conducted on a server equipped with six NVIDIA GeForce RTX 4090 GPUs.</li>
+<li>The performances (HR@10, NDCG@10) of our SynGR under varying parameters on different datasets.</li>
+<li>Ablation study of SynGR on Arts and Games datasets.</li>
+<li>Qualitative comparison between SynGR and MACRec. Given the same user history, SynGR ranks the ground-truth (GT) item at the top position, whereas MACRec ranks it only third, favoring items with coarse similarity to football- or jersey-related concepts.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Amazon</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, HR</td></tr>
+<tr><th>Baselines</th><td>TIGER, LETTER, SASRec, BERT4Rec, P5, GRU4Rec, RQ-VAE, LC-Rec</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На трех Amazon benchmarks SynGR превосходит baselines.</li>
+<li>Theoretical Analysis: In this section, we provide a formal information-theoretic analysis of multimodal GR. Specifically, we analyze why alignment-based methods fall short in capturing cross-modal interactions and formalize how synergistic information can be effectively exploited for discrete token generation. figure* [t] 0.pt 0.pt fig/model.pdf Overview of the proposed SynGR...</li>
+<li>Experiment: In this section, we empirically evaluate the SynGR frame- work through experiments designed to address five key research questions: RQ1: How does SynGR compare against state-of-the-art methods? RQ2: What are the training and inference efficiencies of SynGR? RQ3: How do different modules affect the performance of SynGR? RQ4: How do key parameters influence...</li>
+<li>Experimental Setup: Datasets. We evaluate SynGR on three representative categories from the Amazon Product Reviews dataset ni2019justifying: Arts, Games, and Instruments. Detailed statistics for these datasets are provided in Table data.</li>
+<li>Experimental Setup: Compared Baselines. We compare SynGR against three categories of baselines: (i) Sequential Recommendation: BERT4Rec sun2019bert4rec, SASRec kang2018self, FDSA zhang2019feature, S 3 -Rec zhou2020s3, and P5-CID geng2022recommendation, hua2023index; (ii) Multimodal Sequential Recommendation: MISSRec wang2023missrec; (iii) Generative Recommendation: VIP5...</li>
+<li>However, existing approaches largely rely on alignment-centric fusion and underexplore synergistic information across modalities.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: SynGR утверждает, что multimodal GR должен использовать synergy между modalities, а не только alignment/shared space.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Framework ограничивает overreliance на dominant modalities и поощряет cross-modal dependencies, которые кодируют emergent item properties.</li>
+<li><strong>Empirical:</strong> Evidence: На трех Amazon benchmarks SynGR превосходит baselines.</li>
+<li><strong>Practical:</strong> Ограничение: Synergy сложно отделить от обычного fusion gain; нужны ablations по missing/dominant modalities.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Amazon.</li>
+<li>Метрики: Recall, NDCG, HR.</li>
+<li>Baselines и parity settings: TIGER, LETTER, SASRec, BERT4Rec, P5, GRU4Rec, RQ-VAE, LC-Rec.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Полезна для multimodal catalogs: item meaning может возникать из комбинации image+text, а не из каждой modality отдельно.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: SynGR утверждает, что multimodal GR должен использовать synergy между modalities, а не только alignment/shared space.</li>
+<li>Алгоритм: Framework ограничивает overreliance на dominant modalities и поощряет cross-modal dependencies, которые кодируют emergent item properties.</li>
+<li>Evidence: На трех Amazon benchmarks SynGR превосходит baselines.</li>
+<li>Ограничение: Synergy сложно отделить от обычного fusion gain; нужны ablations по missing/dominant modalities.</li>
+<li>Итог: Полезна для multimodal catalogs: item meaning может возникать из комбинации image+text, а не из каждой modality отдельно.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>Recent studies liu2024mmgrec,wang2025generative in GR have begun to incorporate multimodal signals, such as visual and textual information, to provide richer item evidence and improve the generation of discrete semantic identifiers. However, the practical...</td></tr>
+<tr><td>Related Work</td><td>Sequential Recommendation. Sequential recommendation boka2024survey aims to capture the evolution of user interests from historical interaction logs. Early research predominantly focused on temporal dependencies using Recurrent Neural Networks (RNNs)...</td></tr>
+<tr><td>Theoretical Analysis</td><td>In this section, we provide a formal information-theoretic analysis of multimodal GR. Specifically, we analyze why alignment-based methods fall short in capturing cross-modal interactions and formalize how synergistic information can be effectively exploited...</td></tr>
+<tr><td>Problem Setup</td><td> setup Let H = x 1, x 2,, x L denote a user’s historical interaction sequence of length L. Each item is associated with visual tokens x v,i and textual tokens x t,i. In GR, the multimodal histories X v = x v,1,, x v,L and X t = x t,1,, x t,L...</td></tr>
+<tr><td>Partial Information Decomposition Framework</td><td> To analyze how different modalities in the user history contribute to the prediction of Y, we use the Partial Information Decomposition (PID) framework kolchinsky2022novel,dufumieralign to decompose the multivariate mutual information I(X v, X t;...</td></tr>
+<tr><td>Isolate Synergistic Information</td><td>To bridge the gap identified by PID, we propose a theoretical framework to isolate the synergistic component S by constructing a synergy-preserving representation. We begin by defining a transformation family that acts on the multimodal input (X v, X t )....</td></tr>
+<tr><td>Framework Overview</td><td>Motivated by the theoretical analysis in Section SI, we propose SynGR, illustrated in Figure model, a framework designed to explicitly capture cross-modal semantics.</td></tr>
+<tr><td>Multimodal Tokenization via RQ-VAE</td><td>To bridge the gap between continuous multimodal representations and the discrete input space required by generative models, we adopt a Residual-Quantized Variational AutoEncoder (RQ-VAE) lee2022autoregressive to discretize item content. For each item i,...</td></tr>
+<tr><td>Unleashing Synergistic Information</td><td> synergy Building upon the generative identifiers, this section describes how the proposed synergy isolation framework is instantiated in practice. To realize the synergy-preserving transformation, we construct synergy-preserving views through a...</td></tr>
+<tr><td>Model Optimization</td><td>SynGR is optimized via a unified objective coupling autoregressive generation with synergistic regularization. Specifically, we minimize the negative log-likelihood (NLL) lastras2019information for next-token prediction across the tripartite views H ori, H...</td></tr>
+<tr><td>Experiment</td><td>In this section, we empirically evaluate the SynGR frame- work through experiments designed to address five key research questions: RQ1: How does SynGR compare against state-of-the-art methods? RQ2: What are the training and inference efficiencies of SynGR?...</td></tr>
+<tr><td>Experimental Setup</td><td>Datasets. We evaluate SynGR on three representative categories from the Amazon Product Reviews dataset ni2019justifying: Arts, Games, and Instruments. Detailed statistics for these datasets are provided in Table data.</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-syngr_unleashing_the_potential_of_cross_modal_synergy_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

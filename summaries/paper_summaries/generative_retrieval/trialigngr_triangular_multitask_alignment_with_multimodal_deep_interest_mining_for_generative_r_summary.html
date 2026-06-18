@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TriAlignGR: Triangular Multitask Alignment with Multimodal Deep Interest Mining for Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.05249">TriAlignGR: Triangular Multitask Alignment with Multimodal Deep Interest Mining for Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-trialigngr_triangular_multitask_alignment_with_multimodal_deep_interest_mining_for_generative_r_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Yangchen Zeng, Hao Peng, Rongfeng Guo, Zhenyu Yu, Zhiyuan Hu, Jinze Wang.</p>
+<p><strong>Аффилиации:</strong> Southeast University; Swinburne University of Technology; Tsinghua University; Shenzhen University; Fudan University; Zhejiang University.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.05249">arXiv 2605.05249</a> · дата metadata: 2026-05-05.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, alignment, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> не найдено явных repository/dataset links в arXiv source.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: TriAlignGR борется с SID Content Degradation и SID Semantic Opacity в multimodal GR.</li>
+<li>Алгоритм: CMSA добавляет VLM descriptions и multimodal embeddings в SID construction, MDIM извлекает latent user interests через CoT, TMT обучает 8 generation tasks включая visual-description-to-SID/title.</li>
+<li>Evidence: На трех Amazon benchmarks gains доходят до +13.6% HR@5 и +15.5% NDCG@5.</li>
+<li>Ограничение: Зависимость от VLM descriptions и CoT interest mining может вносить шум и bias.</li>
+<li>Итог: Полезна для multimodal SID: модель должна не только генерировать коды, но и понимать их визуально-текстовую семантику.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>Existing Semantic ID (SID) pipelines suffer from two fundamental but underexplored problems: SID Content Degradation (SCD), where cascaded encoding and residual quantization discard critical multimodal and interest-level semantics; and SID Semantic Opacity (SSO), where models autoregressively generate SID...</td></tr>
+<tr><th>Предложение авторов</th><td>We introduce TriAlignGR, a unified multitask-multimodal framework for generative recommendation that establishes two-stage multimodal semantic propagation: (i) encoding visual semantics directly into SIDs via multimodal embeddings, and (ii) enabling the model to decode these semantics through visual description tasks.</td></tr>
+<tr><th>Главный evidence claim</th><td>TriAlignGR resolves both problems through three tightly integrated components: (1)~Cross-Modal Semantic Alignment (CMSA) integrates visual content into SID construction through both VLM-generated textual descriptions and a multimodal embedding model that directly encodes image features alongside text, ensuring that...</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>cross-entropy</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>MAP, Success</td></tr>
+<tr><th>Baselines</th><td>RQ-VAE</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Method:</span> -4mm In this section, we present the TriAlignGR framework, which systematically addresses SCD and SSO through three tightly integrated components: (1) CMSA ( ) integrates visual content into SID construction through both VLM-generated textual descriptions and a multimodal embedding model that directly encodes image features, resolving...</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Residual Quantization for SID Construction:</span> We adopt a standard RQ-VAE tokenizer to quantize item embeddings e i R d into hierarchical SID tokens. The quantization iteratively assigns codebook entries: equation s i (h) = k | R i (h) - c k (h) | 2, equation where R i (1) = e i is the initial embedding and residuals are computed as R i (h+1) = R i (h) - c s i (h) (h). The final SID s i = (s i...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> cross-entropy.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>s_i^(h) = _k \| R_i^(h) - c_k^(h) \|_2,</code></li>
+<li><code>v_i^ text = V( v_i, Prompt_ align),</code></li>
+<li><code>z_i = M( Prompt_ MDIM( t_i)),</code></li>
+<li><code>L_ total = - _t T _( X, Y) D_t _h=1^H_t p_ (y_h | X, y_1,, y_h-1),</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Comparison between original GR (a) and TriAlignGR (b). Original GR suffers from SID Content Degradation and SID Semantic Opacity during cascade quantization. TriAlignGR addresses these through Multimodal Deep Interest Mining and triangular multitask alignment.</li>
+<li>Overview of the proposed TriAlignGR framework. CMSA integrates visual content through both VLM-generated textual descriptions and a multimodal embedding model (gme-Qwen2-VL) that directly encodes image features; MDIM extracts latent user interests via LLM reasoning; TMT jointly trains on eight tasks including two visual-semantic tasks that complete the...</li>
+<li>Examples of the eight task formats in TriAlignGR.</li>
+<li>Overall performance comparison on three Amazon Product Reviews datasets. Bold indicates the best performance, and underline indicates the second best. $ $ denotes the relative improvement of TriAlignGR over the best baseline.</li>
+<li>Ablation study across three datasets. Each row removes one component from the full model.</li>
+<li>Disentangling SID construction from task design. (a) Original SID + 6 text tasks; (b) TriAlignGR SID (CMSA+MDIM) + 6 text tasks; (c) Full model with 8 tasks.</li>
+<li>Impact of task combination strategies on the Beauty dataset.</li>
+<li>Performance progression as tasks are incrementally added.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>MAP, Success</td></tr>
+<tr><th>Baselines</th><td>RQ-VAE</td></tr>
+</tbody></table>
+<ul>
+<li>Алгоритм: CMSA добавляет VLM descriptions и multimodal embeddings в SID construction, MDIM извлекает latent user interests через CoT, TMT обучает 8 generation tasks включая visual-description-to-SID/title.</li>
+<li>Evidence: На трех Amazon benchmarks gains доходят до +13.6% HR@5 и +15.5% NDCG@5.</li>
+<li>Experiments: -2mm We empirically evaluate the effectiveness of TriAlignGR by answering five research questions: RQ1: How does TriAlignGR compare with state-of-the-art baselines across multiple benchmarks? RQ2: What is the individual contribution of each core component (MDIM, CMSA, eight multitask tasks)? RQ3: How much do the new visual-semantic tasks (VisDesc SID,...</li>
+<li>Experiments: в source здесь идет широкая таблица с численными HR/NDCG/Recall results. Сырая таблица не вставлена в summary; качественный вывод и headline evidence приведены в пунктах выше.</li>
+<li>TriAlignGR resolves both problems through three tightly integrated components: (1) Cross-Modal Semantic Alignment (CMSA) integrates visual content into SID construction through both VLM-generated textual descriptions and a multimodal embedding model that directly encodes image features alongside text, ensuring that SIDs...</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: TriAlignGR борется с SID Content Degradation и SID Semantic Opacity в multimodal GR.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: CMSA добавляет VLM descriptions и multimodal embeddings в SID construction, MDIM извлекает latent user interests через CoT, TMT обучает 8 generation tasks включая visual-description-to-SID/title.</li>
+<li><strong>Empirical:</strong> Evidence: На трех Amazon benchmarks gains доходят до +13.6% HR@5 и +15.5% NDCG@5.</li>
+<li><strong>Practical:</strong> Ограничение: Зависимость от VLM descriptions и CoT interest mining может вносить шум и bias.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source.</li>
+<li>Метрики: MAP, Success.</li>
+<li>Baselines и parity settings: RQ-VAE.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Полезна для multimodal SID: модель должна не только генерировать коды, но и понимать их визуально-текстовую семантику.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: TriAlignGR борется с SID Content Degradation и SID Semantic Opacity в multimodal GR.</li>
+<li>Алгоритм: CMSA добавляет VLM descriptions и multimodal embeddings в SID construction, MDIM извлекает latent user interests через CoT, TMT обучает 8 generation tasks включая visual-description-to-SID/title.</li>
+<li>Evidence: На трех Amazon benchmarks gains доходят до +13.6% HR@5 и +15.5% NDCG@5.</li>
+<li>Ограничение: Зависимость от VLM descriptions и CoT interest mining может вносить шум и bias.</li>
+<li>Итог: Полезна для multimodal SID: модель должна не только генерировать коды, но и понимать их визуально-текстовую семантику.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>The emergence of large language models (LLMs) has catalyzed a paradigm shift in recommender systems toward generative recommendation (GR), where user preferences and item candidates are unified as discrete token sequences and the recommendation task is cast...</td></tr>
+<tr><td>Related Work</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Semantic ID for Recommendation</td><td>-3mm Representing items as compact discrete token sequences---Semantic IDs (SIDs)---has become a foundational technique for scaling generative recommendation. Early approaches constructed SIDs through clustering or hashing over item embeddings and used them...</td></tr>
+<tr><td>Generative Recommendation</td><td>-3mm The success of LLMs in sequence modeling has driven a paradigm shift in recommendation toward generative formulations geng2022p5, li2024survey, wang2025generative. One line of work adapts Transformer architectures with novel feature construction to...</td></tr>
+<tr><td>Multitask Learning in Recommendation</td><td>-2mm Multitask learning (MTL) has been extensively studied in recommender systems for jointly optimizing objectives such as click-through rate and conversion rate. In the GR domain, multitask learning remains relatively unexplored. SIDReasoner he2026reasoning...</td></tr>
+<tr><td>Method</td><td>-4mm In this section, we present the TriAlignGR framework, which systematically addresses SCD and SSO through three tightly integrated components: (1) CMSA ( ) integrates visual content into SID construction through both VLM-generated textual...</td></tr>
+<tr><td>Problem Formulation</td><td> -2mm We consider the sequential recommendation task: given user u 's interaction history S u = [i 1, i 2,, i T], predict the next item i T+1. Each item i I carries textual metadata---title t i and description d i ---and visual content v i. Our...</td></tr>
+<tr><td>Residual Quantization for SID Construction</td><td>We adopt a standard RQ-VAE tokenizer to quantize item embeddings e i R d into hierarchical SID tokens. The quantization iteratively assigns codebook entries: equation s i (h) = k | R i (h) - c k (h) | 2, equation where R i (1) = e i is the initial...</td></tr>
+<tr><td>Cross-Modal Semantic Alignment (CMSA)</td><td>Existing methods encode text and visual modalities separately, failing to capture cross-modal interactions before quantization. CMSA resolves this modality-level SCD through a dual-pathway strategy that integrates visual semantics both as enriched text and as...</td></tr>
+<tr><td>Multimodal Deep Interest Mining (MDIM)</td><td> -2mm Existing SID methods encode items using shallow textual features ( product titles and descriptions), which capture explicit attributes but fail to reveal the latent interests underlying user-item interactions. For example, "noise-canceling...</td></tr>
+<tr><td>Triangular Multitask Fine-Tuning</td><td> -2mm This is the core innovation of TriAlignGR. We design eight complementary fine-tuning tasks organized into three categories that together establish complete SID-Text-Image triangular alignment. All tasks are unified as text generation and share a...</td></tr>
+<tr><td>Experiments</td><td>-2mm We empirically evaluate the effectiveness of TriAlignGR by answering five research questions: RQ1: How does TriAlignGR compare with state-of-the-art baselines across multiple benchmarks? RQ2: What is the individual contribution of each core component...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-trialigngr_triangular_multitask_alignment_with_multimodal_deep_interest_mining_for_generative_r_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

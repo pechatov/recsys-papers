@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On Synthetic Data Strategies for Domain-Specific Generative Retrieval</title>
+  <style>
+    body { margin: 0; color: #1f2933; font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+    h1 { margin-top: 0; font-size: 2rem; line-height: 1.25; border-bottom: 1px solid #d8dee9; padding-bottom: .55rem; }
+    h2 { margin-top: 1.6em; font-size: 1.45rem; line-height: 1.25; } h3 { font-size: 1.15rem; }
+    a { color: #0b66c3; } blockquote { margin: 1rem 0; padding: .7rem 1rem; color: #65758b; background: #f6f8fb; border-left: 4px solid #d8dee9; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; } th, td { border: 1px solid #d8dee9; padding: .45rem .6rem; vertical-align: top; } th { background: #f6f8fb; text-align: left; }
+    ul { padding-left: 1.5rem; } li { margin: .3rem 0; }
+  
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+  <h1><a href="https://arxiv.org/abs/2502.17957">On Synthetic Data Strategies for Domain-Specific Generative Retrieval</a></h1>
+  <p class="nav"><a href="../../papers.html#paper-synthetic_data_strategies_domain_specific_generative_retrieval_summary">&larr; К общему списку статей</a></p>
+
+  <blockquote>
+    <strong>Авторы:</strong> Haoyang Wen, Jiang Guo, Yi Zhang, Jiarong Jiang, Zhiguo Wang.<br>
+    <strong>Аффилиации:</strong> Language Technologies Institute, Carnegie Mellon University; AWS AI / Amazon.<br>
+    <strong>Источник:</strong> arXiv:2502.17957, 2025.
+  </blockquote>
+
+  <h2>1. Коротко</h2>
+  <p>Статья не предлагает новый backbone для generative retrieval; она систематически изучает data recipe для domain-specific corpora, где мало human-labeled queries. Pipeline двухстадийный: SFT учит LLM декодировать document identifiers из synthetic queries и context, затем preference learning улучшает ranking через hard negatives из собственных ошибок модели.</p>
+
+  <h2>2. Контекст</h2>
+  <p>Generative retrieval хранит корпус параметрически: по query модель генерирует identifier документа. Это убирает внешний dense index, но создает проблему обучения: модель должна и запомнить корпус, и научиться query-to-document relevance. Для domain-specific corpus ручная разметка запросов дорогая, поэтому авторы исследуют synthetic data.</p>
+  <p>В качестве identifiers в основных экспериментах используются semantic document identifiers: LLM генерирует keyword list, описывающий документ. Также проверяется atomic identifier setup, чтобы показать, что data strategy не привязана только к semantic IDs. На инференсе применяется constrained beam search with Trie, чтобы генерировать только валидные identifiers.</p>
+
+  <h2>3. Метод / pipeline</h2>
+  <ul>
+    <li><strong>Context2ID:</strong> chunk или document content сопоставляется с document identifier; цель - заставить GR модель запомнить корпус.</li>
+    <li><strong>Query2ID:</strong> LLM генерирует synthetic queries для chunk/document, а модель учится выдавать relevant identifier.</li>
+    <li><strong>Multi-granular queries:</strong> chunk-level queries покрывают общий смысл, sentence-level queries вытаскивают мелкие факты.</li>
+    <li><strong>Constraints-based queries:</strong> prompt включает domain metadata: MultiHop-RAG использует author, publish time, source, category, title; AllSides - political polarity; AGNews - location и topic.</li>
+    <li><strong>Preference learning:</strong> используется Regularized Preference Optimization. После SFT модель retrieves top candidates для новых synthetic queries; negatives берутся из top-k результатов, которые ранжированы выше positive candidate. Random negatives проверяются как baseline и оказываются хуже.</li>
+  </ul>
+  <p>Base model: Mistral-7B-Instruct-v0.3 для semantic identifiers и Mistral-7B-v0.3 для atomic identifiers. Synthetic queries генерируются Mixtral 8x7B, keywords - Claude 3 Sonnet. Training: 8x NVIDIA A100-SXM4-40GB, bfloat16; каждый training/inference procedure укладывается в 1 день.</p>
+
+  <h2>4. Результаты и evidence</h2>
+  <p>Датасеты: MultiHop-RAG, AllSides, AGNews и Natural Questions. Статистика synthetic data: MultiHop-RAG 7,724 contexts, 72,090 chunk queries, 472,193 sentence queries, 51,212 constraints queries; AllSides 645 contexts, 6,313 / 173,898 / 6,091; AGNews 1,050 contexts, 10,355 / 80,524 / 20,875; NQ 98,748 contexts и 1,459,031 chunk-level queries.</p>
+  <table>
+    <thead><tr><th>Experiment</th><th>Key result</th><th>Вывод</th></tr></thead>
+    <tbody>
+      <tr><td>MultiHop-RAG chunk vs +sentence</td><td>HIT@4 43.64 -> 61.64; HIT@10 66.65 -> 81.69; MRR@10 31.14 -> 47.20</td><td>Sentence-level queries резко улучшают покрытие мелких фактов.</td></tr>
+      <tr><td>Constraints-based queries</td><td>MultiHop-RAG HIT@4 61.64 -> 69.98; AllSides HIT@1 10.19 -> 14.20; AGNews HIT@1 59.91 -> 62.19</td><td>Доменная metadata помогает запросам быть ближе к реальным retrieval constraints.</td></tr>
+      <tr><td>Context2ID</td><td>MultiHop-RAG HIT@4 41.33 -> 69.98; NQ HIT@1 69.72 -> 70.71</td><td>Memorization objective особенно важен для domain-specific corpus.</td></tr>
+      <tr><td>Preference learning</td><td>SFT MultiHop-RAG HIT@4 69.98; Top-10 negatives 71.88. NQ HIT@1 70.71; Top-10 negatives 71.22</td><td>Hard negatives из собственных retrieval results полезнее random negatives.</td></tr>
+    </tbody>
+  </table>
+  <p>LLM query generation превосходит docT5query: на MultiHop-RAG Mixtral 8x7B дает HIT@4 61.64 против 50.86, MRR@10 47.20 против 37.73; на NQ HIT@1 70.71 против 63.30. В сравнении с off-the-shelf retrievers итоговая generative model competitive или лучше: MultiHop-RAG HIT@4 71.88 против BM25 64.35 и GTE-Qwen2 63.24; NQ HIT@1 71.22 против GTE-Qwen2 60.45; AllSides HIT@1 14.20 против 9.11; AGNews HIT@1 62.19, но E5/GTE лучше на HIT@5/10.</p>
+
+  <h2>5. Ограничения</h2>
+  <ul>
+    <li>Авторы прямо ограничивают вклад SFT и preference-learning data strategy; incremental learning и unseen document generalization остаются future work.</li>
+    <li>Synthetic queries в основном строятся из одного документа; real-world multi-document, multi-hop и comparative queries остаются открытой проблемой.</li>
+    <li>Все experiment results single run; statistical variance не раскрыта.</li>
+    <li>LLM-generated data требует Mixtral/Claude и отдельного prompt engineering под каждый домен.</li>
+  </ul>
+
+  <h2>6. Связь с GR/SID</h2>
+  <p>Это одна из самых полезных работ для практического SID/GR обучения: она показывает, что качество semantic identifiers само по себе недостаточно. Нужны Context2ID для memorization, Query2ID на нескольких granularity, domain constraints и hard-negative preference learning. Для recommender-side GR аналогия прямая: user/item SIDs должны сопровождаться данными, которые учат модель не только декодировать валидный ID, но и ранжировать близкие альтернативы.</p>
+
+  <p class="nav"><a href="../../papers.html#paper-synthetic_data_strategies_domain_specific_generative_retrieval_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

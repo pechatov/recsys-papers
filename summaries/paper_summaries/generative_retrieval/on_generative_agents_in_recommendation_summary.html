@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On Generative Agents in Recommendation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; } h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; } li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+.nav { margin-top: -.25rem; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+.note { color: var(--muted); }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+<h1><a href="https://doi.org/10.1145/3626772.3657844">On Generative Agents in Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-on_generative_agents_in_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> An Zhang, Yuxin Chen, Leheng Sheng, Xiang Wang, Tat-Seng Chua.</p>
+<p><strong>Аффилиации:</strong> National University of Singapore; Tsinghua University; University of Science and Technology of China.</p>
+<p><strong>Публикация:</strong> SIGIR 2024 perspective paper. DOI: 10.1145/3626772.3657844; arXiv:2310.10108.</p>
+</blockquote>
+
+<h2>1. Коротко</h2>
+<p>Статья вводит Agent4Rec - симулятор пользователей для рекомендательных систем на базе LLM-powered generative agents. Это не generative retrieval в узком смысле “модель генерирует item ID”, а generative recommendation infrastructure: LLM-агенты имитируют поведение пользователей, взаимодействуют с recommender'ом page-by-page, ставят оценки, выходят из системы и дают объяснения.</p>
+<p>Главный вопрос авторов: насколько LLM-агенты могут достоверно симулировать реальных автономных пользователей в recommendation loop? Ответ осторожный: агенты неплохо воспроизводят часть вкусов, рейтинговых распределений и различают алгоритмы, но имеют системные отклонения, включая склонность к false positives и слабую имитацию низких оценок.</p>
+
+<h2>2. Контекст</h2>
+<p>Обычная offline evaluation в recommendation часто плохо коррелирует с online utility. Метрики Recall/NDCG фиксируют попадание в исторический target, но не моделируют усталость пользователя, page-by-page feedback, удовлетворенность, filter bubbles и долгосрочные эффекты. Online A/B tests дороги и рискованны.</p>
+<p>Agent4Rec предлагает промежуточный слой: симулировать пользователей с помощью LLM-агентов, и на этом sandbox'е сравнивать recommender strategies. Для GR/SID это важно не как retrieval architecture, а как способ проверять поведение генеративных/семантических retrieval систем в интерактивной среде, где один top-K список - не вся история.</p>
+
+<h2>3. Метод</h2>
+<p>Архитектура агента состоит из трех модулей:</p>
+<ul>
+<li><strong>Profile module.</strong> Инициализируется из MovieLens-1M, Steam и Amazon-Book. Профиль содержит social traits: activity, conformity, diversity; и personalized tastes, извлеченные из 25 исторических item'ов пользователя через ChatGPT.</li>
+<li><strong>Memory module.</strong> Хранит factual memories: какие item'ы были показаны, просмотрены и оценены; и emotional memories: satisfaction, fatigue, чувства после взаимодействий. Есть retrieval, writing и emotion-driven reflection.</li>
+<li><strong>Action module.</strong> Поддерживает taste-driven actions: view/rate/feelings; и emotion-driven actions: exit, system rating, post-exit interview.</li>
+</ul>
+<p>Recommendation environment реализует page-by-page сценарий: агент видит страницу рекомендаций, выбирает действия, обновляет memory, затем решает продолжать или выйти. Алгоритмы в sandbox: Random, Popularity, MF, LightGCN, MultVAE; интерфейс позволяет подключать внешние recommenders.</p>
+
+<h2>4. Эксперименты/результаты</h2>
+<p>В user taste alignment 1000 агентов получают по 20 item'ов с разным соотношением позитивных и distractor item'ов. При ratio 1:1 accuracy составляет примерно 0.69 на MovieLens, 0.72 на Amazon-Book и 0.69 на Steam. Recall остается около 0.7-0.78 при разных ratios, но precision и F1 резко падают при росте числа distractors.</p>
+<p>В симуляции стратегий на MovieLens агенты ожидаемо выше оценивают algorithmic recommendations, чем random/popular. Например, средняя satisfaction score: Random 2.93, Popularity 3.42, MF 3.80, MultVAE 3.75, LightGCN 3.85. LightGCN также дает лучший viewing ratio и like ratio в таблице авторов.</p>
+<p>Page-by-page augmentation показывает, что добавление просмотренных агентом фильмов как positive signal улучшает offline Recall/NDCG и simulated satisfaction для MF, MultVAE и LightGCN. Добавление unviewed item'ов, наоборот, часто ухудшает user experience. Это поддерживает идею, что действия агента несут сигнал предпочтений, но не доказывает полную человеческую реалистичность.</p>
+
+<h2>5. Ограничения</h2>
+<ul>
+<li><strong>LLM bias и hallucination.</strong> Агенты склонны выбирать слишком стабильное число понравившихся item'ов; precision падает при большом числе distractors.</li>
+<li><strong>Низкие рейтинги плохо моделируются.</strong> Авторы отмечают, что агенты редко ставят 1-2, вероятно из-за prior knowledge LLM и предварительного избегания “плохих” фильмов.</li>
+<li><strong>Симуляция не заменяет online A/B.</strong> Agent4Rec полезен для sandbox и диагностики, но не валидирует business metrics на реальных пользователях.</li>
+<li><strong>Зависимость от prompts и LLM версии.</strong> В статье агенты powered by gpt-3.5-turbo; поведение может заметно меняться при другой модели или политике safety/alignment.</li>
+</ul>
+
+<h2>6. Как читать для GR/SID</h2>
+<p>Для generative retrieval эта работа полезна как evaluation-side paper. SID-based модели обычно оценивают Recall/NDCG на frozen split, но production recommendation живет в интерактивном цикле: пользователь может устать, выйти, дать негативный implicit feedback, изменить короткосрочный intent. Agent4Rec предлагает язык для таких сценариев.</p>
+<p>Если вы проектируете GR/SID pipeline, читать стоит секции про page-by-page environment и social/emotional memory. Они помогают сформулировать проверки beyond top-K: satisfaction, exit page, feedback augmentation, filter bubble effects и объяснимость поведения пользователя.</p>
+
+<p><a href="../../papers.html#paper-on_generative_agents_in_recommendation_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

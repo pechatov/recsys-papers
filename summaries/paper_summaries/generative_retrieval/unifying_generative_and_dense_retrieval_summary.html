@@ -6,372 +6,285 @@
   <title>Unifying Generative and Dense Retrieval for Sequential Recommendation</title>
   <script>
     window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']],
-        processEscapes: true
-      },
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true },
       options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
-:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
-h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
-h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
-h2 { font-size: 1.45rem; } h3 { font-size: 1.15rem; }
-p { margin: .75rem 0; }
-a { color: var(--link); }
-ul, ol { padding-left: 1.55rem; } li { margin: .3rem 0; }
-blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
-pre { overflow-x: auto; padding: 1rem; background: #111827; color: #f9fafb; border-radius: 8px; }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
-p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
-table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
-th { background: var(--soft); text-align: left; }
-.math { overflow-x: auto; padding: .35rem 0; }
-.nav { margin-top: -.25rem; } .nav a { color: var(--link); }
-.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
-@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+    :root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+    h1, h2, h3, h4 { line-height: 1.25; margin: 1.55em 0 .55em; }
+    h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+    h2 { font-size: 1.45rem; }
+    h3 { font-size: 1.15rem; }
+    p { margin: .75rem 0; }
+    a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+    ul, ol { padding-left: 1.55rem; }
+    li { margin: .3rem 0; }
+    blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+    th { background: var(--soft); text-align: left; }
+    img { max-width: 100%; height: auto; display: block; }
+    figure { margin: 1.15rem 0 1.35rem; }
+    figcaption { margin-top: .45rem; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+    .paper-figure { padding: .85rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+    .paper-figure img { margin: 0 auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+    .math { overflow-x: auto; padding: .35rem 0; }
+    .nav { margin: -.25rem 0 1.25rem; color: var(--muted); }
+    .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+    .table-scroll { overflow-x: auto; }
+    .note { color: var(--muted); }
+    .summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+    .summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+    .summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+    .summary-scroll-top { left: 0; }
+    .summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+    .summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+    .summary-scroll-bottom { right: 0; }
+    .summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+    .summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+    @media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }
+    @media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
   </style>
 </head>
 <body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
 <main>
 
 <h1><a href="https://arxiv.org/abs/2411.18814">Unifying Generative and Dense Retrieval for Sequential Recommendation</a></h1>
-<p class="nav"><a href="../../papers.html">&larr; К общему списку статей</a></p>
+<p class="nav"><a href="../../papers.html#paper-unifying_generative_and_dense_retrieval_summary">&larr; К общему списку статей</a></p>
 
 <blockquote>
-  Kai Mei, Wenjie Wang, He Zhu, Yuru Li, Tat-Seng Chua (NUS) + Meta AI + JKU Linz &mdash; arXiv:2411.18814 &mdash; 2024
+  <strong>Авторы:</strong> Liu Yang, Fabian Paischer, Kaveh Hassani, Jiacheng Li, Shuai Shao, Zhang Gabriel Li, Yun He, Xue Feng, Nima Noorshams, Sem Park, Bo Long, Robert D. Nowak, Xiaoli Gao, Hamid Eghbalzadeh.<br>
+  <strong>Аффилиации:</strong> University of Wisconsin-Madison; ELLIS Unit / LIT AI Lab / JKU Linz; <span class="industry">Meta AI</span>.<br>
+  <strong>Источник:</strong> arXiv:2411.18814v2, 2024.
 </blockquote>
 
-<h2>1. Коротко: о чём статья</h2>
+<h2>1. Коротко: о чем статья</h2>
+<p>Статья сравнивает два retrieval paradigm для sequential recommendation при максимально близких условиях: dense retrieval и generative retrieval на semantic IDs. Dense retrieval кодирует историю пользователя в vector representation и ранжирует items через similarity / inner product с item representations. Generative retrieval, в стиле TIGER, заменяет items на semantic IDs из RQ-VAE и генерирует следующий item как последовательность SID tokens через encoder-decoder Transformer и beam search.</p>
+<p>Авторы показывают, что на их академических benchmark'ах dense retrieval стабильно сильнее реализованного generative retrieval, несмотря на то что TIGER дешевле по storage/inference abstraction. Особенно важный результат: TIGER почти не генерирует cold-start items. Генерационная вероятность cold-start targets оказывается ниже beam-search threshold, поэтому такие items просто не попадают в candidate set.</p>
+<p>Чтобы закрыть этот разрыв, авторы предлагают <strong>LIGER</strong>: гибридную модель, которая сохраняет semantic-ID / generative component, но добавляет dense output embedding head и reranking. На inference LIGER сначала генерирует candidates beam search'ем, затем добавляет cold-start item set и ранжирует объединенный candidate pool через dense embedding head. Поэтому LIGER - это не late fusion двух готовых списков, а unified model с двумя heads и двумя objectives.</p>
 
-<p>Статья задаёт конкретный вопрос: <strong>когда generative retrieval (GR) лучше dense retrieval (DR) и когда хуже?</strong> — и отвечает на него через систематический экспериментальный анализ на нескольких датасетах. На основе этого анализа авторы предлагают <strong>TIGER-Hybrid</strong> — fusion-модель, объединяющую оба подхода через late fusion.</p>
-
-<p>Ключевой вывод: GR и DR делают ошибки на <em>разных типах</em> items, их ошибки слабо коррелируют, и поэтому объединение candidate lists улучшает Recall по сравнению с каждым подходом в отдельности. GR особенно силён на cold-start и textually rich items; DR — на популярных items с богатой interaction history.</p>
-
-<h2>2. Контекст</h2>
-
-<p>После выхода TIGER на NeurIPS 2023 возник закономерный практический вопрос: в каких условиях стоит заменять (или дополнять) сложившийся DR-пайплайн на GR? Оба подхода решают задачу <em>candidate recall</em> — первого этапа воронки рекомендаций, — но делают это принципиально разными способами:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Аспект</th>
-      <th>Dense Retrieval (DR)</th>
-      <th>Generative Retrieval (GR)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Представление item</td>
-      <td>Dense вектор в пространстве размерности d</td>
-      <td>Дискретный SID — последовательность токенов</td>
-    </tr>
-    <tr>
-      <td>Механизм поиска</td>
-      <td>ANN (HNSW, FAISS) по cosine similarity</td>
-      <td>Autoregressive beam search с constrained decoding</td>
-    </tr>
-    <tr>
-      <td>Сигнал для обучения</td>
-      <td>Contrastive loss по interaction парам</td>
-      <td>Cross-entropy на SID-последовательность</td>
-    </tr>
-    <tr>
-      <td>Обновление нового item</td>
-      <td>Нужен embedding (быстро)</td>
-      <td>Нужно переобучение или fine-tuning (медленнее)</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>DR хорошо работает для популярных items (много обучающих сигналов → точный embedding) и плохо для cold-start (мало взаимодействий → слабый item embedding). GR хорошо работает при богатом текстовом контенте (SID захватывает семантику) и плохо при SID-коллизиях (несколько items с одинаковым или близким SID).</p>
-
-<h2>3. Экспериментальный анализ: где выигрывает каждый подход</h2>
-
-<h3>GR превосходит DR при:</h3>
-
-<ul>
-  <li><strong>Rich textual content:</strong> items с детальным описанием, жанрами, тегами — RQ-VAE создаёт информативные SID-ы, beam search находит семантически близкие items, которые не попадают в топ ANN по collaborative вектору.</li>
-  <li><strong>Cold-start / new items:</strong> новый item не имеет истории взаимодействий → его DR embedding слабый. SID назначается на основе содержательных признаков (текст, изображение) → GR может находить новый item даже при отсутствии взаимодействий.</li>
-  <li><strong>Хорошее SID-разделение:</strong> когда SID хорошо разделяет семантически схожие items (низкий collision rate), beam search точно локализует нужный item в пространстве идентификаторов.</li>
-</ul>
-
-<h3>DR превосходит GR при:</h3>
-
-<ul>
-  <li><strong>High-popularity items:</strong> популярные items имеют тысячи взаимодействий → их DR embedding обучен на богатом сигнале → ANN точно находит их по user preference вектору. GR при этом может занижать вероятность таких items, если они делят SID-префикс с менее релевантными.</li>
-  <li><strong>SID collision:</strong> несколько items, которые получили одинаковый или близкий SID (что неизбежно при конечном словаре RQ-VAE), — beam search выбирает один из них недетерминированно относительно пользовательского контекста.</li>
-  <li><strong>High collision rate:</strong> при высоком SID collision rate GR систематически теряет precision — это структурная проблема, не решаемая тюнингом модели.</li>
-</ul>
-
-<h3>Конкретные числа (приближённые, Recall@10):</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>Метод</th>
-      <th>Amazon Beauty</th>
-      <th>Amazon Sports</th>
-      <th>Amazon Books</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>DR (SASRec two-tower)</td>
-      <td>~0.140</td>
-      <td>~0.118</td>
-      <td>~0.092</td>
-    </tr>
-    <tr>
-      <td>GR (TIGER)</td>
-      <td>~0.152</td>
-      <td>~0.124</td>
-      <td>~0.088</td>
-    </tr>
-    <tr>
-      <td>TIGER-Hybrid</td>
-      <td>~0.171</td>
-      <td>~0.139</td>
-      <td>~0.097</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>На Amazon Books (более разреженный датасет, меньше текстового контента) GR уступает DR, но Hybrid всё равно даёт прирост за счёт дополнения coverage. На Beauty и Sports GR лидирует, Hybrid усиливает оба.</p>
-
-<h2>4. Анализ failure modes</h2>
-
-<h3>GR failures</h3>
-
-<ul>
-  <li><strong>SID collision:</strong> несколько items получают одинаковый SID (или начало SID совпадает). Beam search генерирует общий SID-префикс, а затем с равной вероятностью выбирает любой из коллидирующих items. Это систематическая ошибка, не связанная с качеством пользовательского представления.</li>
-  <li><strong>Popularity bias в generation:</strong> частые SID-ы (соответствующие популярным items или popular SID-префиксам) чаще генерируются — стандартная проблема probability calibration языковых моделей.</li>
-  <li><strong>Out-of-distribution SID:</strong> при слабом обучающем сигнале модель может генерировать SID, который был в каталоге при обучении, но давно устарел (удалённые items). Constrained decoding это предотвращает, но лишь при условии актуального trie.</li>
-</ul>
-
-<h3>DR failures</h3>
-
-<ul>
-  <li><strong>Cold-start:</strong> новые items с малым числом взаимодействий имеют неточный embedding → не попадают в топ ANN даже при семантической релевантности запросу.</li>
-  <li><strong>Semantic mismatch:</strong> collaborative filtering сигнал (кто ещё покупал/смотрел) не всегда совпадает с content-based семантикой. Если user preference вектор обучен преимущественно на collaborative сигнале, items с похожим контентом, но разной аудиторией не находятся.</li>
-  <li><strong>ANN approximation error:</strong> HNSW и подобные методы дают approximate результаты. На хвосте распределения (long-tail items) приближение работает хуже.</li>
-</ul>
-
-<h3>Ключевой вывод об ошибках</h3>
-
-<blockquote>
-  Множество items, на которых ошибается GR, и множество items, на которых ошибается DR, имеют низкое пересечение. Это означает, что поздний fusion их candidate lists даёт complementary coverage и улучшает суммарный Recall.
-</blockquote>
-
-<p>Авторы измеряют <strong>overlap между GR и DR candidate lists</strong> (доля items, попавших в топ-K обоих методов) и показывают, что он значительно ниже 100%, что и обосновывает выигрыш Hybrid.</p>
-
-<h2>5. TIGER-Hybrid: метод объединения</h2>
-
-<h3>GR-компонент</h3>
-
-<p>TIGER-style autoregressive generation SID через beam search. Для каждого user context производится beam search с шириной W, получая топ-K кандидатов с нормализованными generation log-probabilities:</p>
-
-<div class="math">
-\[
-\text{score}_{\text{GR}}(i) = \frac{1}{L} \sum_{t=1}^{L} \log p(s_t \mid s_{&lt;t}, u)
-\]
+<h2>2. Контекст: GR против dense retrieval</h2>
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Аспект</th><th>Sequential dense retrieval</th><th>Generative retrieval / TIGER</th><th>LIGER</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Item representation</td><td>У каждого item есть dense embedding, который нужно хранить и сравнивать.</td><td>Item представлен semantic ID tuple из RQ-VAE codebooks; индивидуальный dense embedding item не нужен на inference.</td><td>Input использует SID + text representation; output имеет SID head и dense embedding head.</td></tr>
+      <tr><td>Retrieval</td><td>Maximum inner product / cosine similarity по всем item embeddings или ANN.</td><td>Beam search по SID tokens.</td><td>Beam search дает shortlist; cold-start set добавляется явно; final ranking делает dense head.</td></tr>
+      <tr><td>Сильная сторона</td><td>Высокое качество ranking и non-zero cold-start через text representations.</td><td>Меньше item-specific storage, потенциально дешевле retrieve и можно генерировать разнообразные candidates.</td><td>Пытается получить efficiency GR и качество/cold-start behavior dense retrieval.</td></tr>
+      <tr><td>Проблема</td><td>Storage и full-item comparison растут с числом items.</td><td>На tested datasets проигрывает dense retrieval и почти не генерирует cold-start items.</td><td>Нужен known cold-start set и reranking candidates; это уже не чистый GR.</td></tr>
+    </tbody>
+  </table>
 </div>
 
-<h3>DR-компонент</h3>
+<h2>3. Постановка эксперимента</h2>
+<p>Авторы специально выравнивают условия сравнения. Для TIGER они воспроизводят двухстадийный pipeline: сначала item attributes преобразуются в text embeddings через sentence-T5-XXL, затем RQ-VAE строит semantic IDs. После этого Transformer обучается генерировать следующий SID по SID-history. Для dense retrieval берется тот же item text representation, чтобы dense baseline не был unfairly deprived of content information.</p>
+<p>Датасеты: Amazon Beauty, Amazon Sports and Outdoors, Amazon Toys and Games, Steam. После 5-core filtering: Beauty 22,363 users / 12,101 items / 198,502 actions / 43 cold-start items; Toys 19,412 / 11,924 / 167,597 / 56; Sports 35,598 / 18,357 / 296,337 / 81; Steam 47,761 / 12,012 / 599,620 / 400.</p>
+<p>Sequence length truncate'ится до 20 latest items. Evaluation - leave-one-out: последний item тестовый, предпоследний validation, остальное training. Метрики: NDCG@10 и Recall@10 отдельно для in-set items и cold-start items. Чтобы cold-start evaluation был честнее, cold-start items исключают из RQ-VAE training.</p>
 
-<p>Two-tower dense retrieval с SASRec-like user encoder и item content encoder. ANN поиск (FAISS) по cosine similarity даёт топ-K кандидатов со скорами dot product между user и item векторами.</p>
+<h2>4. Анализ: почему TIGER проигрывает dense retrieval</h2>
+<h3>4.1. Performance gap</h3>
+<p>В Figure 1 и Figure 3 авторы показывают: реализованный dense retrieval сильнее TIGER на in-set и cold-start splits. Это не формулируется как универсальное доказательство, что dense retrieval всегда лучше GR. Наоборот, авторы прямо ограничивают claim small-scale academic benchmark'ами и признают, что в industrial settings semantic-ID systems могут вести себя иначе.</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x1.png" alt="Figure 1: performance comparison between implemented generative and dense retrieval methods across datasets">
+  <figcaption><strong>Figure 1.</strong> Первичный sanity check статьи: dense retrieval сильнее реализованного generative retrieval на tested datasets, а cold-start performance у TIGER почти нулевая. Это мотивирует LIGER как попытку сохранить efficiency GR, но вернуть dense retrieval signal.</figcaption>
+</figure>
 
-<h3>Late fusion</h3>
+<h3>4.2. SID как representation не главный bottleneck</h3>
+<p>Чтобы проверить, виноваты ли semantic IDs как item representation, авторы делают dense baseline <strong>Dense (SID)</strong>: dense retrieval получает semantic IDs вместо обычных item IDs, но сохраняет dense objective. Dense (SID) остается близким к Dense. Это говорит, что SID itself может не быть главным источником падения качества.</p>
+<p>Другой ablation - <strong>TIGER (T)</strong>: TIGER получает text representation как input. Это дает только marginal improvements и все равно не догоняет dense retrieval. Вывод авторов: основная проблема не только в недостатке textual information, а в next-token generation / beam-search retrieval mechanism.</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x3.png" alt="Figure 3: Recall@10 comparison on in-set and cold-start datasets for dense, Dense SID, TIGER, and TIGER T">
+  <figcaption><strong>Figure 3.</strong> Важный diagnostic: Dense (SID) остается сильным, значит semantic IDs как input representation не полностью объясняют gap. TIGER (T) с text representation чуть лучше TIGER, но все равно уступает dense variants; bottleneck находится в generation/decoding objective.</figcaption>
+</figure>
 
-<p>Candidate lists объединяются через взвешенную комбинацию нормализованных скоров:</p>
+<h3>4.3. Cold-start failure</h3>
+<p>Самый важный diagnostic: TIGER почти не генерирует cold-start items. Авторы сравнивают generation probability ground-truth cold-start item с минимальной probability item'а, который вошел в beam. Для успешного retrieve ground-truth cold-start probability должна быть выше beam threshold. На практике она ниже, поэтому cold-start item не попадает в output. Это и объясняет нулевые или почти нулевые cold-start Recall@10/NDCG@10 у TIGER.</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x4.png" alt="Figure 4: TIGER fails to generate cold-start items because target probability is below beam-search threshold">
+  <figcaption><strong>Figure 4.</strong> График показывает механизм cold-start failure: вероятность ground-truth cold-start item \(p^\star\) ниже порога \(p_K\), то есть ниже последнего item, который попадает в beam. Даже если SID построен из text representation, decoder практически не выбирает unseen item.</figcaption>
+</figure>
+<p>Авторы также обсуждают workaround из TIGER: заранее задать долю cold-start items в candidate set. Они считают это слабым решением, потому что нужна априорная доля cold-start recommendations, которая в реальном каталоге может быть неизвестна и динамична.</p>
 
+<h2>5. Метод LIGER</h2>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x2.png" alt="Figure 2: overview of sequential dense retrieval, generative retrieval, and LIGER hybrid retrieval">
+  <figcaption><strong>Figure 2.</strong> Общая схема статьи. Верхний левый блок - dense retrieval, нижний левый - TIGER-style generative retrieval, нижний правый - LIGER. Именно эта схема важна для понимания: LIGER не смешивает два независимых retrieval списка, а добавляет dense output/ranking branch к SID-based generative model.</figcaption>
+</figure>
+<h3>5.1. Input representation</h3>
+<p>LIGER строит input для каждого item из semantic ID tokens и item text representation. Для semantic ID \(s_i = (s_{i,1}, ..., s_{i,L})\) используются learnable SID embeddings и positional embeddings. Text representation \(t_i\), полученный sentence-T5-XXL, добавляется к token-level representation. Упрощенно: item представлен не только discrete SID, но и content embedding, который помогает dense head ранжировать candidates и работать с cold-start.</p>
+<p>Как получается item representation:</p>
+<ol>
+  <li><strong>Собрать textual description item'а.</strong> Для item \(i\) берутся key-value attributes \(\{(k_1,v_1), ..., (k_p,v_p)\}\) и форматируются в prompt \(T_i=\mathrm{prompt}(k_1,v_1,\ldots,k_p,v_p)\). Для Amazon это title, price, category, description; для Steam - title, genre, specs, tags, price, publisher.</li>
+  <li><strong>Получить text embedding.</strong> \(T_i\) кодируется sentence-T5-XXL, получая \(\mathbf{e}^{text}_i \in \mathbb{R}^{768}\). В Transformer этот вектор не подается напрямую: его проецируют Linear layer'ом в 128 dimensions, чтобы совпасть с hidden size модели.</li>
+  <li><strong>Получить semantic ID.</strong> Text embeddings квантуются RQ-VAE. В setup статьи RQ-VAE использует 3-layer MLP encoder/decoder, три уровня codebooks, dimension 128 и cardinality 256 на каждом уровне. Следуя TIGER, к semantic codes добавляется extra token, чтобы устранить collisions: один и тот же SID tuple не должен указывать на несколько items.</li>
+  <li><strong>Собрать token-level input.</strong> Для каждого SID token \(s_i^j\) строится embedding как сумма learnable SID embedding, item text representation, item positional embedding и positional embedding внутри SID tuple. То есть каждый token несет одновременно discrete code, content prior и позицию.</li>
+</ol>
+<p>Формула из статьи для embedding'а одного semantic-ID token'а:</p>
 <div class="math">
 \[
-\text{score}_{\text{hybrid}}(i) = \alpha \cdot \tilde{s}_{\text{GR}}(i) + (1 - \alpha) \cdot \tilde{s}_{\text{DR}}(i)
+\mathbf{E}_{s_i^j}
+= \mathbf{e}_{s_i^j}
++ \mathbf{e}^{text}_i
++ \mathbf{e}^{pos}_i
++ \mathbf{e}^{pos}_j.
 \]
 </div>
+<p>Здесь \(\mathbf{e}_{s_i^j}\) - learnable embedding конкретного \(j\)-го semantic ID token'а item'а \(i\), \(\mathbf{e}^{text}_i\) - text representation item'а, \(\mathbf{e}^{pos}_i\) - positional embedding item'а в user sequence, а \(\mathbf{e}^{pos}_j\) - positional embedding token'а внутри semantic ID tuple. Финальный embedding item'а - это sequence из таких token embeddings: \(\mathbf{E}_i = [\mathbf{E}_{s_i^1}, \mathbf{E}_{s_i^2}, \ldots, \mathbf{E}_{s_i^m}]\).</p>
+<p>Интуитивно LIGER делает SID-token не голым codeword'ом, а "обогащенным" token'ом: если два item имеют похожие SID, dense text component и item-level position помогают encoder'у различать их при ranking objective.</p>
 
-<p>где \(\tilde{s}\) — нормализованные (min-max или softmax) скоры в пределах своего candidate list, \(\alpha \in [0, 1]\) — параметр смешивания, настраиваемый на validation set. Items, попавшие только в один из списков, получают нулевой скор от другого компонента.</p>
+<h3>5.2. Как строится training sequence</h3>
+<p>Исходная user history - последовательность взаимодействий с item IDs. После preprocessing каждый item ID заменяется на semantic ID tuple. Если item \(i_t\) имеет SID \((s^1_{i_t}, s^2_{i_t}, s^3_{i_t}, s^{extra}_{i_t})\), то один user sequence превращается не в один token на item, а в блок SID tokens на каждый item. Модель видит историю последних items; в экспериментах sequence truncate'ится до 20 последних item interactions.</p>
+<p>Для LIGER важно, что encoder получает последовательность enriched SID-token embeddings из истории, а targets относятся к следующему item. Это teacher-forcing setup: по history до позиции \(t\) модель должна предсказать representation следующего item \(i_{t+1}\). В leave-one-out split последний item идет в test, предпоследний в validation, остальные позиции используются для training histories.</p>
+<p>Отдельный cold-start precaution: cold-start items исключают из RQ-VAE training, чтобы tokenizer не видел их content при построении codebooks. При этом text representation cold-start item'а остается доступным для dense reranking на inference, что и дает LIGER шанс находить unseen items.</p>
 
-<p>Итоговый список ранжируется по <code>score_hybrid</code>, из него берётся топ-K для передачи на следующий этап воронки (ranking).</p>
-
-<h2>6. Почему late fusion лучше early fusion</h2>
-
-<p>Интуитивно кажется, что объединение GR и DR ближе к источнику (в пространстве логитов или эмбеддингов) должно давать лучший результат. Авторы объясняют, почему late fusion предпочтительнее:</p>
-
+<h3>5.3. Two-head training</h3>
+<p>Модель обучается двумя objectives:</p>
 <ul>
-  <li><strong>Несовместимые пространства скоров:</strong> GR scores — это log-probabilities условных распределений над токенами (sequential, conditional); DR scores — это cosine similarities в embedding space (direct, unconditional). Прямое сложение или конкатенация несмысленны без тщательной калибровки.</li>
-  <li><strong>Специализация компонентов:</strong> late fusion позволяет каждому компоненту обучаться независимо на своей objective функции, не компрометируя ни один из них. GR оптимизируется под SID generation, DR — под similarity matching.</li>
-  <li><strong>Простота и интерпретируемость:</strong> late fusion легко диагностируется — можно измерить вклад каждого компонента отдельно и понять, какой из них даёт прирост на каком сегменте каталога.</li>
+  <li><strong>SID generation loss.</strong> Decoder генерирует semantic ID следующего item как последовательность tokens, как в TIGER.</li>
+  <li><strong>Dense embedding loss.</strong> Encoder output должен быть близок к text representation следующего item через cosine similarity / softmax objective.</li>
 </ul>
-
-<h3>Адаптивное взвешивание</h3>
-
-<p>Авторы отмечают возможность адаптивно менять параметр смешивания в зависимости от контекста:</p>
-
+<p>Итоговый loss объединяет две части. Важная идея: LIGER сохраняет generative retrieval path, но заставляет same sequence model также предсказывать dense item representation. Поэтому final ranking может использовать embedding geometry, а не только token probabilities.</p>
+<p>В статье общий objective записан как сумма dense contrastive term и autoregressive SID term:</p>
+<div class="math">
+\[
+\mathcal{L}
+= -\log
+\frac{\exp(\mathrm{sim}(\hat{\mathbf{E}}(\Theta), \mathbf{e}^{text}_{n+1}) / \tau)}
+{\sum_{i \in \mathcal{I}} \exp(\mathrm{sim}(\hat{\mathbf{E}}(\Theta), \mathbf{e}^{text}_i) / \tau)}
+- \sum_{j=1}^{m} \log P(s^j_{n+1} \mid [\mathbf{E}_1,\ldots,\mathbf{E}_n]; \Theta).
+\]
+</div>
+<p>Здесь \([\mathbf{E}_1,\ldots,\mathbf{E}_n]\) - encoded history user'а до текущего момента, \(\hat{\mathbf{E}}(\Theta)\) - output encoder'а, который играет роль dense query representation, \(\mathbf{e}^{text}_{n+1}\) - text embedding правильного следующего item, \(\mathcal{I}\) - item universe, \(\tau\) - temperature, а \(s^j_{n+1}\) - \(j\)-й token semantic ID следующего item.</p>
 <ul>
-  <li>Если item <em>новый</em> (мало или нет взаимодействий) — upweight GR компонент.</li>
-  <li>Если item <em>популярный</em> (много взаимодействий) — upweight DR компонент.</li>
-  <li>Если SID collision rate <em>высокий</em> для данного prefix — downweight GR для соответствующих кандидатов.</li>
+  <li><strong>Первый term: dense alignment / retrieval loss.</strong> Это softmax по cosine similarity. Он тянет encoder output к text embedding правильного next item и отталкивает от embeddings остальных items в denominator. Именно эта часть отвечает за dense ranking после beam search: на inference она позволяет сравнивать query embedding с item text representations и rerank'ить candidate pool, включая cold-start items.</li>
+  <li><strong>Второй term: next-token SID prediction loss.</strong> Это сумма cross-entropy по всем \(m\) token'ам semantic ID tuple. Он учит decoder генерировать discrete SID следующего item слева направо, conditioned on user history. Именно эта часть сохраняет generative retrieval behavior: beam search может получить compact shortlist без сравнения со всем каталогом.</li>
+  <li><strong>Почему loss просто складывается.</strong> Авторы не вводят отдельный коэффициент \(\lambda\) между dense и generative частями в основной формуле: обе компоненты оптимизируют один shared sequence model. Dense term делает hidden representation пригодным для similarity-based ranking, а SID term удерживает модель в TIGER-like generative retrieval setup.</li>
 </ul>
+<p>Более операционно, у LIGER есть encoder output \(\mathbf{h}\), который должен лечь рядом с text embedding следующего item, и decoder output, который должен сгенерировать SID следующего item. Dense part обучается softmax-style objective по cosine similarity: target item text representation получает высокий score, остальные item representations в \(\mathcal{I}\) выступают negatives. В appendix для dense loss указаны LayerNorm + Dropout 0.5 над item embedding input и temperature \(\tau=0.07\).</p>
+<p>Generation part - обычная cross-entropy over SID tokens: decoder последовательно предсказывает \(s^1_{i_{t+1}}, s^2_{i_{t+1}}, ..., s^m_{i_{t+1}}\), conditioned on encoded history and previous generated SID tokens. Вариант <strong>LIGER(detach)</strong> из ablation отключает gradient updates от SID head, чтобы проверить, насколько multi-objective signal от decoder помогает общему encoder representation.</p>
+<p>Training hyperparameters: generative model - T5 encoder-decoder, 6 layers в encoder и decoder, embedding dimension 128, 6 heads, feed-forward hidden dimension 1024, dropout 0.2. Dense retrieval implementation использует T5 encoder с теми же основными hyperparameters. Optimizer - AdamW, learning rate 0.0003, weight decay 0.035, cosine learning-rate scheduler. RQ-VAE для SID training использует AdamW с learning rate 0.001 и weight decay 0.1.</p>
 
-<p>Простейший способ реализации: lookup table по popularity tier с соответствующим весом, применяемая при fusion scoring.</p>
-
-<h2>7. Результаты по датасетам</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Датасет</th>
-      <th>Метрика</th>
-      <th>DR</th>
-      <th>GR (TIGER)</th>
-      <th>TIGER-Hybrid</th>
-      <th>Hybrid vs best single</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Amazon Beauty</td>
-      <td>Recall@10</td>
-      <td>0.140</td>
-      <td>0.152</td>
-      <td>0.171</td>
-      <td>+12.5%</td>
-    </tr>
-    <tr>
-      <td>Amazon Beauty</td>
-      <td>NDCG@10</td>
-      <td>0.078</td>
-      <td>0.086</td>
-      <td>0.098</td>
-      <td>+14.0%</td>
-    </tr>
-    <tr>
-      <td>Amazon Sports</td>
-      <td>Recall@10</td>
-      <td>0.118</td>
-      <td>0.124</td>
-      <td>0.139</td>
-      <td>+12.1%</td>
-    </tr>
-    <tr>
-      <td>Amazon Sports</td>
-      <td>NDCG@10</td>
-      <td>0.064</td>
-      <td>0.069</td>
-      <td>0.078</td>
-      <td>+13.0%</td>
-    </tr>
-    <tr>
-      <td>Amazon Books</td>
-      <td>Recall@10</td>
-      <td>0.092</td>
-      <td>0.088</td>
-      <td>0.097</td>
-      <td>+5.4%</td>
-    </tr>
-    <tr>
-      <td>MovieLens-1M</td>
-      <td>Recall@10</td>
-      <td>0.185</td>
-      <td>0.179</td>
-      <td>0.201</td>
-      <td>+8.6%</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>На Amazon Books GR уступает DR — это датасет с меньшей плотностью текстового контента и высоким collaborative сигналом. Hybrid всё равно выигрывает у обоих за счёт coverage объединения.</p>
-
-<p>На MovieLens DR немного лучше GR (богатая interaction history, MovieLens хорошо покрыт collaborative сигналом), но Hybrid снова даёт статистически значимый прирост.</p>
-
-<h2>8. Сильные стороны</h2>
-
-<ul>
-  <li><strong>Чёткая постановка исследовательского вопроса:</strong> вместо очередного «наш метод лучше» авторы задают вопрос «когда и почему» — это принципиально более полезно для практиков, выбирающих подход под конкретный каталог.</li>
-  <li><strong>Честный анализ failure modes:</strong> обе стороны (GR и DR) разобраны с конкретными механизмами ошибок, без приукрашивания слабостей собственного метода.</li>
-  <li><strong>Практически применимый результат:</strong> late fusion прост в реализации и не требует переобучения ни одного из компонентов — можно добавить поверх существующей DR-системы как дополнительный recall path.</li>
-  <li><strong>Диагностический инструментарий:</strong> метрики candidate overlap, collision rate, coverage по new/tail items — полезные инструменты для оценки целесообразности Hybrid на собственных данных.</li>
-</ul>
-
-<h2>9. Ограничения</h2>
-
+<h3>5.4. Inference algorithm</h3>
 <ol>
-  <li><strong>Два отдельных компонента:</strong> TIGER-Hybrid требует поддержки двух независимых serving paths — GR (LLM + trie) и DR (two-tower + ANN index). Это вдвое большая инфраструктурная сложность по сравнению с single-model подходом.</li>
-  <li><strong>Настройка параметра смешивания:</strong> оптимальное смешивание зависит от датасета и распределения items. Требуется validation data и периодическая перенастройка при изменении каталога или поведенческих паттернов пользователей.</li>
-  <li><strong>Нет production A/B тестов:</strong> все эксперименты проведены на офлайн-метриках (Recall, NDCG) на Amazon Review и MovieLens датасетах. Нет данных о влиянии на CTR, engagement или revenue в реальной системе.</li>
-  <li><strong>Масштаб датасетов:</strong> Amazon Review датасеты — десятки–сотни тысяч items. Industrial каталоги могут быть на 2–3 порядка больше; неясно, сохраняется ли аналогичный прирост от Hybrid при 10M+ items.</li>
-  <li><strong>Статичный вес смешивания:</strong> в основных экспериментах параметр одинаков для всех items и пользователей. Адаптивное взвешивание упомянуто, но детально не оценено количественно.</li>
+  <li>По interaction sequence модель запускает generative decoder и beam search, получая top-\(K\) candidate items по SID generation.</li>
+  <li>К этим candidates добавляется множество known cold-start items \(C\). Это явный шаг, которого не было в простом TIGER.</li>
+  <li>Encoder output \(h\) используется как dense query representation; все candidates из beam + \(C\) ранжируются по similarity с item text representations / dense representations.</li>
+  <li>Top items после reranking возвращаются как recommendation list.</li>
 </ol>
+<p>Важно: LIGER не берет независимый DR top-\(K\) из full catalog и не смешивает scores двух отдельных retrievers. Dense retrieval здесь применяется к ограниченному candidate pool после generative retrieve и cold-start augmentation.</p>
 
-<h2>10. Практические выводы</h2>
+<h2>6. Результаты</h2>
+<h3>6.1. Main table</h3>
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Dataset</th><th>Model</th><th>In-set NDCG@10</th><th>Cold NDCG@10</th><th>In-set Recall@10</th><th>Cold Recall@10</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Beauty</td><td>TIGER</td><td>0.03216</td><td>0.00000</td><td>0.06009</td><td>0.00000</td></tr>
+      <tr><td>Beauty</td><td><strong>LIGER</strong></td><td><strong>0.04020</strong></td><td><strong>0.03800</strong></td><td><strong>0.07447</strong></td><td><strong>0.10082</strong></td></tr>
+      <tr><td>Sports</td><td>TIGER</td><td>0.01989</td><td>0.00064</td><td>0.03822</td><td>0.00195</td></tr>
+      <tr><td>Sports</td><td><strong>LIGER</strong></td><td><strong>0.02430</strong></td><td><strong>0.02731</strong></td><td><strong>0.04400</strong></td><td><strong>0.05848</strong></td></tr>
+      <tr><td>Toys</td><td>TIGER</td><td>0.02949</td><td>0.00000</td><td>0.05782</td><td>0.00000</td></tr>
+      <tr><td>Toys</td><td><strong>LIGER</strong></td><td><strong>0.03756</strong></td><td><strong>0.05231</strong></td><td><strong>0.07135</strong></td><td><strong>0.13063</strong></td></tr>
+      <tr><td>Steam</td><td>TIGER</td><td>0.15034</td><td>0.00000</td><td>0.18980</td><td>0.00000</td></tr>
+      <tr><td>Steam</td><td><strong>LIGER</strong></td><td>0.14951</td><td><strong>0.00512</strong></td><td><strong>0.19049</strong></td><td><strong>0.01466</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+<p>В main table LIGER обычно лучше TIGER и резко лучше на cold-start. Но в in-set Steam NDCG LIGER чуть ниже TIGER при \(K=20\), хотя Recall немного выше. Это полезная деталь: LIGER не всегда доминирует во всех метриках, а в основном закрывает cold-start и performance gap.</p>
 
-<h3>Когда стоит использовать Hybrid GR+DR</h3>
+<h3>6.2. Сравнение с dense baselines</h3>
+<p>Авторы сравнивают не только с TIGER, но и с SASRec, FDSA, S3-Rec, UniSRec, RecFormer. LIGER обычно best или second-best, рядом с modality/text-based methods вроде RecFormer и UniSRec. Это важно: статья не говорит "LIGER победил всех во всем"; она показывает, что hybrid GR+dense может быть конкурентным, особенно на cold-start, при меньшем candidate comparison cost, чем full dense retrieval.</p>
 
+<h3>6.3. Влияние количества GR candidates</h3>
+<p>Table 4 и Figure 5 показывают, как LIGER меняется при увеличении числа candidates из generative retrieval. Для in-set Recall@10 LIGER плавно приближается к dense retrieval: чем больше beam candidates, тем выше шанс включить правильный item в shortlist. Для cold-start, наоборот, добавление большего числа GR candidates может снизить cold-start share/ranking, потому что cold-start candidates конкурируют с большим in-set pool. Это важный trade-off между in-set quality и cold-start sensitivity.</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x5.png" alt="Figure 5: LIGER inference process and normalized performance gap as K increases">
+  <figcaption><strong>Figure 5.</strong> Слева - inference process: beam search retrieves candidates, затем добавляется cold-start set, потом dense head rerank'ит candidate pool. Справа - normalized performance gap: при росте \(K\) LIGER постепенно закрывает разрыв между TIGER и dense retrieval по in-set Recall@10.</figcaption>
+</figure>
+
+<h2>7. Ablations</h2>
+<p>Appendix D разбирает компоненты LIGER:</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x6.png" alt="Figure 6: overview of LIGER ablation variants">
+  <figcaption><strong>Figure 6.</strong> Схема ablation variants: LIGER, LIGER(detach), TIGER(T), TIGER, Dense(SID), Dense. Она помогает читать результаты: каждый вариант отключает либо dense head, либо SID head, либо text representation input, либо заменяет SID на item ID.</figcaption>
+</figure>
 <ul>
-  <li>Каталог содержит <strong>mix cold/warm items</strong> — есть постоянный приток новых items наряду с популярными старыми.</li>
-  <li><strong>SID collision rate выше 5–10%:</strong> если значительная доля items в каталоге коллидирует по SID, чистый GR теряет precision на этих items, и DR может их компенсировать.</li>
-  <li><strong>DR и GR recall слабо коррелируют:</strong> измерить candidate overlap между DR-топ-K и GR-топ-K на holdout set. Если overlap менее 50%, Hybrid почти наверняка даст прирост Recall.</li>
-  <li>Нужен <strong>улучшенный хвостовой coverage:</strong> tail items систематически хуже представлены в DR из-за малого числа взаимодействий; GR с content SID может частично восстановить их coverage.</li>
+  <li><strong>TIGER.</strong> Только SID generation, без text representation input и без dense head.</li>
+  <li><strong>TIGER (T).</strong> SID generation с item text representation как input, но без dense head; дает небольшое улучшение, но не решает gap.</li>
+  <li><strong>Dense (SID).</strong> Убирает SID generation head, но оставляет dense retrieval с SID-based input; показывает, что SID tokens сами по себе не обязательно плохие.</li>
+  <li><strong>LIGER (detach).</strong> Отключает gradient updates от SID head, чтобы проверить роль multi-objective optimization. Обычно близко к LIGER, но на Steam падение заметнее, что авторы связывают с масштабом dataset.</li>
+</ul>
+<p>Главный смысл ablation: выигрыш LIGER идет не от одной магической детали, а от совместного использования SID-trajectory, text representation input, dense embedding head и inference-time cold-start augmentation.</p>
+<figure class="paper-figure">
+  <img src="../../assets/unifying_generative_dense/x7.png" alt="Figure 7: ablation results on Recall@10 across Beauty, Sports, Toys, and Steam">
+  <figcaption><strong>Figure 7.</strong> Ablation results по Recall@10. Ключевой паттерн: LIGER интерполирует между TIGER и Dense; detached SID head обычно близок, но на Steam заметнее теряет качество, что указывает на dataset-dependent пользу совместного обучения heads.</figcaption>
+</figure>
+
+<h2>8. Что реально доказывает статья</h2>
+<ul>
+  <li>На small-scale academic benchmark'ах, при выровненных inputs и architecture details, dense retrieval оказался сильнее реализованного TIGER.</li>
+  <li>Основной failure mode TIGER в этой постановке - cold-start: model probabilities для unseen items не проходят beam-search threshold.</li>
+  <li>Semantic IDs как representation не обязательно являются главной причиной gap: Dense (SID) работает близко к Dense.</li>
+  <li>LIGER улучшает TIGER за счет dense head и reranking candidate pool, особенно если явно добавить cold-start items в candidates.</li>
+  <li>Results нельзя напрямую переносить на industrial catalogs: авторы сами подчеркивают, что observed differences зависят от dataset size, implementation details и data distribution.</li>
 </ul>
 
-<h3>Метрики для мониторинга Hybrid системы</h3>
+<h2>9. Сильные стороны</h2>
+<ul>
+  <li><strong>Корректирует слишком общий GR hype.</strong> Работа показывает, что TIGER-like GR не автоматически лучше dense retrieval, если сравнивать с честным content-aware dense baseline.</li>
+  <li><strong>Хорошие diagnostics.</strong> Cold-start probability analysis объясняет failure через beam-search threshold, а не просто через "низкий Recall".</li>
+  <li><strong>Полезный hybrid design.</strong> LIGER практически показывает, как использовать GR как shortlist generator, а dense head как ranker и cold-start bridge.</li>
+  <li><strong>Fairness of comparison.</strong> Авторы стараются использовать same sentence-T5 text representations и близкие Transformer hyperparameters.</li>
+</ul>
 
-<table>
-  <thead>
-    <tr>
-      <th>Метрика</th>
-      <th>Что показывает</th>
-      <th>Желаемое поведение</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GR vs DR candidate overlap</td>
-      <td>Complementarity двух компонентов</td>
-      <td>Низкий overlap (менее 50%) означает высокую ценность Hybrid</td>
-    </tr>
-    <tr>
-      <td>SID collision rate в GR path</td>
-      <td>Структурная проблема GR-компонента</td>
-      <td>Мониторить рост при добавлении items в каталог</td>
-    </tr>
-    <tr>
-      <td>Coverage новых и tail items</td>
-      <td>Способность находить cold-start items</td>
-      <td>GR coverage new items должен превышать DR</td>
-    </tr>
-    <tr>
-      <td>Доля популярных items в топ-K по GR и DR</td>
-      <td>Popularity bias каждого компонента</td>
-      <td>DR чаще находит popular, GR — tail и new</td>
-    </tr>
-    <tr>
-      <td>Оптимальный вес по сегментам каталога</td>
-      <td>Балансировка вклада компонентов</td>
-      <td>Разные сегменты могут требовать разного смешивания</td>
-    </tr>
-  </tbody>
-</table>
+<h2>10. Ограничения и риски интерпретации</h2>
+<ul>
+  <li><strong>Нет production validation.</strong> Все результаты offline на Beauty, Sports, Toys, Steam. Нельзя выводить, что LIGER выиграет в большом production catalog.</li>
+  <li><strong>Cold-start set должен быть известен.</strong> Inference добавляет cold-start items явно; это работает, если их число мало и система умеет поддерживать актуальный set.</li>
+  <li><strong>Full dense retrieval cost сравнивается концептуально.</strong> Реальное latency зависит от ANN/index implementation; статья честно говорит, что actual inference time зависит от infrastructure.</li>
+  <li><strong>TIGER implementation uncertainty.</strong> Оригинальный TIGER codebase был недоступен, поэтому авторы воспроизводили и тюнили метод сами. Это делает comparison полезным, но не окончательным.</li>
+  <li><strong>Small cold-start counts.</strong> В Amazon splits cold-start items десятки, в Steam 400; такие числа не покрывают сложность большого постоянно обновляемого каталога.</li>
+  <li><strong>Не late fusion.</strong> Если реализовать метод как независимое смешивание GR/DR scores из двух retrieval paths, это будет другой hybrid design, а не LIGER из статьи.</li>
+</ul>
 
-<h3>Простой путь к внедрению</h3>
+<h2>11. Практический вывод для SID/GR исследований</h2>
+<p>Главный урок: semantic IDs могут быть хорошим compact index, но retrieval quality определяется не только качеством SID tokenizer. Next-token objective и beam-search dynamics могут блокировать unseen/cold items даже тогда, когда semantic representation содержит нужную информацию. Поэтому SID/GR papers нужно оценивать отдельно по in-set и cold-start, смотреть generation probability thresholds и сравнивать с content-aware dense baselines.</p>
+<p>LIGER стоит читать как hybrid recipe: использовать semantic ID generation для efficient shortlist, но не отказываться от dense similarity geometry там, где нужны ranking quality и cold-start. Это ближе к двухголовой модели и reranking, чем к чистому "model-as-index" подходу.</p>
 
-<ol>
-  <li>Запустить TIGER (или аналог GR) параллельно с существующим DR-пайплайном в офлайн-режиме.</li>
-  <li>Измерить candidate overlap на holdout данных — если менее 50%, Hybrid потенциально ценен.</li>
-  <li>Реализовать late fusion с фиксированным весом 0.5 как baseline и оценить офлайн по Recall, NDCG.</li>
-  <li>Подобрать оптимальный вес на validation set через grid search или байесовскую оптимизацию.</li>
-  <li>Если офлайн прирост значимый — запустить A/B тест в production для оценки онлайн-метрик.</li>
-</ol>
+<h2>12. Первичные источники</h2>
+<ul>
+  <li>arXiv abstract: <a href="https://arxiv.org/abs/2411.18814">https://arxiv.org/abs/2411.18814</a></li>
+  <li>ar5iv HTML: <a href="https://ar5iv.labs.arxiv.org/html/2411.18814v2">https://ar5iv.labs.arxiv.org/html/2411.18814v2</a></li>
+</ul>
 
+<p class="nav"><a href="../../papers.html#paper-unifying_generative_and_dense_retrieval_summary">← К общему списку статей</a></p>
 </main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
 </body>
 </html>

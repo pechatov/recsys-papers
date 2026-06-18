@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Act-With-Think: Chunk Auto-Regressive Modeling for Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2506.23643">Act-With-Think: Chunk Auto-Regressive Modeling for Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-act_with_think_chunk_autoregressive_modeling_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Yifan Wang, Weinan Gan, Longtao Xiao, Jieming Zhu, Heng Chang, Haozhao Wang, Rui Zhang, Zhenhua Dong, Ruiming Tang, Ruixuan Li.</p>
+<p><strong>Аффилиации:</strong> Huazhong University of Science and Technology; <span class="industry">Huawei Noah’s Ark Lab</span>; <span class="industry">Huawei Technologies</span>.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2506.23643">arXiv 2506.23643</a> · дата metadata: 2025-06-30.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, chunk autoregression, semantic IDs, новое из ссылок.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/huggingface/transformers">https://github.com/huggingface/transformers</a><br><a href="https://github.com/aHuiWang/CIKM2020-S3Rec">https://github.com/aHuiWang/CIKM2020-S3Rec</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: Act-With-Think предлагает chunk-level autoregression, где semantic why и behavioral what генерируются вместе.</li>
+<li>Алгоритм: CAR пакует SID и UID/action token в один conceptual chunk, так что один decoding step предсказывает semantic and behavioral facets jointly.</li>
+<li>Evidence: Recall@5 улучшается на 7.93%-22.30%, также показан scaling эффект от SID bit number.</li>
+<li>Ограничение: Chunk decoding усложняет mapping к валидным items и может требовать специальных constraints.</li>
+<li>Итог: Хороший bridge между semantic explanations и collaborative identifiers: SID не обязан быть единственным токеном item action.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>However, existing methods tend to overlook their intrinsic relationship, that is, the semantic usually provides some reasonable explainability "$why$" for the behavior "$what$", which may constrain the full potential of GR.</td></tr>
+<tr><th>Предложение авторов</th><td>To this end, we present Chunk AutoRegressive Modeling (CAR), a new generation paradigm following the decision pattern that users usually think semantic aspects of items (e.g. brand) and then take actions on target items (e.g. purchase).</td></tr>
+<tr><th>Главный evidence claim</th><td>Experiments show that our CAR significantly outperforms existing methods based on traditional AR, improving Recall@5 by 7.93% to 22.30%.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>objective не выражен стандартным ключевым словом; смотреть method/training sections</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Sports, Toys</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, Success, accuracy</td></tr>
+<tr><th>Baselines</th><td>TIGER, SASRec, BERT4Rec, HSTU, DSI, NCI, RQ-VAE</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Chunk-level AutoRegressive Modeling (CAR):</span> Constructing "act-with-think" chunk. We first encode the textual descriptions of items into embedding vectors and discretize the embeddings into non-unique SIDs using residual KMeans, where the SIDs capture the semantic "thought" of the items. Then, we concatenate these SIDs with the corresponding UID, which denote the "act" operations, to construct the...</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Chunk-level AutoRegressive Modeling (CAR):</span> Act-Think Co-Generation. To model the "act-with-think" relationship, we predict the "act" UID and the "think" SIDs simultaneously. This is achieved by using the last token of the current chunk to generate all tokens of the next chunk at once.</li>
+<li><strong>Learning signal.</strong> <span class="anchor">Chunk-level AutoRegressive Modeling (CAR):</span> Progressive Act-Think Context Fusion. To further enhance the "act-with-think" representation, we leverage the co-occurrence patterns inherent in chunks by progressively integrating prefix information into the input, thereby enriching the contextual representation of the current token n-gram.</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> objective не выражен стандартным ключевым словом; смотреть method/training sections.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>L_ think = 1n _i=1^n P(S_i H)</code></li>
+<li><code>L_ act = P( UID H)</code></li>
+<li><code>L = L_ think + L_ act</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>An overview of the Chunk AutoRegressive Modeling framework. First, each item is transformed into an "act-with-think" chunk that includes SIDs and an UID, serving as the basic modeling unit. Then, autoregressive modeling is performed at the chunk level. The bottom part of the figure further contrasts the modeling approaches of standard autoregressive...</li>
+<li>CAR consists of two independent training stages. Stage 1: Semantic IDs (SIDs) are generated using residual KMeans and combined with Unique ID (UID) to construct the basic modeling unit, the "act-with-think" chunk. Stage 2: On the input side, token representations within each chunk are progressively enhanced via prefix-based embedding augmentation. During...</li>
+<li>Statistics of the datasets</li>
+<li>Performance comparison of different methods. The best performance is highlighted in bold while the second best performance is underlined. The last column indicates the improvements over the best baseline models.</li>
+<li>Ablation analysis of CAR. "AR" refers to standard Auto Regressive modeling. "CAR w/o F" denotes the removal of the Progressive Act-Think Context Fusion module. "CAR w/o T" indicates the exclusion of the Think loss during training.</li>
+<li>Analysis for different Semantic IDs generation techniques for CAR. We show that Res-KMeans Semantic IDs (SIDs) perform significantly better compared to hashing SIDs and RQ-VAE.</li>
+<li>Recall and NDCG metrics for different semantic ID bit number.</li>
+<li>Inference speed (second per sample) comparison between AR and CAR on Toys dataset.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Amazon, Beauty, Sports, Toys</td></tr>
+<tr><th>Metrics</th><td>Recall, NDCG, Success, accuracy</td></tr>
+<tr><th>Baselines</th><td>TIGER, SASRec, BERT4Rec, HSTU, DSI, NCI, RQ-VAE</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: Recall@5 улучшается на 7.93%-22.30%, также показан scaling эффект от SID bit number.</li>
+<li>Experiments: Datasets In this experiment, we use the Amazon Product Review dataset (spanning May 1996 – July 2014) amazon and select three product categories to construct the benchmark dataset: "Beauty", "Sports &amp; Outdoors", and "Toys &amp; Games". We follow the 5-core filtering standard used in TIGER tiger, ensuring that each user/item has at least 5 interaction records....</li>
+<li>Experiments: Evaluation Metrics We evaluate recommendation performance using top-k recall (Recall@K) and normalized discounted cumulative gain (NDCG@K) for K = 5, 10. For each item sequence, the last item is used for testing, the second-last item is used for validation, and the remaining items are used for training sasrec. During training, we limit the number of...</li>
+<li>Ablation Study: We conducted ablation studies, as shown in Table CAR ablation, to evaluate the performance advantages of CAR over the standard autoregressive modeling (AR) and to analyze the individual contributions of its core components.</li>
+<li>Ablation Study: (1) AR vs CAR: While the AR method also represents items using chunks, it adopts the conventional next token prediction as its modeling objective. The results in Table 1 demonstrate that CAR significantly outperforms AR across multiple evaluation metrics. We attribute this performance gain to CAR’s reformulation of the modeling task as next chunk...</li>
+<li>Semantic IDs Generation Analysis: Locality-Sensitive Hashing (LSH) lsh3,lsh2,lsh1 generates semantic IDs through random hash mappings, while the Residual-Quantized Variational Autoencoder (RQ-VAE) rqvae produces semantic IDs via jointly trained deep neural network (DNN) encoders and decoders combined with residual quantizers. To ensure a fair comparison, all methods use semantic embeddings...</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: Act-With-Think предлагает chunk-level autoregression, где semantic why и behavioral what генерируются вместе.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: CAR пакует SID и UID/action token в один conceptual chunk, так что один decoding step предсказывает semantic and behavioral facets jointly.</li>
+<li><strong>Empirical:</strong> Evidence: Recall@5 улучшается на 7.93%-22.30%, также показан scaling эффект от SID bit number.</li>
+<li><strong>Practical:</strong> Ограничение: Chunk decoding усложняет mapping к валидным items и может требовать специальных constraints.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Amazon, Beauty, Sports, Toys.</li>
+<li>Метрики: Recall, NDCG, Success, accuracy.</li>
+<li>Baselines и parity settings: TIGER, SASRec, BERT4Rec, HSTU, DSI, NCI, RQ-VAE.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Хороший bridge между semantic explanations и collaborative identifiers: SID не обязан быть единственным токеном item action.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: Act-With-Think предлагает chunk-level autoregression, где semantic why и behavioral what генерируются вместе.</li>
+<li>Алгоритм: CAR пакует SID и UID/action token в один conceptual chunk, так что один decoding step предсказывает semantic and behavioral facets jointly.</li>
+<li>Evidence: Recall@5 улучшается на 7.93%-22.30%, также показан scaling эффект от SID bit number.</li>
+<li>Ограничение: Chunk decoding усложняет mapping к валидным items и может требовать специальных constraints.</li>
+<li>Итог: Хороший bridge между semantic explanations и collaborative identifiers: SID не обязан быть единственным токеном item action.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>In recent years, generative models, particularly large language models based on autoregressive generation, have achieved significant success llm1,llm2,llm3. This successful experience inspired the exploration of technical paradigms from matching to...</td></tr>
+<tr><td>Related Work</td><td>Generative recommendation is an emerging recommendation paradigm, and its core process includes two stages: discrete semantic tokenization and autoregressive sequence generation gr1,dsi,nci. TIGER tiger, as a pioneering approach in the field, achieves...</td></tr>
+<tr><td>Chunk-level AutoRegressive Modeling (CAR)</td><td>Constructing "act-with-think" chunk. We first encode the textual descriptions of items into embedding vectors and discretize the embeddings into non-unique SIDs using residual KMeans, where the SIDs capture the semantic "thought" of the items. Then, we...</td></tr>
+<tr><td>Constructing ``Act-With-Think'' Chunk</td><td>This section describes the construction process of our proposed "act-with-think" chunk, as illustrated in Fig. CAR. First, we utilize a pre-trained text encoder (Sentence-T5 sentencet5 ) to encode item content features (e.g., title and description) into...</td></tr>
+<tr><td>Act-Think Co-Generation</td><td>Based on a user's historical interaction sequence H: (( item 1,, item n) ), we model the synchronized prediction of "act" and "think" as illustrated in Fig. overview. Specifically, each item is represented as a composite chunk ((S 1, S 2,, UID ) ), where...</td></tr>
+<tr><td>Progressive Act-Think Context Fusion</td><td>To enhance intralayer semantic inheritance within SIDs and cross-modal coordination between semantic and collaborative information, we propose a Progressive Act-Think Context Fusion mechanism (as illustrated in Fig. CAR ). This mechanism constructs the...</td></tr>
+<tr><td>Experiments</td><td>Datasets In this experiment, we use the Amazon Product Review dataset (spanning May 1996 – July 2014) amazon and select three product categories to construct the benchmark dataset: "Beauty", "Sports &amp; Outdoors", and "Toys &amp; Games". We follow the 5-core...</td></tr>
+<tr><td>Performance Comparison</td><td>The baseline methods for comparison are categorized into three groups: enumerate Traditional sequential methods: itemize Caser caser: Caser models user behaviors as an "image" of past interactions and leverages convolutional filters to capture both...</td></tr>
+<tr><td>Ablation Study</td><td>We conducted ablation studies, as shown in Table CAR ablation, to evaluate the performance advantages of CAR over the standard autoregressive modeling (AR) and to analyze the individual contributions of its core components.</td></tr>
+<tr><td>Semantic IDs Generation Analysis</td><td>Locality-Sensitive Hashing (LSH) lsh3,lsh2,lsh1 generates semantic IDs through random hash mappings, while the Residual-Quantized Variational Autoencoder (RQ-VAE) rqvae produces semantic IDs via jointly trained deep neural network (DNN) encoders and decoders...</td></tr>
+<tr><td>Scaling Effects of SIDs Bit Number in CAR</td><td>We further investigate the impact of the number of bits used in SIDs encoding on CAR’s performance, as reported in Table semantic bit length. The hierarchical SIDs structure encodes textual item information from coarse- to fine-grained levels, offering a...</td></tr>
+<tr><td>Inference Speed Comparison</td><td>We compared the inference speed of standard AutoRegressive (AR) method attention,neural and Chunk Autoregressive (CAR) method on the Toys dataset, with the results shown in Table inference. To ensure a fair comparison, the AR method adopts the same GPT-2...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-act_with_think_chunk_autoregressive_modeling_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

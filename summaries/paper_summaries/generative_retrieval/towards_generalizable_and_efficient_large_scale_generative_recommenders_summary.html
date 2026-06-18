@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Towards Generalizable and Efficient Large-Scale Generative Recommenders</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.23312">Towards Generalizable and Efficient Large-Scale Generative Recommenders</a></h1>
+<p class="nav"><a href="../../papers.html#paper-towards_generalizable_and_efficient_large_scale_generative_recommenders_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Qiuling Xu, Ko-Jen Hsiao, Moumita Bhattacharya.</p>
+<p><strong>Аффилиации:</strong> <span class="industry">Netflix Research</span>.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.23312">arXiv 2605.23312</a> · дата metadata: 2026-05-22.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, efficiency, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> не найдено явных repository/dataset links в arXiv source.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: Netflix case study о масштабировании GR backbone от 2M до 1B parameters в production-scale title recommendation.</li>
+<li>Алгоритм: Авторы используют offset scaling-law diagnostics, sampled softmax/projected decoding head, multi-token prediction for cached serving и semantic item towers с collaborative-embedding masking для cold start.</li>
+<li>Evidence: В one-week production-shadow evaluation на 1M users 1B backbone улучшает MRR на всех reported tasks, включая +22.5% на сложной Task A.</li>
+<li>Ограничение: Это закрытый production setup; absolute metrics и task details ограничены, а scale сам по себе не гарантирует transfer.</li>
+<li>Итог: Сильная инженерная статья: масштаб модели нужно читать вместе с headroom, retraining cost, serving latency и item freshness.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>In production, however, pre-training gains do not automatically translate into downstream application improvements: task headroom, repeated-training cost, serving latency, and item freshness all affect transfer.</td></tr>
+<tr><th>Предложение авторов</th><td>Generative recommendation models can model user behavior as sequences of events and provide a shared backbone for multiple recommendation tasks.</td></tr>
+<tr><th>Главный evidence claim</th><td>In production, however, pre-training gains do not automatically translate into downstream application improvements: task headroom, repeated-training cost, serving latency, and item freshness all affect transfer.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>cross-entropy, masking, softmax, sampled softmax</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Netflix</td></tr>
+<tr><th>Metrics</th><td>NDCG, Hit, MRR, CTR, latency, MAP</td></tr>
+<tr><th>Baselines</th><td>TIGER, CoST, HSTU</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Efficient Training and Inference:</span> Efficiency is one of the main differences between a promising large recommender and an operational one. Unlike many language models, recommender models must be refreshed frequently to reflect changing preferences, seasonal effects, and catalog updates. This repeated-training requirement makes efficiency central even when vocabulary pressure is reduced...</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Efficient Training and Inference:</span> Our pre-training datasets comprise 2 trillion behavior tokens per cycle--on par with major LLM pre-training corpora, but processed on a repeated refresh cadence. Alongside standard distributed-training optimizations, we make additional changes to encoding and decoding. Below, we focus on advances in decoding efficiency.</li>
+<li><strong>Learning signal.</strong> <span class="anchor">The Latency Issue in Next-Token Prediction:</span> Large recommenders are rarely served in a purely synchronous way. To control latency and cost, many production systems cache user embeddings, candidate lists, or pre-ranked results, refreshing them after a fixed time interval or after sufficient new activity. This pattern is related to deferred retrieval systems such as RADAR jaspal2025radar, but it...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> cross-entropy, masking, softmax, sampled softmax.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>L = - _y_i Y w_i p_ (y_i x), w_i = r_i (- (2) t_i-t_ context ).</code></li>
+<li><code>aligned z_i &amp;= _ sem(e_i^ graph, e_i^ lang, e_i^ ann), \\ e_i^ ID &amp;= cases e_i^ ID, &amp; i V, \\ e^ OOV, &amp; i V, cases \\ v_i &amp;= _ ( e_i^ ID, z_i), \\ s(u, i) &amp;= g_ (h_u)^ v_i. aligned</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Scaling-law fits for three anonymized recommendation task categories: Task A captures lower-predictability long-horizon taste, Task B captures moderate-predictability short-horizon engagement, and Task C captures higher-predictability time- or availability-driven behavior. The x-axis counts backbone parameters, excluding embedding and decoding layers;...</li>
+<li>Task categories used for scaling-law analysis.</li>
+<li>Fit-error comparison for scaling-law models.</li>
+<li>Estimated training FLOPs per training token for a 6-layer transformer with hidden dimension 1024 and sequence length 512. Values include a fixed backbone term plus vocabulary-dependent decoding cost; lines compare full decoding with sampled-softmax and projected-head variants as the output vocabulary grows.</li>
+<li>Latency mismatch between next-token training and delayed cached serving. Title A is the immediate next event used as the training label, but after cached serving delay it may already be consumed; title B can then become the relevant serving-time target.</li>
+<li>Relative MRR degradation as cached outputs become stale. Delays are simulated by replaying evaluation at increasing serving horizons; task definitions follow Figure and </li>
+<li>MTP comparison across serving scenarios. Bars report relative MRR changes for different future-target window sizes under online serving with p95 latency below one second and cached serving with a 48-hour horizon; task labels use the taxonomy in </li>
+<li>Shared semantic title metadata for encoder events and decoder title representations. Blue denotes learned representations and computation, red denotes input-side event context, and green denotes reusable title metadata from knowledge-graph message passing, LLM2Vec language embeddings, and human annotation features.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Netflix</td></tr>
+<tr><th>Metrics</th><td>NDCG, Hit, MRR, CTR, latency, MAP</td></tr>
+<tr><th>Baselines</th><td>TIGER, CoST, HSTU</td></tr>
+</tbody></table>
+<ul>
+<li>Главная идея: Netflix case study о масштабировании GR backbone от 2M до 1B parameters в production-scale title recommendation.</li>
+<li>Evidence: В one-week production-shadow evaluation на 1M users 1B backbone улучшает MRR на всех reported tasks, включая +22.5% на сложной Task A.</li>
+<li>In production, however, pre-training gains do not automatically translate into downstream application improvements: task headroom, repeated-training cost, serving latency, and item freshness all affect transfer.</li>
+<li>We describe our experience scaling a generative recommender from 2M to 1B backbone parameters, excluding embedding and decoding layers, in a production-scale title recommendation setting.</li>
+<li>Across multiple downstream tasks, we observe task-dependent scaling behavior: some tasks approach an empirical ceiling within the observed scale range, while others continue to benefit from additional capacity.</li>
+<li>In a one-week production-shadow evaluation over 1M users, the 1B-backbone model achieves higher MRR than the 2M-backbone baseline across all reported tasks.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: Netflix case study о масштабировании GR backbone от 2M до 1B parameters в production-scale title recommendation.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Авторы используют offset scaling-law diagnostics, sampled softmax/projected decoding head, multi-token prediction for cached serving и semantic item towers с collaborative-embedding masking для cold start.</li>
+<li><strong>Empirical:</strong> Evidence: В one-week production-shadow evaluation на 1M users 1B backbone улучшает MRR на всех reported tasks, включая +22.5% на сложной Task A.</li>
+<li><strong>Practical:</strong> Ограничение: Это закрытый production setup; absolute metrics и task details ограничены, а scale сам по себе не гарантирует transfer.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</li>
+<li>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Netflix.</li>
+<li>Метрики: NDCG, Hit, MRR, CTR, latency, MAP.</li>
+<li>Baselines и parity settings: TIGER, CoST, HSTU.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Сильная инженерная статья: масштаб модели нужно читать вместе с headroom, retraining cost, serving latency и item freshness.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: Netflix case study о масштабировании GR backbone от 2M до 1B parameters в production-scale title recommendation.</li>
+<li>Алгоритм: Авторы используют offset scaling-law diagnostics, sampled softmax/projected decoding head, multi-token prediction for cached serving и semantic item towers с collaborative-embedding masking для cold start.</li>
+<li>Evidence: В one-week production-shadow evaluation на 1M users 1B backbone улучшает MRR на всех reported tasks, включая +22.5% на сложной Task A.</li>
+<li>Ограничение: Это закрытый production setup; absolute metrics и task details ограничены, а scale сам по себе не гарантирует transfer.</li>
+<li>Итог: Сильная инженерная статья: масштаб модели нужно читать вместе с headroom, retraining cost, serving latency и item freshness.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>Generative recommendation models extend the sequence-modeling paradigm of language models to user behavior: a user's history is represented as a sequence of events, and the model is trained to predict future events. This formulation is appealing for...</td></tr>
+<tr><td>Related Work</td><td>Generative recommenders. Generative retrieval casts recommendation as sequence generation over item or semantic identifiers, providing an alternative to nearest-neighbor retrieval over fixed item embeddings. TIGER introduced this formulation with semantic IDs...</td></tr>
+<tr><td>Scaling Law in Recommendation</td><td>We first ask whether larger generative recommenders improve uniformly across downstream tasks. To reduce temporal distribution shift, we group user activities into three broad anonymized task categories that differ in predictability and serving sensitivity....</td></tr>
+<tr><td>Efficient Training and Inference</td><td>Efficiency is one of the main differences between a promising large recommender and an operational one. Unlike many language models, recommender models must be refreshed frequently to reflect changing preferences, seasonal effects, and catalog updates. This...</td></tr>
+<tr><td>Efficient Decoding</td><td>Even when SID or retrieval-based methods reduce the effective output space, direct item scoring remains a common and useful interface for recommendation models. For a vanilla transformer, this output layer can become a large part of training cost as the...</td></tr>
+<tr><td>Efficient Encoding</td><td>Our event representation also differs from architectures that separately model heterogeneous action and feature streams. We compress the action, observation context, and item metadata for each user event into a single token-level representation. This choice...</td></tr>
+<tr><td>Efficient Development</td><td>Finally, we use a small-to-large experiment funnel. Candidate changes are first evaluated on smaller backbones and scaled test sets designed to detect task-specific regressions. Only changes that pass this funnel are integrated into expensive...</td></tr>
+<tr><td>Multi-Token Prediction (MTP)</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>The Latency Issue in Next-Token Prediction</td><td>Large recommenders are rarely served in a purely synchronous way. To control latency and cost, many production systems cache user embeddings, candidate lists, or pre-ranked results, refreshing them after a fixed time interval or after sufficient new activity....</td></tr>
+<tr><td>Set-Valued Future Targets</td><td>A second mismatch is that many recommendation targets are set-like. In language modeling, token order is usually semantic; in recommendation, several future items may be similarly valid and their order may be partly arbitrary. If a user is likely to watch...</td></tr>
+<tr><td>Unseen and Cold-Start Titles</td><td>Cold-start titles expose a failure mode that cannot be addressed by scaling alone. Mature titles can be represented by collaborative ID embeddings learned from interaction histories, but new or sparse titles provide little evidence for that channel. Prior...</td></tr>
+<tr><td>Production-Shadow Evaluation</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-towards_generalizable_and_efficient_large_scale_generative_recommenders_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

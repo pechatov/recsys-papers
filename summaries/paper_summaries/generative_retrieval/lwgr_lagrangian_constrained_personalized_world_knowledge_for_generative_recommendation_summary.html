@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LWGR: Lagrangian-Constrained Personalized World Knowledge for Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.18771">LWGR: Lagrangian-Constrained Personalized World Knowledge for Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Lingyu Mu, Hao Deng, Haibo Xing, Kaican Lin, Zhitong Zhu, Yu Zhang, Xiaoyi Zeng, Zhengxiao Liu, Zheng Lin, Jinxin Hu.</p>
+<p><strong>Аффилиации:</strong> Institute of Information Engineering, Chinese Academy of Sciences; <span class="industry">Alibaba International Digital Commerce Group</span>.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.18771">arXiv 2605.18771</a> · дата metadata: 2026-04-16.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, alignment, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> не найдено явных repository/dataset links в arXiv source.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: LWGR переносит personalized world knowledge из LLM в GR под Lagrangian constraints, чтобы knowledge не вредил behavioral signal.</li>
+<li>Алгоритм: Soft personalized instructions извлекают user-relevant LLM knowledge; fusion решается primal-dual optimization с bounded performance degradation; serving combines nearline precompute и lightweight online path.</li>
+<li>Evidence: На public и industrial datasets LWGR превосходит 8 baselines до 11.23% и дает +1.35% revenue lift на ads platform.</li>
+<li>Ограничение: World knowledge может конфликтовать с локальной behavioral distribution; constraints и instruction quality критичны.</li>
+<li>Итог: Полезна для LLM-enhanced GR: knowledge fusion должен быть constrained, а не simply append more text.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>RL/alignment/value-aware retrieval</em>; поэтому основной audit должен смотреть на reward construction, sparse feedback, off-policy bias, online/offline gap и business-metric trade-off.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>However, existing methods rely on fixed, manually designed instructions to generate semantic knowledge and directly incorporate it into GR, which has two limitations.</td></tr>
+<tr><th>Предложение авторов</th><td>To address these limitations, we propose LWGR, a framework that leverages Lagrangian constraints to transfer users' personalized world knowledge from LLMs into generative recommendation.</td></tr>
+<tr><th>Главный evidence claim</th><td>Recent progress in large language model (LLM) based generative recommendation (GR) shows that leveraging LLM world knowledge can substantially improve performance.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>RL/alignment/value-aware retrieval</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>Lagrangian, softmax</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>Recall, revenue</td></tr>
+<tr><th>Baselines</th><td>TIGER</td></tr>
+<tr><th>Ключевое предположение</th><td>Reward/utility signal должен быть стабильным и не подменять user relevance узкой бизнес-метрикой.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Training Strategy for LLM:</span> (1) Frozen LLM. We treat the pretrained LLM as a fixed knowledge source and keep all its parameters frozen during training. We only update (i) the personalized soft instructions module, (ii) the knowledge fusion module, and (iii) the GR model conditioned on the personalized knowledge.</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Training Strategy for LLM:</span> (2) LoRA-based adaptation. When additional compute is available, we perform parameter-efficient fine-tuning by inserting LoRA adapters hu2021lora into the LLM while keeping the original weights frozen. Concretely, we apply LoRA to selected linear layers (e.g., attention projections and FFN layers). For a weight matrix W llm R d out d in, we parameterize...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> Lagrangian, softmax.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>p_ (c_i^+ s_u)= _ =1^L p_ (c_i^+^ c_i^+^&lt;, s_u ),</code></li>
+<li><code>L_rec= - _ =1^L p_ (c_i^+^ c_i^+^&lt;, s_u ).</code></li>
+<li><code>c_u^k = _j V_k \| u^k - C_k[j] \|_2^2,</code></li>
+<li><code>_k^j= sim( u^k, C_k[j]), p_j^k= ( _k^j/ ) _j V_k ( _k^j/ ),</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Existing two-stage knowledge fusion GR based on fixed task instruction and our GR that fuses user-personalized world knowledge under constraints.</li>
+<li>(a) General and demographic-guided instruction templates. (b) Performance of Base, General, and Demographic instructions across 4 user groups.</li>
+<li>The online and nearline deployment of LWGR.</li>
+<li>Performance comparison on Beauty, Toys and Industrial datasets. Best results are in bold and second-best are underlined. " Improv." shows the relative improvement (\</li>
+<li>The impact of LLM size and training strategy on performance and efficiency, where R@5 represents model performance and QPS of training stage represents efficiency.</li>
+<li>Ablation study of LWGR on Industry.</li>
+<li>R/N@5 change under different codebook sizes $K$.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>Recall, revenue</td></tr>
+<tr><th>Baselines</th><td>TIGER</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На public и industrial datasets LWGR превосходит 8 baselines до 11.23% и дает +1.35% revenue lift на ads platform.</li>
+<li>Pilot Experiments: Existing studies mostly focus on how to use LLM-generated semantic knowledge, rather than how to generate higher-quality knowledge in the first place. Recent work shows that the task instruction in the prompt strongly affects which world knowledge is activated. Motivated by this, we conduct a pilot study in a real-world e-commerce scenario to examine how...</li>
+<li>Pilot Experiments: For each group, we evaluate three variants (Base, General, Demographic), run each setting 5 times, and report the average Recall@5 xing2025esans. From Figure data (b), we observe: itemize [noitemsep, topsep=, leftmargin=*] Demographic-guided instructions can raise the performance ceiling. Compared with the general instruction, the...</li>
+<li>Recent progress in large language model (LLM) based generative recommendation (GR) shows that leveraging LLM world knowledge can substantially improve performance.</li>
+<li>Experiments on multiple public datasets and one industrial dataset show that LWGR outperforms eight state-of-the-art baselines by up to 11.23</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: LWGR переносит personalized world knowledge из LLM в GR под Lagrangian constraints, чтобы knowledge не вредил behavioral signal.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Soft personalized instructions извлекают user-relevant LLM knowledge; fusion решается primal-dual optimization с bounded performance degradation; serving combines nearline precompute и lightweight online path.</li>
+<li><strong>Empirical:</strong> Evidence: На public и industrial datasets LWGR превосходит 8 baselines до 11.23% и дает +1.35% revenue lift на ads platform.</li>
+<li><strong>Practical:</strong> Ограничение: World knowledge может конфликтовать с локальной behavioral distribution; constraints и instruction quality критичны.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Часть evidence приходит из закрытого production setup: практический сигнал сильный, но воспроизводимость и переносимость ограничены.</li>
+<li>Reward/utility signal должен быть стабильным и не подменять user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source.</li>
+<li>Метрики: Recall, revenue.</li>
+<li>Baselines и parity settings: TIGER.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Полезна для LLM-enhanced GR: knowledge fusion должен быть constrained, а не simply append more text.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: LWGR переносит personalized world knowledge из LLM в GR под Lagrangian constraints, чтобы knowledge не вредил behavioral signal.</li>
+<li>Алгоритм: Soft personalized instructions извлекают user-relevant LLM knowledge; fusion решается primal-dual optimization с bounded performance degradation; serving combines nearline precompute и lightweight online path.</li>
+<li>Evidence: На public и industrial datasets LWGR превосходит 8 baselines до 11.23% и дает +1.35% revenue lift на ads platform.</li>
+<li>Ограничение: World knowledge может конфликтовать с локальной behavioral distribution; constraints и instruction quality критичны.</li>
+<li>Итог: Полезна для LLM-enhanced GR: knowledge fusion должен быть constrained, а не simply append more text.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>Recently, generative recommendation (GR) tiger, cobra has reduced the reliance on large-scale item embedding tables wang2021survey, wang2024rethinking, lin2024enhancing,wang2025home, mu2025trust and demonstrated competitive performance by directly generating...</td></tr>
+<tr><td>Related Work</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Generative Recommendation</td><td>Unlike traditional discriminative recommenders morec,embedding-1,embedding-2,embedding-3,embedding-4, GR treats recommendation as a generative modeling problem wang2023generative,rajput2023recommender. GR first encodes item content (e.g., text, images) into...</td></tr>
+<tr><td>Prompt-Based Two-Stage Fusion in GR</td><td>To effectively utilize the reasoning capabilities of LLMs grounded in world knowledge hagoort2004integration,csmf, arkin1990integrating, recent works have introduced a prompt-based two-stage knowledge fusion paradigm. For example, KAR KAR constructs...</td></tr>
+<tr><td>Preliminaries</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Generative Recommendation</td><td> Let I and U denote the item and user sets, respectively. Each user u U is associated with a historical interaction sequence s u = (i 1, i 2,, i T), where i t is the item interacted with at step t and T is the maximum sequence length. In GR, the...</td></tr>
+<tr><td>Pilot Experiments</td><td>Existing studies mostly focus on how to use LLM-generated semantic knowledge, rather than how to generate higher-quality knowledge in the first place. Recent work shows that the task instruction in the prompt strongly affects which world knowledge is...</td></tr>
+<tr><td>Method</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Overview</td><td>This section introduces the proposed LWGR framework shown in Figure, from four aspects. (1) Knowledge extraction. Inspired by parallel codebooks and soft prompts, we select the most relevant codewords from multiple sub-codebooks for each user to form a...</td></tr>
+<tr><td>Knowledge Extraction</td><td>Our pilot experiments show that instructions with different orientations lead to markedly different gains across user groups, indicating that fixed hand-crafted templates are difficult to adapt to heterogeneous user preferences. Therefore, we adopt an...</td></tr>
+<tr><td>Knowledge Fusion</td><td>Using the parallel codebook and the personalized soft instructions, we extract world knowledge representations from the LLM that are highly related to each user’s preferences. However, according to pilot experiments, directly integrating such knowledge as...</td></tr>
+<tr><td>Training Strategy for LLM</td><td>(1) Frozen LLM. We treat the pretrained LLM as a fixed knowledge source and keep all its parameters frozen during training. We only update (i) the personalized soft instructions module, (ii) the knowledge fusion module, and (iii) the GR model conditioned on...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-lwgr_lagrangian_constrained_personalized_world_knowledge_for_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

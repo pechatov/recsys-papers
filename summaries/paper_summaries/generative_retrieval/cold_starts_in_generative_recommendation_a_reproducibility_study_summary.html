@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cold-Starts in Generative Recommendation: A Reproducibility Study</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2603.29845">Cold-Starts in Generative Recommendation: A Reproducibility Study</a></h1>
+<p class="nav"><a href="../../papers.html#paper-cold_starts_in_generative_recommendation_a_reproducibility_study_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Zhen Zhang, Jujia Zhao, Xinyu Ma, Xin Xin, Maarten de Rijke, Zhaochun Ren.</p>
+<p><strong>Аффилиации:</strong> Shandong University; Leiden University; <span class="industry">Baidu Inc.</span>; University of Amsterdam.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2603.29845">arXiv 2603.29845</a> · дата metadata: 2026-03-31.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/zhangzhen-research/ColdGenrec">https://github.com/zhangzhen-research/ColdGenrec</a><br><a href="https://huggingface.co/docs/transformers/en/model_doc/flan-t5">https://huggingface.co/docs/transformers/en/model_doc/flan-t5</a><br><a href="https://github.com/westlake-repl/MicroLens">https://github.com/westlake-repl/MicroLens</a><br><a href="https://github.com/kang205/SASRec">https://github.com/kang205/SASRec</a><br><a href="https://github.com/RUCAIBox/RecBole">https://github.com/RUCAIBox/RecBole</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: репродуцирует cold-start claims generative recommendation under unified protocols.</li>
+<li>Алгоритм: Авторы отделяют model scale, identifier design и training strategy, рассматривая user и item cold-start как primary evaluation settings.</li>
+<li>Evidence: Работа показывает, какие cold-start gains действительно устойчивы, а какие зависят от protocol/metadata.</li>
+<li>Ограничение: Это reproducibility study: ценность в протоколе, не в новом model component.</li>
+<li>Итог: Важна как проверка популярного тезиса, что PLM/semantic GR автоматически решает cold-start.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>Cold-start recommendation remains a central challenge in dynamic, open-world platforms, requiring models to recommend for newly registered users (user cold-start) and to recommend newly introduced items to existing users (item cold-start) under sparse or missing interaction signals.</td></tr>
+<tr><th>Предложение авторов</th><td>In this work, we present a systematic reproducibility study of generative recommendation under a unified suite of cold-start protocols.</td></tr>
+<tr><th>Главный evidence claim</th><td>However, cold-start is rarely treated as a primary evaluation setting in existing studies, and reported gains are difficult to interpret because key design choices, such as model scale, identifier design, and training strategy, are frequently changed together.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>reinforcement</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>метрики нужно сверить в таблицах experiments</td></tr>
+<tr><th>Baselines</th><td>TIGER, P5, DPR, DSI, NCI, SEAL, MINDER, LC-Rec, BM25</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Abstract:</span> Cold-start recommendation remains a central challenge in dynamic, open-world platforms, requiring models to recommend for newly registered users (user cold-start) and to recommend newly introduced items to existing users (item cold-start) under sparse or missing interaction signals.</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Abstract:</span> Recent generative recommenders built on pre-trained language models (PLMs) are often expected to mitigate cold-start by using item semantic information (e.g., titles and descriptions) and test-time conditioning on limited user context.</li>
+<li><strong>Learning signal.</strong> <span class="anchor">Abstract:</span> However, cold-start is rarely treated as a primary evaluation setting in existing studies, and reported gains are difficult to interpret because key design choices, such as model scale, identifier design, and training strategy, are frequently changed together.</li>
+<li><strong>Inference / deployment path.</strong> <span class="anchor">Abstract:</span> In this work, we present a systematic reproducibility study of generative recommendation under a unified suite of cold-start protocols.</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> reinforcement.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>L_ gen = - _t=1^|y_k+1| P(y_k+1^(t) y_k+1^(&lt;t), H_u; ),</code></li>
+<li><code>i = _j I P(y_j H_u).</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Comparison of generative recommendation methods. Enc--Dec denotes encoder--decoder architecture, and Dec denotes decoder-only architecture.</li>
+<li>User cold-start recommendation performance comparison. Performance is measured using Recall@10 (R@10) and NDCG@10 (N@10), with the best and second-best results in each category bolded and underlined, respectively. The best performing models achieve significant improvements over the other baselines (paired t-test, p&lt;0.05).</li>
+<li>Item cold-start recommendation performance comparison. Performance is measured using Recall@10 (R@10) and NDCG@10 (N@10), with the best and second-best results in each category bolded and underlined, respectively. The best performing models achieve significant improvements over the other baselines (paired t-test, p&lt;0.05).</li>
+<li>Main recommendation performance comparison of various methods under warm-start, user cold-start, and item cold-start settings on three datasets.</li>
+<li>Performance impact of RL on Amazon-Toys measured by Recall@10. The redred numbers in parentheses represent the percentage change ($ $) relative to the SFT baseline.</li>
+<li>Statistics of the datasets used in the experiments. "W-" and "C-" denote Warm and Cold, respectively. "Inter." stands for the number of interactions.</li>
+<li>Comparison of recall performance under warm-start and cold-start conditions across different model scales. The plot shows Recall@10 for both item and user cold-start settings as model size increases, using representative generative recommender methods (TIGER) with different variants of Flan-T5.</li>
+<li>Performance comparison across different identifier designs. This figure illustrates the Recall@10 performance under warm-start, item cold-start, and user cold-start conditions for various identifier types: Atomic IDs, Textual Titles, and Semantic Codes (RQ-VAE, Balanced k-means, and OPQ).</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source</td></tr>
+<tr><th>Metrics</th><td>метрики нужно сверить в таблицах experiments</td></tr>
+<tr><th>Baselines</th><td>TIGER, P5, DPR, DSI, NCI, SEAL, MINDER, LC-Rec, BM25</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: Работа показывает, какие cold-start gains действительно устойчивы, а какие зависят от protocol/metadata.</li>
+<li>However, cold-start is rarely treated as a primary evaluation setting in existing studies, and reported gains are difficult to interpret because key design choices, such as model scale, identifier design, and training strategy, are frequently changed together.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: репродуцирует cold-start claims generative recommendation under unified protocols.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Авторы отделяют model scale, identifier design и training strategy, рассматривая user и item cold-start как primary evaluation settings.</li>
+<li><strong>Empirical:</strong> Evidence: Работа показывает, какие cold-start gains действительно устойчивы, а какие зависят от protocol/metadata.</li>
+<li><strong>Practical:</strong> Ограничение: Это reproducibility study: ценность в протоколе, не в новом model component.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: явные датасеты не извлечены автоматически; смотреть Experimental setup в PDF/source.</li>
+<li>Метрики: метрики нужно сверить в таблицах experiments.</li>
+<li>Baselines и parity settings: TIGER, P5, DPR, DSI, NCI, SEAL, MINDER, LC-Rec, BM25.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Важна как проверка популярного тезиса, что PLM/semantic GR автоматически решает cold-start.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: репродуцирует cold-start claims generative recommendation under unified protocols.</li>
+<li>Алгоритм: Авторы отделяют model scale, identifier design и training strategy, рассматривая user и item cold-start как primary evaluation settings.</li>
+<li>Evidence: Работа показывает, какие cold-start gains действительно устойчивы, а какие зависят от protocol/metadata.</li>
+<li>Ограничение: Это reproducibility study: ценность в протоколе, не в новом model component.</li>
+<li>Итог: Важна как проверка популярного тезиса, что PLM/semantic GR автоматически решает cold-start.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Resources</td><td>We share the following resources to facilitate reproducibility of our work at https://github.com/zhangzhen-research/ColdGenrec: itemize Source code for the reproduced models and evaluation pipeline. Scripts for dataset preprocessing and cold-start split...</td></tr>
+<tr><td>Introduction</td><td>Recommender systems are a core component of two-sided marketplaces, matching users with items in dynamic, open-world environments fu2026differentiable,lin2025order. A fundamental challenge in these settings is cold-start on both sides: recommending relevant...</td></tr>
+<tr><td>Cold-starts in generative recommendation</td><td>Despite these hypotheses, cold-starts are seldom treated as a primary evaluation setting for generative recommendation, leaving open how these models behave when users or items have little to no interaction history. Moreover, existing generative...</td></tr>
+<tr><td>Research questions</td><td>This gap motivates a systematic reproducibility study that isolates and evaluates the effects of key confounding factors under a unified set of cold-start settings. Accordingly, we conduct a reproducibility study guided by four research questions: enumerate*...</td></tr>
+<tr><td>Findings</td><td>Our experiments provide the following key findings in response to the above research questions: enumerate* [label=( )] The cold-start problem exhibits highly asymmetric behavior: while user cold-starts lead to only moderate performance degradation, item...</td></tr>
+<tr><td>Contributions</td><td>Our main contributions are as follows: enumerate* [label=( )] We conduct a comprehensive evaluation of representative generative recommenders under a unified suite of user and item cold-start settings, providing a controlled assessment of their cold-start...</td></tr>
+<tr><td>Related Work</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Generative retrieval</td><td>With the rapid advancement of large language models (LLMs) vaswani2017attention, zhao2023survey, generative retrieval has emerged as a paradigm shift in information retrieval. Unlike the traditional "index-retrieve-rank" pipeline that relies on sparse or...</td></tr>
+<tr><td>Generative recommendation</td><td>Recent advances have reformulated recommendation as a generative task, where models directly generate item identifiers conditioned on user interaction history and context deng2025onerec,zhao2025model,liu2024multi. We organize recent generative recommenders...</td></tr>
+<tr><td>Cold-start recommendations</td><td>The cold-start problem, which refers to making recommendations for new items or users with limited interaction history, remains a core challenge for recommender systems yuan2023user,du2022metakg,xu2024cmclrec. For item cold-starts, common approaches include...</td></tr>
+<tr><td>Problem Formulation</td><td>текст не извлечен; смотреть PDF/source</td></tr>
+<tr><td>Generative recommendation</td><td>In generative recommendation, we formalize recommendation as a generative task, where the model autoregressively predicts the tokenized identifier of the next item conditioned on a user's interaction history. Let U and I denote the sets of users and items,...</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-cold_starts_in_generative_recommendation_a_reproducibility_study_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>

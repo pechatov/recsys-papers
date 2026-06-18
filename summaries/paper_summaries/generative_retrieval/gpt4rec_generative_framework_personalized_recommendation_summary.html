@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT4Rec: A Generative Framework for Personalized Recommendation and User Interests Interpretation</title>
+  <style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+h1, h2, h3 { line-height: 1.25; margin: 1.55em 0 .55em; }
+h1 { margin-top: 0; font-size: 2rem; border-bottom: 1px solid var(--border); padding-bottom: .55rem; }
+h2 { font-size: 1.45rem; } h3 { font-size: 1.15rem; }
+p { margin: .75rem 0; }
+a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+ul, ol { padding-left: 1.55rem; } li { margin: .3rem 0; }
+blockquote { margin: 1rem 0; padding: .65rem 1rem; color: var(--muted); background: var(--soft); border-left: 4px solid var(--border); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; }
+p code, li code { background: var(--soft); padding: .12rem .28rem; border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: .45rem .6rem; vertical-align: top; }
+th { background: var(--soft); text-align: left; }
+.nav { margin-top: -.25rem; }
+.industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
+.note { color: var(--muted); }
+@media (max-width: 640px) { main { padding: 24px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+<h1><a href="https://arxiv.org/abs/2304.03879">GPT4Rec: A Generative Framework for Personalized Recommendation and User Interests Interpretation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-gpt4rec_generative_framework_personalized_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Подробное саммари статьи:</p>
+<blockquote>
+<p><strong>Авторы:</strong> Jinming Li, Wentao Zhang, Tian Wang, Guanglei Xiong, Alan Lu, Gerard Medioni.</p>
+<p><strong>Аффилиации:</strong> University of Michigan, Ann Arbor; <span class="industry">Amazon</span>, United States.</p>
+<p><strong>Публикация:</strong> arXiv:2304.03879, 2023.</p>
+</blockquote>
+
+<h2>1. Коротко</h2>
+<p>GPT4Rec предлагает гибридный генеративно-поисковый фреймворк: GPT-2 не генерирует item ID напрямую, а генерирует несколько гипотетических поисковых запросов, которые описывают интересы пользователя. Затем обычный search engine, в экспериментах BM25, ищет item'ы по этим запросам в каталоге.</p>
+<p>Это важный контраст к TIGER: вместо short semantic IDs здесь используется натуральный язык как промежуточный representation пользователя. Сгенерированные запросы одновременно служат retrieval bridge и интерпретацией интересов: их можно читать человеку, анализировать на coverage/diversity и применять к новым item'ам, если у них есть title/metadata.</p>
+
+<h2>2. Контекст</h2>
+<p>Авторы критикуют embedding-based candidate matching за три проблемы: item'ы часто представлены как ID без текстового содержания; discriminative models плохо интерпретируют, какие интересы пользователя активны; growing inventory и cold-start требуют дообучения или пересчета embeddings.</p>
+<p>GPT4Rec вдохновлен search engines: пользователь в e-commerce явно вводит запрос, а поисковик сопоставляет его с текстом item'ов. Для рекомендаций такого явного запроса нет, поэтому модель должна вывести “возможные запросы” из истории пользователя. Это превращает recommendation в задачу <code>query generation + searching</code>.</p>
+
+<h2>3. Метод</h2>
+<p>Модель состоит из двух независимых компонентов:</p>
+<ul>
+<li><strong>Generative language model.</strong> GPT-2 117M дообучается на последовательностях item titles. Input - item titles из истории пользователя плюс prompt; target - title последнего item'а. Идея: самый точный fine-grained query для target item - его собственное название.</li>
+<li><strong>Search engine.</strong> Каталог индексируется по item titles. На inference сгенерированные queries подаются в BM25, который возвращает top candidates.</li>
+</ul>
+<p>Ключевая техника - <strong>multi-query beam search</strong>. Вместо одного запроса модель генерирует несколько beam outputs. Для top-K рекомендации авторы часто используют стратегию “K queries, по одному item на query”: это повышает diversity и покрывает несколько интересов пользователя, а не только один dominant intent.</p>
+
+<h2>4. Эксперименты/результаты</h2>
+<p>Эксперименты проведены на Amazon Review 5-core в категориях Beauty и Electronics. Истории пользователей дедуплицируются и обрезаются до длины 15; split 0.8/0.1/0.1; последний item в test sequence - target. Baselines: FM-BPR, ContentRec, YouTubeDNN, BERT4Rec.</p>
+<table>
+<thead><tr><th>Датасет</th><th>Лучший baseline</th><th>GPT4Rec</th><th>Что важно</th></tr></thead>
+<tbody>
+<tr><td>Beauty, Recall@40</td><td>BERT4Rec 0.1161</td><td>0.2040 с 40 queries</td><td>+75.7% relative improvement по заявлению авторов.</td></tr>
+<tr><td>Electronics, Recall@40</td><td>BERT4Rec 0.0751</td><td>0.0918 с 40 queries</td><td>+22.2% relative improvement на большем каталоге.</td></tr>
+</tbody>
+</table>
+<p>Анализ multi-query показывает монотонный рост Recall при увеличении числа generated queries. В таблице diversity/coverage лучшие значения также достигаются при большем числе queries, что поддерживает тезис о multi-interest representation.</p>
+
+<h2>5. Ограничения</h2>
+<ul>
+<li><strong>Retrieval зависит от BM25.</strong> Если title не содержит нужных терминов или несколько item'ов имеют похожие названия, генерация хорошего query не гарантирует хороший candidate recall.</li>
+<li><strong>Двухстадийная оптимизация.</strong> GPT-2 и BM25 оптимизируются отдельно; авторы прямо оставляют joint supervision from search results как future work.</li>
+<li><strong>Нет проверки в truly large-scale serving.</strong> BM25 удобен и масштабируем, но качество и latency в production зависят от search инфраструктуры и качества item metadata.</li>
+<li><strong>Natural-language grounding неоднозначен.</strong> Запросы интерпретируемы, но это не валидные identifiers. В отличие от SID, они не дают строгий one-to-one mapping на item.</li>
+</ul>
+
+<h2>6. Как читать для GR/SID</h2>
+<p>GPT4Rec полезен как альтернатива “генерировать ID”: модель может генерировать <em>запрос</em>, а не item. Для SID-направления это хороший reminder, что semantic ID решает только часть проблемы: он ускоряет и структурирует target space, но может терять человеческую интерпретируемость, которую GPT4Rec получает почти бесплатно.</p>
+<p>В практическом GR-пайплайне эту работу стоит читать как вариант hybrid retrieval: LLM/LM строит explainable user intent, а внешний retriever отвечает за catalog grounding. Это особенно релевантно для cold-start item'ов с хорошими titles/metadata.</p>
+
+<p><a href="../../papers.html#paper-gpt4rec_generative_framework_personalized_recommendation_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

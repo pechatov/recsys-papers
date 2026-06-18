@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alleviating LLM-based Generative Retrieval Hallucination in Alipay Search</title>
+  <style>
+    body { margin: 0; color: #1f2933; font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+    h1 { margin-top: 0; font-size: 2rem; line-height: 1.25; border-bottom: 1px solid #d8dee9; padding-bottom: .55rem; }
+    h2 { margin-top: 1.6em; font-size: 1.45rem; line-height: 1.25; } h3 { font-size: 1.15rem; }
+    a { color: #0b66c3; } blockquote { margin: 1rem 0; padding: .7rem 1rem; color: #65758b; background: #f6f8fb; border-left: 4px solid #d8dee9; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; } th, td { border: 1px solid #d8dee9; padding: .45rem .6rem; vertical-align: top; } th { background: #f6f8fb; text-align: left; }
+    ul { padding-left: 1.5rem; } li { margin: .3rem 0; }
+  
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style>
+</head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
+<main>
+  <h1><a href="https://arxiv.org/abs/2503.21098">Alleviating LLM-based Generative Retrieval Hallucination in Alipay Search</a></h1>
+  <p class="nav"><a href="../../papers.html#paper-alleviating_llm_generative_retrieval_hallucination_alipay_search_summary">&larr; К общему списку статей</a></p>
+
+  <blockquote>
+    <strong>Авторы:</strong> Yedan Shen, Kaixin Wu, Yuechen Ding, Jingyuan Wen, Hong Liu, Mingjie Zhong, Zhouhan Lin, Linjian Mo, Jia Xu.<br>
+    <strong>Аффилиации:</strong> Ant Group, Hangzhou; LUMIA Lab, Shanghai Jiao Tong University.<br>
+    <strong>Источник:</strong> arXiv:2503.21098, 2025; исходник содержит SIGIR 2025 metadata.
+  </blockquote>
+
+  <h2>1. Коротко</h2>
+  <p>Статья рассматривает конкретную production-проблему LLM-based generative retrieval: модель может вернуть валидный, но нерелевантный финансовый/страховой продукт. В Alipay Search это называется hallucination и напрямую бьет по trust, clicks и conversion.</p>
+  <p>Решение двухступенчатое: Knowledge Distillation Reasoning улучшает само SFT обучение GR, а Decision Agent фильтрует сгенерированные результаты через структурированную LLM-проверку релевантности.</p>
+
+  <h2>2. Контекст</h2>
+  <p>Домены - Fund Search и Insurance Search в Alipay. Пользовательские запросы часто fuzzy или complex: например, не точное название фонда, а желаемая тема, риск, срок или страховой сценарий. В базовой постановке product title используется как DocID, а Qwen2.5-14B fine-tuned как generative retriever.</p>
+
+  <h2>3. Метод / pipeline</h2>
+  <ul>
+    <li><strong>Preliminary GR:</strong> SFT на annotated relevant query-document pairs и structured product knowledge &lt;d,k&gt;; output identifier - product title.</li>
+    <li><strong>Negative mining:</strong> предварительный GR retrieves docs; ensemble of open-source LLM judges relevance; только docs, признанные нерелевантными всеми judges, становятся negative pairs.</li>
+    <li><strong>Reasoning distillation:</strong> Qwen2.5-72B генерирует объяснения релевантности/нерелевантности для positive и negative pairs; эти reasoning records добавляются к SFT. На сценарий используется около 20k reasoning records.</li>
+    <li><strong>Decision Agent:</strong> для каждого GR result BM25 находит top-m related docs, затем Qwen2.5-32B оценивает relevance по structured perspectives: company, product type, duration/risk и т.п. Сохраняются только релевантные результаты.</li>
+    <li><strong>Top-K selection:</strong> по ACC curve выбран K=5: Fund ACC 87.17, Insurance ACC 90.05.</li>
+  </ul>
+
+  <h2>4. Результаты и evidence</h2>
+  <table>
+    <thead><tr><th>Model</th><th>Fund ACC</th><th>Insurance ACC</th></tr></thead>
+    <tbody>
+      <tr><td>BM25</td><td>69.33%</td><td>47.33%</td></tr>
+      <tr><td>GR baseline</td><td>83.83%</td><td>85.83%</td></tr>
+      <tr><td>Ours</td><td><strong>87.17%</strong></td><td><strong>90.05%</strong></td></tr>
+      <tr><td>w/o reasoning</td><td>85.17%</td><td>87.66%</td></tr>
+      <tr><td>w/o decision agent</td><td>85.50%</td><td>86.17%</td></tr>
+    </tbody>
+  </table>
+  <p>Dataset scale: около 250k fund records, 200k insurance records и 20k reasoning records per scenario. Test queries разделены по frequency buckets из logs и размечены annotators как relevant/irrelevant.</p>
+  <p>Online A/B: Variant A - current baseline recall system с sparse+dense retrieval; Variant B добавляет optimized GR как дополнительный recall path. Fund overall: Click_PV +2.84%, Click_UV +1.45%, Trade_Count +1.31%, Trade_UV +0.99%. На broad fund queries effect крупнее: Click_PV +12.71%, Click_UV +11.06%, Trade_Count +11.75%, Trade_UV +10.63%. Insurance: Trade_Count +1.89%, Trade_UV +2.07%. Статья указывает significance 95%, p &lt; 0.05.</p>
+
+  <h2>5. Ограничения</h2>
+  <ul>
+    <li>Reasoning data строится LLM judges и larger LLM, то есть hallucination mitigated LLMs контролируется другими LLMs.</li>
+    <li>Даже после reasoning нужен Decision Agent, значит проблема не решена только обучением retriever.</li>
+    <li>Structured perspectives доменно-специфичны: фондовый и страховой поиск имеют свои поля риска, срока, компании и типа продукта.</li>
+    <li>Промышленные logs, exact candidate sizes и latency/cost Decision Agent не раскрыты полностью.</li>
+  </ul>
+
+  <h2>6. Связь с GR/SID</h2>
+  <p>Работа показывает важную сторону GR, которая не видна в чистых SID-бенчмарках: валидный идентификатор еще не гарантирует релевантность. Даже если title/DocID существует, LLM может "галлюцинировать" соответствие query-product. Поэтому production GR требует relevance reasoning, hard negatives и post-generation verification.</p>
+
+  <p class="nav"><a href="../../papers.html#paper-alleviating_llm_generative_retrieval_hallucination_alipay_search_summary">&larr; К общему списку статей</a></p>
+</main>
+<script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAPO: Step-Aligned Policy Optimization for Reasoning-Based Generative Recommendation</title>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],processEscapes:true},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root { color-scheme: light; --fg:#1f2933; --muted:#65758b; --border:#d8dee9; --bg:#ffffff; --soft:#f6f8fb; --link:#0b66c3; --industry:#0f766e; --industry-bg:#e6fffb; --industry-border:#99f6e4; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+main { max-width:980px; margin:0 auto; padding:40px 24px 72px; }
+h1,h2,h3 { line-height:1.25; margin:1.55em 0.55em; }
+h1 { margin-top:0; font-size:2rem; border-bottom:1px solid var(--border); padding-bottom:.55rem; }
+h2 { font-size:1.45rem; }
+h3 { font-size:1.12rem; }
+p { margin:.75rem 0; }
+a { color:var(--link); text-decoration-thickness:.08em; text-underline-offset:.16em; }
+ul,ol { padding-left:1.55rem; }
+li { margin:.32rem 0; }
+blockquote { margin:1rem 0; padding:.65rem 1rem; color:var(--muted); background:var(--soft); border-left:4px solid var(--border); }
+table { border-collapse:collapse; width:100%; margin:1rem 0; }
+th,td { border:1px solid var(--border); padding:.45rem.6rem; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--soft); padding:.12rem.28rem; border-radius:4px; }
+pre { overflow-x:auto; padding:1rem; background:#111827; color:#f9fafb; border-radius:8px; }.nav { margin-top:-.25rem; }.industry { display:inline-block; color:var(--industry); background:var(--industry-bg); border:1px solid var(--industry-border); border-radius:4px; padding:0.25rem; font-weight:600; }.note { color:var(--muted); }.table-scroll { overflow-x:auto; }.anchor { color:var(--muted); font-size:.94rem; }
+@media (max-width:640px){ main{padding:24px 16px 56px;} body{font-size:15px;} h1{font-size:1.65rem;} }
+.summary-scroll-gutter { position: fixed; top: 0; bottom: 0; z-index: 4; width: calc((100vw - 980px) / 2); min-width: 56px; border: 0; padding: 0; background: transparent; color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .15s ease, background .15s ease; }
+.summary-scroll-gutter::after { position: fixed; top: 50%; transform: translateY(-50%); padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.92); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.summary-scroll-gutter:hover, .summary-scroll-gutter:focus-visible { opacity: 1; outline: none; }
+.summary-scroll-top { left: 0; }
+.summary-scroll-top::after { content: "Наверх"; left: 12px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.summary-scroll-top:hover, .summary-scroll-top:focus-visible { background: linear-gradient(90deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+.summary-scroll-bottom { right: 0; }
+.summary-scroll-bottom::after { content: "Вниз"; right: 12px; transform: translateY(-50%) rotate(90deg); transform-origin: right center; }
+.summary-scroll-bottom:hover, .summary-scroll-bottom:focus-visible { background: linear-gradient(270deg, rgba(11,102,195,.06), rgba(11,102,195,0)); }
+@media (max-width: 1120px) { .summary-scroll-gutter { display: none; } }</style></head>
+<body>
+<button class="summary-scroll-gutter summary-scroll-top" type="button" aria-label="Прокрутить саммари наверх"></button>
+<button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button><main>
+<h1><a href="https://arxiv.org/abs/2605.17648">SAPO: Step-Aligned Policy Optimization for Reasoning-Based Generative Recommendation</a></h1>
+<p class="nav"><a href="../../papers.html#paper-sapo_step_aligned_policy_optimization_for_reasoning_based_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+<p>Расширенное саммари по обновленному <code>cs-paper-reading</code>: metadata, technical spine, method walkthrough, experiments, limitations и practical readout.</p>
+<blockquote>
+<p><strong>Авторы:</strong> Zaiyi Zheng, Guanghui Min, Yaochen Zhu, Liang Wu, Liangjie Hong, Chen Chen, Jundong Li.</p>
+<p><strong>Аффилиации:</strong> University of Virginia; <span class="industry">Nokia</span>.</p>
+<p><strong>Источник:</strong> <a href="https://arxiv.org/abs/2605.17648">arXiv 2605.17648</a> · дата metadata: 2026-05-17.</p>
+<p><strong>Категория/теги:</strong> generative recommendation, alignment, новое за 2 месяца.</p>
+<p><strong>Ссылки из source (код, данные, baseline или reference):</strong> <a href="https://github.com/zhengzaiyi/SAPO">https://github.com/zhengzaiyi/SAPO</a>.</p>
+</blockquote>
+<h2>1. Коротко</h2>
+<ul>
+<li>Главная идея: SAPO решает credit assignment в reasoning-based GR, где exact-match reward по целому SID не говорит, какой token/step ошибся.</li>
+<li>Алгоритм: Step-Aligned Policy Optimization считает отдельный group-relative advantage для каждого thinking block + SID token и применяет его только к соответствующему шагу.</li>
+<li>Evidence: На трех datasets SAPO стабилизирует RL и улучшает baselines, особенно когда exact-match feedback sparse.</li>
+<li>Ограничение: Метод применим к structured reasoning GR; для обычного SID-only NTP он может быть избыточен.</li>
+<li>Итог: Полезна для RL-настройки GR: reward granularity должна совпадать с decomposition output.</li>
+</ul>
+<p><strong>Как читать статью:</strong> это прежде всего работа типа <em>semantic-ID/tokenizer</em>; поэтому основной audit должен смотреть на collision rate, codebook utilization, item-level Recall/NDCG, tail/cold-start slices и identifier churn.</p>
+<h2>2. Авторская постановка и claim</h2>
+<table><tbody>
+<tr><th>Проблема</th><td>However, in large-catalog recommendation, exact-match feedback on the generated SID only reports whether the final item is correct; when a generated SID mismatches, outcome-reward cannot identify which SID-token prediction caused the mismatch and may penalize matched SID-token positions together with the mismatched position.</td></tr>
+<tr><th>Предложение авторов</th><td>Generative recommendation treats next-item prediction as autoregressive item-identifier generation.</td></tr>
+<tr><th>Главный evidence claim</th><td>Across three real-world recommendation datasets, SAPO stabilizes reinforcement-learning training and consistently improves over existing generative recommendation baselines, with the largest gains where sparse exact-match feedback makes reasoning-step credit assignment important.</td></tr>
+<tr><th>Моя проверочная рамка</th><td>Отделять авторский claim от того, что реально доказано experiments: для этой статьи ключевой риск - Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</td></tr>
+</tbody></table>
+<h2>3. Technical Spine</h2>
+<div class="table-scroll"><table><tbody>
+<tr><th>Тип вклада</th><td>semantic-ID/tokenizer</td></tr>
+<tr><th>Input signal</th><td>user history / item metadata / collaborative signals / prompt или production logs; точный набор нужно сверять в setup</td></tr>
+<tr><th>Representation</th><td>semantic IDs / discrete tokens / generated IDs / cache state / value-aware target в зависимости от задачи; см. method walkthrough ниже</td></tr>
+<tr><th>Learning signal</th><td>contrastive, GRPO, reinforcement, SFT, KL, policy optimization</td></tr>
+<tr><th>Inference path</th><td>constrained decoding, beam/trie/hash verification, diffusion/parallel decoding, cache reuse или business-rule routing - если применимо</td></tr>
+<tr><th>Datasets/domains</th><td>Amazon, Scientific, Office</td></tr>
+<tr><th>Metrics</th><td>метрики нужно сверить в таблицах experiments</td></tr>
+<tr><th>Baselines</th><td>OneRec, RQ-VAE</td></tr>
+<tr><th>Ключевое предположение</th><td>Дискретный identifier должен сохранять полезную item semantics и не создавать неконтролируемые collisions/churn.</td></tr>
+</tbody></table></div>
+<h2>4. Метод: walkthrough по source sections</h2>
+<p class="note">Ниже не пересказ названий секций, а рабочая карта того, где в методе находится основной механизм. Короткие английские anchors оставлены как привязка к arXiv source/PDF.</p>
+<ol>
+<li><strong>Постановка представления.</strong> <span class="anchor">Three-Stage Training Setup:</span> Motivated by recent reasoning-based generative recommenders such as OneRec-Think liu2025onerec and SIDReasoner he2026reasoning, we adopt a three-stage setup for reasoning-based SID decoding. Stage 1 aligns the language model to the SID vocabulary and the recommendation prompt format, so the model can produce valid SID tokens for the...</li>
+<li><strong>Ключевой модуль.</strong> <span class="anchor">Methodology:</span> Motivated by the analysis above, SAPO addresses the RL-stage credit-assignment problem in reasoning-based SID decoding. Its central design choice is to use each reasoning step, defined as a SID-token prediction together with its associated thinking block, as the credit-assignment (action) unit. Once this reasoning step is fixed, reward placement, advantage...</li>
+</ol>
+<h2>5. Objectives, formulas и training details</h2>
+<p><strong>Detected objective keywords:</strong> contrastive, GRPO, reinforcement, SFT, KL, policy optimization.</p>
+<p>Формульные anchors из TeX, которые стоит открыть рядом с method section:</p><ul>
+<li><code>_k=1^K m_i,k = \, |\k:s_i^(k)=s_i^ gt,(k)\ |.</code></li>
+<li><code>_ J_ out( ) = _ J_ match( )</code></li>
+<li><code>J_ SAPO( ) = E_x,\y_i\\!.</code></li>
+<li><code>aligned _ J_ SAPO( ) &amp; E\!,\\ g_i,k,t( ) &amp;= bluew_i,t( )_ importance magenta A_i,k_ reasoning-step advantage cyan 1|y_i^(k)| _ _ (y_</code></li>
+</ul>
+<p>Практически важный вопрос: совпадает ли training objective с тем, что потом считается в item-level или business-level evaluation. Для SID/GenIR papers особенно опасен разрыв между token likelihood, SID-prefix match и реальным попаданием конкретного item/document.</p>
+<h2>6. Figures / Tables для ручной сверки</h2>
+<ul>
+<li>Summary of frequently used notation.</li>
+<li>Main results on three Amazon-review datasets. R@$k$ and N@$k$ denote Recall@$k$ and NDCG@$k$, respectively. The best result in each column is bolded and the second best is underlined.</li>
+<li>RL training dynamics on the Industrial-and-Scientific dataset. We compare SAPO and GRPO from the same Stage 2 checkpoint using training reward, response length, stepwise response length, KL to the reference, and SID match rate; blue denotes SAPO and orange denotes GRPO.</li>
+<li>Component ablation of SAPO on three Amazon-review datasets. The per-step labels correspond to the reasoning-step advantage and reasoning-step match reward defined at SID-token positions. We additionally report the reasoning activation performance on stage 2 for reference. The best result in each column is bolded and the second best is underlined.</li>
+<li>Ablation diagnostics: reward and gradient norm (log$_10$ scale) on the Industrial \&amp; Scientific dataset.</li>
+<li>Hyperparameter sensitivity of SAPO on Office-Products (R@10).</li>
+<li>Backbone generalizability on Office-Products (mean$ $std, 3 seeds).</li>
+<li>Case study on Industrial-and-Scientific. Both methods receive the same prompt, with SID tokens highlighted in red. Outcome GRPO follows the general user interest but misses the target, whereas SAPO identifies more discriminative evidence and predicts the correct SID.</li>
+</ul>
+<h2>7. Эксперименты и evidence</h2>
+<table><tbody>
+<tr><th>Datasets/domains</th><td>Amazon, Scientific, Office</td></tr>
+<tr><th>Metrics</th><td>метрики нужно сверить в таблицах experiments</td></tr>
+<tr><th>Baselines</th><td>OneRec, RQ-VAE</td></tr>
+</tbody></table>
+<ul>
+<li>Evidence: На трех datasets SAPO стабилизирует RL и улучшает baselines, особенно когда exact-match feedback sparse.</li>
+<li>Experiments: We address three research questions (RQs). (RQ1) Does SAPO improve end-task recommendation quality against generative recommendation baselines?</li>
+<li>Experiments: (RQ2) Does reasoning-step credit assignment stabilize reinforcement learning dynamics for recommendation with sparse exact-match feedback? (RQ3) How do the reasoning-step match reward and reasoning-step advantage contribute to SAPO?</li>
+<li>Experimental Setup:. We evaluate on three categories from the Amazon Reviews dataset ni2019justifying, including Office-Products, Video-Games, and Industrial-and-Scientific, following the widely adopted sequential recommendation protocol of kang2018self.</li>
+<li>Experimental Setup: For each category, we sort user interactions chronologically, keep users with at least five interactions, and construct (history, next-item) pairs under a leave-one-out split: the last interaction forms the test record, the second-to-last forms the validation record, and the remaining prefix forms the training set.</li>
+<li>Across three real-world recommendation datasets, SAPO stabilizes reinforcement-learning training and consistently improves over existing generative recommendation baselines, with the largest gains where sparse exact-match feedback makes reasoning-step credit assignment important.</li>
+</ul>
+<p><strong>Что проверять перед тем, как верить числам:</strong> candidate universe, одинаковый доступ к content/collaborative features, negative sampling, beam size/decoding constraints, item-level vs SID-level metric, variance/significance и наличие ablations по главному компоненту.</p>
+<h2>8. Contributions и novelty</h2>
+<ul>
+<li><strong>Conceptual:</strong> Главная идея: SAPO решает credit assignment в reasoning-based GR, где exact-match reward по целому SID не говорит, какой token/step ошибся.</li>
+<li><strong>Algorithmic/system:</strong> Алгоритм: Step-Aligned Policy Optimization считает отдельный group-relative advantage для каждого thinking block + SID token и применяет его только к соответствующему шагу.</li>
+<li><strong>Empirical:</strong> Evidence: На трех datasets SAPO стабилизирует RL и улучшает baselines, особенно когда exact-match feedback sparse.</li>
+<li><strong>Practical:</strong> Ограничение: Метод применим к structured reasoning GR; для обычного SID-only NTP он может быть избыточен.</li>
+<li><strong>Новизна, которую стоит отделять от инженерного контекста:</strong> reusable idea находится в связке objective + representation + inference protocol; одно только использование LLM/RQ-VAE/SID/GRPO не делает contribution новым.</li>
+</ul>
+<h2>9. Слабые места и открытые вопросы</h2>
+<ul>
+<li>Gain может идти от capacity, metadata/features, negative sampling или candidate-space differences, а не от заявленного компонента.</li>
+<li>Reward/utility signal достаточно стабилен и не подменяет user relevance узкой бизнес-метрикой.</li>
+<li>Нужно проверить, не совпадает ли improvement с большим capacity, richer metadata, более легким candidate space или неравным decoding budget.</li>
+<li>Для production/industrial работ отдельно нужны latency, refresh cost, rollback path, monitoring of drift/collisions и per-slice metrics для tail/cold-start groups.</li>
+</ul>
+<h2>10. Reproduction Checklist</h2>
+<ul>
+<li>Данные и split: Amazon, Scientific, Office.</li>
+<li>Метрики: метрики нужно сверить в таблицах experiments.</li>
+<li>Baselines и parity settings: OneRec, RQ-VAE.</li>
+<li>Artifacts: tokenizer/codebook assignment, item-to-SID map, collision statistics, decoding constraints, train/valid/test split, negative sampling, reward/value construction или cache policy.</li>
+<li>Serving checks: latency, memory, batchability, update/churn cost, invalid generation rate и fallback behavior.</li>
+</ul>
+<h2>11. Практические последствия</h2>
+<p>Итог: Полезна для RL-настройки GR: reward granularity должна совпадать с decomposition output.</p>
+<p>Для локального проекта я бы превращал статью в минимальный ablation: заменить только заявленный компонент, замерить item-level Recall/NDCG, collision/invalid rate, tail/cold-start slices и latency. Без такой изоляции легко перепутать эффект tokenizer, backbone, features, decoding constraints и production reward.</p>
+<h2>12. Выжимка для каталога</h2>
+<ul>
+<li>Главная идея: SAPO решает credit assignment в reasoning-based GR, где exact-match reward по целому SID не говорит, какой token/step ошибся.</li>
+<li>Алгоритм: Step-Aligned Policy Optimization считает отдельный group-relative advantage для каждого thinking block + SID token и применяет его только к соответствующему шагу.</li>
+<li>Evidence: На трех datasets SAPO стабилизирует RL и улучшает baselines, особенно когда exact-match feedback sparse.</li>
+<li>Ограничение: Метод применим к structured reasoning GR; для обычного SID-only NTP он может быть избыточен.</li>
+<li>Итог: Полезна для RL-настройки GR: reward granularity должна совпадать с decomposition output.</li>
+</ul>
+<h2>13. Карта структуры статьи</h2>
+<div class="table-scroll"><table><thead><tr><th>Секция</th><th>Что искать</th></tr></thead><tbody>
+<tr><td>Notation and Symbols</td><td>abstract Generative recommendation treats next-item prediction as autoregressive item-identifier generation. Specifically, items are encoded as semantic identifiers (SIDs), which are short coarse-to-fine token sequences whose early tokens capture broad...</td></tr>
+<tr><td>Introduction</td><td>The item recommendation task requires a model to identify items a user is likely to interact with from a large catalog of closely related candidates. Traditional systems typically decouple candidate retrieval from ranking, whereas generative recommendation...</td></tr>
+<tr><td>Preliminaries</td><td> This section introduces the notation and setup used throughout the paper; Appendix app:notation provides a consolidated summary of symbols and notations used in the paper.</td></tr>
+<tr><td>Generative Recommendation with Hierarchical Semantic Identifiers</td><td>We formulate generative recommendation over hierarchical semantic identifiers (SIDs). Let C denote the item catalog. Following recent work on generative recommendation with SIDs rajput2023recommender, deng2025onerec, each item v C, where v denotes an item,...</td></tr>
+<tr><td>Three-Stage Training Setup</td><td> Motivated by recent reasoning-based generative recommenders such as OneRec-Think liu2025onerec and SIDReasoner he2026reasoning, we adopt a three-stage setup for reasoning-based SID decoding. Stage 1 aligns the language model to the...</td></tr>
+<tr><td>The Action-Granularity Mismatch in Outcome-Reward GRPO</td><td>-reward GRPO. We focus on the RL stage of Section, where the policy already generates reasoning traces and SID tokens. For each prompt x D RL, where D RL denotes the set of reinforcement-learning training prompts, outcome-reward GRPO...</td></tr>
+<tr><td>Methodology</td><td>Motivated by the analysis above, SAPO addresses the RL-stage credit-assignment problem in reasoning-based SID decoding. Its central design choice is to use each reasoning step, defined as a SID-token prediction together with its associated thinking block, as...</td></tr>
+<tr><td>SAPO Overview and Reasoning-Step Decomposition</td><td>Reasoning-augmented generative recommenders ask the policy to generate structured reasoning before producing SID tokens. In our implementation, the model first generates all K thinking blocks and then the K SID tokens as a contiguous block: equation...</td></tr>
+<tr><td>Reasoning-Step Match Reward</td><td>With the reasoning step fixed, reward should be placed at SID-token positions rather than only at the end of the rollout. For a rollout y i with generated SID sequence (s (1) i,, s (K) i) and ground truth (s gt,(1),, s gt,(K) ), SAPO uses a...</td></tr>
+<tr><td>Reasoning-Step Advantage and SAPO Surrogate</td><td>Once reward is placed at SID-token positions, both the advantage and the surrogate loss should be defined at the same granularity. SAPO therefore defines advantages over reasoning steps ( (k), s (k) ), rather than over the whole sequence (too coarse) or...</td></tr>
+<tr><td>Experiments</td><td>We address three research questions (RQs). (RQ1) Does SAPO improve end-task recommendation quality against generative recommendation baselines?</td></tr>
+<tr><td>Experimental Setup</td><td>. We evaluate on three categories from the Amazon Reviews dataset ni2019justifying, including Office-Products, Video-Games, and Industrial-and-Scientific, following the widely adopted sequential recommendation protocol of kang2018self.</td></tr>
+</tbody></table></div>
+<p class="nav"><a href="../../papers.html#paper-sapo_step_aligned_policy_optimization_for_reasoning_based_generative_recommendation_summary">&larr; К общему списку статей</a></p>
+</main><script>
+(() => {
+  const topButton = document.querySelector('.summary-scroll-top');
+  const bottomButton = document.querySelector('.summary-scroll-bottom');
+  if (topButton) {
+    topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+  if (bottomButton) {
+    bottomButton.addEventListener('click', () => {
+      const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: maxTop, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+</body></html>
