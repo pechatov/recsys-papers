@@ -1,0 +1,24 @@
+{
+  "name": "recsys-papers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "prepare:public": "python3 scripts/prepare_public_site.py",
+    "predev": "npm run prepare:public",
+    "dev": "astro dev",
+    "prebuild": "npm run prepare:public",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check:links": "python3 scripts/validate_summary_links.py summaries",
+    "check:public-links": "npm run prepare:public && python3 scripts/validate_summary_links.py public/summaries",
+    "check": "npm run check:links && npm run check:public-links"
+  },
+  "dependencies": {
+    "astro": "^6.4.8"
+  },
+  "devDependencies": {}
+}

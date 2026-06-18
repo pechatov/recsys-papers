@@ -1,0 +1,7 @@
+.DS_Store
+.astro/
+node_modules/
+dist/
+public/summaries/
+__pycache__/
+docs/summary_status_audit.md
