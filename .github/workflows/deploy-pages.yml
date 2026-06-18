@@ -25,18 +25,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Check links
-        run: npm run check
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
 
       - name: Build site
         run: npm run build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}/
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Check generated site
+        run: |
+          python3 scripts/validate_summary_links.py dist/summaries
+          npm run audit:math
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
