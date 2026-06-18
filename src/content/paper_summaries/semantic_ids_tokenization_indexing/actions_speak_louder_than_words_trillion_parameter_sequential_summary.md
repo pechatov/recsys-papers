@@ -7,8 +7,6 @@ sourceHtml: "summaries/paper_summaries/semantic_ids_tokenization_indexing/action
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2402.17152"
 ---
-Подробное саммари статьи:
-
 > **Авторы:** Jiaqi Zhai, Lucy Liao, Xing Liu, Yueming Wang, Rui Li, Xuan Cao, Leon Gao, Zhaojie Gong, Fangda Gu, Michael He, Yinghai Lu, Yu Shi.
 >
 > **Аффилиации:** Meta AI.
@@ -26,6 +24,11 @@ paperUrl: "https://arxiv.org/abs/2402.17152"
 Одновременно развивается линия генеративного retrieval с semantic IDs (TIGER, DSI), где item'ы представляются дискретными кодами, и seq2seq модель генерирует коды следующего item'а. Но эти подходы работают на относительно небольших каталогах и не показаны в промышленном масштабе с миллиардами пользователей.
 
 HSTU/GR от Meta предлагает третий путь: **не сжимать item'ы в semantic codes, а напрямую моделировать последовательность действий** как временной ряд в едином feature space, обрабатываемый мощным self-attention encoder'ом.
+
+<figure class="paper-figure">
+  <img src="../../assets/hstu/dlrm_vs_gr_features.png" alt="Comparison of DLRM and Generative Recommender feature organization">
+  <figcaption>Рисунок 1. Meta сравнивает DLRM и GR training: вместо большого набора агрегированных фичей GR превращает пользовательские события в единую временную последовательность.</figcaption>
+</figure>
 
 ## 3. Проблема и мотивация
 
@@ -61,7 +64,12 @@ $$
 
 При $N = \max_i n_i$ общая сложность составляет $O(N^3 d + N^2 d^2)$, что prohibitively expensive. Generative training снижает сложность на множитель $O(N)$ за счет амортизации стоимости encoder'а по нескольким целевым item'ам. При сэмплировании $i$-го пользователя с частотой $s_u(n_i) = 1/n_i$ сложность снижается до $O(N^2 d + N d^2)$. На практике это реализуется выпуском training examples в конце пользовательской сессии.
 
-## 5. Архитектура HSTU
+## 5. Метод: архитектура HSTU
+
+<figure class="paper-figure">
+  <img src="../../assets/hstu/dlrm_vs_hstu.png" alt="Comparison of DLRM components and HSTU architecture">
+  <figcaption>Рисунок 2. HSTU заменяет типичный DLRM stack на sequential transduction block с pointwise projection, spatial aggregation и gated transformation.</figcaption>
+</figure>
 
 HSTU состоит из стека идентичных слоев с residual connections. Каждый слой содержит три подслоя.
 
@@ -177,6 +185,11 @@ HSTU-large использует 4x больше слоев и 2x больше at
 Для ranking GR дает **+12.4%** улучшение E-Task online metric. Критически важный результат: content-based GR (аналог semantic ID подхода) показывает HR@100 всего 11.6% против 29.0% у DLRM и 35.6% у action-based GR. Это прямой аргумент, что **высококардинальные user actions важнее content semantics** для промышленного retrieval.
 
 ### 8.4. Scaling laws
+
+<figure class="paper-figure">
+  <img src="../../assets/hstu/training_compute.png" alt="Training compute used for DLRM and Generative Recommender models over time">
+  <figcaption>Рисунок 3. Масштабирование compute в production - один из главных аргументов статьи: GR должен вести себя как foundation-model-style система, где качество растет с training compute.</figcaption>
+</figure>
 
 Авторы масштабируют GR через гиперпараметры HSTU (число слоев, длину последовательности, dimension embedding'ов, число attention heads) и сравнивают с DLRM-вариантами (Transformers, DHEN, DCN). Ключевые находки:
 

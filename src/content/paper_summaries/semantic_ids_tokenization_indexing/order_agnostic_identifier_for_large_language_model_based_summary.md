@@ -45,6 +45,11 @@ Paper формулирует два принципа: multi-dimensional item inf
 
 Архитектура важна тем, как она меняет форму item identifier, а не только backbone.
 
+<figure class="paper-figure">
+  <img src="../../assets/setrec/overview.png" alt="SETRec overview with order-agnostic set identifiers and simultaneous generation">
+  <figcaption>Рисунок 1. SETRec представляет item как set identifier: CF и semantic tokens дают несколько независимых evidence channels, а generation идет одновременно по query slots.</figcaption>
+</figure>
+
 - Order-agnostic item tokenization строит CF tokenizer и semantic tokenizer.
 - CF tokens отражают collaborative filtering patterns.
 - Semantic tokens отражают text/content semantics.
@@ -74,6 +79,16 @@ SETRec меняет основное предположение SID generation: 
 1. **Сериализовать историю с sparse attention.** Модель видит последовательность user actions, но attention mask запрещает ложные dependencies между token slots одного item identifier.
 1. **Query-guided generation.** Вместо left-to-right генерации SID модель получает несколько query slots и одновременно предсказывает token slots следующего item.
 1. **Set-to-item matching.** На inference generated token set сопоставляется с catalog index. Ranking комбинирует CF score и semantic score; semantic strength отдельно настраивается для cold/warm regimes.
+
+<figure class="paper-figure">
+  <img src="../../assets/setrec/framework.png" alt="SETRec framework with order-agnostic tokenization and query-guided generation">
+  <figcaption>Рисунок 2. Полная схема SETRec: order-agnostic item tokenization, sparse attention mask и simultaneous generation убирают left-to-right dependency внутри identifier.</figcaption>
+</figure>
+
+<figure class="paper-figure">
+  <img src="../../assets/setrec/sparse_attention.png" alt="SETRec sparse attention mask">
+  <figcaption>Рисунок 3. Sparse attention сохраняет зависимости между user actions, но запрещает ложные dependencies между token slots одного item. Это техническая основа order-agnostic generation.</figcaption>
+</figure>
 
 ```
 for item in catalog:
@@ -107,16 +122,6 @@ for request in serving:
 - Paper reports average speedups over token-sequence identifiers: 15x Toys, 11x Beauty, 18x Sports, 8x Steam.
 - Table 3: scaling Qwen from 1.5B to 7B improves cold SETRec R@10 on Toys from 0.0883 to 0.1016, while warm improvements are not monotonic.
 - Ablations evaluate query-guided generation, sparse attention, CF/semantic token contributions, item group analysis, semantic strength and hyperparameters.
-
-## Рисунки/таблицы
-
-Рисунки и таблицы здесь читаются как диагностические инструменты.
-
-- Figure for SETRec architecture explains set tokenization and simultaneous generation.
-- Table 1 and 2 are central: they include quality and inference time, not only ranking metrics.
-- Table 3 is important because it separates warm/cold scalability.
-- Figure 8 semantic strength shows why semantic score matters for cold items.
-- Item group analysis checks popularity buckets rather than reporting only aggregate gain.
 
 ## Сильные стороны
 

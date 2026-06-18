@@ -7,7 +7,6 @@ sourceHtml: "summaries/paper_summaries/semantic_ids_tokenization_indexing/merge_
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2601.20199"
 ---
-Подробное саммари статьи:
 
 > **Авторы:** Jing Yan, Yimeng Bai, Zongyu Liu, Yahui Liu, Junwei Wang, Jingze Huang, Haoda Li, Sihao Ding, Shaohui Ruan, Yang Zhang.
 >
@@ -141,9 +140,17 @@ Offline evaluation измеряет три свойства: I2C cosine similari
 
 <img src="../../assets/merge/Accuracy_VQ_MERGE_revise.png" alt="MERGE accuracy comparison">
 
-Рисунки Accuracy/Uniformity/Separation - центральные: они переводят спор о “лучшей кластеризации” в измеримые production properties. Serving figure показывает, как index вставляется в Trinity pipeline, а case study полезен как qualitative sanity check: retrieved items должны быть не только метриками похожи, но и визуально/тематически согласованы.
+Accuracy/Uniformity/Separation plots центральны: они переводят спор о “лучшей кластеризации” в измеримые production properties. Serving diagram показывает, как index вставляется в Trinity pipeline, а case study полезен как qualitative sanity check: retrieved items должны быть не только метриками похожи, но и визуально/тематически согласованы.
+
+<img src="../../assets/merge/Uniformity_MERGE_revise.png" alt="MERGE cluster-size uniformity comparison">
+
+<img src="../../assets/merge/Uniformity_VQ_revise.png" alt="VQ cluster-size uniformity baseline">
+
+<img src="../../assets/merge/Separation_VQ_MERGE_revise.png" alt="MERGE cluster separation comparison">
 
 <img src="../../assets/merge/serving.png" alt="MERGE serving pipeline">
+
+<img src="../../assets/merge/case.png" alt="MERGE qualitative case study of retrieved videos">
 
 ## 8. Сильные стороны
 

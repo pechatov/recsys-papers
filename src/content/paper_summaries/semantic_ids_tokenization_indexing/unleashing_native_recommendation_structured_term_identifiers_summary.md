@@ -7,7 +7,6 @@ sourceHtml: "summaries/paper_summaries/semantic_ids_tokenization_indexing/unleas
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2601.06798"
 ---
-Подробное саммари статьи:
 
 > **Авторы:** Zhiyang Zhang, Junda She, Kuo Cai, Bo Chen, Shiyao Wang, Xinchen Luo, Qiang Luo, Ruiming Tang, Han Li, Kun Gai, Guorui Zhou.
 >
@@ -79,7 +78,7 @@ serving:
 
 Эксперименты включают in-domain datasets Beauty, Sports, Toys и cross-domain pairs Sports-Clothing, Phones-Electronics. Метрики: Recall@5/10, NDCG@5/10, valid rate и direct hit rate. В in-domain таблице GRLM улучшает best baseline: например на Beauty Recall@10 0.0846 и NDCG@10 0.0506; на Sports Recall@10 0.0539 и NDCG@10 0.0313; на Toys Recall@10 0.0942 и NDCG@10 0.0561. Cross-domain gains особенно крупные, местами improvement превышает 50-100% по Recall@5/10. Hallucination analysis показывает высокий valid/direct hit rate.
 
-## 7. Что важно в рисунках и таблицах
+## 7. Grounding, ablations и визуальная проверка
 
 <img src="../../assets/structured_term_identifiers/identifier_comparison.png" alt="Identifier comparison">
 

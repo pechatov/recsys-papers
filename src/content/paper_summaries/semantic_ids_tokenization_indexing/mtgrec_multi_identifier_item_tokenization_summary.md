@@ -10,194 +10,95 @@ paperUrl: "https://arxiv.org/abs/2504.04400"
 > **Авторы:** Bowen Zheng, Enze Liu, Zhongfu Chen, Zhongrui Ma, Yue Wang, Wayne Xin Zhao, Ji-Rong Wen.
 >
 > **Аффилиации:** Renmin University of China; Huawei Poisson Lab.
->
-> **Первичный источник:** arXiv:2504.04400.
 
-## коротко
+## 1. Коротко: о чем статья
 
-MTGRec gives each item multiple semantically related identifiers from adjacent RQ-VAE checkpoints and uses curriculum pretraining over the resulting tokenized sequence groups.
+MTGRec предлагает использовать **несколько semantic identifiers для одного item'а** на этапе pretraining generative recommender. Стандартный TIGER/LETTER-style pipeline жестко связывает item с одним SID. Это удобно для serving, но бедно как training signal: одна user sequence превращается в одну token sequence, а rare items получают мало вариантов представления.
 
-Ниже разбор сфокусирован на механике метода, objectives, экспериментальном setup, ablation conclusions и практических рисках внедрения.
+Идея MTGRec: взять несколько соседних checkpoints RQ-VAE tokenizer-а в конце обучения. Они уже близки друг к другу семантически, но дают немного разные item-to-SID assignments. Эти варианты используются как data augmentation: одна и та же history превращается в несколько tokenized sequence groups. Затем model pretraining выбирает группы через curriculum based on data influence, а перед serving модель fine-tune'ится на одном выбранном tokenizer-е.
 
-- Breaks strict one-item-one-identifier training assumption.
-- Uses adjacent RQ-VAE checkpoints instead of independent tokenizers.
-- Turns one user sequence into multiple token sequences.
-- Uses data influence estimation for curriculum sampling.
-- Fine-tunes with single tokenizer for unambiguous inference.
+Главный компромисс: во время обучения item может иметь несколько близких identifiers, но inference остается совместимым с обычным single-SID map.
 
-## контекст
+<figure class="paper-figure">
+  <img src="../../assets/mtgrec/framework.png" alt="MTGRec framework with adjacent tokenizer checkpoints and curriculum pretraining">
+  <figcaption>Рисунок 1. MTGRec использует соседние RQ-VAE checkpoints как semantically related tokenizers. Multi-identifier variants расширяют pretraining data, а curriculum sampler выбирает наиболее полезные sequence groups.</figcaption>
+</figure>
 
-Работа находится в линии generative recommendation / semantic identifiers, где item представляется не только atomic ID, а дискретным, текстовым, многокодовым или генерируемым представлением.
+## 2. Контекст и проблема
 
-Общий контекст: чем сильнее сжатие item semantics в короткий код, тем больше риск потерять информацию, которую downstream recommender уже не восстановит.
+Generative recommender учится генерировать SID следующего item'а. Если tokenizer назначил item неидеальный SID, downstream model вынуждена учиться на этом единственном представлении. Особенно страдают low-frequency items: мало interactions, мало градиентов, высокая чувствительность к случайному assignment.
 
-<div class="table-scroll">
-<table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Tokenizer</td><td>RQ-VAE / TIGER++-style enhanced tokenizer</td></tr>
-<tr><td>Data augmentation</td><td>multiple identifiers per item</td></tr>
-<tr><td>Curriculum</td><td>first-order gradient approximation of data influence</td></tr>
-</table>
-</div>
+Наивный способ - обучить несколько независимых tokenizers и давать item несколько IDs. Но независимые tokenizers могут создавать слишком разные mappings: один и тот же item будет выглядеть как разные объекты, а модель получит noisy labels.
 
-## проблема
+MTGRec выбирает более мягкий источник diversity: adjacent final checkpoints одного tokenizer-а. Они отличаются из-за training trajectory, но остаются близкими по semantic structure.
 
-A single identifier can be suboptimal for low-frequency items and creates low-diversity token sequence data. But naive multiple tokenizers may produce unrelated/noisy IDs.
+## 3. Метод
 
-Для оценки важно отделять три уровня: качество item representation, качество tokenizer/identifier и качество sequence/generative model. Многие papers выигрывают именно за счет улучшения одного уровня, а не всей системы сразу.
+### 3.1. Multi-identifier tokenization
 
-- Tokenizer/recommender mismatch: код удобен одному модулю и неудобен другому.
-- Collisions или near-collisions ухудшают exact item retrieval.
-- Long-tail items получают слабый сигнал и нестабильные IDs.
-- Beam search может генерировать invalid или duplicate identifiers.
-- Offline lift может не перенестись в production из-за drift, catalog churn и constraints.
+Сначала обучается enhanced RQ-VAE tokenizer. В реализации используются 3 codebooks size 256 и дополнительный collision codebook; также упоминаются TIGER++-style улучшения вроде whitening, deeper MLP и EMA.
 
-## метод/архитектура
+Дальше сохраняются последние $n$ checkpoints. Каждый checkpoint перекодирует весь catalog, получая свой SID map. Одна user history затем превращается в $n$ tokenized variants.
 
-Метод вводит специальные компоненты поверх базового recommender/tokenizer pipeline. Важно, что авторы обычно стараются сохранить inference совместимым с существующей GR схемой или явно обсуждают trade-off inference cost.
+### 3.2. Curriculum через data influence
 
-Архитектурная идея раскрывается через следующие элементы.
+Не все tokenizer variants одинаково полезны. MTGRec оценивает влияние каждой group на validation objective через first-order gradient approximation: если gradient группы должен уменьшить validation loss, sampling probability этой группы растет.
 
-- RQ-VAE backbone with 3 codebooks of size 256 plus extra collision codebook in implementation.
-- Adjacent final checkpoints as semantically relevant tokenizers.
-- Multiple tokenized datasets/groups from same interaction sequences.
-- Influence estimator based on validation gradient and training gradient.
-- Dynamic sampler over tokenizer data groups.
-- Final fine-tuning on one tokenizer for serving.
+Такой curriculum решает проблему "добавили много вариантов и зашумели training". Модель чаще видит те SID variants, которые реально помогают downstream recommendation.
 
-## objective/алгоритм
+### 3.3. Fine-tuning для serving
 
-Objective связывает representation learning, identifier learning и downstream recommendation/retrieval signal. В некоторых работах это explicit loss, в других — training schedule или iterative relabeling.
+После pretraining на multi-identifier groups модель fine-tune'ится на одном selected tokenizer-е. Это критично: production system не должна одновременно обслуживать несколько противоречивых SID maps. Multi-identifier эффект остается в весах модели как pretraining benefit.
 
-Для практической реализации важно логировать каждый компонент loss отдельно: общий Recall/NDCG не объясняет, какой механизм сработал.
+## 4. Пошаговый алгоритм
 
-- RQ-VAE loss: reconstruction plus residual quantization commitment terms.
-- Generative recommender NLL over target tokens.
-- Data influence estimates validation loss change using first-order Taylor approximation.
-- Curriculum updates sampling probabilities of groups.
-- Pretrain on hybrid data, then fine-tune single-tokenizer data.
+1. Обучить RQ-VAE tokenizer и сохранить последние $n$ checkpoints.
+1. Для каждого checkpoint построить item-to-SID map.
+1. Каждую user sequence перекодировать всеми SID maps, получив несколько sequence groups.
+1. На каждом pretraining step оценивать полезность groups через gradient influence относительно validation batch.
+1. Sampling probabilities обновлять так, чтобы чаще выбирать полезные groups.
+1. Pretrain generative recommender на mixture groups.
+1. Fine-tune recommender на одном final tokenizer-е.
+1. На inference использовать обычный constrained decoding / SID lookup выбранного tokenizer-а.
 
-## Детальный алгоритм MTGRec
+## 5. Эксперименты
 
-MTGRec использует нестабильность последних checkpoints tokenizer-а как полезную augmentation: один item получает несколько близких semantic identifiers, но на inference система возвращается к одному выбранному tokenizer-у, чтобы не создавать ambiguous serving.
+Datasets: Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games. Baselines включают Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER и TIGER++.
 
-1. **Обучить enhanced RQ-VAE tokenizer.** В реализации используется RQ-VAE с 3 codebooks size 256 и дополнительным collision codebook; также упоминаются whitening, deeper MLP и EMA как TIGER++-style улучшения.
-1. **Сохранить последние checkpoints.** Берутся adjacent final checkpoints, а не независимые tokenizer-ы. Такие checkpoints дают разные, но семантически близкие views item identity.
-1. **Перекодировать каталог каждым checkpoint.** Для каждого item получается несколько SID variants. Одна и та же user history превращается в несколько tokenized sequence groups.
-1. **Сделать pretraining dataset из groups.** Вместо one-item-one-identifier модель видит несколько допустимых token traces для одного поведения, что увеличивает diversity training signal.
-1. **Оценивать influence group sampling.** Для группы считается first-order approximation: насколько gradient на этой группе должен изменить validation loss. Sampling probability увеличивается для групп с положительным влиянием.
-1. **Pretrain generative recommender curriculum-style.** Модель обучается на hybrid groups, где curriculum sampler постепенно выбирает более полезные tokenizer variants.
-1. **Fine-tune на одном tokenizer-е.** Перед serving модель дообучается на выбранной single-tokenizer разметке, чтобы decoder генерировал однозначные SIDs.
-1. **На inference использовать стандартный SID lookup.** Multi-identifier эффект остается в весах модели, но внешняя система видит один item-token map.
+Метрики: Recall@5/10 и NDCG@5/10. Основной результат: MTGRec улучшает TIGER/LETTER-style baselines, а ablations показывают, что contribution дают оба компонента - multiple identifiers и curriculum sampling.
 
-```
-tokenizer_checkpoints = train_RQVAE_and_save_last_n()
-groups = []
-for ckpt in tokenizer_checkpoints:
-    sid_map = encode_catalog(ckpt, items)
-    groups.append(tokenize_user_sequences(logs, sid_map))
+<figure class="paper-figure">
+  <img src="../../assets/mtgrec/model_scale.png" alt="MTGRec performance comparison by model scale">
+  <figcaption>Рисунок 2. Scale analysis показывает, что эффект MTGRec сохраняется при разных размерах encoder/decoder. Это важно: gain не сводится только к одному удачному model size.</figcaption>
+</figure>
 
-for pretrain_step in range(T):
-    validation_grad = grad(loss(model, validation_batch))
-    group_scores = {}
-    for group in groups:
-        train_grad = grad(loss(model, sample(group)))
-        group_scores[group] = - dot(validation_grad, train_grad)
-    group_probs = normalize_positive_influence(group_scores)
-    batch = sample_group(groups, group_probs)
-    update_model(batch)
+<figure class="paper-figure">
+  <img src="../../assets/mtgrec/tokenizer_number.png" alt="MTGRec performance by number of tokenizers">
+  <figcaption>Рисунок 3. Sensitivity к числу tokenizer checkpoints показывает bias-variance trade-off: слишком мало variants дает мало augmentation, слишком много может добавить шум.</figcaption>
+</figure>
 
-fine_tune(model, groups[selected_serving_tokenizer])
-serve with selected SID map only
-```
+<figure class="paper-figure">
+  <img src="../../assets/mtgrec/long_tail_items.png" alt="MTGRec long-tail item performance">
+  <figcaption>Рисунок 4. Long-tail analysis важен для мотивации MTGRec: multi-identifier pretraining должен помогать именно sparse items, где один SID assignment особенно нестабилен.</figcaption>
+</figure>
 
-## эксперименты
+## 6. Сильные стороны
 
-Эксперименты в статье построены вокруг сравнения с классическими sequential recommenders, TIGER-like GR baselines, tokenizer variants или scaling baselines. Ниже перечислена конкретика setup.
+- Использует "бесплатную" diversity из training trajectory tokenizer-а, а не тренирует много независимых tokenizers.
+- Сохраняет простое single-SID inference после fine-tuning.
+- Curriculum sampling не считает все augmented groups одинаково полезными.
+- Хорошо попадает в проблему rare items и нестабильных semantic assignments.
 
-При чтении результатов полезно проверять, совпадает ли inference format у baseline и нового метода: разные beam constraints, token lengths и collision handling могут сильно менять сравнение.
+## 7. Ограничения и риски
 
-<div class="table-scroll">
-<table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>Datasets</td><td>Amazon 2023 Musical Instruments, Industrial and Scientific, Video Games</td></tr>
-<tr><td>Baselines</td><td>Caser, HGN, GRU4Rec, BERT4Rec, SASRec, FMLP-Rec, HSTU, TIGER, LETTER, TIGER++</td></tr>
-<tr><td>Metrics</td><td>Recall@5/10 and NDCG@5/10</td></tr>
-<tr><td>Implementation</td><td>4 GPUs, batch size 256 per GPU, 200 pretraining epochs</td></tr>
-<tr><td>Ablation</td><td>multi-identifier and curriculum both contribute</td></tr>
-</table>
-</div>
+Эффект зависит от trajectory RQ-VAE. Если соседние checkpoints почти идентичны, augmentation слабая; если сильно расходятся, labels становятся noisy.
 
-## рисунки/таблицы
+Influence-based curriculum требует дополнительных gradient computations и усложняет distributed training. Для большого production setup это может быть заметной стоимостью.
 
-Рисунки и таблицы в статье полезны как operational checklist: они показывают, какие компоненты надо воспроизводить, а какие являются ablation-only.
+После fine-tuning на одном tokenizer-е трудно диагностировать, какие именно alternative IDs помогли модели. Multi-identifier benefit становится скрытым pretraining effect.
 
-Если статья недоступна как production code, именно captions и ablation tables часто дают лучшие подсказки для повторной реализации.
+Versioning остается критичным: model checkpoint, selected SID map и constrained decoding index должны обновляться атомарно.
 
-- Framework figure: adjacent checkpoints and curriculum sampler.
-- Main result table across three Amazon datasets.
-- Ablation table on Instrument and Scientific.
-- Sensitivity to number of tokenizers n.
-- Implementation section: whitening, deeper MLP, EMA as TIGER++ tokenizer enhancements.
+## 8. Вывод
 
-## сильные стороны
-
-Ниже — основные инженерные плюсы.
-
-- **Дешевый источник multiple identifiers.** Adjacent checkpoints уже возникают при обучении RQ-VAE, поэтому не нужно тренировать несколько независимых tokenizer-ов.
-- **Использует uncertainty tokenizer-а как сигнал.** Небольшие изменения assignment около convergence превращаются в augmentation для rare/unstable items.
-- **Curriculum не считает все variants равными.** Influence estimator отбирает группы, которые лучше помогают validation objective.
-- **Serving остается простым.** После fine-tuning используется один tokenizer, поэтому нет multi-map ambiguity при beam decoding.
-- **Сильные baselines.** Сравнение с TIGER, LETTER и TIGER++ делает вывод про pretraining augmentation более полезным.
-
-## ограничения
-
-Для каждого нового домена нужен отдельный audit: taxonomy, item text quality, freshness и user behavior distribution могут полностью изменить картину.
-
-- **Зависимость от checkpoint trajectory.** Если последние RQ-VAE checkpoints почти одинаковы, augmentation слабая; если слишком разные, identifiers становятся noisy.
-- **Influence estimation стоит градиентов.** Curriculum требует дополнительных gradient computations и усложняет distributed training.
-- **Эффект multiple identifiers не виден напрямую на inference.** После single-tokenizer fine-tuning улучшение остается только в параметрах модели, поэтому диагностика сложнее.
-- **Pipeline длиннее обычного TIGER.** Нужно хранить несколько token maps, группы последовательностей, sampling state и selected serving map.
-- **Versioning все равно критичен.** Fine-tuned checkpoint должен строго соответствовать финальному tokenizer-у; иначе beam outputs будут мапиться неверно.
-
-## как реализовать/проверять
-
-Практический путь — начинать с сильного baseline и добавлять новый механизм как isolated intervention. Нельзя менять tokenizer, backbone, beam search и preprocessing одновременно, иначе lift невозможно интерпретировать.
-
-Ниже — минимальный набор проверок перед доверием к результату.
-
-- Save final n RQ-VAE checkpoints.
-- Verify adjacent checkpoint IDs are semantically close, not random.
-- Create separate tokenized sequence groups.
-- Implement influence-based sampler and compare uniform sampling.
-- Run fine-tune with selected single tokenizer.
-- Measure performance versus n and tokenizer checkpoint choice.
-
-## связь
-
-Эта работа связана с соседними подходами тем, что пытается уменьшить разрыв между rich item semantics и компактным recommender-friendly представлением.
-
-MTGRec is related to self-improvement and MoC: all use more than one view of item identity, but MTGRec uses training-time checkpoint diversity.
-
-<div class="table-scroll">
-<table>
-<tr><th>Аспект</th><th>Что важно</th></tr>
-<tr><td>CoST</td><td>retrieval-aware tokenizer loss</td></tr>
-<tr><td>ETEGRec</td><td>end-to-end alignment tokenizer/recommender</td></tr>
-<tr><td>MTGRec</td><td>multiple identifiers as pretraining augmentation</td></tr>
-<tr><td>MoC/LAMIA</td><td>parallel/multi-aspect semantic representation</td></tr>
-<tr><td>Scaling-view</td><td>diagnostics of SID capacity bottleneck</td></tr>
-</table>
-</div>
-
-## итог
-
-MTGRec is a practical pretraining method: it increases token sequence diversity while preserving simple single-tokenizer inference.
-
-Ключевая рекомендация: воспроизводить не только top-line metric, но и diagnostic metrics по кодам, collision, distribution, head/tail и latency.
-
-- Хороший кандидат для controlled offline reproduction.
-- Требует versioned SID/token maps при production использовании.
-- Нужны ablations по каждому заявленному компоненту.
-- Нужно проверять head/tail и cold-start отдельно.
-- Нужно явно считать training и inference cost.
+MTGRec - практичная работа про training-time diversity для semantic-ID generative recommendation. Ее главная идея: item может иметь несколько близких IDs во время обучения, но production может остаться в привычной single-ID схеме. Это хороший компромисс между richer supervision и serving simplicity.

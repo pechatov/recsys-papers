@@ -7,7 +7,6 @@ sourceHtml: "summaries/paper_summaries/semantic_ids_tokenization_indexing/letter
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2405.07314"
 ---
-Подробное саммари статьи:
 
 > **Авторы:** Wenjie Wang, Honghui Bao, Xinyu Lin, Jizhi Zhang, Yongqi Li, Fuli Feng, See-Kiong Ng, Tat-Seng Chua.
 >

@@ -45,6 +45,11 @@ RPG меняет постановку: токены SID рассматриваю
 
 Архитектура важна тем, как она меняет форму item identifier, а не только backbone.
 
+<figure class="paper-figure">
+  <img src="../../assets/rpg/framework.png" alt="RPG framework for generating long semantic IDs in parallel">
+  <figcaption>Рисунок 1. RPG заменяет autoregressive SID decoding на parallel multi-token prediction и graph-constrained decoding. Поэтому длинный SID увеличивает capacity без линейного роста числа forward passes.</figcaption>
+</figure>
+
 - Long SID construction использует OPQ/PQ-style токены; paper также сравнивает random и RQ variants.
 - Semantic ID embedding aggregation превращает несколько токенов item в representation.
 - Learning block использует multi-token prediction objective: модель предсказывает токены next SID параллельно.
@@ -87,17 +92,10 @@ Objective/decoding design определяет, какие ошибки моде
 - Without graph constraints NDCG@10 резко падает; beam search variant генерирует invalid IDs и дает 0.0000 в ablation.
 - Implementation mentions HuggingFace Transformers and FAISS.
 
-## Рисунки/таблицы
-
-Рисунки и таблицы здесь читаются как диагностические инструменты.
-
-- Figure 1 - full RPG framework: long SID, parallel token prediction, graph-constrained decoding.
-- Figure 2 на Sports показывает связь числа отличающихся digits и разницы predicted logits.
-- Figure 3 сравнивает runtime memory/inference time по item pool size.
-- Table 1 дает размерности Amazon datasets.
-- Table 2 - overall performance.
-- Table 3 - ablation: tokenizer choice, projection head, graph constraints.
-- Further analysis проверяет SID length scalability, expressive ability, cold-start и hyperparameters.
+<figure class="paper-figure">
+  <img src="../../assets/rpg/sid_length_scaling.png" alt="RPG NDCG@10 scaling by semantic ID length">
+  <figcaption>Рисунок 2. Scaling analysis показывает, зачем RPG нужен long SID: при увеличении длины до 64 NDCG@10 растет, а parallel decoding удерживает inference cost.</figcaption>
+</figure>
 
 ## Сильные стороны
 

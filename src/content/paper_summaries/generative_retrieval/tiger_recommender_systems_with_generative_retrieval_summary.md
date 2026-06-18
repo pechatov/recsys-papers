@@ -7,8 +7,6 @@ sourceHtml: "summaries/paper_summaries/generative_retrieval/tiger_recommender_sy
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2305.05065"
 ---
-Подробное саммари статьи:
-
 > **Авторы:** Shashank Rajput, Nikhil Mehta, Anima Singh, Raghunandan H. Keshavan, Trung Vu, Lukasz Heldt, Lichan Hong, Yi Tay, Vinh Q. Tran, Jonah Samost, Blake Anderson, Ed H. Chi, Maheswaran Sathiamoorthy.
 >
 > **Аффилиации:** Google DeepMind; University of Wisconsin-Madison.
@@ -113,6 +111,11 @@ Item title: <title>. Brand: <brand>. Category: <category>. Description: <descrip
 
 ### 4.2. Архитектура RQ-VAE
 
+<figure class="paper-figure">
+  <img src="../../assets/tiger/tokenization_pipeline.png" alt="TIGER content embedding to semantic ID tokenization pipeline">
+  <figcaption>Рисунок 1. TIGER строит SID из content information: item text/category/brand кодируются content encoder'ом, затем residual quantization переводит embedding в sequence semantic codes.</figcaption>
+</figure>
+
 Residual Quantization VAE (основанный на Lee et al., CVPR 2022) состоит из трёх компонентов:
 
 - **Encoder $E$:** MLP, проецирующий $x_v \in \mathbb{R}^{768}$ в latent vector $z = E(x_v) \in \mathbb{R}^d$. В экспериментах $d = 64$.
@@ -160,6 +163,16 @@ $$
 Decoder восстанавливает content embedding: $\hat{x}_v = D(\hat{z})$.
 
 Семантическая интерпретация иерархии: $c_1$ кодирует наиболее грубую семантическую категорию (крупный кластер item'ов), $c_2$ — более тонкое разбиение внутри кластера, и т.д. Item'ы с одинаковым $c_1$ семантически похожи; item'ы с одинаковыми $(c_1, c_2)$ ещё более похожи. Это **иерархическое покрытие item space** — ключевое свойство, отличающее SID от случайного хэша.
+
+<figure class="paper-figure">
+  <img src="../../assets/tiger/semantic_hierarchy_level1.png" alt="TIGER semantic hierarchy grouped by first SID token">
+  <figcaption>Рисунок 2. Пример интерпретации первого SID token: крупные группы соответствуют широким товарным категориям, что объясняет transfer между похожими item'ами.</figcaption>
+</figure>
+
+<figure class="paper-figure">
+  <img src="../../assets/tiger/semantic_hierarchy_prefixes.png" alt="TIGER semantic hierarchy grouped by SID prefixes">
+  <figcaption>Рисунок 3. Более длинные SID prefixes уточняют category grouping. Это показывает, почему SID ведет себя как hierarchical identifier, а не как случайный item hash.</figcaption>
+</figure>
 
 ### 4.4. Функция потерь RQ-VAE
 
@@ -488,47 +501,17 @@ TIGER специально проверяется на **cold-start item'ах** 
 
 Ключевой результат: TIGER с Semantic ID сохраняет 55.8% качества на cold-start item'ах от warm-quality, тогда как SASRec теряет около 71% (сохраняет 28.7%). Это прямое следствие semantic sharing: новый item, схожий со старыми по content, получает похожий SID, и модель может генерировать его, используя обобщённые знания о семантическом регионе. TIGER с Random ID не даёт никакого преимущества — что подтверждает, что improvement целиком обеспечивается semantic structure SID, а не самой generative парадигмой.
 
-## 10. Рисунки и что в них важно
+## 10. Сильные стороны TIGER
 
-### Figure 1: TIGER Pipeline (общий overview)
-
-Центральный рисунок статьи показывает полный двухэтапный pipeline:
-
-**Верхняя часть — Semantic Tokenization:**
-
-- Item corpus → текстовые поля → SentenceT5 → 768-мерный embedding.
-- RQ-VAE encoder проецирует в latent $z \in \mathbb{R}^{64}$.
-- Residual Quantization: последовательные 4 уровня, каждый выбирает ближайший code в codebook, residual уменьшается.
-- Результат: каждый item получает SID = кортеж (c1, c2, c3, c4).
-
-**Нижняя часть — Generative Recommendation:**
-
-- История пользователя = конкатенация SID всех прошлых item'ов.
-- T5 Encoder обрабатывает историю.
-- T5 Decoder с constrained beam search через trie генерирует SID следующего item'а.
-- SID → lookup → рекомендованный item.
-
-Почему рисунок важен: он наглядно показывает, что ANN-индекс *отсутствует*. Вся retrieval логика инкапсулирована в decoder + trie. Trie — единственная внешняя структура, но она детерминирована по содержимому каталога.
-
-### Figure 2: Residual Quantization детально
-
-Рисунок разворачивает RQ-VAE: latent vector z → первый codebook находит ближайший code c1 → residual r1 → второй codebook находит ближайший code c2 →... Каждый codebook "видит" только неиспользованный residual от предыдущих уровней. Это позволяет иерархически кодировать информацию: грубая семантика на первых уровнях, тонкие различия на последних.
-
-### Figure 3: Trie для constrained beam search
-
-Рисунок показывает trie, построенный по SID трёх item'ов: A=(1,3,2,5), B=(1,3,4,7), C=(2,1,6,3). Путь от корня показывает общие префиксы: A и B делят (1,3), но расходятся на третьем токене. На шаге l=3 beam search со стартом (1,3,...) может генерировать только {2, 4} — токены, присутствующие в trie. Это гарантирует, что каждый завершённый path соответствует реальному SID.
-
-## 11. Сильные стороны TIGER
-
-### 11.1. Единый дифференцируемый pipeline без ANN-индекса
+### 10.1. Единый дифференцируемый pipeline без ANN-индекса
 
 TIGER устраняет ANN-поиск как недифференцируемый внешний компонент. Весь retrieval реализован через параметры T5 генератора. Это теоретически открывает возможность сквозной оптимизации всей системы (хотя на практике tokenizer всё равно обучается отдельно).
 
-### 11.2. Semantic sharing между похожими item'ами
+### 10.2. Semantic sharing между похожими item'ами
 
 Благодаря иерархической структуре SID модель разделяет параметры между item'ами с общим SID-префиксом. Токены c1, c2 отвечают за coarse семантические регионы; fine-grained различие — в c3, c4. Это в точности то, как language model разделяет знание между похожими словами.
 
-### 11.3. Естественная поддержка cold-start через content embedding
+### 10.3. Естественная поддержка cold-start через content embedding
 
 Новый item немедленно получает SID через RQ-VAE из своих content features, без необходимости ждать накопления пользовательских взаимодействий. Если content item'а похож на существующие item'ы — он получает близкий SID и сразу может быть рекомендован генератором. Это принципиальное преимущество перед collaborative filtering методами.
 

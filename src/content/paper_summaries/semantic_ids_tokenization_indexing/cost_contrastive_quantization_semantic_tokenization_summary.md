@@ -7,7 +7,6 @@ sourceHtml: "summaries/paper_summaries/semantic_ids_tokenization_indexing/cost_c
 generatedFromHtml: true
 paperUrl: "https://arxiv.org/abs/2404.14774"
 ---
-Подробное саммари статьи:
 
 > **Авторы:** Jieming Zhu, Mengqun Jin, Qijiong Liu, Zexuan Qiu, Zhenhua Dong, Xiu Li.
 >
@@ -325,7 +324,7 @@ Pipeline:
 
 Слабая сторона: если generation architecture, beam search или token-to-item mapping имеют собственные ограничения, CoST их не решает.
 
-## 9. Рисунки и что в них важно
+## 9. Экспериментальная диагностика и интерпретация
 
 ### Figure 1: Framework of generative recommendation
 

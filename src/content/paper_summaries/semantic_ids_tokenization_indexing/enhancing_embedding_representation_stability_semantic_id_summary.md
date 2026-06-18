@@ -94,9 +94,13 @@ Paper содержит offline experiments, segment analysis, representation-spa
 - Авторы сообщают 6 sparse features и 1 sequential feature из text/image/video content embeddings.
 - Для flagship ads ranking model reported top-line online gain около 0.15%.
 
-## Рисунки/таблицы
+<img src="../../assets/semantic_stability/click_loss_rate.png" alt="Click loss rate decreases as Semantic ID prefix depth increases">
 
-Рисунки важны не как decoration, а как аргументы о production viability.
+Click-loss plot важен как behavioral sanity check. Если замена item на объект с тем же глубоким SID prefix дает меньший loss, чем замена по более грубому prefix или random replacement, значит SID hierarchy действительно отражает prediction-relevant similarity, а не только content-space clustering.
+
+## Экспериментальная диагностика
+
+Эти артефакты важны не как decoration, а как аргументы о production viability.
 
 - Figure с RQ-VAE показывает источник discrete hierarchy.
 - Figure serving pipeline показывает, что тяжелое квантование не лежит на hot path ranking.

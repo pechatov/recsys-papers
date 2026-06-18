@@ -35,6 +35,11 @@ PinRec - industrial generative retrieval system для Pinterest Homefeed, Searc
 
 Для линии semantic IDs работа особенно важна как сильный industrial counterexample. Авторы прямо пишут, что пробовали Semantic IDs, но столкнулись с representational collapse и худшими offline metrics, поэтому выбрали dense embeddings. Это не доказывает, что SID всегда хуже, но задает жесткую планку: compact discrete identifiers должны сохранять capacity на очень большом, визуально-семантическом и быстро меняющемся каталоге.
 
+<figure class="paper-figure">
+  <img src="../../assets/pinrec/overview.png" alt="PinRec outcome-conditioned generative retrieval overview for Pinterest">
+  <figcaption>Рисунок 1. PinRec генерирует outcome-conditioned candidate representations из heterogeneous user journey и затем ищет реальные Pins через ANN, а не через SID decoding.</figcaption>
+</figure>
+
 ## 2. Контекст и мотивация
 
 Pinterest описывает масштаб как более 550M monthly active users и более 1.5B saved Pins per week. Retrieval stage должен выбрать тысячи кандидатов для последующего ranking. Если retrieval stage не нашел свежие, разнообразные и релевантные объекты, downstream ranker уже не сможет их показать.
@@ -54,6 +59,11 @@ PinRec формулирует три production-требования:
 Задача модели - по истории пользователя и request context сгенерировать ordered list candidate item representations. Эти representations не являются финальной выдачей: они идут в nearest-neighbor retrieval, а найденные items далее проходят ranking и blending. Поэтому PinRec нужно оценивать как candidate generator, а не как end-to-end recommender.
 
 ## 4. Архитектура PinRec
+
+<figure class="paper-figure">
+  <img src="../../assets/pinrec/modeling.png" alt="PinRec modeling diagram">
+  <figcaption>Рисунок 2. Modeling diagram показывает causal Transformer backbone, outcome conditioning и multi-token output heads, которые дают несколько retrieval embeddings за один шаг.</figcaption>
+</figure>
 
 ### 4.1. Backbone
 
@@ -107,6 +117,11 @@ PinRec подробно разбирает, как кодировать гете
 ## 7. Serving architecture
 
 PinRec serving - один из самых ценных разделов статьи, потому что он показывает, какие части нужны, чтобы generative retrieval работал в production.
+
+<figure class="paper-figure">
+  <img src="../../assets/pinrec/serving_flow.png" alt="PinRec serving flow with services, Triton ensemble, and ANN retrieval">
+  <figcaption>Рисунок 3. Production serving flow: signals, ID embedding service, Triton inference, generated embeddings и CPU ANN retrieval работают как отдельные компоненты с собственными latency/cost constraints.</figcaption>
+</figure>
 
 - **Signal fetching.** Lambda architecture: daily Spark batch хранит год positive engagements и search queries; real-time RocksDB store добавляет события после batch cutoff. Batch и real-time signals дедуплицируются.
 - **Transport compression.** Sequence embeddings передаются как INT8 и dequantize'ятся в FP16 перед inference, чтобы снизить transport cost.

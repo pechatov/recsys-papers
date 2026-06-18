@@ -5,9 +5,8 @@ slug: "actionpiece_contextual_action_tokenization_summary"
 catalogId: "paper-actionpiece_contextual_action_tokenization_summary"
 sourceHtml: "summaries/paper_summaries/sequential_session_long_history/actionpiece_contextual_action_tokenization_summary.html"
 generatedFromHtml: true
+paperUrl: "https://arxiv.org/abs/2502.13581"
 ---
-Подробное саммари статьи:
-
 > **Авторы:** Yupeng Hou, Jianmo Ni, Zhankui He, Noveen Sachdeva, Wang-Cheng Kang, Ed H. Chi, Julian McAuley, Derek Zhiyuan Cheng.
 >
 > **Аффилиации:** University of California San Diego; Google DeepMind.
@@ -20,7 +19,10 @@ ActionPiece делает context-aware tokenization: action представля
 
 ## 2. Пример токенизации
 
-<img src="../../assets/actionpiece/tokenization_case.png" alt="ActionPiece tokenization process example">
+<figure class="paper-figure">
+  <img src="../../assets/actionpiece/tokenization_case.png" alt="ActionPiece tokenization process example">
+  <figcaption>Рисунок 1. Один action представлен unordered feature set; ActionPiece может сгруппировать features в разные tokens в зависимости от контекста последовательности.</figcaption>
+</figure>
 
 В отличие от fixed SID подходов, ActionPiece может создать токены, которые покрывают не только части одного item, но и устойчивые паттерны между соседними действиями. Поэтому одинаковый action может получить разное разбиение в зависимости от surrounding context.
 
@@ -32,15 +34,23 @@ ActionPiece делает context-aware tokenization: action представля
 - между соседними action sets;
 - с весами, которые учитывают близость и структуру последовательности.
 
-<img src="../../assets/actionpiece/cooccurrence_weights.png" alt="ActionPiece co-occurrence weighting during vocabulary construction">
+<figure class="paper-figure">
+  <img src="../../assets/actionpiece/cooccurrence_weights.png" alt="ActionPiece co-occurrence weighting during vocabulary construction">
+  <figcaption>Рисунок 2. Co-occurrence weights считаются не только внутри action set, но и между соседними sets. Поэтому vocabulary учит поведенческие transition patterns, а не только item attributes.</figcaption>
+</figure>
 
 Наиболее частые и полезные pairs сливаются в новые tokens, как в BPE/SentencePiece, но с учетом структуры recommendation sequence.
+
+<figure class="paper-figure">
+  <img src="../../assets/actionpiece/linked_list_update.png" alt="ActionPiece linked list update when merging tokens">
+  <figcaption>Рисунок 3. При merge алгоритм обновляет linked-list representation последовательности. Это implementation detail важен: merges могут происходить внутри action, между соседними actions и между уже созданными pattern tokens.</figcaption>
+</figure>
 
 ## 4. Set permutation regularization
 
 Поскольку item features внутри action не упорядочены, один и тот же action set можно сегментировать несколькими способами без изменения semantics. ActionPiece использует set permutation regularization: модель видит несколько tokenization variants для той же последовательности. Это работает как data augmentation и снижает зависимость от произвольного порядка features.
 
-## 5. Пошаговый алгоритм ActionPiece
+## 5. Метод: пошаговый алгоритм ActionPiece
 
 1. **Представить action как set features.** Каждый user action раскладывается не в один item ID, а в unordered set признаков item'а.
 1. **Инициализировать vocabulary атомарными признаками.** На старте каждый feature является отдельным token, как символы в BPE.
@@ -76,7 +86,20 @@ for training sequence:
 
 В абляциях авторы показывают, что выигрыш не объясняется только большим vocabulary size. Контекстные merges и set permutation regularization вносят отдельный вклад.
 
-## 7. Сильные стороны
+## 7. Что проверять при воспроизведении
+
+У ActionPiece качество tokenizer-а нельзя оценивать только размером vocabulary или длиной sequences. Нужно смотреть:
+
+- average tokens per action и average tokens per user history;
+- долю tokens, покрывающих intra-action features, и долю cross-action transition tokens;
+- coverage frequent/rare item features;
+- stability merge vocabulary при retraining на соседних временных окнах;
+- collision cases, где разные action contexts получают одинаковый token pattern;
+- contribution set permutation regularization отдельно от contextual merges.
+
+Особенно важен temporal split. Если vocabulary строится на полном датасете, можно случайно подсмотреть future co-occurrence patterns. Для честного offline setup tokenizer vocabulary должен строиться только на train window, а новые feature patterns в test должны идти через fallback decomposition на более мелкие tokens.
+
+## 8. Сильные стороны
 
 - **Сдвигает фокус с item tokenization на action-sequence tokenization.** Метод кодирует поведенческий контекст, а не только объект каталога.
 - **Context-aware merges происходят до обучения recommender.** Tokenizer уже содержит устойчивые intra-action и inter-action patterns.
@@ -84,7 +107,7 @@ for training sequence:
 - **Хорош для доменов, где действие важнее item semantics.** Один и тот же item может означать разные intents в разных histories, и ActionPiece допускает разную сегментацию.
 - **Ablations отделяют vocabulary size от механизма.** Выигрыш объясняется contextual merges и regularization, а не просто большим словарем.
 
-## 8. Ограничения
+## 9. Ограничения
 
 - Алгоритм vocabulary construction сложнее обычного RQ-VAE tokenizer.
 - Нужно иметь качественные item features; raw item IDs сами по себе не раскрывают потенциал метода.
@@ -92,10 +115,10 @@ for training sequence:
 - Production decoding и item grounding требуют аккуратной реализации, потому что output tokens больше не соответствуют одному item напрямую.
 - Vocabulary refresh может быть дорогим: изменение frequent action patterns меняет merges и token meanings.
 
-## 9. Связь с Semantic ID работами
+## 10. Связь с Semantic ID работами
 
 TIGER/CoST/LETTER обычно спрашивают: как токенизировать item? ActionPiece спрашивает: как токенизировать действие внутри последовательности? Это делает работу особенно полезной для sequential recommendation, где intent зависит от соседних действий.
 
-## 10. Вывод
+## 11. Вывод
 
 ActionPiece - сильная идея для generative sequential recommendation: токенизировать не item изолированно, а action в контексте. Если semantic IDs дают компактный язык объектов, ActionPiece строит язык поведенческих паттернов. Это особенно важно для длинных историй, где один и тот же item может означать разные intents.

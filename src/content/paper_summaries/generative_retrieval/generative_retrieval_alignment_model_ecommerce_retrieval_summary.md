@@ -37,6 +37,11 @@ GRAM предлагает generative retrieval для e-commerce search, где 
 
 ## 3. Метод / pipeline
 
+<figure class="paper-figure">
+  <img src="../../assets/gram/architecture.png" alt="GRAM generative retrieval and alignment model architecture">
+  <figcaption>Рисунок 1. Архитектура GRAM: query и product переводятся в structured text codes, затем co-training и co-alignment связывают генерацию кодов с online relevance.</figcaption>
+</figure>
+
 ### Structured text codes
 
 Коды строятся из 16 типов атрибутов. Coarse code содержит 1-2 атрибута, medium - 3, fine - более 3. Начальные коды получают из экспертно размеченных запросов: BERT NER обучается на примерно 3 млн запросов и извлекает attributes из query/product/click logs. Начальное обучение покрывает около 6 млн уникальных запросов и 8 млн товаров.
@@ -73,13 +78,29 @@ GRAM не лучший на Recall@10, но выигрывает Recall@100/300 
 
 Online A/B на JD search: 5% трафика против 5% baseline, минимум неделя, beam size 10, до 300 ads. GRAM дал +0.74% ad impressions, +1.27% CTR, +0.45% CPC и +2.46% ad revenue, p < 0.05.
 
-## 5. Ограничения
+Главный нюанс интерпретации: GRAM не пытается победить все retrieval baselines на top-10. Его сильная зона - расширить candidate set релевантными товарами и поднять качество pre-ranking/revenue. Поэтому Recall@100/300 и RelR здесь важнее, чем единичный Recall@10.
+
+## 5. Что проверять при реализации
+
+GRAM требует отдельного контроля качества на трех уровнях.
+
+Первый уровень - качество structured codes. Нужно логировать coverage атрибутов, долю пустых/слишком общих codes, распределение coarse/medium/fine codes, количество товаров на code и количество codes на товар. Если код вроде "phone accessory" покрывает слишком много объектов, retrieval станет широким, но плохо управляемым.
+
+Второй уровень - query-product-code alignment. Здесь важны не только Recall@K, но и exact/partial overlap между query codes и product codes, доля generated codes, отсутствующих в каталоге, и error analysis по intent types: брендовые запросы, compatibility queries, long-tail спецификации, seasonal terms.
+
+Третий уровень - serving. GRAM добавляет генерацию и code matching перед pre-ranking, поэтому нужно считать latency на генерацию codes, размер candidate set до и после filters, deduplication rate, conflict rate между несколькими codes одного товара и revenue/CTR отдельно по head/tail queries.
+
+## 6. Ограничения
 
 - Данные, taxonomy атрибутов и traffic logs закрытые; воспроизводимость ограничена.
 - Recall@10 ниже LC-Rec и DPR, то есть модель полезнее для широкого candidate generation, чем для сверхточного top-10.
 - Качество зависит от NER, product attributes и relevance filter; ошибки в каталожной разметке напрямую влияют на retrieval.
 - В тексте статьи масштаб deployment описан не вполне единообразно: встречается формулировка про millions и hundreds of millions retrievals.
+- Метод сильнее всего подходит для товарного поиска с богатыми атрибутами. В доменах без устойчивой taxonomy structured text codes могут стать просто noisy keywords.
+- Fuzzy alignment через похожие attributes может увеличить recall, но ухудшить precision на совместимых, но не взаимозаменяемых товарах, например аксессуары против основного устройства.
 
-## 6. Связь с GR/SID
+## 7. Связь с GR/SID
 
 GRAM - альтернатива learned semantic IDs: идентификатор остается генерируемой последовательностью, но она человеко-читаемая и привязана к e-commerce attributes. Для SID это полезный контраст: интерпретируемый code может упростить alignment и контроль relevance, но требует сильной доменной схемы.
+
+По отношению к TIGER/LETTER GRAM делает другой trade-off. Learned SID компактнее и лучше подходит для constrained decoding по item trie, но плохо интерпретируем. Structured text code дороже и зависит от taxonomy, зато дает понятный debugging surface: можно посмотреть, какие именно attributes привели товар в выдачу.
