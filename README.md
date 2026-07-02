@@ -3,6 +3,8 @@
 Open research hub with paper summaries about recommender systems, Semantic IDs,
 generative retrieval, and generative recommendation.
 
+GitHub Pages: [https://pechatov.github.io/recsys-papers/](https://pechatov.github.io/recsys-papers/)
+
 The repository is being migrated from a local static HTML archive to a GitHub
 Pages site. The current migration keeps all existing `summaries/` pages working
 as legacy static content while a new Astro shell is introduced around them.
