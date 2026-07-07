@@ -53,6 +53,9 @@ RETAINED_SLUGS = {
     "order_agnostic_identifier_for_large_language_model_based_summary",
     "learning_multi_aspect_item_palette_summary",
     "pinrec_outcome_conditioned_multi_token_generative_retrieval_summary",
+    "plum_adapting_pre_trained_language_models_for_industrial_summary",
+    "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
+    "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
 }
 
 
@@ -263,6 +266,18 @@ def retained_catalog_snippet(meta: SummaryMeta) -> list[str]:
             "RQ-GMM использует Gaussian Mixture Model внутри residual quantization, чтобы строить multimodal semantic IDs для CTR prediction.",
             "Это пример более безопасного внедрения semantic IDs: не заменять retrieval на generator, а добавить discrete multimodal features в ranker/CTR stack.",
         ],
+        "plum_adapting_pre_trained_language_models_for_industrial_summary": [
+            "PLUM адаптирует pre-trained LLM к YouTube-scale generative retrieval через SIDv2 tokenizer, Continued Pre-Training и task-specific SFT.",
+            "Итог: SID+LLM path работает в production только как связка tokenizer, CPT, reward-aware SFT и serving discipline.",
+        ],
+        "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary": [
+            "TokenMinds переносит PLUM-идею с item retrieval на user modeling: encoder дает dense embedding, decoder генерирует SID-based user tokens.",
+            "Итог: discrete user tokens не заменяют embeddings, а дают complementary multi-interest signal для production rankers.",
+        ],
+        "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary": [
+            "ChronoID добавляет temporal signal прямо в SID learning, а не только в sequence order или sampling.",
+            "Главный устойчивый результат: relative time intervals лучше absolute timestamps, а Parallel Quantization + Relative Time стабильно strongest в main table.",
+        ],
     }
     return snippets.get(meta.slug, [f"Подробное markdown-саммари для статьи: {meta.title}."])
 
@@ -394,6 +409,9 @@ def main() -> int:
                 "rq_gmm_residual_quantized_gaussian_mixture_model_summary",
                 "closing_performance_gap_collaborative_tokenization_efficient_modeling_summary",
                 "mmq_v2_adaptive_behavior_mining_summary",
+                "plum_adapting_pre_trained_language_models_for_industrial_summary",
+                "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
+                "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
             }:
                 set_takeaway(soup, entry.details, retained_catalog_snippet(retained_meta))
             continue
