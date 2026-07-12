@@ -53,6 +53,9 @@ RETAINED_SLUGS = {
     "order_agnostic_identifier_for_large_language_model_based_summary",
     "learning_multi_aspect_item_palette_summary",
     "pinrec_outcome_conditioned_multi_token_generative_retrieval_summary",
+    "plum_adapting_pre_trained_language_models_for_industrial_summary",
+    "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
+    "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
 }
 
 
@@ -182,13 +185,31 @@ def set_takeaway(soup: BeautifulSoup, details: Tag, lines: list[str]) -> None:
     takeaway_li.append(div)
 
 
-def update_details_basics(soup: BeautifulSoup, details: Tag, *, year: str, affiliations: str, tags: list[str]) -> None:
-    desired = {"Год": year, "Аффилиации": affiliations}
+def update_details_basics(
+    soup: BeautifulSoup,
+    details: Tag,
+    *,
+    publication_date: str,
+    added_date: str,
+    affiliations: str,
+    tags: list[str],
+) -> None:
+    for li in details.find_all("li", recursive=False):
+        strong = li.find("strong")
+        if strong and strong.get_text(" ", strip=True).rstrip(":") in {"Год", "Дата arXiv"}:
+            li.decompose()
+
+    desired = {
+        "Дата публикации": publication_date,
+        "Дата добавления": added_date,
+        "Аффилиации": affiliations,
+    }
+    insertion_positions = {"Дата публикации": 0, "Дата добавления": 1, "Аффилиации": 2}
     for label, value in desired.items():
         target = None
         for li in details.find_all("li", recursive=False):
             strong = li.find("strong")
-            if strong and label in strong.get_text(" ", strip=True):
+            if strong and strong.get_text(" ", strip=True).rstrip(":") == label:
                 target = li
                 break
         if target is None:
@@ -196,7 +217,7 @@ def update_details_basics(soup: BeautifulSoup, details: Tag, *, year: str, affil
             strong = soup.new_tag("strong")
             strong.string = f"{label}:"
             target.append(strong)
-            details.insert(0 if label == "Год" else 1, target)
+            details.insert(insertion_positions[label], target)
         for child in list(target.children):
             if not (isinstance(child, Tag) and child.name == "strong"):
                 child.extract()
@@ -208,7 +229,7 @@ def update_details_basics(soup: BeautifulSoup, details: Tag, *, year: str, affil
         strong = soup.new_tag("strong")
         strong.string = "Теги:"
         tag_li.append(strong)
-        details.insert(2, tag_li)
+        details.insert(3, tag_li)
     for child in list(tag_li.children):
         if not (isinstance(child, Tag) and child.name == "strong"):
             child.extract()
@@ -263,11 +284,32 @@ def retained_catalog_snippet(meta: SummaryMeta) -> list[str]:
             "RQ-GMM использует Gaussian Mixture Model внутри residual quantization, чтобы строить multimodal semantic IDs для CTR prediction.",
             "Это пример более безопасного внедрения semantic IDs: не заменять retrieval на generator, а добавить discrete multimodal features в ranker/CTR stack.",
         ],
+        "plum_adapting_pre_trained_language_models_for_industrial_summary": [
+            "PLUM адаптирует pre-trained LLM к YouTube-scale generative retrieval через SIDv2 tokenizer, Continued Pre-Training и task-specific SFT.",
+            "Итог: SID+LLM path работает в production только как связка tokenizer, CPT, reward-aware SFT и serving discipline.",
+        ],
+        "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary": [
+            "TokenMinds переносит PLUM-идею с item retrieval на user modeling: encoder дает dense embedding, decoder генерирует SID-based user tokens.",
+            "Итог: discrete user tokens не заменяют embeddings, а дают complementary multi-interest signal для production rankers.",
+        ],
+        "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary": [
+            "ChronoID добавляет temporal signal прямо в SID learning, а не только в sequence order или sampling.",
+            "Главный устойчивый результат: relative time intervals лучше absolute timestamps, а Parallel Quantization + Relative Time стабильно strongest в main table.",
+        ],
     }
     return snippets.get(meta.slug, [f"Подробное markdown-саммари для статьи: {meta.title}."])
 
 
-def build_entry(soup: BeautifulSoup, meta: SummaryMeta, start: int, *, year: str, affiliations: str, tags: list[str]) -> tuple[Tag, Tag]:
+def build_entry(
+    soup: BeautifulSoup,
+    meta: SummaryMeta,
+    start: int,
+    *,
+    publication_date: str,
+    added_date: str,
+    affiliations: str,
+    tags: list[str],
+) -> tuple[Tag, Tag]:
     ol = soup.new_tag("ol", attrs={"id": meta.catalog_id, "start": str(start)})
     li = soup.new_tag("li")
     strong = soup.new_tag("strong")
@@ -278,7 +320,14 @@ def build_entry(soup: BeautifulSoup, meta: SummaryMeta, start: int, *, year: str
     ol.append(li)
 
     ul = soup.new_tag("ul")
-    update_details_basics(soup, ul, year=year, affiliations=affiliations, tags=tags)
+    update_details_basics(
+        soup,
+        ul,
+        publication_date=publication_date,
+        added_date=added_date,
+        affiliations=affiliations,
+        tags=tags,
+    )
     ensure_article_link(soup, ul, meta.paper_url)
     set_takeaway(soup, ul, retained_catalog_snippet(meta))
     return ol, ul
@@ -293,13 +342,15 @@ def insert_new_semantic_entries(soup: BeautifulSoup, metas: dict[str, SummaryMet
     to_add = [
         (
             "closing_performance_gap_collaborative_tokenization_efficient_modeling_summary",
-            "2025",
+            "2025-08-12",
+            "2026-06-19",
             "CRITEO AI Lab; LIGM, École Nationale des Ponts et Chaussées",
             ["generative recommendation", "collaborative tokenization", "efficient modeling"],
         ),
         (
             "mmq_v2_adaptive_behavior_mining_summary",
-            "2026",
+            "2025-10-29",
+            "2026-06-19",
             "Alibaba Group; academic collaborators",
             ["semantic IDs", "behavior-content alignment", "long-tail"],
         ),
@@ -316,12 +367,20 @@ def insert_new_semantic_entries(soup: BeautifulSoup, metas: dict[str, SummaryMet
     start = max(int(ol.get("start", "1")) for ol in soup.find_all("ol") if ol.find_previous("h2") == semantic_h2)
 
     insertion_anchor = last_ol.find_next_sibling("ul")
-    for slug, year, affiliations, tags in to_add:
+    for slug, publication_date, added_date, affiliations, tags in to_add:
         meta = metas[slug]
         if meta.catalog_id in existing_ids:
             continue
         start += 1
-        ol, ul = build_entry(soup, meta, start, year=year, affiliations=affiliations, tags=tags)
+        ol, ul = build_entry(
+            soup,
+            meta,
+            start,
+            publication_date=publication_date,
+            added_date=added_date,
+            affiliations=affiliations,
+            tags=tags,
+        )
         insertion_anchor.insert_after(ul)
         insertion_anchor.insert_after(NavigableString("\n"))
         insertion_anchor.insert_after(ol)
@@ -348,7 +407,8 @@ def main() -> int:
             update_details_basics(
                 soup,
                 details,
-                year="2025",
+                publication_date="2026-06-09",
+                added_date="2026-05-15",
                 affiliations="Hong Kong Polytechnic University; Huawei Noah's Ark Lab; Zhejiang University",
                 tags=["semantic tokenization", "multi-aspect item palette", "generative recommendation"],
             )
@@ -394,6 +454,9 @@ def main() -> int:
                 "rq_gmm_residual_quantized_gaussian_mixture_model_summary",
                 "closing_performance_gap_collaborative_tokenization_efficient_modeling_summary",
                 "mmq_v2_adaptive_behavior_mining_summary",
+                "plum_adapting_pre_trained_language_models_for_industrial_summary",
+                "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
+                "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
             }:
                 set_takeaway(soup, entry.details, retained_catalog_snippet(retained_meta))
             continue

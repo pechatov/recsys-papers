@@ -38,6 +38,21 @@ single clearly named asset directory, for example `summaries/assets/cost/` or
 `summaries/assets/vq4rec/`, and reference them from Markdown with the same
 relative paths used by the generated HTML pages.
 
+## Catalog Metadata
+
+Every paper in `summaries/papers.html` must have two ISO 8601 dates:
+
+- `Дата публикации` is the full publication date (`YYYY-MM-DD`) of the
+  canonical version. Prefer proceedings or journal metadata for an accepted
+  paper even when the catalog links to arXiv; for a preprint-only paper, use
+  the initial arXiv submission date.
+- `Дата добавления` is the date of the first repository commit containing the
+  paper. Keep this date unchanged when a title, link, or summary is updated;
+  for a newly added paper, use the date it is added to the repository.
+
+Run `npm run check:catalog` to validate both fields and reject the legacy
+`Год` and `Дата arXiv` fields.
+
 ## Build
 
 ```bash
