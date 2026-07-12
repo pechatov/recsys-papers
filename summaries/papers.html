@@ -43,13 +43,33 @@ tr:nth-child(even) td { background: var(--row-alt); }
 .industry { display:inline-block; color: var(--industry); background: var(--industry-bg); border: 1px solid var(--industry-border); border-radius: 4px; padding: 0 .25rem; font-weight: 600; }
 .takeaway { margin-top: .25rem; }
 .takeaway div { margin: .16rem 0; }
-.catalog-controls { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 1.5rem; padding: .65rem .7rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px var(--shadow); backdrop-filter: blur(8px); }
-.filter-panel { display: inline-flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.catalog-controls { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 1.25rem 0 1.5rem; padding: .55rem .6rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px var(--shadow); backdrop-filter: blur(8px); }
+.control-primary { display: inline-flex; align-items: center; gap: .5rem; min-width: 0; }
+.filter-menu { position: relative; flex: 0 0 auto; }
+.filter-menu > summary { display: inline-flex; align-items: center; gap: .45rem; min-height: 2.4rem; padding: .4rem .72rem; color: var(--label); background: var(--soft); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 700; list-style: none; transition: color .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.filter-menu > summary::-webkit-details-marker { display: none; }
+.filter-menu > summary:hover, .filter-menu[open] > summary, .filter-menu.has-active-filters > summary { color: var(--link-strong); border-color: var(--pill-dot); background: var(--bg); box-shadow: 0 1px 4px var(--shadow); }
+.filter-menu > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.filter-menu-icon { width: 1rem; height: 1rem; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.active-filter-count { display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding: 0 .3rem; color: var(--bg); background: var(--link-strong); border-radius: 999px; font-size: .76rem; line-height: 1; }
+.active-filter-count[hidden] { display: none; }
+.filter-popover { position: absolute; top: calc(100% + .55rem); left: 0; z-index: 20; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1rem; width: min(38rem, calc(100vw - 2rem)); padding: .9rem; color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 18px 45px var(--shadow-strong); }
+.filter-section { min-width: 0; margin: 0; padding: 0; border: 0; }
+.filter-section:first-child { grid-column: 1 / -1; }
+.filter-section legend { margin: 0 0 .35rem; padding: 0; color: var(--muted); font-size: .82rem; font-weight: 750; }
 .filter-group { display: inline-flex; flex-wrap: wrap; gap: .15rem; padding: .18rem; background: var(--soft); border: 1px solid var(--border); border-radius: 8px; }
 .filter-group label { display: inline-flex; align-items: center; min-height: 2rem; padding: .28rem .72rem; border-radius: 6px; cursor: pointer; font-weight: 650; color: var(--label); transition: background .15s ease, color .15s ease, box-shadow .15s ease; }
 .filter-group input { position: absolute; opacity: 0; pointer-events: none; }
 .filter-group label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
 .filter-group label:has(input:checked) { background: var(--bg); color: var(--link-strong); box-shadow: 0 1px 4px var(--shadow-strong); }
+.filter-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; padding-top: .7rem; border-top: 1px solid var(--border); }
+.filter-reset { border: 0; padding: .3rem .2rem; color: var(--link); background: transparent; font: inherit; font-weight: 700; cursor: pointer; }
+.filter-reset:hover:not(:disabled) { color: var(--link-strong); text-decoration: underline; text-underline-offset: .16em; }
+.filter-reset:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.filter-reset:disabled { color: var(--muted); cursor: default; opacity: .65; }
+.sort-control { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.4rem; padding: .18rem .4rem .18rem .72rem; color: var(--label); background: var(--soft); border: 1px solid var(--border); border-radius: 8px; font-weight: 650; }
+.sort-control select { min-height: 2rem; max-width: 13.5rem; padding: .28rem 2rem .28rem .55rem; color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font: inherit; cursor: pointer; }
+.sort-control select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .control-meta { display: inline-flex; align-items: center; gap: .75rem; flex-wrap: wrap; justify-content: flex-end; }
 .theme-toggle { position: fixed; left: 14px; top: 14px; z-index: 30; width: 78px; height: 40px; border: 0; border-radius: 999px; padding: 0; background: #ff6b00; color: #fff; cursor: pointer; box-shadow: 0 8px 24px rgba(15,23,42,.18); transition: background .18s ease, box-shadow .18s ease, transform .18s ease; }
 .theme-toggle::after { content: ""; position: absolute; top: 5px; right: 5px; width: 30px; height: 30px; border-radius: 999px; background: #fff; box-shadow: 0 2px 8px rgba(15,23,42,.22); }
@@ -86,7 +106,9 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 .scroll-section-end-gutter::after { content: "В конец раздела"; position: fixed; right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: right center; padding: .2rem .45rem; border: 1px solid var(--border); border-radius: 4px; background: var(--gutter-bg); font-size: .82rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
 .scroll-section-end-gutter:hover, .scroll-section-end-gutter:focus-visible { opacity: 1; background: var(--gutter-right); outline: none; }
 @media (max-width: 1120px) { .scroll-section-end-gutter { display: none; } }
-@media (max-width: 640px) { main { padding: 72px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } .catalog-controls { align-items: stretch; flex-direction: column; } .filter-panel { align-items: stretch; flex-direction: column; } .control-meta { justify-content: flex-end; } .read-stats { white-space: normal; } }
+@media (max-width: 780px) { .catalog-controls { flex-wrap: wrap; } .control-meta { width: 100%; justify-content: flex-end; } }
+@media (max-width: 640px) { main { padding: 72px 16px 56px; } body { font-size: 15px; } h1 { font-size: 1.65rem; } .catalog-controls { align-items: stretch; } .control-primary { width: 100%; } .sort-control { flex: 1; justify-content: space-between; min-width: 0; } .sort-control select { flex: 1; min-width: 0; max-width: none; } .filter-popover { grid-template-columns: minmax(0, 1fr); } .filter-section:first-child, .filter-actions { grid-column: 1; } .filter-group { display: flex; } .control-meta { justify-content: flex-end; } .read-stats { white-space: normal; text-align: right; } }
+@media (max-width: 420px) { .sort-control > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } .filter-menu > summary { padding-inline: .6rem; } }
 .badge.summary-missing { color: var(--muted); background: var(--pill-bg); border-color: var(--border); font-weight: 700; }
 .badge.new-paper { color: #0f5132; background: #d1e7dd; border-color: #a3cfbb; font-weight: 800; }
 :root[data-theme="dark"] .badge.new-paper { color: #86efac; background: #12311f; border-color: #166534; }
@@ -99,24 +121,53 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <main>
 <h1>Объединенный каталог статей по RecSys, Semantic IDs и generative retrieval</h1>
 <p>Обновлено 2026-07-12.</p>
-<div aria-label="Фильтры статей" class="catalog-controls">
-<div class="filter-panel">
-<div aria-label="Показывать статьи по статусу чтения" class="filter-group" role="radiogroup">
+<div aria-label="Управление каталогом статей" class="catalog-controls">
+<div class="control-primary">
+<details class="filter-menu" id="filter-menu">
+<summary>
+<svg aria-hidden="true" class="filter-menu-icon" viewBox="0 0 20 20"><path d="M3 5h14M5.5 10h9M8 15h4"></path></svg>
+<span>Фильтры</span>
+<span class="active-filter-count" hidden="" id="active-filter-count">0</span>
+</summary>
+<div class="filter-popover">
+<fieldset class="filter-section">
+<legend>Статус чтения</legend>
+<div class="filter-group">
 <label><input checked="" name="paper-read-filter" type="radio" value="all"/>Все</label>
 <label><input name="paper-read-filter" type="radio" value="unread"/>Непрочитанные</label>
 <label><input name="paper-read-filter" type="radio" value="reading"/>Читаются</label>
 <label><input name="paper-read-filter" type="radio" value="read"/>Прочитанные</label>
 </div>
-<div aria-label="Показывать статьи по наличию саммари" class="filter-group" role="radiogroup">
+</fieldset>
+<fieldset class="filter-section">
+<legend>Наличие саммари</legend>
+<div class="filter-group">
 <label><input checked="" name="paper-summary-filter" type="radio" value="all"/>Все</label>
 <label><input name="paper-summary-filter" type="radio" value="with"/>Есть саммари</label>
 <label><input name="paper-summary-filter" type="radio" value="missing"/>Саммари пропущено</label>
 </div>
-<div aria-label="Показывать статьи по типу аффилиации" class="filter-group" role="radiogroup">
+</fieldset>
+<fieldset class="filter-section">
+<legend>Тип аффилиации</legend>
+<div class="filter-group">
 <label><input checked="" name="paper-affiliation-filter" type="radio" value="all"/>Все</label>
 <label><input name="paper-affiliation-filter" type="radio" value="industry"/>Индустрия</label>
 <label><input name="paper-affiliation-filter" type="radio" value="academic"/>Академия</label>
 </div>
+</fieldset>
+<div class="filter-actions">
+<button class="filter-reset" disabled="" id="reset-filters" type="button">Сбросить фильтры</button>
+</div>
+</div>
+</details>
+<label class="sort-control" for="paper-sort">
+<span>Сортировка:</span>
+<select id="paper-sort" name="paper-sort">
+<option value="default">По умолчанию</option>
+<option value="published">По дате публикации</option>
+<option value="added">По дате добавления</option>
+</select>
+</label>
 </div>
 <div class="control-meta">
 <div class="read-stats" id="read-stats">Прочитано: 0 из 373</div>
@@ -3188,6 +3239,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
   const filterKey = 'recsys-papers-filter';
   const summaryFilterKey = 'recsys-papers-summary-filter';
   const affiliationFilterKey = 'recsys-papers-affiliation-filter';
+  const sortKey = 'recsys-papers-sort';
   const themeKey = 'recsys-papers-theme';
   const statusOrder = ['unread', 'reading', 'read'];
   const statusLabels = {
@@ -3246,6 +3298,22 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     paper.control.setAttribute('aria-label', `Статус статьи "${paper.title}": ${statusLabels[status]}. Нажмите, чтобы изменить.`);
   };
 
+  const getMetadataValue = (metaList, label) => {
+    if (!metaList) return '';
+    const item = Array.from(metaList.children).find((candidate) => {
+      const heading = candidate.firstElementChild;
+      return heading && heading.tagName === 'STRONG' && heading.textContent.trim() === label;
+    });
+    if (!item) return '';
+    return item.textContent.slice(item.firstElementChild.textContent.length).trim();
+  };
+
+  const toDateSortValue = (value) => {
+    const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return 0;
+    return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
+  };
+
   const papers = Array.from(document.querySelectorAll('main > ol[start]')).map((titleList, index) => {
     const metaList = titleList.nextElementSibling && titleList.nextElementSibling.tagName === 'UL'
       ? titleList.nextElementSibling
@@ -3258,6 +3326,10 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     const hasSummary = Boolean(titleHref && titleHref.includes('paper_summaries/'));
     const isIndustrial = Boolean(metaList && metaList.querySelector('.industry'));
     const key = `${storagePrefix}${href}`;
+    let categoryHeading = titleList.previousElementSibling;
+    while (categoryHeading && categoryHeading.tagName !== 'H2') {
+      categoryHeading = categoryHeading.previousElementSibling;
+    }
 
     const control = document.createElement('button');
     control.type = 'button';
@@ -3283,6 +3355,10 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
       key,
       hasSummary,
       isIndustrial,
+      categoryHeading,
+      defaultIndex: index,
+      publicationDate: toDateSortValue(getMetadataValue(metaList, 'Дата публикации:')),
+      addedDate: toDateSortValue(getMetadataValue(metaList, 'Дата добавления:')),
       status: 'unread'
     };
 
@@ -3298,6 +3374,10 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
   const filters = Array.from(document.querySelectorAll('input[name="paper-read-filter"]'));
   const summaryFilters = Array.from(document.querySelectorAll('input[name="paper-summary-filter"]'));
   const affiliationFilters = Array.from(document.querySelectorAll('input[name="paper-affiliation-filter"]'));
+  const filterMenu = document.getElementById('filter-menu');
+  const activeFilterCount = document.getElementById('active-filter-count');
+  const resetFilters = document.getElementById('reset-filters');
+  const sortSelect = document.getElementById('paper-sort');
   const stats = document.getElementById('read-stats');
   const emptyState = document.getElementById('empty-state');
   const scrollTopGutter = document.querySelector('.scroll-top-gutter');
@@ -3349,6 +3429,45 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     return selected ? selected.value : 'all';
   };
 
+  const getSort = () => sortSelect ? sortSelect.value : 'default';
+
+  const papersByCategory = new Map();
+  papers.forEach((paper) => {
+    if (!paper.categoryHeading) return;
+    const categoryPapers = papersByCategory.get(paper.categoryHeading) || [];
+    categoryPapers.push(paper);
+    papersByCategory.set(paper.categoryHeading, categoryPapers);
+  });
+
+  const applySort = () => {
+    const sort = getSort();
+    papersByCategory.forEach((categoryPapers, heading) => {
+      let nextHeading = heading.nextElementSibling;
+      while (nextHeading && nextHeading.tagName !== 'H2') {
+        nextHeading = nextHeading.nextElementSibling;
+      }
+      const orderedPapers = [...categoryPapers].sort((left, right) => {
+        if (sort === 'published') {
+          return right.publicationDate - left.publicationDate || left.defaultIndex - right.defaultIndex;
+        }
+        if (sort === 'added') {
+          return right.addedDate - left.addedDate || left.defaultIndex - right.defaultIndex;
+        }
+        return left.defaultIndex - right.defaultIndex;
+      });
+
+      orderedPapers.forEach((paper, index) => {
+        paper.titleList.setAttribute('start', String(index + 1));
+        heading.parentElement.insertBefore(paper.titleList, nextHeading || null);
+        if (paper.metaList) heading.parentElement.insertBefore(paper.metaList, nextHeading || null);
+      });
+    });
+
+    try {
+      localStorage.setItem(sortKey, sort);
+    } catch (_) {}
+  };
+
   const setVisible = (paper, visible) => {
     paper.titleList.classList.toggle('is-hidden-by-filter', !visible);
     if (paper.metaList) paper.metaList.classList.toggle('is-hidden-by-filter', !visible);
@@ -3374,6 +3493,8 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     const filter = getFilter();
     const summaryFilter = getSummaryFilter();
     const affiliationFilter = getAffiliationFilter();
+    const activeFilters = [filter, summaryFilter, affiliationFilter]
+      .filter((value) => value !== 'all').length;
     let readCount = 0;
     let readingCount = 0;
     let summaryCount = 0;
@@ -3399,6 +3520,13 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 
     if (stats) stats.textContent = `Саммари: ${summaryCount}; читается: ${readingCount}; прочитано: ${readCount} из ${papers.length}`;
     if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    if (filterMenu) filterMenu.classList.toggle('has-active-filters', activeFilters > 0);
+    if (activeFilterCount) {
+      activeFilterCount.textContent = String(activeFilters);
+      activeFilterCount.hidden = activeFilters === 0;
+      activeFilterCount.title = `Активных фильтров: ${activeFilters}`;
+    }
+    if (resetFilters) resetFilters.disabled = activeFilters === 0;
     refreshCategoryVisibility();
 
     try {
@@ -3422,6 +3550,33 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
   filters.forEach((input) => input.addEventListener('change', applyFilter));
   summaryFilters.forEach((input) => input.addEventListener('change', applyFilter));
   affiliationFilters.forEach((input) => input.addEventListener('change', applyFilter));
+  if (sortSelect) sortSelect.addEventListener('change', applySort);
+  if (resetFilters) {
+    resetFilters.addEventListener('click', () => {
+      [filters, summaryFilters, affiliationFilters].forEach((group) => {
+        const allInput = group.find((input) => input.value === 'all');
+        if (allInput) allInput.checked = true;
+      });
+      applyFilter();
+      if (filterMenu) {
+        filterMenu.open = false;
+        filterMenu.querySelector('summary').focus();
+      }
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (filterMenu && filterMenu.open && !filterMenu.contains(event.target)) {
+      filterMenu.open = false;
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && filterMenu && filterMenu.open) {
+      filterMenu.open = false;
+      filterMenu.querySelector('summary').focus();
+    }
+  });
 
   try {
     const savedFilter = localStorage.getItem(filterKey);
@@ -3433,8 +3588,13 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
     const savedAffiliationFilter = localStorage.getItem(affiliationFilterKey);
     const savedAffiliationInput = affiliationFilters.find((input) => input.value === savedAffiliationFilter);
     if (savedAffiliationInput) savedAffiliationInput.checked = true;
+    const savedSort = localStorage.getItem(sortKey);
+    if (sortSelect && Array.from(sortSelect.options).some((option) => option.value === savedSort)) {
+      sortSelect.value = savedSort;
+    }
   } catch (_) {}
 
+  applySort();
   applyFilter();
 })();
 </script>
