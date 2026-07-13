@@ -1,0 +1,791 @@
+---
+import manifestData from '../data/conference-archive.json';
+
+const manifest = manifestData as any;
+const mainCatalogHref = `${import.meta.env.BASE_URL}summaries/papers.html`;
+const archiveHref = `${import.meta.env.BASE_URL}conferences.html`;
+const dataBase = `${import.meta.env.BASE_URL}data/conference-papers/`;
+const years = [2024, 2025, 2026];
+const editionsByVenue = new Map(
+  manifest.venues.map((venue: any) => [
+    venue.id,
+    manifest.editions.filter((edition: any) => edition.venueId === venue.id)
+  ])
+);
+const verifiedDate = new Intl.DateTimeFormat('ru-RU', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+}).format(new Date(`${manifest.lastVerified}T00:00:00Z`));
+const shortDate = new Intl.DateTimeFormat('ru-RU', {
+  day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'
+});
+const formatExpectedPublicationDate = (value: string) =>
+  shortDate.format(new Date(`${value}T00:00:00Z`));
+const pluralRu = (value: number, one: string, few: string, many: string) => {
+  const mod100 = value % 100;
+  const mod10 = value % 10;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few;
+  return many;
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Архив публикаций конференций, релевантных сообществу рекомендательных систем, за 2024–2026 годы."
+    />
+    <meta name="last-modified" content={manifest.lastVerified} />
+    <title>Архив конференций по рекомендательным системам 2024–2026</title>
+    <script is:inline>
+      try {
+        const storedTheme = localStorage.getItem('recsys-papers-theme');
+        const systemTheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = storedTheme === 'dark' || storedTheme === 'light'
+          ? storedTheme
+          : systemTheme;
+      } catch (_) {}
+    </script>
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --fg: #1f2933;
+        --muted: #65758b;
+        --border: #d8dee9;
+        --bg: #fff;
+        --soft: #f6f8fb;
+        --panel: rgba(255,255,255,.96);
+        --link: #0b66c3;
+        --link-strong: #0f4f9e;
+        --label: #526173;
+        --row-alt: #fbfcfe;
+        --pill-bg: #f8fafc;
+        --pill-muted: #64748b;
+        --pill-dot: #94a3b8;
+        --pill-dot-ring: #e2e8f0;
+        --focus: #93c5fd;
+        --shadow: rgba(15,23,42,.07);
+        --shadow-strong: rgba(15,23,42,.14);
+        --industry: #0f766e;
+        --industry-bg: #e6fffb;
+        --industry-border: #99f6e4;
+        --reading: #b45309;
+        --reading-bg: #fff7ed;
+        --reading-border: #fed7aa;
+        --pending: #7c3aed;
+        --pending-bg: #f5f3ff;
+        --pending-border: #c4b5fd;
+        --partial: #9a6700;
+        --partial-bg: #fff8c5;
+        --partial-border: #d4a72c;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --fg: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #334155;
+        --bg: #0f172a;
+        --soft: #172033;
+        --panel: rgba(15,23,42,.95);
+        --link: #7dd3fc;
+        --link-strong: #bae6fd;
+        --label: #cbd5e1;
+        --row-alt: #111c2f;
+        --pill-bg: #111827;
+        --pill-muted: #cbd5e1;
+        --pill-dot: #64748b;
+        --pill-dot-ring: #334155;
+        --focus: #38bdf8;
+        --shadow: rgba(0,0,0,.26);
+        --shadow-strong: rgba(0,0,0,.4);
+        --industry: #5eead4;
+        --industry-bg: #0f2f2c;
+        --industry-border: #0f766e;
+        --reading: #fdba74;
+        --reading-bg: #332417;
+        --reading-border: #9a5a19;
+        --pending: #c4b5fd;
+        --pending-bg: #21193b;
+        --pending-border: #6d4fc2;
+        --partial: #f2cc60;
+        --partial-bg: #342a0b;
+        --partial-border: #8a6d1d;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+      main { max-width: 1180px; margin: 0 auto; padding: 64px 24px 80px; }
+      h1, h2, h3, h4 { line-height: 1.25; }
+      h1 { margin: 0; padding-bottom: .55rem; border-bottom: 1px solid var(--border); font-size: clamp(1.7rem, 4vw, 2.3rem); }
+      h2 { margin: 2rem 0 .65rem; font-size: 1.45rem; scroll-margin-top: 160px; }
+      h3 { margin: 1.4rem 0 .65rem; font-size: 1.2rem; scroll-margin-top: 160px; }
+      h4 { margin: 0; font-size: 1.06rem; }
+      p { margin: .7rem 0; }
+      a { color: var(--link); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+      a:hover { color: var(--link-strong); }
+      button, input, select { font: inherit; }
+      [hidden] { display: none !important; }
+
+      .site-tabs {
+        display: flex; width: fit-content; max-width: 100%; margin: 0 0 1.35rem; padding: .22rem;
+        gap: .2rem; overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--soft);
+      }
+      .site-tabs a { padding: .48rem .8rem; border-radius: 7px; color: var(--label); font-weight: 750; text-decoration: none; white-space: nowrap; }
+      .site-tabs a[aria-current="page"] { color: var(--link-strong); background: var(--bg); box-shadow: 0 1px 4px var(--shadow-strong); }
+      .updated-at { margin: .2rem 0 1.35rem; color: var(--muted); font-size: .92rem; }
+
+      .summary-disclosure { margin: 1.35rem 0 1.8rem; }
+      .summary-disclosure > summary {
+        display: inline-flex; align-items: center; gap: .55rem; padding: .58rem .82rem;
+        border: 1px solid var(--border); border-radius: 7px; background: var(--soft);
+        color: var(--link); cursor: pointer; font-weight: 800; list-style: none;
+      }
+      .summary-disclosure > summary::-webkit-details-marker { display: none; }
+      .summary-disclosure > summary::before { content: "▸"; transition: transform .15s ease; }
+      .summary-disclosure[open] > summary::before { transform: rotate(90deg); }
+      .summary-disclosure > summary:hover { border-color: var(--pill-dot); color: var(--link-strong); }
+      .summary-disclosure > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+      .summary-close-label { display: none; }
+      .summary-disclosure[open] .summary-open-label { display: none; }
+      .summary-disclosure[open] .summary-close-label { display: inline; }
+      .summary-wrap { margin-top: .85rem; overflow-x: auto; }
+      .summary-table { width: 100%; min-width: 840px; margin: 1rem 0; border-collapse: collapse; table-layout: fixed; }
+      .summary-table caption { padding: 0 0 .55rem; color: var(--muted); font-size: .86rem; text-align: left; }
+      .summary-table th, .summary-table td { padding: .48rem .58rem; border: 1px solid var(--border); vertical-align: top; }
+      .summary-table th:first-child, .summary-table td:first-child { width: 40%; }
+      .summary-table th:not(:first-child), .summary-table td.edition-cell { width: 20%; }
+      .summary-table th { background: var(--soft); text-align: left; }
+      .summary-table tr:nth-child(even) td { background: var(--row-alt); }
+      .venue-button { padding: 0; border: 0; background: transparent; color: var(--link); cursor: pointer; font-weight: 800; text-decoration: underline; text-underline-offset: .16em; }
+      .venue-full-name { display: block; max-width: 330px; color: var(--muted); font-size: .84rem; font-weight: 400; }
+      .summary-table td.edition-cell { min-width: 135px; padding: 0; }
+      .edition-button {
+        display: block; width: 100%; height: 104px; padding: .48rem .58rem;
+        border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left;
+      }
+      .edition-button:hover { background: var(--soft); }
+      .edition-button:focus-visible { position: relative; outline: 2px solid var(--focus); outline-offset: -3px; }
+      .edition-count { font-weight: 800; }
+      .expected-publication { display: block; margin-top: .38rem; color: var(--muted); font-size: .78rem; line-height: 1.3; }
+      .status-chip, .badge {
+        display: inline-block; margin: .08rem .18rem .08rem 0; padding: .07rem .34rem;
+        border: 1px solid var(--border); border-radius: 4px; background: var(--soft); color: var(--label); font-size: .84rem;
+      }
+      .status-chip.pending { border-color: var(--pending-border); background: var(--pending-bg); color: var(--pending); }
+      .status-chip.partial { border-color: var(--partial-border); background: var(--partial-bg); color: var(--partial); }
+
+      .catalog-controls {
+        position: sticky; top: 0; z-index: 20; margin: 1.4rem 0 1.35rem; padding: .75rem;
+        border: 1px solid var(--border); border-radius: 10px; background: var(--panel);
+        box-shadow: 0 6px 18px var(--shadow); backdrop-filter: blur(9px);
+      }
+      .control-row { display: flex; align-items: center; gap: .65rem; flex-wrap: wrap; }
+      .control-row + .control-row { margin-top: .6rem; }
+      .search-control { display: flex; flex: 1 1 390px; align-items: center; gap: .55rem; }
+      .search-control label, .select-control { color: var(--label); font-weight: 750; }
+      .search-control input {
+        min-width: 180px; flex: 1; padding: .47rem .62rem; border: 1px solid var(--border);
+        border-radius: 7px; background: var(--bg); color: var(--fg);
+      }
+      .select-control { display: inline-flex; align-items: center; gap: .42rem; }
+      .select-control select {
+        max-width: 250px; padding: .4rem .5rem; border: 1px solid var(--border); border-radius: 7px;
+        background: var(--bg); color: var(--fg);
+      }
+      input:focus, select:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+      .filter-group { display: inline-flex; align-items: center; gap: .14rem; padding: .17rem; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
+      .filter-group legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      .filter-group label { display: inline-flex; min-height: 2rem; align-items: center; padding: .24rem .62rem; border-radius: 6px; color: var(--label); cursor: pointer; font-weight: 700; }
+      .filter-group input { position: absolute; opacity: 0; pointer-events: none; }
+      .filter-group label:has(input:checked) { color: var(--link-strong); background: var(--bg); box-shadow: 0 1px 4px var(--shadow-strong); }
+      .reset-button, .pager button {
+        padding: .42rem .72rem; border: 1px solid var(--border); border-radius: 7px;
+        background: var(--bg); color: var(--label); cursor: pointer; font-weight: 700;
+      }
+      .reset-button:hover, .pager button:hover:not(:disabled) { border-color: var(--pill-dot); color: var(--link-strong); }
+      .pager button:disabled { cursor: not-allowed; opacity: .5; }
+      .catalog-stats { margin-left: auto; color: var(--muted); font-size: .92rem; }
+      .filter-help { color: var(--muted); font-size: .88rem; }
+
+      .edition-notices { display: grid; gap: .55rem; margin: 1rem 0; }
+      .edition-notice { padding: .75rem .9rem; border: 1px solid var(--pending-border); border-radius: 8px; background: var(--pending-bg); }
+      .edition-notice.partial { border-color: var(--partial-border); background: var(--partial-bg); }
+      .edition-notice strong { color: var(--pending); }
+      .edition-notice.partial strong { color: var(--partial); }
+      .loading-state, .empty-state, .search-hint {
+        margin: 1rem 0 1.4rem; padding: .9rem 1rem; border: 1px solid var(--border);
+        border-radius: 8px; background: var(--soft); color: var(--muted);
+      }
+      .loading-state::before { display: inline-block; margin-right: .5rem; content: ""; width: .8rem; height: .8rem; border: 2px solid var(--border); border-top-color: var(--link); border-radius: 50%; animation: spin .8s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .result-group { margin: 0 0 1.8rem; }
+      .paper-list { margin: 0; padding-left: 2.05rem; }
+      .paper-list > li { margin: 0; padding: 0 0 .85rem .2rem; }
+      .paper-list > li::marker { color: var(--muted); font-weight: 700; }
+      .paper-card { padding: .88rem 1rem 1rem; border: 1px solid var(--border); border-radius: 9px; background: var(--bg); box-shadow: 0 2px 8px var(--shadow); }
+      .paper-card:target { outline: 3px solid var(--focus); outline-offset: 3px; }
+      .paper-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem; }
+      .paper-card-header h4 { overflow-wrap: anywhere; }
+      .paper-meta { margin: .6rem 0 0; padding-left: 1.22rem; }
+      .paper-meta > li { margin: .24rem 0; }
+      .affiliation + .affiliation::before { content: "; "; color: var(--fg); font-weight: 400; }
+      .industry { display: inline; padding: 0 .22rem; border: 1px solid var(--industry-border); border-radius: 4px; background: var(--industry-bg); color: var(--industry); font-weight: 650; }
+      .paper-abstract { margin-top: .16rem; color: var(--label); }
+      .abstract-missing { color: var(--muted); font-style: italic; }
+      .metadata-note { color: var(--muted); font-size: .88rem; }
+
+      .status-control { display: inline-flex; flex: 0 0 auto; align-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; }
+      .status-pill { display: inline-flex; min-height: 1.75rem; align-items: center; gap: .42rem; padding: .18rem .55rem; border: 1px solid var(--border); border-radius: 5px; background: var(--pill-bg); color: var(--pill-muted); font-size: .79rem; font-weight: 750; white-space: nowrap; }
+      .status-pill::before { width: .46rem; height: .46rem; border-radius: 999px; background: var(--pill-dot); box-shadow: 0 0 0 3px var(--pill-dot-ring); content: ""; }
+      .status-pill::after { content: "Не прочитано"; }
+      .status-control[data-status="reading"] .status-pill { border-color: var(--reading-border); background: var(--reading-bg); color: var(--reading); }
+      .status-control[data-status="reading"] .status-pill::before { background: var(--reading); box-shadow: 0 0 0 3px var(--reading-border); }
+      .status-control[data-status="reading"] .status-pill::after { content: "Читается"; }
+      .status-control[data-status="read"] .status-pill { border-color: var(--industry-border); background: var(--industry-bg); color: var(--industry); }
+      .status-control[data-status="read"] .status-pill::before { width: .55rem; height: .31rem; border: solid var(--industry); border-width: 0 0 2px 2px; border-radius: 0; background: transparent; box-shadow: none; transform: rotate(-45deg); }
+      .status-control[data-status="read"] .status-pill::after { content: "Прочитано"; }
+      .status-control:focus-visible .status-pill { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+      .pager { display: flex; align-items: center; justify-content: center; gap: .7rem; flex-wrap: wrap; margin: 1.2rem 0 2rem; }
+      .pager select { padding: .35rem .45rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); }
+      .pager-info { min-width: 130px; text-align: center; color: var(--muted); }
+
+      .theme-toggle { position: fixed; top: 14px; left: 14px; z-index: 30; width: 78px; height: 40px; padding: 0; border: 0; border-radius: 999px; background: #ff6b00; cursor: pointer; box-shadow: 0 8px 24px var(--shadow-strong); }
+      .theme-toggle::after { position: absolute; top: 5px; right: 5px; width: 30px; height: 30px; border-radius: 999px; background: #fff; content: ""; box-shadow: 0 2px 8px rgba(15,23,42,.22); }
+      .theme-symbol { position: absolute; top: 50%; left: 20px; width: 12px; height: 12px; border-radius: 999px; background: #fff; transform: translateY(-50%); box-shadow: 0 -11px 0 -8px #fff, 0 11px 0 -8px #fff, 11px 0 0 -8px #fff, -11px 0 0 -8px #fff, 8px 8px 0 -8px #fff, -8px -8px 0 -8px #fff, 8px -8px 0 -8px #fff, -8px 8px 0 -8px #fff; }
+      :root[data-theme="dark"] .theme-toggle { background: #020617; }
+      :root[data-theme="dark"] .theme-symbol { left: 22px; width: 18px; height: 18px; background: #fff; box-shadow: none; }
+      :root[data-theme="dark"] .theme-symbol::after { position: absolute; top: -2px; right: -3px; width: 18px; height: 18px; border-radius: 999px; background: #020617; content: ""; }
+      .theme-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+      @media (max-width: 780px) {
+        main { padding: 64px 15px 56px; }
+        body { font-size: 15px; }
+        .catalog-controls { position: static; }
+        .search-control { flex-basis: 100%; }
+        .control-row { align-items: stretch; }
+        .select-control { flex: 1 1 215px; justify-content: space-between; }
+        .select-control select { max-width: 67%; }
+        .filter-group { max-width: 100%; overflow-x: auto; }
+        .catalog-stats { width: 100%; margin-left: 0; }
+        .paper-list { padding-left: 1.55rem; }
+        .paper-card { padding: .78rem; }
+        .paper-card-header { display: block; }
+        .paper-card-header .status-control { margin-top: .5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему" aria-pressed="false">
+      <span class="theme-symbol" aria-hidden="true"></span>
+    </button>
+    <main>
+      <nav class="site-tabs" aria-label="Разделы каталога">
+        <a href={mainCatalogHref}>Тематический каталог</a>
+        <a href={archiveHref} aria-current="page">Архив конференций</a>
+      </nav>
+
+      <h1>Архив конференций по рекомендательным системам</h1>
+      <p class="updated-at">Обновлено: {verifiedDate}</p>
+
+      <details class="summary-disclosure">
+        <summary>
+          <span class="summary-open-label">Показать сводку по площадкам</span>
+          <span class="summary-close-label">Скрыть сводку по площадкам</span>
+        </summary>
+        <div class="summary-wrap">
+          <table class="summary-table">
+          <caption>Для ожидаемых выпусков дата публикации указана ориентировочно — по началу конференции.</caption>
+          <thead>
+            <tr><th>Площадка</th>{years.map((year) => <th>{year}</th>)}</tr>
+          </thead>
+          <tbody>
+            {manifest.venues.map((venue: any) => {
+              const editions = editionsByVenue.get(venue.id) as any[];
+              return (
+                <tr>
+                  <td>
+                    <button class="venue-button" type="button" data-venue-jump={venue.id}>{venue.name}</button>
+                    <span class="status-chip">{venue.rank}</span>
+                    <span class="venue-full-name">{venue.fullName}</span>
+                  </td>
+                  {years.map((year) => {
+                    const edition = editions.find((item) => item.year === year);
+                    return (
+                      <td class="edition-cell" title={edition?.note || ''}>
+                        <button
+                          class="edition-button"
+                          type="button"
+                          data-venue-jump={venue.id}
+                          data-year-jump={String(year)}
+                          aria-label={`Выбрать ${edition?.conference || `${venue.name} ${year}`}`}
+                        >
+                          {edition?.status === 'pending' ? (
+                            <>
+                              <span class="status-chip pending">ожидается</span>
+                              {edition.expectedPublicationDate && (
+                                <span class="expected-publication">
+                                  публикация: ≈ <time datetime={edition.expectedPublicationDate}>
+                                    {formatExpectedPublicationDate(edition.expectedPublicationDate)}
+                                  </time>
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <span class="edition-count">{edition?.paperCount.toLocaleString('ru-RU')}</span>
+                              {` ${pluralRu(edition.paperCount, 'статья', 'статьи', 'статей')} `}
+                              {edition?.status === 'partial' && <span class="status-chip partial">частично</span>}
+                              <span class="venue-full-name">
+                                {edition?.categories.length} {pluralRu(edition.categories.length, 'категория', 'категории', 'категорий')}
+                                {edition?.selectionPolicy === 'recsys-related-only'
+                                  ? ` · отобрано из ${edition.sourcePaperCount.toLocaleString('ru-RU')}`
+                                  : ''}
+                              </span>
+                            </>
+                          )}
+                        </button>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+          </table>
+        </div>
+      </details>
+
+      <div class="catalog-controls" aria-label="Фильтры архива">
+        <div class="control-row">
+          <div class="search-control">
+            <label for="paper-search">Поиск</label>
+            <input id="paper-search" type="search" autocomplete="off" placeholder="Название, автор, категория или тег" />
+          </div>
+          <button class="reset-button" id="reset-filters" type="button">Сбросить</button>
+        </div>
+        <div class="control-row">
+          <label class="select-control" for="venue-filter">Площадка
+            <select id="venue-filter">
+              <option value="all">Все площадки</option>
+              {manifest.venues.map((venue: any) => <option value={venue.id}>{venue.name}</option>)}
+            </select>
+          </label>
+          <label class="select-control" for="year-filter">Год
+            <select id="year-filter">
+              <option value="all">Все годы</option>
+              {years.map((year) => <option value={String(year)}>{year}</option>)}
+            </select>
+          </label>
+          <label class="select-control" for="category-filter">Категория
+            <select id="category-filter"><option value="all">Все категории</option></select>
+          </label>
+          <label class="select-control" for="affiliation-filter">Аффилиация
+            <select id="affiliation-filter">
+              <option value="all">Любая / нет данных</option>
+              <option value="industry">Есть индустрия</option>
+              <option value="academic">Без индустрии</option>
+            </select>
+          </label>
+        </div>
+        <div class="control-row">
+          <fieldset class="filter-group" aria-label="Фильтр по статусу чтения">
+            <legend>Статус чтения</legend>
+            <label><input type="radio" name="read-filter" value="all" checked />Все</label>
+            <label><input type="radio" name="read-filter" value="unread" />Непрочитанные</label>
+            <label><input type="radio" name="read-filter" value="reading" />Читаются</label>
+            <label><input type="radio" name="read-filter" value="read" />Прочитанные</label>
+          </fieldset>
+          <span class="catalog-stats" id="catalog-stats">Выберите площадку или начните глобальный поиск</span>
+        </div>
+        <div class="filter-help" id="filter-help">
+          При выборе одной площадки загружаются только её выпуски. Глобальный индекс загружается только после ввода минимум двух символов.
+        </div>
+      </div>
+
+      <div class="edition-notices" id="edition-notices" aria-live="polite"></div>
+      <p class="loading-state" id="loading-state" hidden>Загружаю метаданные выпуска…</p>
+      <p class="search-hint" id="search-hint" hidden></p>
+      <p class="empty-state" id="empty-state" hidden>Нет публикаций для выбранных фильтров.</p>
+      <div id="paper-results" aria-live="polite"></div>
+      <div class="pager" id="pager" hidden>
+        <button id="previous-page" type="button">← Назад</button>
+        <span class="pager-info" id="page-info"></span>
+        <button id="next-page" type="button">Вперёд →</button>
+        <label>На странице
+          <select id="page-size"><option value="25">25</option><option value="50" selected>50</option><option value="100">100</option></select>
+        </label>
+      </div>
+    </main>
+
+    <script is:inline define:vars={{ manifest, dataBase }}>
+      (() => {
+        const storagePrefix = 'recsys-papers-read:';
+        const filterPrefix = 'recsys-conference-archive-v2:';
+        const editionCache = new Map();
+        let searchIndexPromise = null;
+        let currentMatches = [];
+        let currentMode = 'local';
+        let currentPage = 1;
+        let requestToken = 0;
+
+        const editionById = new Map(manifest.editions.map((edition) => [edition.id, edition]));
+        const venueSelect = document.querySelector('#venue-filter');
+        const yearSelect = document.querySelector('#year-filter');
+        const categorySelect = document.querySelector('#category-filter');
+        const affiliationSelect = document.querySelector('#affiliation-filter');
+        const searchInput = document.querySelector('#paper-search');
+        const readInputs = Array.from(document.querySelectorAll('input[name="read-filter"]'));
+        const results = document.querySelector('#paper-results');
+        const notices = document.querySelector('#edition-notices');
+        const loading = document.querySelector('#loading-state');
+        const hint = document.querySelector('#search-hint');
+        const empty = document.querySelector('#empty-state');
+        const stats = document.querySelector('#catalog-stats');
+        const pager = document.querySelector('#pager');
+        const previousPage = document.querySelector('#previous-page');
+        const nextPage = document.querySelector('#next-page');
+        const pageInfo = document.querySelector('#page-info');
+        const pageSizeSelect = document.querySelector('#page-size');
+        const themeButton = document.querySelector('#theme-toggle');
+        const numberFormat = new Intl.NumberFormat('ru-RU');
+        const statusOrder = ['unread', 'reading', 'read'];
+        const statusLabels = { unread: 'не прочитано', reading: 'читается', read: 'прочитано' };
+
+        const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        })[char]);
+        const normalize = (value) => String(value ?? '').toLocaleLowerCase('ru').normalize('NFKC');
+        const selectedReadStatus = () => readInputs.find((input) => input.checked)?.value || 'all';
+        const normalizeStatus = (value) => value === '1' || value === 'read' ? 'read' : value === 'reading' ? 'reading' : 'unread';
+        const paperStatus = (key) => {
+          try { return normalizeStatus(localStorage.getItem(`${storagePrefix}${key}`)); } catch (_) { return 'unread'; }
+        };
+        const persistStatus = (key, status) => {
+          try {
+            if (status === 'read') localStorage.setItem(`${storagePrefix}${key}`, '1');
+            else if (status === 'reading') localStorage.setItem(`${storagePrefix}${key}`, 'reading');
+            else localStorage.removeItem(`${storagePrefix}${key}`);
+          } catch (_) {}
+        };
+
+        const selectedEditions = () => manifest.editions.filter((edition) =>
+          (venueSelect.value === 'all' || edition.venueId === venueSelect.value)
+          && (yearSelect.value === 'all' || String(edition.year) === yearSelect.value)
+        );
+
+        const loadEdition = async (edition) => {
+          if (!edition?.file) return null;
+          if (!editionCache.has(edition.id)) {
+            editionCache.set(edition.id, fetch(`${dataBase}${edition.file}`).then((response) => {
+              if (!response.ok) throw new Error(`HTTP ${response.status}: ${edition.file}`);
+              return response.json();
+            }));
+          }
+          return editionCache.get(edition.id);
+        };
+
+        const loadSearchIndex = () => {
+          if (!searchIndexPromise) {
+            searchIndexPromise = fetch(`${dataBase}search-index.json`).then((response) => {
+              if (!response.ok) throw new Error(`HTTP ${response.status}: search-index.json`);
+              return response.json();
+            });
+          }
+          return searchIndexPromise;
+        };
+
+        const updateCategoryOptions = () => {
+          const oldValue = categorySelect.value;
+          const isGlobal = venueSelect.value === 'all';
+          const names = new Set();
+          if (!isGlobal) {
+            selectedEditions().forEach((edition) => edition.categories.forEach((category) => names.add(category.name)));
+          }
+          categorySelect.innerHTML = '<option value="all">Все категории</option>'
+            + Array.from(names).sort((a, b) => a.localeCompare(b, 'en')).map((name) =>
+              `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`
+            ).join('');
+          categorySelect.disabled = isGlobal;
+          if (Array.from(categorySelect.options).some((option) => option.value === oldValue)) categorySelect.value = oldValue;
+        };
+
+        const updateNotices = () => {
+          notices.innerHTML = selectedEditions()
+            .filter((edition) => edition.status !== 'published' || edition.note)
+            .map((edition) => `
+              <div class="edition-notice ${edition.status === 'partial' ? 'partial' : ''}">
+                <strong>${escapeHtml(edition.conference)} — ${edition.status === 'partial'
+                  ? 'частичный выпуск'
+                  : edition.status === 'pending' ? 'список ожидается' : 'примечание к источнику'}</strong>
+                <div>${escapeHtml(edition.note || 'Полный проверяемый список пока недоступен.')}</div>
+                <a href="${escapeHtml(edition.website)}">Официальная страница конференции</a>
+              </div>
+            `).join('');
+        };
+
+        const localMatches = async () => {
+          const editions = selectedEditions().filter((edition) => edition.file);
+          const documents = await Promise.all(editions.map(loadEdition));
+          const terms = normalize(searchInput.value).split(/\s+/).filter(Boolean);
+          const readFilter = selectedReadStatus();
+          const categoryFilter = categorySelect.value;
+          const affiliationFilter = affiliationSelect.value;
+          const matches = [];
+          documents.forEach((document) => {
+            const edition = editionById.get(document.id);
+            document.categories.forEach((category, categoryIndex) => {
+              if (categoryFilter !== 'all' && category.name !== categoryFilter) return;
+              category.papers.forEach((paper, paperIndex) => {
+                const haystack = normalize([
+                  paper.title, ...paper.authors, ...paper.affiliations, ...paper.tags,
+                  paper.abstract || '', category.name, edition.conference
+                ].join(' '));
+                if (terms.some((term) => !haystack.includes(term))) return;
+                if (affiliationFilter === 'industry' && !paper.isIndustry) return;
+                if (affiliationFilter === 'academic' && paper.isIndustry) return;
+                if (readFilter !== 'all' && paperStatus(paper.paperUrl) !== readFilter) return;
+                matches.push({ edition, category, categoryIndex, paperIndex, paper });
+              });
+            });
+          });
+          return matches;
+        };
+
+        const globalMatches = async () => {
+          const query = normalize(searchInput.value);
+          if (query.length < 2) return [];
+          const terms = query.split(/\s+/).filter(Boolean);
+          const index = await loadSearchIndex();
+          const readFilter = selectedReadStatus();
+          const affiliationFilter = affiliationSelect.value;
+          return index.papers.filter((row) => {
+            const edition = editionById.get(row[0]);
+            if (yearSelect.value !== 'all' && String(edition.year) !== yearSelect.value) return false;
+            const haystack = normalize(`${row[3]} ${row[4]} ${row[5]} ${edition.conference}`);
+            if (terms.some((term) => !haystack.includes(term))) return false;
+            if (affiliationFilter === 'industry' && !row[7]) return false;
+            if (affiliationFilter === 'academic' && row[7]) return false;
+            if (readFilter !== 'all' && paperStatus(row[6]) !== readFilter) return false;
+            return true;
+          });
+        };
+
+        const hydrateGlobalPage = async (rows) => {
+          const editions = new Map();
+          await Promise.all(Array.from(new Set(rows.map((row) => row[0]))).map(async (editionId) => {
+            const manifestEdition = editionById.get(editionId);
+            editions.set(editionId, await loadEdition(manifestEdition));
+          }));
+          return rows.map((row) => {
+            const document = editions.get(row[0]);
+            const edition = editionById.get(row[0]);
+            const category = document.categories[row[1]];
+            return { edition, category, categoryIndex: row[1], paperIndex: row[2], paper: category.papers[row[2]] };
+          });
+        };
+
+        const paperHtml = ({ edition, category, paper }) => {
+          const status = paperStatus(paper.paperUrl);
+          const industry = new Set(paper.industryAffiliations || []);
+          const affiliations = paper.affiliations?.length
+            ? paper.affiliations.map((value) => `<span class="affiliation ${industry.has(value) ? 'industry' : ''}">${escapeHtml(value)}</span>`).join('')
+            : '<span class="metadata-note">не предоставлены структурированным proceedings-источником</span>';
+          const tags = [`<span class="badge">${escapeHtml(category.name)}</span>`]
+            .concat((paper.tags || []).map((tag) => `<span class="badge">${escapeHtml(tag)}</span>`)).join('');
+          return `
+            <li>
+              <article class="paper-card" id="${escapeHtml(paper.id)}">
+                <div class="paper-card-header">
+                  <h4><a href="${escapeHtml(paper.paperUrl)}">${escapeHtml(paper.title)}</a></h4>
+                  <button class="status-control" type="button" data-status="${status}" data-paper-key="${escapeHtml(paper.paperUrl)}" aria-label="Статус: ${statusLabels[status]}. Нажмите, чтобы изменить.">
+                    <span class="status-pill" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <ul class="paper-meta">
+                  <li><strong>Конференция:</strong> ${escapeHtml(edition.conference)}</li>
+                  <li><strong>Год:</strong> ${edition.year}</li>
+                  <li><strong>Категория:</strong> ${escapeHtml(category.name)}</li>
+                  <li><strong>Авторы:</strong> ${escapeHtml(paper.authors.join(', '))}</li>
+                  <li><strong>Аффилиации:</strong> ${affiliations}</li>
+                  <li><strong>Теги:</strong> ${tags}</li>
+                  <li><strong>Статья:</strong> <a href="${escapeHtml(paper.paperUrl)}">открыть публикацию</a></li>
+                  <li><strong>Abstract:</strong><div class="paper-abstract ${paper.abstract ? '' : 'abstract-missing'}">${
+                    paper.abstract
+                      ? escapeHtml(paper.abstract)
+                      : 'Abstract пока не опубликован в доступных проверяемых источниках.'
+                  }</div></li>
+                </ul>
+              </article>
+            </li>`;
+        };
+
+        const renderItems = (items) => {
+          let currentGroup = '';
+          let html = '';
+          items.forEach((item) => {
+            const group = `${item.edition.conference} — ${item.category.name}`;
+            if (group !== currentGroup) {
+              if (currentGroup) html += '</ol></section>';
+              currentGroup = group;
+              html += `<section class="result-group"><h3>${escapeHtml(group)}</h3><ol class="paper-list">`;
+            }
+            html += paperHtml(item);
+          });
+          if (currentGroup) html += '</ol></section>';
+          results.innerHTML = html;
+        };
+
+        const renderCurrentPage = async () => {
+          const token = ++requestToken;
+          const pageSize = Number(pageSizeSelect.value);
+          const pageCount = Math.max(1, Math.ceil(currentMatches.length / pageSize));
+          currentPage = Math.min(currentPage, pageCount);
+          const start = (currentPage - 1) * pageSize;
+          const rawPage = currentMatches.slice(start, start + pageSize);
+          loading.hidden = false;
+          try {
+            const items = currentMode === 'global' ? await hydrateGlobalPage(rawPage) : rawPage;
+            if (token !== requestToken) return;
+            renderItems(items);
+            empty.hidden = currentMatches.length > 0;
+            pager.hidden = currentMatches.length <= pageSize;
+            previousPage.disabled = currentPage <= 1;
+            nextPage.disabled = currentPage >= pageCount;
+            pageInfo.textContent = `${currentPage} / ${pageCount}`;
+          } catch (error) {
+            if (token !== requestToken) return;
+            results.innerHTML = '';
+            empty.hidden = false;
+            empty.textContent = `Не удалось загрузить данные: ${error.message}`;
+            pager.hidden = true;
+          } finally {
+            if (token === requestToken) loading.hidden = true;
+          }
+        };
+
+        const applyFilters = async () => {
+          const token = ++requestToken;
+          currentPage = 1;
+          updateCategoryOptions();
+          updateNotices();
+          hint.hidden = true;
+          empty.hidden = true;
+          results.innerHTML = '';
+          pager.hidden = true;
+
+          if (venueSelect.value === 'all' && normalize(searchInput.value).length < 2) {
+            currentMatches = [];
+            hint.hidden = false;
+            hint.textContent = `Выберите одну площадку или введите минимум два символа для поиска по всем ${numberFormat.format(manifest.paperCount)} публикациям.`;
+            stats.textContent = 'Глобальный индекс ещё не загружен';
+            return;
+          }
+
+          loading.hidden = false;
+          try {
+            currentMode = venueSelect.value === 'all' ? 'global' : 'local';
+            const matches = currentMode === 'global' ? await globalMatches() : await localMatches();
+            if (token !== requestToken) return;
+            currentMatches = matches;
+            stats.textContent = `Найдено: ${numberFormat.format(matches.length)}`;
+            await renderCurrentPage();
+          } catch (error) {
+            if (token !== requestToken) return;
+            empty.hidden = false;
+            empty.textContent = `Не удалось загрузить данные: ${error.message}`;
+          } finally {
+            if (token === requestToken) loading.hidden = true;
+          }
+
+          try {
+            localStorage.setItem(`${filterPrefix}venue`, venueSelect.value);
+            localStorage.setItem(`${filterPrefix}year`, yearSelect.value);
+            localStorage.setItem(`${filterPrefix}category`, categorySelect.value);
+            localStorage.setItem(`${filterPrefix}affiliation`, affiliationSelect.value);
+            localStorage.setItem(`${filterPrefix}read`, selectedReadStatus());
+            localStorage.setItem(`${filterPrefix}page-size`, pageSizeSelect.value);
+          } catch (_) {}
+        };
+
+        let searchTimer;
+        searchInput.addEventListener('input', () => {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(applyFilters, 180);
+        });
+        venueSelect.addEventListener('change', applyFilters);
+        yearSelect.addEventListener('change', applyFilters);
+        categorySelect.addEventListener('change', applyFilters);
+        affiliationSelect.addEventListener('change', applyFilters);
+        readInputs.forEach((input) => input.addEventListener('change', applyFilters));
+        pageSizeSelect.addEventListener('change', () => { currentPage = 1; renderCurrentPage(); });
+        previousPage.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; renderCurrentPage(); window.scrollTo({ top: results.offsetTop - 150, behavior: 'smooth' }); } });
+        nextPage.addEventListener('click', () => { currentPage += 1; renderCurrentPage(); window.scrollTo({ top: results.offsetTop - 150, behavior: 'smooth' }); });
+        results.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-paper-key]');
+          if (!button) return;
+          const key = button.dataset.paperKey;
+          const status = paperStatus(key);
+          const next = statusOrder[(statusOrder.indexOf(status) + 1) % statusOrder.length];
+          persistStatus(key, next);
+          button.dataset.status = next;
+          button.setAttribute('aria-label', `Статус: ${statusLabels[next]}. Нажмите, чтобы изменить.`);
+          if (selectedReadStatus() !== 'all') applyFilters();
+        });
+        document.querySelectorAll('[data-venue-jump]').forEach((button) => button.addEventListener('click', () => {
+          venueSelect.value = button.dataset.venueJump;
+          yearSelect.value = button.dataset.yearJump || 'all';
+          categorySelect.value = 'all';
+          searchInput.value = '';
+          applyFilters();
+          document.querySelector('.catalog-controls').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }));
+        document.querySelector('#reset-filters').addEventListener('click', () => {
+          venueSelect.value = 'recsys';
+          yearSelect.value = 'all';
+          categorySelect.value = 'all';
+          affiliationSelect.value = 'all';
+          searchInput.value = '';
+          readInputs.find((input) => input.value === 'all').checked = true;
+          applyFilters();
+        });
+
+        try {
+          const venue = localStorage.getItem(`${filterPrefix}venue`) || 'recsys';
+          if (Array.from(venueSelect.options).some((option) => option.value === venue)) venueSelect.value = venue;
+          const year = localStorage.getItem(`${filterPrefix}year`) || 'all';
+          if (Array.from(yearSelect.options).some((option) => option.value === year)) yearSelect.value = year;
+          const affiliation = localStorage.getItem(`${filterPrefix}affiliation`) || 'all';
+          if (Array.from(affiliationSelect.options).some((option) => option.value === affiliation)) affiliationSelect.value = affiliation;
+          const read = localStorage.getItem(`${filterPrefix}read`) || 'all';
+          const readInput = readInputs.find((input) => input.value === read);
+          if (readInput) readInput.checked = true;
+          const pageSize = localStorage.getItem(`${filterPrefix}page-size`) || '50';
+          if (Array.from(pageSizeSelect.options).some((option) => option.value === pageSize)) pageSizeSelect.value = pageSize;
+          updateCategoryOptions();
+          const category = localStorage.getItem(`${filterPrefix}category`) || 'all';
+          if (Array.from(categorySelect.options).some((option) => option.value === category)) categorySelect.value = category;
+        } catch (_) { venueSelect.value = 'recsys'; }
+
+        const currentTheme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+        const setTheme = (theme) => {
+          document.documentElement.dataset.theme = theme;
+          themeButton.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+          try { localStorage.setItem('recsys-papers-theme', theme); } catch (_) {}
+        };
+        themeButton.addEventListener('click', () => setTheme(currentTheme() === 'dark' ? 'light' : 'dark'));
+        themeButton.setAttribute('aria-pressed', currentTheme() === 'dark' ? 'true' : 'false');
+        applyFilters();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,3628 @@
+{
+  "schemaVersion": 1,
+  "lastVerified": "2026-07-13",
+  "trackerUrl": "https://recsys.info/",
+  "metadataSourceUrl": "https://dblp.org/",
+  "scope": "Complete accepted lists are retained for RecSys, CIKM, KDD, SIGIR, ECIR, and UMAP. Other venues include only papers with explicit recommender-systems evidence in the title or track name. Standalone workshop proceedings are excluded.",
+  "selectionPolicy": {
+    "profileVenueIds": [
+      "cikm",
+      "ecir",
+      "kdd",
+      "recsys",
+      "sigir",
+      "umap"
+    ],
+    "broadVenueIds": [
+      "aaai",
+      "chi",
+      "ecai",
+      "ecml-pkdd",
+      "icde",
+      "icdm",
+      "icml",
+      "ijcai",
+      "neurips",
+      "wsdm",
+      "www"
+    ],
+    "broadVenueRule": "A paper is selected when its track explicitly names recommender systems or its title contains a high-precision recommender-systems term. Ambiguous non-system uses of recommendation are excluded."
+  },
+  "venues": [
+    {
+      "id": "recsys",
+      "name": "RecSys",
+      "fullName": "ACM Conference on Recommender Systems",
+      "rank": "A",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "aaai",
+      "name": "AAAI",
+      "fullName": "AAAI Conference on Artificial Intelligence",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "chi",
+      "name": "CHI",
+      "fullName": "ACM Conference on Human Factors in Computing Systems",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "cikm",
+      "name": "CIKM",
+      "fullName": "ACM International Conference on Information and Knowledge Management",
+      "rank": "A",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "ecai",
+      "name": "ECAI",
+      "fullName": "European Conference on Artificial Intelligence",
+      "rank": "A",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "ecir",
+      "name": "ECIR",
+      "fullName": "European Conference on Information Retrieval",
+      "rank": "A",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "ecml-pkdd",
+      "name": "ECML/PKDD",
+      "fullName": "European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases",
+      "rank": "A",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "icde",
+      "name": "ICDE",
+      "fullName": "IEEE International Conference on Data Engineering",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "icdm",
+      "name": "ICDM",
+      "fullName": "IEEE International Conference on Data Mining",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "icml",
+      "name": "ICML",
+      "fullName": "International Conference on Machine Learning",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "ijcai",
+      "name": "IJCAI",
+      "fullName": "International Joint Conference on Artificial Intelligence",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "kdd",
+      "name": "KDD",
+      "fullName": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+      "rank": "A*",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "neurips",
+      "name": "NeurIPS",
+      "fullName": "Conference on Neural Information Processing Systems",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "sigir",
+      "name": "SIGIR",
+      "fullName": "International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "rank": "A*",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "umap",
+      "name": "UMAP",
+      "fullName": "ACM Conference on User Modeling, Adaptation and Personalization",
+      "rank": "A",
+      "selectionPolicy": "complete-profile-venue"
+    },
+    {
+      "id": "wsdm",
+      "name": "WSDM",
+      "fullName": "ACM International Conference on Web Search and Data Mining",
+      "rank": "A",
+      "selectionPolicy": "recsys-related-only"
+    },
+    {
+      "id": "www",
+      "name": "WWW",
+      "fullName": "The Web Conference",
+      "rank": "A*",
+      "selectionPolicy": "recsys-related-only"
+    }
+  ],
+  "editions": [
+    {
+      "id": "recsys-2024",
+      "venueId": "recsys",
+      "conference": "RecSys 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://recsys.acm.org/recsys24/",
+      "dates": "14–18 Oct 2024",
+      "location": "Bari, Italy",
+      "paperCount": 190,
+      "sourcePaperCount": 190,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Long Papers",
+          "count": 58
+        },
+        {
+          "name": "Short Papers",
+          "count": 39
+        },
+        {
+          "name": "Reproducibility",
+          "count": 14
+        },
+        {
+          "name": "LBR",
+          "count": 18
+        },
+        {
+          "name": "Demos",
+          "count": 6
+        },
+        {
+          "name": "Doctoral",
+          "count": 21
+        },
+        {
+          "name": "Industry",
+          "count": 34
+        }
+      ],
+      "file": "recsys-2024.json",
+      "sourceUrl": "https://recsys.acm.org/recsys24/accepted-contributions/",
+      "volumeSources": [],
+      "abstractCount": 187,
+      "missingAbstractCount": 3
+    },
+    {
+      "id": "recsys-2025",
+      "venueId": "recsys",
+      "conference": "RecSys 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://recsys.acm.org/recsys25/",
+      "dates": "22–26 Sep 2025",
+      "location": "Prague, Czech Republic",
+      "paperCount": 216,
+      "sourcePaperCount": 216,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 49
+        },
+        {
+          "name": "Short Papers",
+          "count": 33
+        },
+        {
+          "name": "Reproducibility",
+          "count": 22
+        },
+        {
+          "name": "Industry",
+          "count": 54
+        },
+        {
+          "name": "LBR",
+          "count": 35
+        },
+        {
+          "name": "Demo",
+          "count": 11
+        },
+        {
+          "name": "Doctoral",
+          "count": 12
+        }
+      ],
+      "file": "recsys-2025.json",
+      "sourceUrl": "https://recsys.acm.org/recsys25/accepted-contributions/",
+      "volumeSources": [],
+      "abstractCount": 216,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "recsys-2026",
+      "venueId": "recsys",
+      "conference": "RecSys 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "https://recsys.acm.org/recsys26/",
+      "dates": "28 Sep–2 Oct 2026",
+      "location": "Minneapolis, Minnesota, USA",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "https://recsys.acm.org/recsys26/call/",
+      "volumeSources": [],
+      "expectedPublicationDate": "2026-09-28",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "aaai-2024",
+      "venueId": "aaai",
+      "conference": "AAAI 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://aaai.org/aaai-conference/aaai-24/",
+      "dates": "20–27 Feb 2024",
+      "location": "Vancouver, Canada",
+      "paperCount": 52,
+      "sourcePaperCount": 2866,
+      "filteredOutCount": 2814,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "AAAI Technical Track on Application Domains",
+          "count": 1
+        },
+        {
+          "name": "AAAI Technical Track on Cognitive Modeling & Cognitive Systems",
+          "count": 1
+        },
+        {
+          "name": "AAAI Technical Track on Data Mining & Knowledge Management",
+          "count": 34
+        },
+        {
+          "name": "AAAI Technical Track on Machine Learning I",
+          "count": 1
+        },
+        {
+          "name": "AAAI Technical Track on Machine Learning II",
+          "count": 1
+        },
+        {
+          "name": "AAAI Technical Track on Natural Language Processing II",
+          "count": 2
+        },
+        {
+          "name": "AAAI Technical Track on Safe, Robust and Responsible AI Track",
+          "count": 1
+        },
+        {
+          "name": "AAAI Technical Track on AI for Social Impact Track",
+          "count": 2
+        },
+        {
+          "name": "Senior Member Presentation: Blue Sky Papers",
+          "count": 1
+        },
+        {
+          "name": "IAAI Technical Track on Deployed Highly Innovative Applications of AI",
+          "count": 1
+        },
+        {
+          "name": "IAAI Technical Track on Emerging Applications of AI",
+          "count": 1
+        },
+        {
+          "name": "IAAI Technical Track on Deployed Innovative Tools for Enabling AI Applications",
+          "count": 1
+        },
+        {
+          "name": "AAAI Student Abstract and Poster Program",
+          "count": 3
+        },
+        {
+          "name": "AAAI Demonstration Track",
+          "count": 2
+        }
+      ],
+      "file": "aaai-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/aaai/",
+      "volumeSources": [
+        {
+          "title": "Thirty-Eighth AAAI Conference on Artificial Intelligence, AAAI 2024, Thirty-Sixth Conference on Innovative Applications of Artificial Intelligence, IAAI 2024, Fourteenth Symposium on Educational Advances in Artificial Intelligence, EAAI 2024, February 20-27, 2024, Vancouver, Canada",
+          "dblpUrl": "https://dblp.org/db/conf/aaai/aaai2024.html",
+          "publisherUrls": [
+            "https://aaai.org/proceeding/aaai-38-2024/"
+          ]
+        }
+      ],
+      "abstractCount": 52,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "aaai-2025",
+      "venueId": "aaai",
+      "conference": "AAAI 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://aaai.org/conference/aaai/aaai-25/",
+      "dates": "25 Feb–4 Mar 2025",
+      "location": "Philadelphia, USA",
+      "paperCount": 86,
+      "sourcePaperCount": 3486,
+      "filteredOutCount": 3400,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Technical Tracks 1",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 11",
+          "count": 27
+        },
+        {
+          "name": "Technical Tracks 12",
+          "count": 49
+        },
+        {
+          "name": "Technical Tracks 15",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 16",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 17",
+          "count": 1
+        },
+        {
+          "name": "IAAI-25, EAAI-25, AAAI-25 Student Abstracts, Undergraduate Consortium and Demonstrations",
+          "count": 6
+        }
+      ],
+      "file": "aaai-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/aaai/",
+      "volumeSources": [
+        {
+          "title": "Thirty-Ninth AAAI Conference on Artificial Intelligence, Thirty-Seventh Conference on Innovative Applications of Artificial Intelligence, Fifteenth Symposium on Educational Advances in Artificial Intelligence, AAAI 2025, Philadelphia, PA, USA, February 25 - March 4, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/aaai/aaai2025.html",
+          "publisherUrls": [
+            "https://aaai.org/proceeding/aaai-39-2025/"
+          ]
+        }
+      ],
+      "abstractCount": 86,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "aaai-2026",
+      "venueId": "aaai",
+      "conference": "AAAI 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://aaai.org/conference/aaai/aaai-26/",
+      "dates": "20–27 Jan 2026",
+      "location": "Singapore",
+      "paperCount": 106,
+      "sourcePaperCount": 4920,
+      "filteredOutCount": 4814,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Technical Tracks 2",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 3",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 17",
+          "count": 22
+        },
+        {
+          "name": "Technical Tracks 18",
+          "count": 28
+        },
+        {
+          "name": "Technical Tracks 19",
+          "count": 23
+        },
+        {
+          "name": "Technical Tracks 23",
+          "count": 2
+        },
+        {
+          "name": "Technical Tracks 24",
+          "count": 2
+        },
+        {
+          "name": "Technical Tracks 25",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 27",
+          "count": 2
+        },
+        {
+          "name": "Technical Tracks 28",
+          "count": 2
+        },
+        {
+          "name": "Technical Tracks 31",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 33",
+          "count": 3
+        },
+        {
+          "name": "Technical Tracks 34",
+          "count": 2
+        },
+        {
+          "name": "Technical Tracks 35",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 37",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 41",
+          "count": 1
+        },
+        {
+          "name": "Technical Tracks 42",
+          "count": 2
+        },
+        {
+          "name": "AAAI-26 Special Track AI for Social Impact I",
+          "count": 1
+        },
+        {
+          "name": "AAAI-26 New Faculty Highlights, Journal Track, IAAI-26 and EAAI-26 Main Track",
+          "count": 5
+        },
+        {
+          "name": "EAAI-26 AI for Education, Model AI Assignments, AAAI-26 Emerging Trends, Doctoral Consortium, Student Abstracts, Undergraduate Consortium and Demonstrations",
+          "count": 5
+        }
+      ],
+      "file": "aaai-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/aaai/",
+      "volumeSources": [
+        {
+          "title": "Fortieth AAAI Conference on Artificial Intelligence, Thirty-Eighth Conference on Innovative Applications of Artificial Intelligence, Sixteenth Symposium on Educational Advances in Artificial Intelligence, AAAI 2026, Singapore, January 20-27, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/aaai/aaai2026.html",
+          "publisherUrls": [
+            "https://aaai.org/proceeding/aaai-40-2026/"
+          ]
+        }
+      ],
+      "abstractCount": 106,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "chi-2024",
+      "venueId": "chi",
+      "conference": "CHI 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://chi2024.acm.org/",
+      "dates": "11–16 May 2024",
+      "location": "Honolulu, Hawaii, USA",
+      "paperCount": 8,
+      "sourcePaperCount": 1705,
+      "filteredOutCount": 1697,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "AI for Researchers and Educators",
+          "count": 1
+        },
+        {
+          "name": "Communication and Collaboration",
+          "count": 1
+        },
+        {
+          "name": "Health and AI C",
+          "count": 1
+        },
+        {
+          "name": "Chatbots and LLMs",
+          "count": 1
+        },
+        {
+          "name": "Online Communities: Engagement A",
+          "count": 1
+        },
+        {
+          "name": "CHI Extended Abstracts — Late-Breaking Work",
+          "count": 3
+        }
+      ],
+      "file": "chi-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/chi/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the CHI Conference on Human Factors in Computing Systems, CHI 2024, Honolulu, HI, USA, May 11-16, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3613904",
+            "https://www.wikidata.org/entity/Q134542258"
+          ]
+        },
+        {
+          "title": "Extended Abstracts of the CHI Conference on Human Factors in Computing Systems, CHI EA 2024, Honolulu, HI, USA, May 11-16, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2024a.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3613905"
+          ]
+        }
+      ],
+      "abstractCount": 8,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "chi-2025",
+      "venueId": "chi",
+      "conference": "CHI 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://chi2025.acm.org/",
+      "dates": "26 Apr–1 May 2025",
+      "location": "Yokohama, Japan",
+      "paperCount": 16,
+      "sourcePaperCount": 2169,
+      "filteredOutCount": 2153,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Inclusive Communication and Support",
+          "count": 1
+        },
+        {
+          "name": "Personal Data and Ethical Design",
+          "count": 1
+        },
+        {
+          "name": "Recommendation and Personalization",
+          "count": 7
+        },
+        {
+          "name": "Stereotypes and Gender",
+          "count": 1
+        },
+        {
+          "name": "CHI Extended Abstracts — Late-Breaking Work",
+          "count": 5
+        },
+        {
+          "name": "CHI Extended Abstracts — Case Studies",
+          "count": 1
+        }
+      ],
+      "file": "chi-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/chi/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems, CHI 2025, YokohamaJapan, 26 April 2025- 1 May 2025",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3706598"
+          ]
+        },
+        {
+          "title": "Proceedings of the Extended Abstracts of the CHI Conference on Human Factors in Computing Systems, CHI EA 2025, Yokohama, Japan, 26 April 2025- 1 May 2025",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2025a.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3706599"
+          ]
+        }
+      ],
+      "abstractCount": 11,
+      "missingAbstractCount": 5
+    },
+    {
+      "id": "chi-2026",
+      "venueId": "chi",
+      "conference": "CHI 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://chi2026.acm.org/",
+      "dates": "13–17 Apr 2026",
+      "location": "Barcelona, Spain",
+      "paperCount": 14,
+      "sourcePaperCount": 2707,
+      "filteredOutCount": 2693,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "AI Personality",
+          "count": 1
+        },
+        {
+          "name": "Data Visualization Designs and Tools",
+          "count": 1
+        },
+        {
+          "name": "Ethics, Inclusion & Algorithmic Impact",
+          "count": 1
+        },
+        {
+          "name": "Interactive Systems for Teaching, Learning, and Concept Formation",
+          "count": 1
+        },
+        {
+          "name": "Personalization and Human-AI Alignment",
+          "count": 1
+        },
+        {
+          "name": "Quantifying the Algorithmic Lens",
+          "count": 1
+        },
+        {
+          "name": "Trust and Perception in AI Systems",
+          "count": 1
+        },
+        {
+          "name": "Video Presentations",
+          "count": 2
+        },
+        {
+          "name": "CHI Extended Abstracts — Posters",
+          "count": 3
+        },
+        {
+          "name": "CHI Extended Abstracts — Workshop",
+          "count": 1
+        },
+        {
+          "name": "CHI Extended Abstracts — Student Research Competition",
+          "count": 1
+        }
+      ],
+      "file": "chi-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/chi/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems, CHI 2026, Barcelona, Spain, April 13-17, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2026.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3772318"
+          ]
+        },
+        {
+          "title": "Proceedings of the Extended Abstracts of the 2026 CHI Conference on Human Factors in Computing Systems, CHI EA 2026, Barcelona, Spain, April 13-17, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/chi/chi2026a.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3772363"
+          ]
+        }
+      ],
+      "abstractCount": 12,
+      "missingAbstractCount": 2
+    },
+    {
+      "id": "cikm-2024",
+      "venueId": "cikm",
+      "conference": "CIKM 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www.cikm2024.org/",
+      "dates": "21–25 Oct 2024",
+      "location": "Boise, Idaho, USA",
+      "paperCount": 697,
+      "sourcePaperCount": 697,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Keynote Talks",
+          "count": 3
+        },
+        {
+          "name": "Full Research Papers",
+          "count": 347
+        },
+        {
+          "name": "Short Research Papers",
+          "count": 140
+        },
+        {
+          "name": "Applied Research Papers",
+          "count": 102
+        },
+        {
+          "name": "Demo Papers",
+          "count": 33
+        },
+        {
+          "name": "Resource Papers",
+          "count": 21
+        },
+        {
+          "name": "PhD Symposium",
+          "count": 19
+        },
+        {
+          "name": "Tutorial Presentations",
+          "count": 12
+        },
+        {
+          "name": "Industry Day Talks",
+          "count": 10
+        },
+        {
+          "name": "Workshops",
+          "count": 10
+        }
+      ],
+      "file": "cikm-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/cikm/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 33rd ACM International Conference on Information and Knowledge Management, CIKM 2024, Boise, ID, USA, October 21-25, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/cikm/cikm2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3627673",
+            "https://www.wikidata.org/entity/Q131370558"
+          ]
+        }
+      ],
+      "abstractCount": 696,
+      "missingAbstractCount": 1
+    },
+    {
+      "id": "cikm-2025",
+      "venueId": "cikm",
+      "conference": "CIKM 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://cikm2025.org/",
+      "dates": "10–14 Nov 2025",
+      "location": "Seoul, South Korea",
+      "paperCount": 852,
+      "sourcePaperCount": 852,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Keynote Talks",
+          "count": 3
+        },
+        {
+          "name": "Full Research Papers",
+          "count": 436
+        },
+        {
+          "name": "Short Research Papers",
+          "count": 184
+        },
+        {
+          "name": "Applied Research Papers",
+          "count": 93
+        },
+        {
+          "name": "Resource Papers",
+          "count": 51
+        },
+        {
+          "name": "Demo Papers",
+          "count": 37
+        },
+        {
+          "name": "PhD Symposium",
+          "count": 11
+        },
+        {
+          "name": "Tutorials",
+          "count": 10
+        },
+        {
+          "name": "Industry Day Talks",
+          "count": 13
+        },
+        {
+          "name": "Workshops",
+          "count": 14
+        }
+      ],
+      "file": "cikm-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/cikm/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 34th ACM International Conference on Information and Knowledge Management, CIKM 2025, Seoul, Republic of Korea, November 10-14, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/cikm/cikm2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3746252"
+          ]
+        }
+      ],
+      "abstractCount": 852,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "cikm-2026",
+      "venueId": "cikm",
+      "conference": "CIKM 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "https://cikm2026.diag.uniroma1.it/",
+      "dates": "7–11 Nov 2026",
+      "location": "Rome, Italy",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "https://cikm2026.diag.uniroma1.it/",
+      "volumeSources": [],
+      "note": "A complete, category-preserving proceedings table of contents is not yet available in the structured source. No unverified paper list is shown.",
+      "expectedPublicationDate": "2026-11-07",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecai-2024",
+      "venueId": "ecai",
+      "conference": "ECAI 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www.ecai2024.eu/",
+      "dates": "19–24 Oct 2024",
+      "location": "Santiago de Compostela, Spain",
+      "paperCount": 7,
+      "sourcePaperCount": 606,
+      "filteredOutCount": 599,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ECAI",
+          "count": 7
+        }
+      ],
+      "file": "ecai-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/ecai/",
+      "volumeSources": [
+        {
+          "title": "ECAI 2024 - 27th European Conference on Artificial Intelligence, 19-24 October 2024, Santiago de Compostela, Spain - Including 13th Conference on Prestigious Applications of Intelligent Systems (PAIS 2024)",
+          "dblpUrl": "https://dblp.org/db/conf/ecai/ecai2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.3233/FAIA392"
+          ]
+        }
+      ],
+      "abstractCount": 7,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecai-2025",
+      "venueId": "ecai",
+      "conference": "ECAI 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://ecai2025.org/",
+      "dates": "25–30 Oct 2025",
+      "location": "Bologna, Italy",
+      "paperCount": 3,
+      "sourcePaperCount": 696,
+      "filteredOutCount": 693,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ECAI",
+          "count": 3
+        }
+      ],
+      "file": "ecai-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/ecai/",
+      "volumeSources": [
+        {
+          "title": "ECAI 2025 - 28th European Conference on Artificial Intelligence, 25-30 October 2025, Bologna, Italy - Including 14th Conference on Prestigious Applications of Intelligent Systems (PAIS 2025)",
+          "dblpUrl": "https://dblp.org/db/conf/ecai/ecai2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.3233/FAIA413"
+          ]
+        }
+      ],
+      "abstractCount": 3,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecai-2026",
+      "venueId": "ecai",
+      "conference": "ECAI 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "https://2026.ijcai.org/",
+      "dates": "15–21 Aug 2026",
+      "location": "Bremen, Germany",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "https://2026.ijcai.org/",
+      "volumeSources": [],
+      "note": "The 2026 event is organized jointly as IJCAI-ECAI; papers are listed once under IJCAI when proceedings become available.",
+      "expectedPublicationDate": "2026-08-15",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecir-2024",
+      "venueId": "ecir",
+      "conference": "ECIR 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www.ecir2024.org/",
+      "dates": "24–28 Mar 2024",
+      "location": "Glasgow, UK",
+      "paperCount": 210,
+      "sourcePaperCount": 210,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 75
+        },
+        {
+          "name": "Short Papers",
+          "count": 36
+        },
+        {
+          "name": "Reproducibility Papers",
+          "count": 9
+        },
+        {
+          "name": "IR for Good Papers",
+          "count": 26
+        },
+        {
+          "name": "Demo Papers",
+          "count": 18
+        },
+        {
+          "name": "Industry Papers",
+          "count": 6
+        },
+        {
+          "name": "Doctoral Consortium Papers",
+          "count": 8
+        },
+        {
+          "name": "Tutorials",
+          "count": 7
+        },
+        {
+          "name": "Workshops",
+          "count": 10
+        },
+        {
+          "name": "Conference and Labs of the Evaluation Forum (CLEF)",
+          "count": 15
+        }
+      ],
+      "file": "ecir-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/ecir/",
+      "volumeSources": [
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part I",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56027-9"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part II",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56060-6"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part III",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-3.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56063-7"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part IV",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-4.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56066-8"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part V",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-5.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56069-9"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 46th European Conference on Information Retrieval, ECIR 2024, Glasgow, UK, March 24-28, 2024, Proceedings, Part VI",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2024-6.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-56072-9"
+          ]
+        }
+      ],
+      "abstractCount": 206,
+      "missingAbstractCount": 4
+    },
+    {
+      "id": "ecir-2025",
+      "venueId": "ecir",
+      "conference": "ECIR 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://ecir2025.eu/",
+      "dates": "6–10 Apr 2025",
+      "location": "Lucca, Italy",
+      "paperCount": 206,
+      "sourcePaperCount": 206,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "ECIR (1)",
+          "count": 29
+        },
+        {
+          "name": "ECIR (2)",
+          "count": 28
+        },
+        {
+          "name": "ECIR (3)",
+          "count": 45
+        },
+        {
+          "name": "ECIR (4)",
+          "count": 35
+        },
+        {
+          "name": "ECIR (5)",
+          "count": 69
+        }
+      ],
+      "file": "ecir-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/ecir/",
+      "volumeSources": [
+        {
+          "title": "Advances in Information Retrieval - 47th European Conference on Information Retrieval, ECIR 2025, Lucca, Italy, April 6-10, 2025, Proceedings, Part I",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2025-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-88708-6",
+            "https://www.wikidata.org/entity/Q136324193"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 47th European Conference on Information Retrieval, ECIR 2025, Lucca, Italy, April 6-10, 2025, Proceedings, Part II",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2025-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-88711-6",
+            "https://www.wikidata.org/entity/Q136325465"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 47th European Conference on Information Retrieval, ECIR 2025, Lucca, Italy, April 6-10, 2025, Proceedings, Part III",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2025-3.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-88714-7"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 47th European Conference on Information Retrieval, ECIR 2025, Lucca, Italy, April 6-10, 2025, Proceedings, Part IV",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2025-4.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-88717-8",
+            "https://www.wikidata.org/entity/Q136445814"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 47th European Conference on Information Retrieval, ECIR 2025, Lucca, Italy, April 6-10, 2025, Proceedings, Part V",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2025-5.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-88720-8",
+            "https://www.wikidata.org/entity/Q134269758"
+          ]
+        }
+      ],
+      "abstractCount": 203,
+      "missingAbstractCount": 3
+    },
+    {
+      "id": "ecir-2026",
+      "venueId": "ecir",
+      "conference": "ECIR 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://ecir2026.eu/",
+      "dates": "29 Mar–2 Apr 2026",
+      "location": "Delft, The Netherlands",
+      "paperCount": 209,
+      "sourcePaperCount": 209,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 56
+        },
+        {
+          "name": "Short Papers",
+          "count": 37
+        },
+        {
+          "name": "Reproducibility Papers",
+          "count": 9
+        },
+        {
+          "name": "Workshop Papers",
+          "count": 11
+        },
+        {
+          "name": "IR for Good Papers",
+          "count": 19
+        },
+        {
+          "name": "Doctoral Consortium Papers",
+          "count": 14
+        },
+        {
+          "name": "Tutorial Papers",
+          "count": 7
+        },
+        {
+          "name": "Industry Papers",
+          "count": 10
+        },
+        {
+          "name": "Demo Papers",
+          "count": 13
+        },
+        {
+          "name": "CLEF Overview Papers",
+          "count": 16
+        },
+        {
+          "name": "Resource Papers",
+          "count": 17
+        }
+      ],
+      "file": "ecir-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/ecir/",
+      "volumeSources": [
+        {
+          "title": "Advances in Information Retrieval - 48th European Conference on Information Retrieval, ECIR 2026, Delft, The Netherlands, March 29 - April 2, 2026, Proceedings, Part I",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2026-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-21289-4"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 48th European Conference on Information Retrieval, ECIR 2026, Delft, The Netherlands, March 29 - April 2, 2026, Proceedings, Part II",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2026-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-21300-6"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 48th European Conference on Information Retrieval, ECIR 2026, Delft, The Netherlands, March 29 - April 2, 2026, Proceedings, Part III",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2026-3.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-21324-2"
+          ]
+        },
+        {
+          "title": "Advances in Information Retrieval - 48th European Conference on Information Retrieval, ECIR 2026, Delft, The Netherlands, March 29 - April 2, 2026, Proceedings, Part IV",
+          "dblpUrl": "https://dblp.org/db/conf/ecir/ecir2026-4.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-21321-1"
+          ]
+        }
+      ],
+      "abstractCount": 202,
+      "missingAbstractCount": 7
+    },
+    {
+      "id": "ecml-pkdd-2024",
+      "venueId": "ecml-pkdd",
+      "conference": "ECML/PKDD 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://ecmlpkdd.org/2024/",
+      "dates": "9–13 Sep 2024",
+      "location": "Vilnius, Lithuania",
+      "paperCount": 12,
+      "sourcePaperCount": 272,
+      "filteredOutCount": 260,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Research Track",
+          "count": 8
+        },
+        {
+          "name": "Applied Data Science Track",
+          "count": 4
+        }
+      ],
+      "file": "ecml-pkdd-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/pkdd/",
+      "volumeSources": [
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part I",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70341-6"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part II",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70344-7"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part III",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-3.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70352-2"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part IV",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-4.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70359-1"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part V",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-5.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70362-1"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part VI",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-6.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70365-2"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part VII",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-7.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70368-3"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track and Demo Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part VIII",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-8.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70371-3"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Applied Data Science Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part IX",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-9.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70378-2"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Applied Data Science Track - European Conference, ECML PKDD 2024, Vilnius, Lithuania, September 9-13, 2024, Proceedings, Part X",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2024-10.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-031-70381-2"
+          ]
+        }
+      ],
+      "abstractCount": 12,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecml-pkdd-2025",
+      "venueId": "ecml-pkdd",
+      "conference": "ECML/PKDD 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://ecmlpkdd.org/2025/",
+      "dates": "15–19 Sep 2025",
+      "location": "Porto, Portugal",
+      "paperCount": 14,
+      "sourcePaperCount": 317,
+      "filteredOutCount": 303,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Bias and Fairness",
+          "count": 1
+        },
+        {
+          "name": "Recommender Systems",
+          "count": 8
+        },
+        {
+          "name": "Engineering and Technology",
+          "count": 2
+        },
+        {
+          "name": "Finance, Economy, Management or Marketing",
+          "count": 2
+        },
+        {
+          "name": "Web and Social Networks",
+          "count": 1
+        }
+      ],
+      "file": "ecml-pkdd-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/pkdd/",
+      "volumeSources": [
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part I",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-05962-8"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part II",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-05981-9"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part III",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-3.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06066-2"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part IV",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-4.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06078-5"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part V",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-5.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06096-9"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part VI",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-6.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06106-5"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part VII",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-7.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06109-6"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Research Track and Applied Data Science Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part VIII",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-8.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-662-72243-5"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Applied Data Science Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part IX",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-9.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06118-8"
+          ]
+        },
+        {
+          "title": "Machine Learning and Knowledge Discovery in Databases. Applied Data Science Track and Demo Track - European Conference, ECML PKDD 2025, Porto, Portugal, September 15-19, 2025, Proceedings, Part X",
+          "dblpUrl": "https://dblp.org/db/conf/pkdd/pkdd2025-10.html",
+          "publisherUrls": [
+            "https://doi.org/10.1007/978-3-032-06129-4"
+          ]
+        }
+      ],
+      "abstractCount": 14,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ecml-pkdd-2026",
+      "venueId": "ecml-pkdd",
+      "conference": "ECML/PKDD 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "https://ecmlpkdd.org/2026/",
+      "dates": "7–11 Sep 2026",
+      "location": "Naples, Italy",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "https://ecmlpkdd.org/2026/",
+      "volumeSources": [],
+      "note": "A complete, category-preserving proceedings table of contents is not yet available in the structured source. No unverified paper list is shown.",
+      "expectedPublicationDate": "2026-09-07",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icde-2024",
+      "venueId": "icde",
+      "conference": "ICDE 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://icde2024.github.io/",
+      "dates": "13–16 May 2024",
+      "location": "Utrecht, The Netherlands",
+      "paperCount": 29,
+      "sourcePaperCount": 501,
+      "filteredOutCount": 472,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ICDE",
+          "count": 29
+        }
+      ],
+      "file": "icde-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/icde/",
+      "volumeSources": [
+        {
+          "title": "40th IEEE International Conference on Data Engineering, ICDE 2024, Utrecht, The Netherlands, May 13-16, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/icde/icde2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1109/ICDE60146.2024"
+          ]
+        }
+      ],
+      "abstractCount": 29,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icde-2025",
+      "venueId": "icde",
+      "conference": "ICDE 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://ieee-icde.org/2025/",
+      "dates": "19–23 May 2025",
+      "location": "Hong Kong",
+      "paperCount": 13,
+      "sourcePaperCount": 398,
+      "filteredOutCount": 385,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ICDE",
+          "count": 13
+        }
+      ],
+      "file": "icde-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/icde/",
+      "volumeSources": [
+        {
+          "title": "41st IEEE International Conference on Data Engineering, ICDE 2025, Hong Kong, May 19-23, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/icde/icde2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1109/ICDE65448.2025"
+          ]
+        }
+      ],
+      "abstractCount": 13,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icde-2026",
+      "venueId": "icde",
+      "conference": "ICDE 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://icde2026.github.io/",
+      "dates": "4–8 May 2026",
+      "location": "Montréal, Canada",
+      "paperCount": 13,
+      "sourcePaperCount": 357,
+      "filteredOutCount": 344,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Research Papers",
+          "count": 6
+        },
+        {
+          "name": "Industry and Application Papers",
+          "count": 6
+        },
+        {
+          "name": "TKDE Posters",
+          "count": 1
+        }
+      ],
+      "file": "icde-2026.json",
+      "sourceUrl": "https://icde2026.github.io/accepted-papers.html",
+      "volumeSources": [
+        {
+          "title": "ICDE 2026 — Research Papers",
+          "publisherUrls": [
+            "https://icde2026.github.io/accepted-papers.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — Industry and Application Papers",
+          "publisherUrls": [
+            "https://icde2026.github.io/ia-papers.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — Demo Papers",
+          "publisherUrls": [
+            "https://icde2026.github.io/demo-papers.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — TKDE Posters",
+          "publisherUrls": [
+            "https://icde2026.github.io/tkde-papers.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — DEFT Papers",
+          "publisherUrls": [
+            "https://icde2026.github.io/deft-papers.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — Lightning Talks",
+          "publisherUrls": [
+            "https://icde2026.github.io/lightning-talks.html"
+          ]
+        },
+        {
+          "title": "ICDE 2026 — Ph.D. Symposium",
+          "publisherUrls": [
+            "https://icde2026.github.io/phd-papers.html"
+          ]
+        }
+      ],
+      "abstractCount": 8,
+      "missingAbstractCount": 5
+    },
+    {
+      "id": "icdm-2024",
+      "venueId": "icdm",
+      "conference": "ICDM 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://icdm2024.org/",
+      "dates": "9–12 Dec 2024",
+      "location": "Abu Dhabi, UAE",
+      "paperCount": 19,
+      "sourcePaperCount": 116,
+      "filteredOutCount": 97,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ICDM",
+          "count": 19
+        }
+      ],
+      "file": "icdm-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/icdm/",
+      "volumeSources": [
+        {
+          "title": "IEEE International Conference on Data Mining, ICDM 2024, Abu Dhabi, United Arab Emirates, December 9-12, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/icdm/icdm2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1109/ICDM59182.2024"
+          ]
+        }
+      ],
+      "abstractCount": 19,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icdm-2025",
+      "venueId": "icdm",
+      "conference": "ICDM 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://www3.cs.stonybrook.edu/~icdm2025/",
+      "dates": "12–15 Nov 2025",
+      "location": "Washington, DC, USA",
+      "paperCount": 13,
+      "sourcePaperCount": 180,
+      "filteredOutCount": 167,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "ICDM",
+          "count": 13
+        }
+      ],
+      "file": "icdm-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/icdm/",
+      "volumeSources": [
+        {
+          "title": "IEEE International Conference on Data Mining, ICDM 2025, Washington DC, USA, November 12-15, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/icdm/icdm2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1109/ICDM65498.2025"
+          ]
+        }
+      ],
+      "abstractCount": 13,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icdm-2026",
+      "venueId": "icdm",
+      "conference": "ICDM 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "http://icdm2026.neu.edu.cn/",
+      "dates": "12–15 Nov 2026",
+      "location": "Shenyang, China",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "http://icdm2026.neu.edu.cn/",
+      "volumeSources": [],
+      "note": "A complete, category-preserving proceedings table of contents is not yet available in the structured source. No unverified paper list is shown.",
+      "expectedPublicationDate": "2026-11-12",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icml-2024",
+      "venueId": "icml",
+      "conference": "ICML 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://icml.cc/Conferences/2024/",
+      "dates": "21–27 Jul 2024",
+      "location": "Vienna, Austria",
+      "paperCount": 8,
+      "sourcePaperCount": 2610,
+      "filteredOutCount": 2602,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Accept (Spotlight)",
+          "count": 1
+        },
+        {
+          "name": "Accept (Poster)",
+          "count": 7
+        }
+      ],
+      "file": "icml-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/icml/",
+      "volumeSources": [
+        {
+          "title": "Forty-first International Conference on Machine Learning, ICML 2024, Vienna, Austria, July 21-27, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/icml/icml2024.html",
+          "publisherUrls": [
+            "https://proceedings.mlr.press/v235/",
+            "https://openreview.net/group?id=ICML.cc/2024/Conference"
+          ]
+        }
+      ],
+      "abstractCount": 8,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icml-2025",
+      "venueId": "icml",
+      "conference": "ICML 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://icml.cc/Conferences/2025/",
+      "dates": "13–19 Jul 2025",
+      "location": "Vancouver, Canada",
+      "paperCount": 17,
+      "sourcePaperCount": 3330,
+      "filteredOutCount": 3313,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Accept (spotlight poster)",
+          "count": 1
+        },
+        {
+          "name": "Accept (poster)",
+          "count": 15
+        },
+        {
+          "name": "ICML (Position Papers) — Accept (spotlight poster)",
+          "count": 1
+        }
+      ],
+      "file": "icml-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/icml/",
+      "volumeSources": [
+        {
+          "title": "Forty-second International Conference on Machine Learning, ICML 2025, Vancouver, BC, Canada, July 13-19, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/icml/icml2025.html",
+          "publisherUrls": [
+            "https://proceedings.mlr.press/v267/",
+            "https://openreview.net/group?id=ICML.cc/2025/Conference"
+          ]
+        },
+        {
+          "title": "Forty-second International Conference on Machine Learning, ICML 2025, Vancouver, BC, Canada, July 13-19, 2025 - Position Paper Track",
+          "dblpUrl": "https://dblp.org/db/conf/icml/icml2025p.html",
+          "publisherUrls": [
+            "https://openreview.net/group?id=ICML.cc/2025/Position_Paper_Track"
+          ]
+        }
+      ],
+      "abstractCount": 17,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "icml-2026",
+      "venueId": "icml",
+      "conference": "ICML 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://icml.cc/Conferences/2026/",
+      "dates": "6–12 Jul 2026",
+      "location": "Seoul, South Korea",
+      "paperCount": 22,
+      "sourcePaperCount": 6628,
+      "filteredOutCount": 6606,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Accept (poster)",
+          "count": 22
+        }
+      ],
+      "file": "icml-2026.json",
+      "sourceUrl": "https://icml.cc/virtual/2026/papers.html",
+      "volumeSources": [
+        {
+          "title": "ICML 2026 accepted papers and presentation decisions",
+          "publisherUrls": [
+            "https://icml.cc/static/virtual/data/icml-2026-orals-posters.json"
+          ]
+        }
+      ],
+      "abstractCount": 22,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ijcai-2024",
+      "venueId": "ijcai",
+      "conference": "IJCAI 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://ijcai24.org/",
+      "dates": "3–9 Aug 2024",
+      "location": "Jeju, South Korea",
+      "paperCount": 19,
+      "sourcePaperCount": 1048,
+      "filteredOutCount": 1029,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Survey Track",
+          "count": 1
+        },
+        {
+          "name": "Sister Conferences Best Papers",
+          "count": 1
+        },
+        {
+          "name": "Early Career",
+          "count": 1
+        },
+        {
+          "name": "Demo Track",
+          "count": 1
+        },
+        {
+          "name": "IJCAI",
+          "count": 15
+        }
+      ],
+      "file": "ijcai-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/ijcai/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence, IJCAI 2024, Jeju, South Korea, August 3-9, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/ijcai/ijcai2024.html",
+          "publisherUrls": [
+            "https://www.ijcai.org/proceedings/2024/"
+          ]
+        }
+      ],
+      "abstractCount": 19,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ijcai-2025",
+      "venueId": "ijcai",
+      "conference": "IJCAI 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://2025.ijcai.org/",
+      "dates": "16–22 Aug 2025",
+      "location": "Montréal, Canada",
+      "paperCount": 27,
+      "sourcePaperCount": 1280,
+      "filteredOutCount": 1253,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "AI4Tech: AI Enabling Technologies",
+          "count": 1
+        },
+        {
+          "name": "AI and Social Good",
+          "count": 1
+        },
+        {
+          "name": "IJCAI",
+          "count": 25
+        }
+      ],
+      "file": "ijcai-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/ijcai/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the Thirty-Fourth International Joint Conference on Artificial Intelligence, IJCAI 2025, Montreal, Canada, August 16-22, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/ijcai/ijcai2025.html",
+          "publisherUrls": [
+            "https://www.ijcai.org/proceedings/2025/"
+          ]
+        }
+      ],
+      "abstractCount": 27,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "ijcai-2026",
+      "venueId": "ijcai",
+      "conference": "IJCAI-ECAI 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://2026.ijcai.org/",
+      "dates": "15–21 Aug 2026",
+      "location": "Bremen, Germany",
+      "paperCount": 21,
+      "sourcePaperCount": 990,
+      "filteredOutCount": 969,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Main Track",
+          "count": 14
+        },
+        {
+          "name": "Special Track on AI and Health",
+          "count": 1
+        },
+        {
+          "name": "Special Track on AI and Social Good",
+          "count": 1
+        },
+        {
+          "name": "Sister Conferences Best Papers Track",
+          "count": 3
+        },
+        {
+          "name": "Survey Track",
+          "count": 1
+        },
+        {
+          "name": "Demonstrations Track",
+          "count": 1
+        }
+      ],
+      "file": "ijcai-2026.json",
+      "sourceUrl": "https://2026.ijcai.org/accepted-papers/",
+      "volumeSources": [
+        {
+          "title": "IJCAI-ECAI 2026 accepted papers by track",
+          "publisherUrls": [
+            "https://2026.ijcai.org/accepted-papers/"
+          ]
+        }
+      ],
+      "abstractCount": 2,
+      "missingAbstractCount": 19
+    },
+    {
+      "id": "kdd-2024",
+      "venueId": "kdd",
+      "conference": "KDD 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://kdd2024.kdd.org/",
+      "dates": "25–29 Aug 2024",
+      "location": "Barcelona, Spain",
+      "paperCount": 642,
+      "sourcePaperCount": 642,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Keynote Talks",
+          "count": 3
+        },
+        {
+          "name": "Research Track Papers",
+          "count": 411
+        },
+        {
+          "name": "Applied Data Invited Talks",
+          "count": 5
+        },
+        {
+          "name": "Applied Data Papers",
+          "count": 151
+        },
+        {
+          "name": "Hands-On Tutorials",
+          "count": 9
+        },
+        {
+          "name": "Lecture-Style Tutorials",
+          "count": 25
+        },
+        {
+          "name": "Special Day Abstracts",
+          "count": 8
+        },
+        {
+          "name": "Workshop Summaries",
+          "count": 30
+        }
+      ],
+      "file": "kdd-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/kdd/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining, KDD 2024, Barcelona, Spain, August 25-29, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/kdd/kdd2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3637528",
+            "https://www.wikidata.org/entity/Q131759402"
+          ]
+        }
+      ],
+      "abstractCount": 642,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "kdd-2025",
+      "venueId": "kdd",
+      "conference": "KDD 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://kdd2025.kdd.org/",
+      "dates": "3–7 Aug 2025",
+      "location": "Toronto, Canada",
+      "paperCount": 844,
+      "sourcePaperCount": 844,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Research Track",
+          "count": 552
+        },
+        {
+          "name": "Applied Data Science Track",
+          "count": 63
+        },
+        {
+          "name": "Keynote Talks",
+          "count": 3
+        },
+        {
+          "name": "Applied Data Track",
+          "count": 92
+        },
+        {
+          "name": "Dataset/Benchmark Track",
+          "count": 64
+        },
+        {
+          "name": "Applied Data Invited Talks",
+          "count": 4
+        },
+        {
+          "name": "Panel",
+          "count": 1
+        },
+        {
+          "name": "Lecture Style Tutorials",
+          "count": 23
+        },
+        {
+          "name": "Hands-on Tutorials",
+          "count": 8
+        },
+        {
+          "name": "Special Day Talks",
+          "count": 5
+        },
+        {
+          "name": "Workshop Summaries",
+          "count": 29
+        }
+      ],
+      "file": "kdd-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/kdd/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining, V.1, KDD 2025, Toronto, ON, Canada, August 3-7, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/kdd/kdd2025-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3690624",
+            "https://www.wikidata.org/entity/Q134464645"
+          ]
+        },
+        {
+          "title": "Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining, V.2, KDD 2025, Toronto ON, Canada, August 3-7, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/kdd/kdd2025-2.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3711896",
+            "https://www.wikidata.org/entity/Q135784213"
+          ]
+        }
+      ],
+      "abstractCount": 802,
+      "missingAbstractCount": 42
+    },
+    {
+      "id": "kdd-2026",
+      "venueId": "kdd",
+      "conference": "KDD 2026",
+      "year": 2026,
+      "status": "partial",
+      "website": "https://kdd2026.kdd.org/",
+      "dates": "9–13 Aug 2026",
+      "location": "Jeju, South Korea",
+      "paperCount": 256,
+      "sourcePaperCount": 256,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Research Track",
+          "count": 183
+        },
+        {
+          "name": "ADS Track",
+          "count": 44
+        },
+        {
+          "name": "Data & Benchmark Track",
+          "count": 29
+        }
+      ],
+      "file": "kdd-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/kdd/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 32nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.1, KDD 2026, Jeju Island, Korea, August 9-13, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/kdd/kdd2026-1.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3770854"
+          ]
+        }
+      ],
+      "note": "DBLP currently indexes Volume 1 only; the archive is marked partial until all volumes appear.",
+      "abstractCount": 166,
+      "missingAbstractCount": 90
+    },
+    {
+      "id": "neurips-2024",
+      "venueId": "neurips",
+      "conference": "NeurIPS 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://neurips.cc/Conferences/2024/",
+      "dates": "9–15 Dec 2024",
+      "location": "Vancouver, Canada",
+      "paperCount": 23,
+      "sourcePaperCount": 4494,
+      "filteredOutCount": 4471,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "NeurIPS",
+          "count": 23
+        }
+      ],
+      "file": "neurips-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/nips/",
+      "volumeSources": [
+        {
+          "title": "Advances in Neural Information Processing Systems 37: Annual Conference on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver, BC, Canada, December 10 - 15, 2024.",
+          "dblpUrl": "https://dblp.org/db/conf/nips/neurips2024.html",
+          "publisherUrls": [
+            "https://papers.nips.cc/paper_files/paper/2024"
+          ]
+        }
+      ],
+      "abstractCount": 23,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "neurips-2025",
+      "venueId": "neurips",
+      "conference": "NeurIPS 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://neurips.cc/Conferences/2025/",
+      "dates": "2–7 Dec 2025",
+      "location": "San Diego, USA",
+      "paperCount": 22,
+      "sourcePaperCount": 3317,
+      "filteredOutCount": 3295,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "NeurIPS",
+          "count": 22
+        }
+      ],
+      "file": "neurips-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/nips/",
+      "volumeSources": [
+        {
+          "title": "Advances in Neural Information Processing Systems 38: Annual Conference on Neural Information Processing Systems 2025, NeurIPS 2025, San Diego, CA, USA, December 2-7, 2025 / Mexico City, Mexico, November 30 - December 5, 2025.",
+          "dblpUrl": "https://dblp.org/db/conf/nips/neurips2025.html",
+          "publisherUrls": [
+            "https://papers.nips.cc/paper_files/paper/2025"
+          ]
+        }
+      ],
+      "abstractCount": 22,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "neurips-2026",
+      "venueId": "neurips",
+      "conference": "NeurIPS 2026",
+      "year": 2026,
+      "status": "pending",
+      "website": "https://neurips.cc/",
+      "dates": "6–12 Dec 2026",
+      "location": "Sydney, Australia",
+      "paperCount": 0,
+      "sourcePaperCount": 0,
+      "filteredOutCount": 0,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [],
+      "file": null,
+      "sourceUrl": "https://neurips.cc/",
+      "volumeSources": [],
+      "note": "A complete, category-preserving proceedings table of contents is not yet available in the structured source. No unverified paper list is shown.",
+      "expectedPublicationDate": "2026-12-06",
+      "abstractCount": 0,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "sigir-2024",
+      "venueId": "sigir",
+      "conference": "SIGIR 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://sigir-2024.github.io/",
+      "dates": "14–18 Jul 2024",
+      "location": "Washington, DC, USA",
+      "paperCount": 389,
+      "sourcePaperCount": 389,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Keynote Talks",
+          "count": 1
+        },
+        {
+          "name": "Session: LLMs and Search",
+          "count": 5
+        },
+        {
+          "name": "Session: Reasoning and Knowledge Graphs",
+          "count": 8
+        },
+        {
+          "name": "Session: Efficiency for Search",
+          "count": 5
+        },
+        {
+          "name": "Session: Multimedia 1",
+          "count": 5
+        },
+        {
+          "name": "Session: Evaluation",
+          "count": 7
+        },
+        {
+          "name": "Session: RecSys and LLMs",
+          "count": 7
+        },
+        {
+          "name": "Session: Fairness in RecSys",
+          "count": 6
+        },
+        {
+          "name": "Session: GenIR and The Future of Search with LLMs",
+          "count": 3
+        },
+        {
+          "name": "Session: Graphs and LLMs",
+          "count": 3
+        },
+        {
+          "name": "Session: Domain Specific RecSys",
+          "count": 5
+        },
+        {
+          "name": "Session: Multilingual Retrieval",
+          "count": 3
+        },
+        {
+          "name": "Session: NLP",
+          "count": 6
+        },
+        {
+          "name": "Session: Multimodal RecSys",
+          "count": 5
+        },
+        {
+          "name": "Session: Retrieval Augmented Generation",
+          "count": 5
+        },
+        {
+          "name": "Session: Conversational IR and Recommendation",
+          "count": 7
+        },
+        {
+          "name": "Session: Multimodal",
+          "count": 5
+        },
+        {
+          "name": "Session: Graphs and RecSys 1",
+          "count": 2
+        },
+        {
+          "name": "Session: Recommendation Systems",
+          "count": 7
+        },
+        {
+          "name": "Session: Users and Simulations",
+          "count": 4
+        },
+        {
+          "name": "Session: Explanability in Search and Recommendation",
+          "count": 3
+        },
+        {
+          "name": "Domain Specific",
+          "count": 11
+        },
+        {
+          "name": "CTR, Ads and Click Models",
+          "count": 6
+        },
+        {
+          "name": "Session: Graphs and RecSys 2",
+          "count": 6
+        },
+        {
+          "name": "Session: Dense Retrieval 1",
+          "count": 4
+        },
+        {
+          "name": "Session: Diffusion in RecSys",
+          "count": 4
+        },
+        {
+          "name": "Session: Neural IR",
+          "count": 5
+        },
+        {
+          "name": "Session: Point-of-Interest Recommendation",
+          "count": 5
+        },
+        {
+          "name": "Session: Fairness",
+          "count": 6
+        },
+        {
+          "name": "Session: Sequential Recommendation",
+          "count": 7
+        },
+        {
+          "name": "Session: Networks and Graphs",
+          "count": 7
+        },
+        {
+          "name": "Session: Privacy, Security and Federated Learning",
+          "count": 7
+        },
+        {
+          "name": "Session: Prompts, Instructions and LLMs in Recommender Systems",
+          "count": 4
+        },
+        {
+          "name": "Session: Dense Retrieval 2",
+          "count": 3
+        },
+        {
+          "name": "Session: Long-term and Session Recommendation",
+          "count": 5
+        },
+        {
+          "name": "Session: Evaluation with and for LLMs",
+          "count": 6
+        },
+        {
+          "name": "Session: Question Answering and Summarisation",
+          "count": 9
+        },
+        {
+          "name": "Session: Cross-Domain Recommendation",
+          "count": 7
+        },
+        {
+          "name": "Session: Multimedia 2",
+          "count": 5
+        },
+        {
+          "name": "Session: Legal",
+          "count": 6
+        },
+        {
+          "name": "Session: Short Research Papers",
+          "count": 87
+        },
+        {
+          "name": "Session: Demo Papers",
+          "count": 23
+        },
+        {
+          "name": "Session: SIRIP: LLMs 1",
+          "count": 5
+        },
+        {
+          "name": "Session: SIRIP: Domain-Specific 1",
+          "count": 4
+        },
+        {
+          "name": "Session: SIRIP: E-commerce",
+          "count": 6
+        },
+        {
+          "name": "Session: SIRIP: LLMs 2",
+          "count": 3
+        },
+        {
+          "name": "Session: SIRIP: Recsys and Social Media",
+          "count": 6
+        },
+        {
+          "name": "Session: SIRIP: Search Assistance",
+          "count": 4
+        },
+        {
+          "name": "Session: SIRIP: Domain-Specific 2",
+          "count": 3
+        },
+        {
+          "name": "Session: SIRIP: Panel",
+          "count": 1
+        },
+        {
+          "name": "Session: Tutorials",
+          "count": 10
+        },
+        {
+          "name": "Session: Workshops",
+          "count": 13
+        },
+        {
+          "name": "Session: Doctoral Consortium",
+          "count": 9
+        }
+      ],
+      "file": "sigir-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/sigir/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval, SIGIR 2024, Washington DC, USA, July 14-18, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/sigir/sigir2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3626772",
+            "https://www.wikidata.org/entity/Q130267939"
+          ]
+        }
+      ],
+      "abstractCount": 389,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "sigir-2025",
+      "venueId": "sigir",
+      "conference": "SIGIR 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://sigir2025.dei.unipd.it/",
+      "dates": "13–18 Jul 2025",
+      "location": "Padua, Italy",
+      "paperCount": 540,
+      "sourcePaperCount": 540,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Keynotes",
+          "count": 3
+        },
+        {
+          "name": "Conversational IR and Intelligent Agents",
+          "count": 7
+        },
+        {
+          "name": "Benchmarks and Datasets",
+          "count": 6
+        },
+        {
+          "name": "Evaluation",
+          "count": 6
+        },
+        {
+          "name": "Domain-specific Applications 1",
+          "count": 8
+        },
+        {
+          "name": "Domain-specific Applications 2",
+          "count": 7
+        },
+        {
+          "name": "FATE 1",
+          "count": 6
+        },
+        {
+          "name": "FATE 2",
+          "count": 8
+        },
+        {
+          "name": "FATE 3",
+          "count": 5
+        },
+        {
+          "name": "Humans and Interfaces",
+          "count": 7
+        },
+        {
+          "name": "Machine Learning 1",
+          "count": 8
+        },
+        {
+          "name": "Machine Learning 2",
+          "count": 5
+        },
+        {
+          "name": "Image Retrieval",
+          "count": 8
+        },
+        {
+          "name": "Video Retrieval",
+          "count": 8
+        },
+        {
+          "name": "Multi-modal Retrieval",
+          "count": 8
+        },
+        {
+          "name": "Biomedical and Health",
+          "count": 5
+        },
+        {
+          "name": "Question Answering",
+          "count": 5
+        },
+        {
+          "name": "Knowledge and Knowledge Graphs",
+          "count": 8
+        },
+        {
+          "name": "Natural Language Processing 1",
+          "count": 8
+        },
+        {
+          "name": "Natural Language Processing 2",
+          "count": 6
+        },
+        {
+          "name": "Natural Language Processing 3",
+          "count": 6
+        },
+        {
+          "name": "RecSys: Sequential 1",
+          "count": 8
+        },
+        {
+          "name": "RecSys: Sequential 2",
+          "count": 8
+        },
+        {
+          "name": "RecSys: Sequential 3",
+          "count": 5
+        },
+        {
+          "name": "RecSys: FATE",
+          "count": 6
+        },
+        {
+          "name": "RecSys: Domain-specific",
+          "count": 8
+        },
+        {
+          "name": "RecSys: Multimodal",
+          "count": 7
+        },
+        {
+          "name": "RecSys: LLMs",
+          "count": 6
+        },
+        {
+          "name": "RecSys: Collaborative Filtering",
+          "count": 6
+        },
+        {
+          "name": "RecSys: Graphs",
+          "count": 7
+        },
+        {
+          "name": "RecSys: Scalability, Embeddings and Training",
+          "count": 7
+        },
+        {
+          "name": "RecSys: Ranking and Adaptivity",
+          "count": 8
+        },
+        {
+          "name": "Reranking",
+          "count": 8
+        },
+        {
+          "name": "Search and Ranking 1",
+          "count": 8
+        },
+        {
+          "name": "Search and Ranking 2",
+          "count": 6
+        },
+        {
+          "name": "Efficiency",
+          "count": 6
+        },
+        {
+          "name": "Short Research Papers",
+          "count": 106
+        },
+        {
+          "name": "Low Resource Environment Papers",
+          "count": 10
+        },
+        {
+          "name": "Reproducibility Papers",
+          "count": 27
+        },
+        {
+          "name": "Resource Papers",
+          "count": 43
+        },
+        {
+          "name": "Perspective Papers",
+          "count": 10
+        },
+        {
+          "name": "Demo Papers",
+          "count": 26
+        },
+        {
+          "name": "Tutorials",
+          "count": 14
+        },
+        {
+          "name": "Workshop Summaries",
+          "count": 16
+        },
+        {
+          "name": "Doctoral Consortium",
+          "count": 11
+        },
+        {
+          "name": "SIRIP",
+          "count": 35
+        }
+      ],
+      "file": "sigir-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/sigir/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval, SIGIR 2025, Padua, Italy, July 13-18, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/sigir/sigir2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3726302",
+            "https://www.wikidata.org/entity/Q135713760"
+          ]
+        }
+      ],
+      "abstractCount": 534,
+      "missingAbstractCount": 6
+    },
+    {
+      "id": "sigir-2026",
+      "venueId": "sigir",
+      "conference": "SIGIR 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://sigir2026.org/en-AU",
+      "dates": "20–24 Jul 2026",
+      "location": "Melbourne, Australia",
+      "paperCount": 667,
+      "sourcePaperCount": 667,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 233
+        },
+        {
+          "name": "Perspective Papers",
+          "count": 12
+        },
+        {
+          "name": "Reproducibility Papers",
+          "count": 28
+        },
+        {
+          "name": "Resource Papers",
+          "count": 61
+        },
+        {
+          "name": "Short Papers",
+          "count": 151
+        },
+        {
+          "name": "Demo Papers",
+          "count": 24
+        },
+        {
+          "name": "Industry Papers",
+          "count": 131
+        },
+        {
+          "name": "Low Resource Environment Papers",
+          "count": 15
+        },
+        {
+          "name": "Doctoral Colloquium",
+          "count": 12
+        }
+      ],
+      "file": "sigir-2026.json",
+      "sourceUrl": "https://sigir2026.org/en-AU/pages/program/accepted-papers",
+      "volumeSources": [
+        {
+          "title": "SIGIR 2026 accepted papers",
+          "publisherUrls": [
+            "https://sigir2026.org/en-AU/pages/program/accepted-papers"
+          ]
+        }
+      ],
+      "note": "The official page legend reports 234 full papers, but its itemized list contains 233 unique full-paper entries. The archive reflects the itemized official list and records the discrepancy explicitly.",
+      "abstractCount": 405,
+      "missingAbstractCount": 262
+    },
+    {
+      "id": "umap-2024",
+      "venueId": "umap",
+      "conference": "UMAP 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www.um.org/umap2024/",
+      "dates": "1–4 Jul 2024",
+      "location": "Cagliari, Italy",
+      "paperCount": 143,
+      "sourcePaperCount": 143,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Personalization for Persuasive and Behavior Change Systems",
+          "count": 2
+        },
+        {
+          "name": "Fairness, Transparency, Accountability, and Privacy",
+          "count": 8
+        },
+        {
+          "name": "Personalizing Learning Experiences through User Modeling",
+          "count": 4
+        },
+        {
+          "name": "Personalized Recommender Systems",
+          "count": 10
+        },
+        {
+          "name": "Intelligent User Interfaces",
+          "count": 6
+        },
+        {
+          "name": "Virtual Assistants, Conversational Interactions, and Personalized Human-Robot Interaction",
+          "count": 6
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Tutorials",
+          "count": 5
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Doctoral Consortium",
+          "count": 9
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Late-Breaking Results and Demos",
+          "count": 24
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — cAESAR 2024: 5thWorkshop on Adapted intEraction with SociAl Robots",
+          "count": 6
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — CRUM 2024: 2ndWorkshop on Context Representation in User Modelling",
+          "count": 3
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — ExUM 2024: 6thWorkshop on Explainable User Models and Personalised Systems",
+          "count": 9
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — GMAP 2024: 3rdWorkshop on Group Modeling, Adaptation and Personalization",
+          "count": 6
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — HAAPIE 2024: 9th International Workshop on Human Aspects in Adaptive and Personalized Interactive Environments",
+          "count": 7
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — HUMAD 2024: International Workshop on Human-Centered Modeling and Adaptation for Digital Transformation",
+          "count": 11
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — PATCH 2024: 15th International Workshop on Personalized Access to Cultural Heritage",
+          "count": 7
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — UCAI 2024: Workshop on User-Centered Artificial Intelligence",
+          "count": 5
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — UKDE 2024: 1st InternationalWorkshop on User-Centered Practices of Knowledge Discovery in Educational Data",
+          "count": 9
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — WeBIUM 2024: 1stWorkshop onWearable Devices and Brain-Computer Interfaces for User Modelling",
+          "count": 6
+        }
+      ],
+      "file": "umap-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/um/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 32nd ACM Conference on User Modeling, Adaptation and Personalization, UMAP 2024, Cagliari, Italy, July 1-4, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/um/umap2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3627043",
+            "https://www.wikidata.org/entity/Q135243653"
+          ]
+        },
+        {
+          "title": "Adjunct Proceedings of the 32nd ACM Conference on User Modeling, Adaptation and Personalization, UMAP Adjunct 2024, Cagliari, Italy, July 1-4, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/um/umap2024a.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3631700",
+            "https://www.wikidata.org/entity/Q135243652"
+          ]
+        }
+      ],
+      "abstractCount": 141,
+      "missingAbstractCount": 2
+    },
+    {
+      "id": "umap-2025",
+      "venueId": "umap",
+      "conference": "UMAP 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://www.um.org/umap2025/",
+      "dates": "16–19 Jun 2025",
+      "location": "New York City, USA",
+      "paperCount": 148,
+      "sourcePaperCount": 148,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 26
+        },
+        {
+          "name": "Short Papers",
+          "count": 17
+        },
+        {
+          "name": "Industry Papers",
+          "count": 5
+        },
+        {
+          "name": "Doctoral Consortium Papers",
+          "count": 11
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Tutorials",
+          "count": 5
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Late-Breaking Results and Demo Papers",
+          "count": 22
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — 6th Workshop on Adapted intEraction with SociAl Robots (cAESAR)",
+          "count": 7
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — 7th Workshop on Explainable User Models and Personalised Systems (ExUM 2025)",
+          "count": 11
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — 7th UMAP Workshop on Fairness in User Modeling, Adaptation, and Personalization (FairUMAP 2025)",
+          "count": 9
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — 4th Workshop on Group Modeling, Adaptation and Personalization (GMAP 2025)",
+          "count": 5
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — Hybrid AI for Human-Centric Personalization (HyPer)",
+          "count": 9
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — The 1st Workshop on Sustainable and Trustworthy Large Language Models for Personalization (LLM4Good)",
+          "count": 7
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — The 16th International Workshop on Personalized Access to Cultural Heritage (PATCH 2025)",
+          "count": 7
+        },
+        {
+          "name": "UMAP (Adjunct Publication) — 2nd Workshop on Wearable Devices and Brain-Computer Interfaces for User Modelling (WeBIUM 2025)",
+          "count": 7
+        }
+      ],
+      "file": "umap-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/um/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 33rd ACM Conference on User Modeling, Adaptation and Personalization, UMAP 2025, New York City, NY, USA, June 16-19, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/um/umap2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3699682",
+            "https://www.wikidata.org/entity/Q136325453"
+          ]
+        },
+        {
+          "title": "Adjunct Proceedings of the 33rd ACM Conference on User Modeling, Adaptation and Personalization, UMAP Adjunct 2025, New York City, NY, USA, June 16-19, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/um/umap2025a.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3708319"
+          ]
+        }
+      ],
+      "abstractCount": 147,
+      "missingAbstractCount": 1
+    },
+    {
+      "id": "umap-2026",
+      "venueId": "umap",
+      "conference": "UMAP 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://www.um.org/umap2026/",
+      "dates": "8–11 Jun 2026",
+      "location": "Gothenburg, Sweden",
+      "paperCount": 124,
+      "sourcePaperCount": 124,
+      "filteredOutCount": 0,
+      "selectionPolicy": "complete-profile-venue",
+      "categories": [
+        {
+          "name": "Full Papers",
+          "count": 35
+        },
+        {
+          "name": "Short Papers",
+          "count": 22
+        },
+        {
+          "name": "Late-Breaking Results and Demo Papers",
+          "count": 31
+        },
+        {
+          "name": "Industry Papers",
+          "count": 8
+        },
+        {
+          "name": "Doctoral Consortium Papers",
+          "count": 14
+        },
+        {
+          "name": "Tutorials",
+          "count": 4
+        },
+        {
+          "name": "Workshops",
+          "count": 10
+        }
+      ],
+      "file": "umap-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/um/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 34th ACM Conference on User Modeling, Adaptation and Personalization, UMAP 2026, Gothenburg, Sweden, June 8-11, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/um/umap2026.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3774935"
+          ]
+        }
+      ],
+      "abstractCount": 81,
+      "missingAbstractCount": 43
+    },
+    {
+      "id": "wsdm-2024",
+      "venueId": "wsdm",
+      "conference": "WSDM 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www.wsdm-conference.org/2024/",
+      "dates": "4–8 Mar 2024",
+      "location": "Mérida, Mexico",
+      "paperCount": 52,
+      "sourcePaperCount": 175,
+      "filteredOutCount": 123,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Full Research Papers",
+          "count": 43
+        },
+        {
+          "name": "Short Demo Papers",
+          "count": 3
+        },
+        {
+          "name": "Doctoral Consortiums",
+          "count": 2
+        },
+        {
+          "name": "Industry Day Talk Abstracts",
+          "count": 4
+        }
+      ],
+      "file": "wsdm-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/wsdm/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the 17th ACM International Conference on Web Search and Data Mining, WSDM 2024, Merida, Mexico, March 4-8, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/wsdm/wsdm2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3616855"
+          ]
+        }
+      ],
+      "abstractCount": 52,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "wsdm-2025",
+      "venueId": "wsdm",
+      "conference": "WSDM 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://www.wsdm-conference.org/2025/",
+      "dates": "10–14 Mar 2025",
+      "location": "Hannover, Germany",
+      "paperCount": 43,
+      "sourcePaperCount": 150,
+      "filteredOutCount": 107,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Poster Session 1",
+          "count": 2
+        },
+        {
+          "name": "Plenary Session 2: Recommendation Systems",
+          "count": 5
+        },
+        {
+          "name": "Poster Session 2",
+          "count": 1
+        },
+        {
+          "name": "Plenary Session 3: Large Language Models",
+          "count": 1
+        },
+        {
+          "name": "Poster Session 3",
+          "count": 2
+        },
+        {
+          "name": "Plenary Session 4: Sequential and Temporal Data Modeling",
+          "count": 2
+        },
+        {
+          "name": "Poster Session 4",
+          "count": 2
+        },
+        {
+          "name": "Poster Session 5",
+          "count": 3
+        },
+        {
+          "name": "Poster Session 6",
+          "count": 2
+        },
+        {
+          "name": "Plenary Session 7: Bias in Recommendations",
+          "count": 4
+        },
+        {
+          "name": "Poster Session 7",
+          "count": 3
+        },
+        {
+          "name": "Plenary Session 8: Multimodal Data and Time Series Analysis",
+          "count": 2
+        },
+        {
+          "name": "Poster Session 8",
+          "count": 5
+        },
+        {
+          "name": "Plenary Session 9: Emerging Topics in Data Mining",
+          "count": 1
+        },
+        {
+          "name": "Poster Session 9",
+          "count": 1
+        },
+        {
+          "name": "Tutorials",
+          "count": 3
+        },
+        {
+          "name": "Demonstrations",
+          "count": 1
+        },
+        {
+          "name": "Industry Day Talks",
+          "count": 1
+        },
+        {
+          "name": "WSDM Day Talks",
+          "count": 1
+        },
+        {
+          "name": "Workshops",
+          "count": 1
+        }
+      ],
+      "file": "wsdm-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/wsdm/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the Eighteenth ACM International Conference on Web Search and Data Mining, WSDM 2025, Hannover, Germany, March 10-14, 2025",
+          "dblpUrl": "https://dblp.org/db/conf/wsdm/wsdm2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3701551"
+          ]
+        }
+      ],
+      "abstractCount": 43,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "wsdm-2026",
+      "venueId": "wsdm",
+      "conference": "WSDM 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://www.wsdm-conference.org/2026/",
+      "dates": "22–26 Feb 2026",
+      "location": "Boise, Idaho, USA",
+      "paperCount": 49,
+      "sourcePaperCount": 216,
+      "filteredOutCount": 167,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Research Full Papers",
+          "count": 29
+        },
+        {
+          "name": "Research Short Papers",
+          "count": 9
+        },
+        {
+          "name": "Doctoral Symposium",
+          "count": 1
+        },
+        {
+          "name": "Demonstrations",
+          "count": 2
+        },
+        {
+          "name": "Industry Talks",
+          "count": 2
+        },
+        {
+          "name": "Workshop Summaries",
+          "count": 1
+        },
+        {
+          "name": "WSDM Companion — WSDM Companion",
+          "count": 5
+        }
+      ],
+      "file": "wsdm-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/wsdm/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the Nineteenth ACM International Conference on Web Search and Data Mining, WSDM 2026, Boise, ID, USA, February 22-26, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/wsdm/wsdm2026.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3773966"
+          ]
+        },
+        {
+          "title": "Proceedings of the Nineteenth ACM International Conference on Web Search and Data Mining, WSDM Companion 2026, Boise Centre, Boise, ID, USA, February 22-26, 2026",
+          "dblpUrl": "https://dblp.org/db/conf/wsdm/wsdm2026c.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3779211"
+          ]
+        }
+      ],
+      "abstractCount": 47,
+      "missingAbstractCount": 2
+    },
+    {
+      "id": "www-2024",
+      "venueId": "www",
+      "conference": "WWW 2024",
+      "year": 2024,
+      "status": "published",
+      "website": "https://www2024.thewebconf.org/",
+      "dates": "13–17 May 2024",
+      "location": "Singapore",
+      "paperCount": 147,
+      "sourcePaperCount": 778,
+      "filteredOutCount": 631,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Research Track: Economics, Online Markets, and Human Computation",
+          "count": 1
+        },
+        {
+          "name": "Research Track: Graph Algorithms and Learning for the Web",
+          "count": 2
+        },
+        {
+          "name": "Research Track: Responsible Web",
+          "count": 3
+        },
+        {
+          "name": "Research Track: Search",
+          "count": 1
+        },
+        {
+          "name": "Research Track: Social Networks, Social Media, and Society",
+          "count": 1
+        },
+        {
+          "name": "Research Track: User Modeling and Recommendation",
+          "count": 76
+        },
+        {
+          "name": "Special Track: Web4Good",
+          "count": 4
+        },
+        {
+          "name": "WWW (Companion Volume) — Industry",
+          "count": 19
+        },
+        {
+          "name": "WWW (Companion Volume) — Short Papers",
+          "count": 22
+        },
+        {
+          "name": "WWW (Companion Volume) — Demo",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — Resource",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — PhD Symposium",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — Tutorials",
+          "count": 4
+        },
+        {
+          "name": "WWW (Companion Volume) — 14th Temporal Web Analytics Workshop (TempWeb)",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — Beyond Facts: 4th International Workshop on Computational Methods for Online Discourse Analysis",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — The 1st Workshop on Decentralised Search and Recommendation",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — The 2nd Workshop on Recommendation with Generative Models",
+          "count": 4
+        }
+      ],
+      "file": "www-2024.json",
+      "sourceUrl": "https://dblp.org/db/conf/www/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the ACM on Web Conference 2024, WWW 2024, Singapore, May 13-17, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2024.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3589334",
+            "https://www.wikidata.org/entity/Q126373617"
+          ]
+        },
+        {
+          "title": "Companion Proceedings of the ACM on Web Conference 2024, WWW 2024, Singapore, Singapore, May 13-17, 2024",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2024c.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3589335",
+            "https://www.wikidata.org/entity/Q126373664"
+          ]
+        }
+      ],
+      "abstractCount": 147,
+      "missingAbstractCount": 0
+    },
+    {
+      "id": "www-2025",
+      "venueId": "www",
+      "conference": "WWW 2025",
+      "year": 2025,
+      "status": "published",
+      "website": "https://www2025.thewebconf.org/",
+      "dates": "28 Apr–2 May 2025",
+      "location": "Sydney, Australia",
+      "paperCount": 143,
+      "sourcePaperCount": 978,
+      "filteredOutCount": 835,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Session 4: Large Language Models in Recommendation",
+          "count": 5
+        },
+        {
+          "name": "Session 5: Visual and Multimodal Systems",
+          "count": 2
+        },
+        {
+          "name": "Session 6: Graph and Social Network Based Approaches",
+          "count": 5
+        },
+        {
+          "name": "Session 7: Reinforcement Learning and Sequential Methods",
+          "count": 4
+        },
+        {
+          "name": "Session 8: Optimization and Learning Methods",
+          "count": 4
+        },
+        {
+          "name": "Session 13: Web Acceleration and Optimization",
+          "count": 1
+        },
+        {
+          "name": "Session 24: Auctions and Games",
+          "count": 1
+        },
+        {
+          "name": "Session 26: Ecosystems",
+          "count": 1
+        },
+        {
+          "name": "Session 32: People, Platforms, and Personalization",
+          "count": 1
+        },
+        {
+          "name": "Poster Session 1",
+          "count": 6
+        },
+        {
+          "name": "Poster Session 2",
+          "count": 2
+        },
+        {
+          "name": "Poster Session 3",
+          "count": 7
+        },
+        {
+          "name": "Poster Session 4",
+          "count": 3
+        },
+        {
+          "name": "Poster Session 5",
+          "count": 2
+        },
+        {
+          "name": "Poster Session 6",
+          "count": 7
+        },
+        {
+          "name": "Poster Session 7",
+          "count": 3
+        },
+        {
+          "name": "Poster Session 8",
+          "count": 4
+        },
+        {
+          "name": "Poster Session 9",
+          "count": 4
+        },
+        {
+          "name": "Web4Good Track Papers",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — Tutorials",
+          "count": 6
+        },
+        {
+          "name": "WWW (Companion Volume) — Industry Track Papers",
+          "count": 19
+        },
+        {
+          "name": "WWW (Companion Volume) — Resource Track Papers",
+          "count": 2
+        },
+        {
+          "name": "WWW (Companion Volume) — Short Research Papers",
+          "count": 26
+        },
+        {
+          "name": "WWW (Companion Volume) — Agent4IR '25",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — NEGEL '25",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — HCRS@TheWebConf '25",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — EReL@MIR '25",
+          "count": 2
+        },
+        {
+          "name": "WWW (Companion Volume) — AI4TS '25",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — LLM-UM '25",
+          "count": 2
+        },
+        {
+          "name": "WWW (Companion Volume) — Personal Intelligence '25",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — RELW '25",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — LLM4ECommerce '25",
+          "count": 3
+        },
+        {
+          "name": "WWW (Companion Volume) — Demo Papers",
+          "count": 2
+        },
+        {
+          "name": "WWW (Companion Volume) — AgentSociety Challenge Track",
+          "count": 4
+        },
+        {
+          "name": "WWW (Companion Volume) — Emerging World Track",
+          "count": 2
+        }
+      ],
+      "file": "www-2025.json",
+      "sourceUrl": "https://dblp.org/db/conf/www/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the ACM on Web Conference 2025, WWW 2025, Sydney, NSW, Australia, 28 April 2025- 2 May 2025",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2025.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3696410",
+            "https://www.wikidata.org/entity/Q134283136"
+          ]
+        },
+        {
+          "title": "Companion Proceedings of the ACM on Web Conference 2025, WWW 2025, Sydney, NSW, Australia, 28 April 2025 - 2 May 2025",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2025c.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3701716",
+            "https://www.wikidata.org/entity/Q134587490"
+          ]
+        }
+      ],
+      "abstractCount": 141,
+      "missingAbstractCount": 2
+    },
+    {
+      "id": "www-2026",
+      "venueId": "www",
+      "conference": "WWW 2026",
+      "year": 2026,
+      "status": "published",
+      "website": "https://www2026.thewebconf.org/",
+      "dates": "29 Jun–3 Jul 2026",
+      "location": "Dubai, UAE",
+      "paperCount": 176,
+      "sourcePaperCount": 1191,
+      "filteredOutCount": 1015,
+      "selectionPolicy": "recsys-related-only",
+      "categories": [
+        {
+          "name": "Track 2: Graph Algorithms and Modeling for the Web",
+          "count": 2
+        },
+        {
+          "name": "Track 6: Semantics and Knowledge",
+          "count": 2
+        },
+        {
+          "name": "Track 7: Social Networks and Social Media",
+          "count": 1
+        },
+        {
+          "name": "Track 9: User Modeling, Personalization and Recommendation",
+          "count": 110
+        },
+        {
+          "name": "Track 10: Web Mining and Content Analysis",
+          "count": 1
+        },
+        {
+          "name": "Industry Track",
+          "count": 16
+        },
+        {
+          "name": "Short Papers",
+          "count": 14
+        },
+        {
+          "name": "Special Track: Web4Good",
+          "count": 6
+        },
+        {
+          "name": "WWW (Companion Volume) — The 2nd Workshop on Human-Centered Recommender Systems (HCRS)",
+          "count": 10
+        },
+        {
+          "name": "WWW (Companion Volume) — LLM & Agents for Recommendation Systems (LARS)",
+          "count": 12
+        },
+        {
+          "name": "WWW (Companion Volume) — Trustworthy Foundation Models for Web Intelligence: Causal Perspectives and Challenges (TrustFM)",
+          "count": 1
+        },
+        {
+          "name": "WWW (Companion Volume) — 12th International Smart City Workshop -- Data-Driven Smart Cities (WebAndTheCity)",
+          "count": 1
+        }
+      ],
+      "file": "www-2026.json",
+      "sourceUrl": "https://dblp.org/db/conf/www/",
+      "volumeSources": [
+        {
+          "title": "Proceedings of the ACM Web Conference 2026, WWW 2026, Dubai, United Arab Emirates, originally scheduled for April 13-17, 2026, rescheduled for June 29 - July 3, 2026.",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2026.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3774904"
+          ]
+        },
+        {
+          "title": "Companion Proceedings of the ACM Web Conference 2026, WWW Companion 2026, Dubai, United Arab Emirates, 29 June 2026 - 3 July 2026",
+          "dblpUrl": "https://dblp.org/db/conf/www/www2026c.html",
+          "publisherUrls": [
+            "https://doi.org/10.1145/3774905"
+          ]
+        }
+      ],
+      "note": "The conference was rescheduled from April to 29 June–3 July 2026.",
+      "abstractCount": 155,
+      "missingAbstractCount": 21
+    }
+  ],
+  "paperCount": 7507,
+  "sourcePaperCount": 54814,
+  "abstractCount": 6987,
+  "missingAbstractCount": 520
+}
