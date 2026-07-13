@@ -112,6 +112,9 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 .badge.summary-missing { color: var(--muted); background: var(--pill-bg); border-color: var(--border); font-weight: 700; }
 .badge.new-paper { color: #0f5132; background: #d1e7dd; border-color: #a3cfbb; font-weight: 800; }
 :root[data-theme="dark"] .badge.new-paper { color: #86efac; background: #12311f; border-color: #166534; }
+.site-tabs { display: flex; width: fit-content; max-width: 100%; margin: 0 0 1.35rem; padding: .22rem; gap: .2rem; overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--soft); }
+.site-tabs a { padding: .48rem .8rem; border-radius: 7px; color: var(--label); font-weight: 750; text-decoration: none; white-space: nowrap; }
+.site-tabs a[aria-current="page"] { color: var(--link-strong); background: var(--bg); box-shadow: 0 1px 4px var(--shadow-strong); }
 </style>
 </head>
 <body>
@@ -119,6 +122,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <button aria-label="Прокрутить страницу наверх" class="scroll-top-gutter" type="button"></button>
 <button aria-label="Прокрутить к концу текущего раздела" class="scroll-section-end-gutter" type="button"></button>
 <main>
+<nav aria-label="Разделы каталога" class="site-tabs"><a aria-current="page" href="papers.html">Тематический каталог</a><a href="../conferences.html">Архив конференций</a></nav>
 <h1>Объединенный каталог статей по RecSys, Semantic IDs и generative retrieval</h1>
 <p>Обновлено 2026-07-12.</p>
 <div aria-label="Управление каталогом статей" class="catalog-controls">

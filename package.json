@@ -9,8 +9,12 @@
   "scripts": {
     "convert:summaries": "python3 scripts/convert_html_summaries_to_md.py",
     "normalize:math": "python3 scripts/normalize_markdown_math.py",
+    "update:recsys": "python3 scripts/update_recsys_conference_catalog.py",
+    "update:abstracts": "python3 scripts/update_conference_abstracts.py",
+    "update:conferences": "npm run update:recsys && python3 scripts/update_conference_archive.py && npm run update:abstracts",
     "audit:summaries": "python3 scripts/audit_markdown_summaries.py",
     "audit:math": "python3 scripts/audit_rendered_math.py",
+    "audit:conferences": "python3 scripts/validate_conference_catalog.py",
     "prepare:public": "python3 scripts/prepare_public_site.py",
     "predev": "npm run prepare:public",
     "dev": "astro dev",
@@ -20,7 +24,7 @@
     "check:catalog": "python3 scripts/validate_catalog_metadata.py summaries/papers.html",
     "check:links": "npm run build && python3 scripts/validate_summary_links.py dist/summaries",
     "check:math": "npm run build && npm run audit:math",
-    "check": "npm run check:catalog && npm run check:links && npm run audit:math"
+    "check": "npm run check:catalog && npm run check:links && npm run audit:math && npm run audit:conferences"
   },
   "dependencies": {
     "astro": "^6.4.8",
