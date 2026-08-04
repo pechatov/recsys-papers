@@ -56,6 +56,9 @@ RETAINED_SLUGS = {
     "plum_adapting_pre_trained_language_models_for_industrial_summary",
     "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
     "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
+    "beyond_item_order_temporal_gap_tokenization_for_generative_recommendation_with_semantic_ids_summary",
+    "multi_decoder_onerec_controllable_generative_retrieval_for_multi_objective_industrial_recommendation_summary",
+    "hypothesis_driven_shelf_generation_for_personalised_recommendation_summary",
 }
 
 
@@ -296,6 +299,18 @@ def retained_catalog_snippet(meta: SummaryMeta) -> list[str]:
             "ChronoID добавляет temporal signal прямо в SID learning, а не только в sequence order или sampling.",
             "Главный устойчивый результат: relative time intervals лучше absolute timestamps, а Parallel Quantization + Relative Time стабильно strongest в main table.",
         ],
+        "beyond_item_order_temporal_gap_tokenization_for_generative_recommendation_with_semantic_ids_summary": [
+            "ChronoSID устраняет temporal blindness генератора, interleave'я static SID tuples с дискретными time-gap tokens.",
+            "Главный результат: gap tokens дают большую часть gain над ReSID, особенно в long-gap scenarios; auxiliary temporal loss добавляет небольшой complementary effect.",
+        ],
+        "multi_decoder_onerec_controllable_generative_retrieval_for_multi_objective_industrial_recommendation_summary": [
+            "Multi-Decoder OneRec сочетает shared SID backbone с gradient-isolated LoRA experts, explicit route quotas и cross-route constrained beam search.",
+            "Метод улучшает OneRec на 1.69-5.62% по Recall@512 и даёт +0.37% usage time/device online, но Kwai26 public release пока содержит только scaffold.",
+        ],
+        "hypothesis_driven_shelf_generation_for_personalised_recommendation_summary": [
+            "Spotify генерирует natural-language shelf hypotheses, отдельно fulfil'ит их через constrained Semantic-ID retrieval и согласует title с финальным item set.",
+            "Подход силён для album shelves, но online results неоднородны по content type и пока не доказывают общий lift Spotify Home.",
+        ],
     }
     return snippets.get(meta.slug, [f"Подробное markdown-саммари для статьи: {meta.title}."])
 
@@ -457,6 +472,9 @@ def main() -> int:
                 "plum_adapting_pre_trained_language_models_for_industrial_summary",
                 "tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary",
                 "chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary",
+                "beyond_item_order_temporal_gap_tokenization_for_generative_recommendation_with_semantic_ids_summary",
+                "multi_decoder_onerec_controllable_generative_retrieval_for_multi_objective_industrial_recommendation_summary",
+                "hypothesis_driven_shelf_generation_for_personalised_recommendation_summary",
             }:
                 set_takeaway(soup, entry.details, retained_catalog_snippet(retained_meta))
             continue

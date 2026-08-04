@@ -4,11 +4,11 @@ Generated from local Markdown content. This is a structural audit, not a full pa
 
 ## Counts
 
-- Markdown summaries: 33
-- Summaries with at least one image: 32
+- Markdown summaries: 39
+- Summaries with at least one image: 38
 - Summaries without images: 1
 - Summaries under 1200 words: 20
-- Summaries missing one of method/experiments/limitations headings: 0
+- Summaries missing one of method/experiments/limitations headings: 1
 - Catalog missing-summary placeholders without resolved abstract: 0
 - Summaries with mixed image asset prefixes: 0
 
@@ -38,12 +38,18 @@ These summaries should be checked first with `cs-paper-reading`: short files, fi
 | 1065 | 1 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/unleash_the_potential_of_long_semantic_ids_for_generative_recommendation_summary.md` |
 | 1084 | 2 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/closing_performance_gap_collaborative_tokenization_efficient_modeling_summary.md` |
 | 1089 | 1 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/how_reliable_are_semantic_id_tokenizer_comparisons_in_generative_recommendation_summary.md` |
+| 1552 | 4 | method | `src/content/paper_summaries/semantic_ids_tokenization_indexing/tokenminds_pretrained_user_tokens_and_embeddings_for_user_understanding_in_large_recommender_systems_summary.md` |
 | 1245 | 2 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/generating_long_semantic_ids_in_parallel_for_recommendation_summary.md` |
 | 1266 | 2 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/unleashing_native_recommendation_structured_term_identifiers_summary.md` |
 | 1323 | 3 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/order_agnostic_identifier_for_large_language_model_based_summary.md` |
 | 1368 | 4 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/mmq_v2_adaptive_behavior_mining_summary.md` |
 | 1450 | 3 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/enhancing_embedding_representation_stability_semantic_id_summary.md` |
+| 1663 | 3 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/plum_adapting_pre_trained_language_models_for_industrial_summary.md` |
+| 1677 | 2 | - | `src/content/paper_summaries/generative_retrieval/hypothesis_driven_shelf_generation_for_personalised_recommendation_summary.md` |
+| 1699 | 3 | - | `src/content/paper_summaries/generative_retrieval/multi_decoder_onerec_controllable_generative_retrieval_for_multi_objective_industrial_recommendation_summary.md` |
 | 1701 | 7 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/merge_next_generation_item_indexing_summary.md` |
+| 1725 | 4 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/chronoid_infusing_explicit_temporal_signals_into_semantic_ids_for_generative_recommendation_summary.md` |
+| 1743 | 3 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/beyond_item_order_temporal_gap_tokenization_for_generative_recommendation_with_semantic_ids_summary.md` |
 | 2326 | 2 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/letter_learnable_item_tokenization_summary.md` |
 | 2491 | 1 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/variable_length_semantic_ids_summary.md` |
 | 2766 | 3 | - | `src/content/paper_summaries/semantic_ids_tokenization_indexing/actions_speak_louder_than_words_trillion_parameter_sequential_summary.md` |
