@@ -72,6 +72,7 @@ SIGIR_2026_CONTAINER = (
 RECSYS_ACCEPTED_URLS = {
     2024: "https://recsys.acm.org/recsys24/accepted-contributions/",
     2025: "https://recsys.acm.org/recsys25/accepted-contributions/",
+    2026: "https://recsys.acm.org/recsys26/contributions/",
 }
 OFFICIAL_TOC_URLS = {
     ("cikm", 2024): ["https://www.sigweb.hosting.acm.org/toc/cikm24.html"],

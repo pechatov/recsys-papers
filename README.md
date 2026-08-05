@@ -60,7 +60,7 @@ The archive is published at `conferences.html` and covers 17 venues from the
 recsys.info tracker for 2024–2026. The small manifest lives in
 `src/data/conference-archive.json`; paper metadata is split by venue/year under
 `public/data/conference-papers/` and loaded on demand. This keeps search and
-pagination responsive: 7,507 selected papers retain provenance for 54,814
+pagination responsive: 7,705 selected papers retain provenance for 55,012
 source records.
 
 RecSys, CIKM, KDD, SIGIR, ECIR, and UMAP are treated as profile venues and kept

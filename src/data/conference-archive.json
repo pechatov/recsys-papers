@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-07-13",
+  "lastVerified": "2026-08-05",
   "trackerUrl": "https://recsys.info/",
   "metadataSourceUrl": "https://dblp.org/",
   "scope": "Complete accepted lists are retained for RecSys, CIKM, KDD, SIGIR, ECIR, and UMAP. Other venues include only papers with explicit recommender-systems evidence in the title or track name. Standalone workshop proceedings are excluded.",
@@ -253,21 +253,48 @@
       "venueId": "recsys",
       "conference": "RecSys 2026",
       "year": 2026,
-      "status": "pending",
+      "status": "partial",
       "website": "https://recsys.acm.org/recsys26/",
       "dates": "28 Sep–2 Oct 2026",
       "location": "Minneapolis, Minnesota, USA",
-      "paperCount": 0,
-      "sourcePaperCount": 0,
+      "paperCount": 198,
+      "abstractCount": 0,
+      "missingAbstractCount": 198,
+      "sourcePaperCount": 198,
       "filteredOutCount": 0,
       "selectionPolicy": "complete-profile-venue",
-      "categories": [],
-      "file": null,
-      "sourceUrl": "https://recsys.acm.org/recsys26/call/",
+      "categories": [
+        {
+          "name": "Long Papers",
+          "count": 64
+        },
+        {
+          "name": "Short Papers",
+          "count": 28
+        },
+        {
+          "name": "Past, Present and Future",
+          "count": 13
+        },
+        {
+          "name": "Reproducibility",
+          "count": 4
+        },
+        {
+          "name": "Resource Papers",
+          "count": 7
+        },
+        {
+          "name": "Industry",
+          "count": 82
+        }
+      ],
+      "file": "recsys-2026.json",
+      "sourceUrl": "https://recsys.acm.org/recsys26/contributions/",
       "volumeSources": [],
-      "expectedPublicationDate": "2026-09-28",
-      "abstractCount": 0,
-      "missingAbstractCount": 0
+      "note": "Сейчас опубликован предварительный список принятых работ по основным трекам. Он ещё не полный; окончательный список ожидается ближе к октябрю 2026 года.",
+      "statusLabel": "предварительный список",
+      "statusDetail": "окончательный список — ближе к октябрю"
     },
     {
       "id": "aaai-2024",
@@ -3621,8 +3648,8 @@
       "missingAbstractCount": 21
     }
   ],
-  "paperCount": 7507,
-  "sourcePaperCount": 54814,
+  "paperCount": 7705,
+  "sourcePaperCount": 55012,
   "abstractCount": 6987,
-  "missingAbstractCount": 520
+  "missingAbstractCount": 718
 }

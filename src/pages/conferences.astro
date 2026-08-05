@@ -322,7 +322,7 @@ const pluralRu = (value: number, one: string, few: string, many: string) => {
         </summary>
         <div class="summary-wrap">
           <table class="summary-table">
-          <caption>Для ожидаемых выпусков дата публикации указана ориентировочно — по началу конференции.</caption>
+          <caption>Для ожидаемых выпусков дата публикации указана ориентировочно — по началу конференции; предварительные списки могут дополняться.</caption>
           <thead>
             <tr><th>Площадка</th>{years.map((year) => <th>{year}</th>)}</tr>
           </thead>
@@ -362,7 +362,14 @@ const pluralRu = (value: number, one: string, few: string, many: string) => {
                             <>
                               <span class="edition-count">{edition?.paperCount.toLocaleString('ru-RU')}</span>
                               {` ${pluralRu(edition.paperCount, 'статья', 'статьи', 'статей')} `}
-                              {edition?.status === 'partial' && <span class="status-chip partial">частично</span>}
+                              {edition?.status === 'partial' && (
+                                <>
+                                  <span class="status-chip partial">{edition.statusLabel || 'частично'}</span>
+                                  {edition.statusDetail && (
+                                    <span class="expected-publication">{edition.statusDetail}</span>
+                                  )}
+                                </>
+                              )}
                               <span class="venue-full-name">
                                 {edition?.categories.length} {pluralRu(edition.categories.length, 'категория', 'категории', 'категорий')}
                                 {edition?.selectionPolicy === 'recsys-related-only'
@@ -548,7 +555,7 @@ const pluralRu = (value: number, one: string, few: string, many: string) => {
             .map((edition) => `
               <div class="edition-notice ${edition.status === 'partial' ? 'partial' : ''}">
                 <strong>${escapeHtml(edition.conference)} — ${edition.status === 'partial'
-                  ? 'частичный выпуск'
+                  ? escapeHtml(edition.statusLabel || 'частичный выпуск')
                   : edition.status === 'pending' ? 'список ожидается' : 'примечание к источнику'}</strong>
                 <div>${escapeHtml(edition.note || 'Полный проверяемый список пока недоступен.')}</div>
                 <a href="${escapeHtml(edition.website)}">Официальная страница конференции</a>
