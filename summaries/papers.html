@@ -124,7 +124,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <main>
 <nav aria-label="Разделы каталога" class="site-tabs"><a aria-current="page" href="papers.html">Тематический каталог</a><a href="../conferences.html">Архив конференций</a></nav>
 <h1>Объединенный каталог статей по RecSys, Semantic IDs и generative retrieval</h1>
-<p>Обновлено 2026-08-02.</p>
+<p>Обновлено 2026-08-19.</p>
 <div aria-label="Управление каталогом статей" class="catalog-controls">
 <div class="control-primary">
 <details class="filter-menu" id="filter-menu">
@@ -174,14 +174,14 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 </label>
 </div>
 <div class="control-meta">
-<div class="read-stats" id="read-stats">Прочитано: 0 из 411</div>
+<div class="read-stats" id="read-stats">Прочитано: 0 из 412</div>
 </div>
 </div>
 <p class="empty-state" id="empty-state">Нет статей для выбранных фильтров.</p>
 <h2>Сводка по категориям</h2>
 <table><thead><tr><th>Категория</th><th>Количество</th></tr></thead><tbody>
 <tr><td><a href="#category-semantic-ids">Semantic IDs, tokenization и indexing</a></td><td>114</td></tr>
-<tr><td><a href="#category-generative-retrieval">Generative retrieval и generative recommendation</a></td><td>78</td></tr>
+<tr><td><a href="#category-generative-retrieval">Generative retrieval и generative recommendation</a></td><td>79</td></tr>
 <tr><td><a href="#category-llm-agents">LLM, агенты и языковые профили в рекомендациях</a></td><td>65</td></tr>
 <tr><td><a href="#category-sequential">Sequential/session recommendation и long историей пользователя</a></td><td>33</td></tr>
 <tr><td><a href="#category-multimodal">Multimodal, content-aware и cold-start recommendation</a></td><td>24</td></tr>
@@ -1129,7 +1129,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2607.24995">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Semantic IDs (SIDs) are now a central component of generative recommendation. Current SID-based systems assign three roles to the same token sequence. Shared prefixes are intended to organize related items, the complete SID identifies an individual item, and each generated token narrows the items that can still be returned. We systematically investigate SIDs from item encoding and SID construction to autoregressive generation and final recommendation. We examine how SID construction changes item representations and how those changes affect generation. Across three Amazon domains and eight SID constructions, SID neighborhoods recover only 32.2% of the encoder&#x27;s ten nearest neighbors on average. Alternative item descriptions still retrieve the corresponding item first in 99.57% of controlled cases, yet change 38.4% of exact SIDs. These results show that SIDs retain broad organization but lose much of the encoder&#x27;s fine local structure, while their exact tokens are not determined by item meaning alone. This loss becomes consequential during generation. After the final semantic token, TIGER retains only 29.9% of held-out targets that were plausible recommendations before SID filtering. Motivated by these findings, we propose Item-Supported Decoding (ISD), a lightweight inference-time method that allows a user-specific item ranking to support corresponding SID prefixes before beam search discards them. The same ranking then orders the generated items. ISD requires no additional parameters or retraining of the SID constructor or decoder. We empirically show that ISD improves NDCG@10 over the corresponding SID backbone in every evaluated setting, with relative gains of up to 31.2%. Our results show that SIDs provide useful coarse item organization, but their fine boundaries should not alone determine which items remain available during generation.</div></div></li>
 </ul>
-<h2 id="category-generative-retrieval">Generative retrieval и generative recommendation (78)</h2>
+<h2 id="category-generative-retrieval">Generative retrieval и generative recommendation (79)</h2>
 <ol id="paper-genre_autoregressive_entity_retrieval_summary" start="1"><li><strong><a href="https://openreview.net/forum?id=5k8F6UU39V">Autoregressive Entity Retrieval (GENRE)</a></strong></li></ol>
 <ul>
 <li><strong>Дата публикации:</strong> 2021-01-12</li>
@@ -1770,6 +1770,15 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">feature tokenization</span> <span class="badge">industrial search</span> <span class="badge">configuration-driven</span> <span class="badge">Taobao</span> <span class="badge new-paper">Новое</span> <span class="badge summary-missing">саммари пропущено</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2607.11326">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Generative retrieval has become an increasingly adopted paradigm for industrial search, recommendation, and advertising systems, delivering significant online gains. Most existing work combines user behavior sequences with large language models (LLMs) to model user preferences. In practice, feature engineering remains critical to model effectiveness, yet its complexity slows offline iteration and makes online deployment heavy and hard to reuse, all under tight online latency budgets. The root cause is a tight coupling between feature-processing logic and model architecture, where every feature change touches the training and serving code and resists reuse across scenarios. To break this coupling, we present Prompt Generation (PG), a high-level tokenizer and configuration-driven framework that decouples feature-processing logic from model architecture through two declarative JSON files, which serve as the single source of truth for both offline training and online serving, ensuring feature consistency across the two stages. Organizing features under four types with three composable processing components to assemble and compress heterogeneous features, PG delivers acceleration at three levels: (1) fast training iteration: feature experiments require only configuration changes, with built-in token compression for ultra-long sequences; (2) fast deployment: a new scenario only needs to conform to the PG schema and plug into a universal pipeline, with no scenario-specific engineering; (3) fast online inference: engine applies unified optimizations over the standardized configuration, reducing PG&#x27;s overhead to a negligible level. PG has been deployed on Taobao Search with statistically significant online A/B uplifts of +0.47% in transaction count and +0.51% in GMV, and has been applied across multiple Taobao search and recommendation teams as the iteration framework for generative retrieval.</div></div></li>
+</ul>
+<ol id="paper-gryphon_v2_one_model_in_place_of_a_cascade_generate_and_rank_recommender_with_rollout_distillation_summary" start="79"><li><strong><a href="paper_summaries/generative_retrieval/gryphon_v2_one_model_in_place_of_a_cascade_generate_and_rank_recommender_with_rollout_distillation_summary.html">Gryphon-v2: One Model in Place of a Cascade - Generate-and-Rank Recommender with Rollout Distillation</a></strong></li></ol>
+<ul>
+<li><strong>Дата публикации:</strong> 2026-08-06</li>
+<li><strong>Дата добавления:</strong> 2026-08-19</li>
+<li><strong>Аффилиации:</strong> <span class="industry">Yandex</span></li>
+<li><strong>Теги:</strong> <span class="badge">generative retrieval</span> <span class="badge">semantic IDs</span> <span class="badge">generate-and-rank</span> <span class="badge">knowledge distillation</span> <span class="badge">industrial recommendation</span> <span class="badge new-paper">Новое</span></li>
+<li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2608.06213">открыть статью</a></li>
+<li><strong>Выжимка:</strong><div class="takeaway"><div>Gryphon-v2 объединяет SID generation и item-level ranking на одном shared history encoder и заменяет всю recommendation cascade одной served model.</div><div>Rollout Distillation переносит multi-objective оценки большого training-only Teacher Ranker на candidates текущего decoder-а и logged impressions.</div><div>В online A/B на Yandex Music модель заменила 15+ generators, pre-ranking и final ranking: active users выросли на 1.41%, total listening time - на 1.62% при сопоставимой latency.</div><div>Итог: SID decoder работает как high-recall proposal mechanism, а финальный порядок задает дешевый Ranking Module, дистиллированный из сильного offline teacher-а.</div></div></li>
 </ul>
 <h2 id="category-llm-agents">LLM, агенты и языковые профили в рекомендациях (65)</h2>
 <ol start="1"><li><strong><a href="https://doi.org/10.1145/3604915.3609494">Tutorial on Large Language Models for Recommendation</a></strong></li></ol>
