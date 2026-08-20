@@ -7,7 +7,7 @@ paperUrl: "https://arxiv.org/abs/2608.09634"
 ---
 > **Авторы:** Junjie Sun, Longfei Xu, Huimin Yan, Wei Luo, Kaikui Liu, Xiangxiang Chu.
 >
-> **Аффилиации:** Не удалось установить по доступной HTML-версии arXiv.
+> **Аффилиации:** DreamX, Alibaba Group.
 >
 > **Источник:** arXiv:2608.09634v1 от 2026-08-10. Публичные код, данные и модель не заявлены.
 

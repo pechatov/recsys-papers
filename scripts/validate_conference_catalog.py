@@ -17,7 +17,7 @@ EXPECTED_VENUES = {
     "icdm", "icml", "ijcai", "kdd", "neurips", "sigir", "umap", "wsdm", "www",
 }
 EXPECTED_SOURCE_COUNTS = {
-    "recsys-2024": 190, "recsys-2025": 216,
+    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 198,
     "aaai-2024": 2866, "aaai-2025": 3486, "aaai-2026": 4920,
     "chi-2024": 1705, "chi-2025": 2169, "chi-2026": 2707,
     "cikm-2024": 697, "cikm-2025": 852,
@@ -36,7 +36,7 @@ EXPECTED_SOURCE_COUNTS = {
     "www-2024": 778, "www-2025": 978, "www-2026": 1191,
 }
 EXPECTED_COUNTS = {
-    "recsys-2024": 190, "recsys-2025": 216,
+    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 198,
     "aaai-2024": 52, "aaai-2025": 86, "aaai-2026": 106,
     "chi-2024": 8, "chi-2025": 16, "chi-2026": 14,
     "cikm-2024": 697, "cikm-2025": 852,
@@ -55,11 +55,10 @@ EXPECTED_COUNTS = {
     "www-2024": 147, "www-2025": 143, "www-2026": 176,
 }
 EXPECTED_PENDING = {
-    "recsys-2026", "cikm-2026", "ecai-2026", "ecml-pkdd-2026",
+    "cikm-2026", "ecai-2026", "ecml-pkdd-2026",
     "icdm-2026", "neurips-2026",
 }
 EXPECTED_PENDING_PUBLICATION_DATES = {
-    "recsys-2026": "2026-09-28",
     "cikm-2026": "2026-11-07",
     "ecai-2026": "2026-08-15",
     "ecml-pkdd-2026": "2026-09-07",
@@ -136,7 +135,7 @@ def main() -> int:
             f"got {actual_pending_publication_dates}"
         )
     partial = {edition["id"] for edition in editions if edition["status"] == "partial"}
-    if partial != {"kdd-2026"}:
+    if partial != {"kdd-2026", "recsys-2026"}:
         errors.append(f"unexpected partial edition set: {sorted(partial)}")
 
     seen_ids: set[str] = set()

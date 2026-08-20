@@ -7,7 +7,7 @@ paperUrl: "https://arxiv.org/abs/2608.12845"
 ---
 > **Авторы:** Yuchen Zheng, Sihan Xu, Jingwen Yang, Xiangrui Cai, Haiwei Zhang, Xiaojie Yuan.
 >
-> **Аффилиации:** Не удалось установить по доступной HTML-версии arXiv.
+> **Аффилиации:** College of Computer Science, Nankai University; College of Cryptology and Cyber Science, Nankai University.
 >
 > **Источник:** arXiv:2608.12845v1 от 2026-08-13. Публичные код, данные и модель не заявлены.
 

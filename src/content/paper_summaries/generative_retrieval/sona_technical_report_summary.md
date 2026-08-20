@@ -7,7 +7,7 @@ paperUrl: "https://arxiv.org/abs/2608.11015"
 ---
 > **Авторы:** Sona Team, Alexandr Udeneev, Aleksei Krasilnikov, Alexey Nadtochiy, Andrey Semenov, Andrey Tsyrkunov, Anna Krivonos, Anna Lipkina, Artem Matveev, Daniil Burlakov, Daniil Leshchev, Daria Tikhonovich, Denis Burshtein, Ekaterina Dmitrieva, Eugene Krofto, Grigorii Khlystov, Ilya Murzin, Kirill Golovko, Ksenia Sycheva, Leonid Dmitriev, Mariia Rozaeva, Mariia Ulianova, Mikhail Sandul, Nikolai Savushkin, Oleg Sorokin, Roman Odobesku, Semyon Panenko, Sergei Liamaev, Sergei Makeev, Vadim Shilov, Veronika Ivanova, Viktor Yanush, Vladimir Baikalov, Vladislav Dodonov, Vladislav Tytskiy.
 >
-> **Аффилиации:** Не удалось установить по доступной HTML-версии arXiv.
+> **Аффилиации:** Yandex Music.
 >
 > **Источник:** arXiv:2608.11015v1 от 2026-08-11. Публичные код, данные и модель не заявлены.
 

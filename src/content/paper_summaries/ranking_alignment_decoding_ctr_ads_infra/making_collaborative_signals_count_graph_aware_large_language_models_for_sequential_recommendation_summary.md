@@ -7,7 +7,7 @@ paperUrl: "https://arxiv.org/abs/2608.12184"
 ---
 > **Авторы:** Fenglin Yan, Bohao Wang, Jian Zhang, Yu Cui, Tongya Zheng, Ye Feng, Can Wang, Jiawei Chen.
 >
-> **Аффилиации:** Не удалось установить по доступной HTML-версии arXiv.
+> **Аффилиации:** Zhejiang University; University of Science and Technology of China.
 >
 > **Источник:** arXiv:2608.12184v1 от 2026-08-12. Публичные код, данные и модель не заявлены.
 
