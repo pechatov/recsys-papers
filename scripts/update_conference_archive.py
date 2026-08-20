@@ -704,22 +704,23 @@ def convert_recsys_edition(conference: dict) -> dict:
     for track in conference.get("tracks", []):
         papers = []
         for paper in track["papers"]:
-            papers.append(
-                {
-                    "id": paper["id"],
-                    "title": paper["title"],
-                    "authors": paper["authors"],
-                    "affiliations": paper["affiliations"],
-                    "industryAffiliations": paper["industryAffiliations"],
-                    "isIndustry": paper["isIndustry"],
-                    "paperUrl": paper["doiUrl"],
-                    "doiUrl": paper["doiUrl"],
-                    "tags": paper["tags"],
-                    "metadataSource": "Official RecSys accepted list",
-                }
-            )
+            converted = {
+                "id": paper["id"],
+                "title": paper["title"],
+                "authors": paper["authors"],
+                "affiliations": paper["affiliations"],
+                "industryAffiliations": paper["industryAffiliations"],
+                "isIndustry": paper["isIndustry"],
+                "paperUrl": paper.get("paperUrl") or paper["doiUrl"],
+                "doiUrl": paper.get("doiUrl"),
+                "tags": paper["tags"],
+                "metadataSource": "Official RecSys accepted list",
+            }
+            if paper.get("preprintUrl"):
+                converted["preprintUrl"] = paper["preprintUrl"]
+            papers.append(converted)
         categories.append({"id": track["id"], "name": track["name"], "papers": papers})
-    return {
+    result = {
         "schemaVersion": 1,
         "id": conference["id"],
         "venueId": "recsys",
@@ -729,6 +730,10 @@ def convert_recsys_edition(conference: dict) -> dict:
         "sourceUrl": conference["sourceUrl"],
         "categories": categories,
     }
+    for field in ("statusLabel", "statusDetail", "statusNote"):
+        if conference.get(field):
+            result[field] = conference[field]
+    return result
 
 
 def unique_nonempty(values: list[str]) -> list[str]:
@@ -1202,6 +1207,9 @@ def edition_manifest_entry(edition: dict, venue: dict, year_meta: dict, file_nam
     note = year_meta.get("note") or edition.get("statusNote")
     if note:
         result["note"] = note
+    for field in ("statusLabel", "statusDetail"):
+        if edition.get(field):
+            result[field] = edition[field]
     if edition["status"] == "pending" and year_meta.get("expectedPublicationDate"):
         result["expectedPublicationDate"] = year_meta["expectedPublicationDate"]
     return result

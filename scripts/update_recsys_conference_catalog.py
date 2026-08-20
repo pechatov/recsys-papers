@@ -30,8 +30,32 @@ except ImportError as exc:  # pragma: no cover - maintainer-facing failure path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "src" / "data" / "recsys-conferences.json"
+PREPRINTS_PATH = ROOT / "src" / "data" / "recsys-2026-preprints.json"
 
 CONFERENCES = {
+    2026: {
+        "name": "RecSys 2026",
+        "dates": "28 сентября – 2 октября 2026",
+        "location": "Миннеаполис, Миннесота, США",
+        "acceptedUrl": "https://recsys.acm.org/recsys26/contributions/",
+        "proceedingsUrl": None,
+        "status": "partial",
+        "statusLabel": "предварительный список",
+        "statusDetail": "окончательный список — ближе к октябрю",
+        "statusNote": (
+            "Сейчас опубликован предварительный список принятых работ по основным "
+            "трекам. Он ещё не полный; окончательный список ожидается ближе к "
+            "октябрю 2026 года."
+        ),
+        "trackNames": [
+            "Long Papers",
+            "Short Papers",
+            "Past, Present and Future",
+            "Reproducibility",
+            "Resource Papers",
+            "Industry",
+        ],
+    },
     2024: {
         "name": "RecSys 2024",
         "dates": "14–18 октября 2024",
@@ -64,33 +88,6 @@ CONFERENCES = {
             "Doctoral",
         ],
     },
-}
-
-RECSYS_2026 = {
-    "id": "recsys-2026",
-    "name": "RecSys 2026",
-    "year": 2026,
-    "dates": "28 сентября – 2 октября 2026",
-    "location": "Миннеаполис, Миннесота, США",
-    "status": "pending",
-    "statusNote": (
-        "Уведомления по основным трекам вышли 9 июля, но официальный список "
-        "принятых материалов и DOI ещё не опубликован. Записи появятся после "
-        "публикации конференцией проверяемого списка."
-    ),
-    "sourceUrl": "https://recsys.acm.org/recsys26/call/",
-    "expectedTracks": [
-        "Long Papers",
-        "Short Papers",
-        "Past, Present and Future",
-        "Reproducibility and Replicability",
-        "Resource Papers",
-        "Industry",
-        "Research and Practice Notes",
-        "Doctoral Symposium",
-        "Demos",
-    ],
-    "tracks": [],
 }
 
 TOPIC_RULES = [
@@ -289,6 +286,9 @@ def paper_type_and_title(item) -> tuple[str, str, str, str]:
 
 def parse_conference(year: int, html: str) -> dict:
     config = CONFERENCES[year]
+    preprints = {}
+    if year == 2026 and PREPRINTS_PATH.exists():
+        preprints = json.loads(PREPRINTS_PATH.read_text(encoding="utf-8"))["preprints"]
     soup = BeautifulSoup(html, "html.parser")
     sections = soup.select("div.tabs-content")
     expected_tracks = config["trackNames"]
@@ -301,7 +301,7 @@ def parse_conference(year: int, html: str) -> dict:
     seen_dois: set[str] = set()
     seen_titles: set[str] = set()
 
-    for section, track_name in zip(sections, expected_tracks):
+    for track_index, (section, track_name) in enumerate(zip(sections, expected_tracks)):
         paper_list = section.find("ul", class_="accordion")
         if paper_list is None:
             raise ValueError(f"RecSys {year} / {track_name}: paper list not found")
@@ -312,15 +312,25 @@ def parse_conference(year: int, html: str) -> dict:
             authors, affiliations = parse_author_line(author_line)
 
             doi_match = re.search(r'https://doi\.org/[^\"\s<]+', str(item), flags=re.IGNORECASE)
-            if doi_match is None:
+            doi_url = None
+            if doi_match is not None:
+                doi_url = doi_match.group(0).rstrip(".,;)")
+                doi_url = re.sub(
+                    r"^https://doi\.org/(?:https://doi\.org/)+",
+                    "https://doi.org/",
+                    doi_url,
+                    flags=re.IGNORECASE,
+                )
+            elif year < 2026:
                 raise ValueError(f"RecSys {year} / {track_name}: DOI missing for {title}")
-            doi_url = doi_match.group(0).rstrip(".,;)")
-            doi_url = re.sub(
-                r"^https://doi\.org/(?:https://doi\.org/)+",
-                "https://doi.org/",
-                doi_url,
-                flags=re.IGNORECASE,
+
+            preprint_url = preprints.get(title)
+            title_anchor = item.find("a", rel=re.compile(r"accordion"))
+            title_rel = title_anchor.get("rel", []) if title_anchor else []
+            official_fragment = (
+                title_rel[0] if title_rel else f"#content-tab-1-{track_index}-tab"
             )
+            paper_url = preprint_url or f"{config['acceptedUrl']}{official_fragment}"
 
             abstract_container = item.find("div")
             abstract_element = abstract_container.find("p") if abstract_container else None
@@ -330,30 +340,34 @@ def parse_conference(year: int, html: str) -> dict:
                 affiliation for affiliation in affiliations if INDUSTRY_RE.search(affiliation)
             ]
 
-            doi_key = doi_url.lower()
+            doi_key = doi_url.lower() if doi_url else None
             title_key = title.casefold()
-            if doi_key in seen_dois:
+            if doi_key and doi_key in seen_dois:
                 raise ValueError(f"RecSys {year}: duplicate DOI {doi_url}")
             if title_key in seen_titles:
                 raise ValueError(f"RecSys {year}: duplicate title {title}")
-            seen_dois.add(doi_key)
+            if doi_key:
+                seen_dois.add(doi_key)
             seen_titles.add(title_key)
 
-            papers.append(
-                {
-                    "id": f"recsys-{year}-{slugify(track_name)}-{slugify(title)}",
-                    "title": title,
-                    "authors": authors,
-                    "affiliations": affiliations,
-                    "industryAffiliations": industry_affiliations,
-                    "isIndustry": track_name == "Industry" or bool(industry_affiliations),
-                    "typeCode": type_code,
-                    "typeName": type_name,
-                    "doiUrl": doi_url,
-                    "tags": tags,
-                    "takeaway": build_takeaway(abstract, tags, track_name),
-                }
-            )
+            paper = {
+                "id": f"recsys-{year}-{slugify(track_name)}-{slugify(title)}",
+                "title": title,
+                "authors": authors,
+                "affiliations": affiliations,
+                "industryAffiliations": industry_affiliations,
+                "isIndustry": track_name == "Industry" or bool(industry_affiliations),
+                "typeCode": type_code,
+                "typeName": type_name,
+                "doiUrl": doi_url,
+                "tags": tags,
+                "takeaway": build_takeaway(abstract, tags, track_name),
+            }
+            if year == 2026:
+                paper["paperUrl"] = paper_url
+            if preprint_url:
+                paper["preprintUrl"] = preprint_url
+            papers.append(paper)
 
         tracks.append(
             {
@@ -363,17 +377,22 @@ def parse_conference(year: int, html: str) -> dict:
             }
         )
 
-    return {
+    result = {
         "id": f"recsys-{year}",
         "name": config["name"],
         "year": year,
         "dates": config["dates"],
         "location": config["location"],
-        "status": "published",
+        "status": config.get("status", "published"),
         "sourceUrl": config["acceptedUrl"],
-        "proceedingsUrl": config["proceedingsUrl"],
         "tracks": tracks,
     }
+    for field in ("statusLabel", "statusDetail", "statusNote"):
+        if config.get(field):
+            result[field] = config[field]
+    if config["proceedingsUrl"]:
+        result["proceedingsUrl"] = config["proceedingsUrl"]
+    return result
 
 
 def read_source(year: int, source_dir: Path | None) -> str:
@@ -386,7 +405,7 @@ def read_source(year: int, source_dir: Path | None) -> str:
 
 
 def build_catalog(source_dir: Path | None, verified: str) -> dict:
-    conferences = [dict(RECSYS_2026)]
+    conferences = []
     for year in sorted(CONFERENCES, reverse=True):
         conferences.append(parse_conference(year, read_source(year, source_dir)))
 
@@ -409,7 +428,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--source-dir",
         type=Path,
-        help="Read recsys2024.html and recsys2025.html from this directory instead of downloading.",
+        help="Read recsys2024.html through recsys2026.html from this directory instead of downloading.",
     )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--verified", default=date.today().isoformat())
@@ -419,9 +438,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     catalog = build_catalog(args.source_dir, args.verified)
-    if catalog["paperCount"] != 406:
+    if catalog["paperCount"] != 604:
         raise SystemExit(
-            f"Completeness guard failed: expected 406 published papers, got {catalog['paperCount']}"
+            f"Completeness guard failed: expected 604 published papers, got {catalog['paperCount']}"
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
