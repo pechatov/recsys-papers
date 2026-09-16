@@ -1286,10 +1286,10 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <ul>
 <li><strong>Дата публикации:</strong> 2026-09-08</li>
 <li><strong>Дата добавления:</strong> 2026-09-16</li>
-<li><strong>Аффилиации:</strong> Cornell Tech, Cornell University; PayPal</li>
+<li><strong>Аффилиации:</strong> Cornell Tech, Cornell University; <span class="industry">PayPal</span></li>
 <li><strong>Теги:</strong> <span class="badge">semantic IDs</span> <span class="badge">bottom-up clustering</span> <span class="badge">generative retrieval</span> <span class="badge">item tokenization</span> <span class="badge new-paper">Новое</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2609.08310">открыть статью</a></li>
-<li><strong>Выжимка:</strong><div class="takeaway"><div>Авторы предлагают строить Semantic IDs с помощью bottom-up clustering: сначала сохраняется локальная структура пространства item-эмбеддингов, затем кластеры объединяются в иерархию. Метод нацелен одновременно на уникальность идентификаторов и сохранение полезной семантики, улучшая качество кластеризации SID и их пригодность для downstream generative retrieval.</div></div></li>
+<li><strong>Выжимка:</strong><div class="takeaway"><div>Главная идея: строить SID снизу вверх. MiniBatchKMeans на замороженных text embeddings делит items на мелкие листья, внутри листа item получает порядковый последний codeword, затем взвешенные центроиды листьев рекурсивно сливаются в более грубые уровни.</div><div>Уникальность SID гарантируется конструкцией без dedup-токена; новые items получают SID по ближайшим соседям без перестройки иерархии, но cold-start сценарий не измерен.</div><div>Evidence: против tuned RQ-VAE (3×256 + dedup) silhouette выше на всех трёх датасетах; Recall@10 0.036 vs 0.020 на custom-каталоге PayPal из 5.8M items и 0.0567 vs 0.0509 на Beauty, но на Sports паритет (0.0327 vs 0.0328).</div><div>Итог: практичный collision-free baseline для больших каталогов, но кластерные метрики сравнивают почти синглтоны RQ-VAE с листьями на тысячи items, RK-Means baseline отсутствует, а NDCG на custom dataset не сходится с протоколом.</div></div></li>
 </ul>
 <h2 id="category-generative-retrieval">Generative retrieval и generative recommendation (88)</h2>
 <ol id="paper-genre_autoregressive_entity_retrieval_summary" start="1"><li><strong><a href="https://openreview.net/forum?id=5k8F6UU39V">Autoregressive Entity Retrieval (GENRE)</a></strong></li></ol>
