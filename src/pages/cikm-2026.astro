@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+import SummaryLayout from '../layouts/SummaryLayout.astro';
+import metadata from '../data/cikm-2026-papers.json';
+const entries = await getCollection('cikm2026');
+const byId = new Map(entries.map(e => [e.data.selectionId, e]));
+const papers = [...metadata].sort((a, b) => a.selectionId.localeCompare(b.selectionId));
+if (papers.length !== 99 || entries.length !== 99 || papers.some(p => !byId.has(p.selectionId))) {
+  throw new Error('CIKM 2026 must contain exactly the 99 approved papers and their reviews.');
+}
+const base = import.meta.env.BASE_URL;
+const labels: Record<string, string> = {
+  generative: 'Генеративные рекомендации', semantic_ids: 'Семантические ID',
+  sequential: 'Sequential и session-based', industrial: 'Индустриальные системы'
+};
+const fullTextCount = entries.filter(e => e.data.basis === 'full_text').length;
+---
+<SummaryLayout title="CIKM 2026: статьи и вопросы авторам" catalogId="cikm-2026" backHref={`${base}summaries/papers.html`} backLabel="← К тематическому каталогу">
+  <nav aria-label="Разделы каталога" class="site-tabs">
+    <a href={`${base}summaries/papers.html`}>Тематический каталог</a>
+    <a href={`${base}conferences.html`}>Архив конференций</a>
+    <a href={`${base}cikm-2026.html`} aria-current="page">Разборы CIKM 2026</a>
+  </nav>
+  <p>99 подтверждённых статей по генеративным рекомендациям, семантическим ID, последовательным рекомендациям и промышленным системам. Для каждой — отдельный обзор и четыре вопроса для обсуждения на конференции.</p>
+  <p>Рим · 7–11 ноября 2026 · <a href="https://cikm2026.diag.uniroma1.it/cikm-program/program.html">Официальная программа</a> · Обновлено 9 ноября 2026 года.</p>
+  <p class="scope">Обзоры по полному тексту: {fullTextCount}; по доступным аннотациям: {99 - fullTextCount}. По умолчанию показаны разборы по полному тексту; материалы по аннотациям доступны через фильтр. Основа и версия источника указаны на каждой странице.</p>
+  <form class="filters" role="search" onsubmit="return false">
+    <label>Поиск по названию, авторам и описанию<input id="paper-search" type="search" placeholder="Например: токенизация, LinkedIn, Gryphon" /></label>
+    <label>Тема<select id="topic"><option value="all">Все темы</option>{Object.entries(labels).map(([key,label]) => <option value={key}>{label}</option>)}</select></label>
+    <label>Основа обзора<select id="basis"><option value="full_text" selected>Полный текст</option><option value="all">Все источники</option><option value="abstract">Аннотация</option></select></label>
+    <label class="check"><input id="priority" type="checkbox" /> Первая очередь</label>
+    <button type="reset">Сбросить</button>
+  </form>
+  <p id="result-count" role="status" aria-live="polite">Показано: {fullTextCount} из 99</p>
+  <p id="empty-state" hidden>Статьи не найдены. Попробуйте изменить запрос или фильтры.</p>
+  <div id="paper-list">
+    {papers.map(paper => {
+      const review = byId.get(paper.selectionId)!;
+      return <article id={paper.selectionId} data-paper data-topics={paper.categories.join(' ')} data-basis={review.data.basis} data-priority={paper.priority} hidden={review.data.basis !== 'full_text'}>
+        <p class="meta">{paper.selectionId} · {paper.track}{paper.priority === 'first' && ' · Первая очередь'}</p>
+        <h2><a href={`${base}cikm-2026/${paper.selectionId.toLowerCase()}.html`}>{paper.title}</a></h2>
+        <div class="tags">{paper.categories.map(c => <span>{labels[c]}</span>)}</div>
+        <p>{review.data.takeaway}</p>
+        <details><summary>Авторы и сессия</summary><p>{paper.authors}</p><p><a href={paper.sessionUrl}>{paper.session}</a></p></details>
+        <p class="links"><a href={`${base}cikm-2026/${paper.selectionId.toLowerCase()}.html`}>Читать обзор →</a><a href={`${base}cikm-2026/${paper.selectionId.toLowerCase()}.html#вопросы-авторам`}>Вопросы авторам</a><a href={paper.url ?? paper.sessionUrl}>Оригинал</a></p>
+        <p class="meta">{review.data.basis === 'full_text' ? 'Разбор по полному тексту' : 'Обзор по аннотации'}</p>
+      </article>;
+    })}
+  </div>
+</SummaryLayout>
+<style>
+  .site-tabs { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2rem; }
+  .site-tabs [aria-current] { font-weight:700; }
+  .scope { padding:1rem; background:var(--soft); border-left:3px solid var(--link); }
+  .filters { display:flex; flex-wrap:wrap; gap:1rem; align-items:end; margin:2rem 0 1rem; }
+  label { display:flex; flex-direction:column; gap:.35rem; font-size:.9rem; }
+  label:first-child { flex:1 1 100%; }
+  input,select,button { font:inherit; color:var(--fg); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.6rem; max-width:100%; }
+  .check { flex-direction:row; align-items:center; padding:.6rem 0; }
+  button { cursor:pointer; }
+  input:focus-visible,select:focus-visible,button:focus-visible { outline:2px solid var(--focus); outline-offset:3px; }
+  article { padding:1.5rem 0; border-top:1px solid var(--border); scroll-margin-top:1rem; }
+  article h2 { margin:.25rem 0 .65rem; font-size:1.25rem; }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tags { display:flex; gap:.4rem; flex-wrap:wrap; }
+  .tags span { font-size:.8rem; padding:.15rem .5rem; background:var(--soft); border:1px solid var(--border); border-radius:5px; }
+  .links { display:flex; gap:1rem; flex-wrap:wrap; }
+  [hidden] { display:none !important; }
+</style>
+<script>
+  const search = document.querySelector<HTMLInputElement>('#paper-search')!;
+  const topic = document.querySelector<HTMLSelectElement>('#topic')!;
+  const basis = document.querySelector<HTMLSelectElement>('#basis')!;
+  const priority = document.querySelector<HTMLInputElement>('#priority')!;
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-paper]')];
+  function filter() {
+    const query = search.value.trim().toLocaleLowerCase('ru');
+    let visible = 0;
+    for (const card of cards) {
+      const matches = (!query || card.textContent?.toLocaleLowerCase('ru').includes(query))
+        && (topic.value === 'all' || card.dataset.topics?.split(' ').includes(topic.value))
+        && (basis.value === 'all' || card.dataset.basis === basis.value)
+        && (!priority.checked || card.dataset.priority === 'first');
+      card.hidden = !matches;
+      if (matches) visible++;
+    }
+    document.querySelector('#result-count')!.textContent = `Показано: ${visible} из ${cards.length}`;
+    document.querySelector<HTMLElement>('#empty-state')!.hidden = visible > 0;
+  }
+  document.querySelector('.filters')!.addEventListener('input', filter);
+  document.querySelector('.filters')!.addEventListener('reset', () => setTimeout(filter, 0));
+  function revealLinkedPaper() {
+    let id: string;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); }
+    catch { return; }
+    const linked = cards.find(card => card.id === id);
+    if (!linked) return;
+    search.value = '';
+    topic.value = 'all';
+    priority.checked = false;
+    basis.value = linked.dataset.basis ?? 'full_text';
+    filter();
+    linked.scrollIntoView();
+  }
+  const requestedBasis = new URLSearchParams(window.location.search).get('basis');
+  if (requestedBasis && ['full_text', 'abstract', 'all'].includes(requestedBasis)) basis.value = requestedBasis;
+  filter();
+  revealLinkedPaper();
+  window.addEventListener('hashchange', revealLinkedPaper);
+</script>

@@ -3,10 +3,12 @@ interface Props {
   title: string;
   paperUrl?: string;
   catalogId: string;
+  backHref?: string;
+  backLabel?: string;
 }
 
-const { title, paperUrl, catalogId } = Astro.props;
-const catalogHref = `../../papers.html#${catalogId}`;
+const { title, paperUrl, catalogId, backHref, backLabel = '← К общему списку статей' } = Astro.props;
+const catalogHref = backHref ?? `../../papers.html#${catalogId}`;
 ---
 
 <!doctype html>
@@ -202,9 +204,9 @@ const catalogHref = `../../papers.html#${catalogId}`;
     <button class="summary-scroll-gutter summary-scroll-bottom" type="button" aria-label="Прокрутить саммари вниз"></button>
     <main>
       <h1>{paperUrl ? <a href={paperUrl}>{title}</a> : title}</h1>
-      <p class="nav"><a href={catalogHref}>← К общему списку статей</a></p>
+      <p class="nav"><a href={catalogHref}>{backLabel}</a></p>
       <slot />
-      <p class="nav"><a href={catalogHref}>← К общему списку статей</a></p>
+      <p class="nav"><a href={catalogHref}>{backLabel}</a></p>
     </main>
     <script is:inline>
       const topButton = document.querySelector('.summary-scroll-top');

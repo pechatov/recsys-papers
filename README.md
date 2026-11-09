@@ -39,6 +39,30 @@ single clearly named asset directory, for example `summaries/assets/cost/` or
 `summaries/assets/vq4rec/`, and reference them from Markdown with the same
 relative paths used by the generated HTML pages.
 
+The separate CIKM 2026 collection is published at `cikm-2026.html`, with review
+pages under `cikm-2026/c26-XXX.html`. Its 99 approved papers are recorded in
+`docs/cikm-2026-selection.json` (`scope: main`) and
+`src/data/cikm-2026-papers.json`. Reviews live in `src/content/cikm_2026/` and
+include four questions for the authors. The `basis` field distinguishes a
+full-text review from an abstract-based overview; `sourceUrl` identifies the
+source actually read. Optional shortlist entries are excluded. New conference
+reviews do not enter the main paper catalog. The conference page initially shows
+full-text reviews; the source filter also exposes abstract-only overviews.
+
+Run `npm run check:cikm` to verify selection coverage, review identity, source
+metadata, and the author questions. After building, run
+`python3 scripts/validate_cikm_2026.py --built` to check the conference pages and
+their local links. For a build using a path prefix, pass `--base=/recsys-papers/`.
+
+`docs/cikm-2026-fulltext-access.csv` lists the source actually read for each
+review. `docs/cikm-2026-missing-fulltexts.csv` contains the remaining papers and
+publisher PDF links for checking access. The alternative-source search audit in
+`docs/cikm-2026-acquisition-audit.json` records per-paper queries, author archives,
+API results, and rejected matches. Access errors and missing API records are
+recorded separately from the existence of the paper.
+The full-text content review is recorded in `docs/cikm-2026-review-audit.json`,
+including source versions, checked claims, applied corrections, and review hashes.
+
 ## Catalog Metadata
 
 Every paper in `summaries/papers.html` must have two ISO 8601 dates:

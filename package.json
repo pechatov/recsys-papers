@@ -24,7 +24,8 @@
     "check:catalog": "python3 scripts/validate_catalog_metadata.py summaries/papers.html",
     "check:links": "npm run build && python3 scripts/validate_summary_links.py dist/summaries",
     "check:math": "npm run build && npm run audit:math",
-    "check": "npm run check:catalog && npm run check:links && npm run audit:math && npm run audit:conferences"
+    "check": "npm run check:catalog && npm run check:links && npm run audit:math && npm run audit:conferences && npm run check:cikm && python3 scripts/validate_cikm_2026.py --built",
+    "check:cikm": "python3 scripts/validate_cikm_2026.py"
   },
   "dependencies": {
     "astro": "^6.4.8",
