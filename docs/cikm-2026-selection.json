@@ -3,7 +3,7 @@
   "checkedAt": "2026-11-09",
   "status": "reviews_prepared",
   "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html",
-  "scopeNote": "Подтверждён основной набор из 99 статей. Для каждой подготовлен отдельный обзор и четыре вопроса авторам. Категории пересекаются; 25 смежных работ и 4 доклада Industry Day не включены. Основа каждого обзора указана отдельно: полный текст либо официальная аннотация.",
+  "scopeNote": "Подтверждён основной набор из 99 статей. Для каждой подготовлен отдельный обзор и четыре вопроса авторам. Категории пересекаются; 25 смежных работ и 4 доклада Industry Day не включены. Все 99 обзоров основаны на полных текстах; версия источника указана на каждой странице.",
   "papers": [
     {
       "title": "The Prism of Interest: Refracting User Needs in Session-Based Recommendation",
@@ -21,7 +21,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 8,
       "reviewUrl": "cikm-2026/c26-001.html"
     },
@@ -41,7 +41,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 9,
       "reviewUrl": "cikm-2026/c26-002.html"
     },
@@ -61,7 +61,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 10,
       "reviewUrl": "cikm-2026/c26-003.html"
     },
@@ -101,7 +101,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 12,
       "reviewUrl": "cikm-2026/c26-005.html"
     },
@@ -121,7 +121,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 13,
       "reviewUrl": "cikm-2026/c26-006.html"
     },
@@ -322,7 +322,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 23,
       "reviewUrl": "cikm-2026/c26-016.html"
     },
@@ -443,7 +443,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 69,
       "reviewUrl": "cikm-2026/c26-022.html"
     },
@@ -529,7 +529,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 73,
       "reviewUrl": "cikm-2026/c26-026.html"
     },
@@ -611,7 +611,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 77,
       "reviewUrl": "cikm-2026/c26-030.html"
     },
@@ -651,7 +651,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 79,
       "reviewUrl": "cikm-2026/c26-032.html"
     },
@@ -671,7 +671,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 85,
       "reviewUrl": "cikm-2026/c26-033.html"
     },
@@ -712,7 +712,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 204,
       "reviewUrl": "cikm-2026/c26-035.html"
     },
@@ -732,7 +732,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 205,
       "reviewUrl": "cikm-2026/c26-036.html"
     },
@@ -932,7 +932,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 289,
       "reviewUrl": "cikm-2026/c26-046.html"
     },
@@ -952,7 +952,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 290,
       "reviewUrl": "cikm-2026/c26-047.html"
     },
@@ -1241,7 +1241,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 415,
       "reviewUrl": "cikm-2026/c26-062.html"
     },
@@ -1281,7 +1281,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 418,
       "reviewUrl": "cikm-2026/c26-064.html"
     },
@@ -1322,7 +1322,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 422,
       "reviewUrl": "cikm-2026/c26-066.html"
     },
@@ -1364,7 +1364,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 424,
       "reviewUrl": "cikm-2026/c26-068.html"
     },
@@ -1385,7 +1385,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 425,
       "reviewUrl": "cikm-2026/c26-069.html"
     },
@@ -1507,7 +1507,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 442,
       "reviewUrl": "cikm-2026/c26-075.html"
     },
@@ -1527,7 +1527,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 443,
       "reviewUrl": "cikm-2026/c26-076.html"
     },
@@ -1547,7 +1547,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 447,
       "reviewUrl": "cikm-2026/c26-077.html"
     },
@@ -1624,7 +1624,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 595,
       "reviewUrl": "cikm-2026/c26-081.html"
     },
@@ -1685,7 +1685,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 598,
       "reviewUrl": "cikm-2026/c26-084.html"
     },
@@ -1706,7 +1706,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 600,
       "reviewUrl": "cikm-2026/c26-085.html"
     },
@@ -1748,7 +1748,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 602,
       "reviewUrl": "cikm-2026/c26-087.html"
     },
@@ -1810,7 +1810,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 605,
       "reviewUrl": "cikm-2026/c26-090.html"
     },
@@ -1888,7 +1888,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 612,
       "reviewUrl": "cikm-2026/c26-094.html"
     },
@@ -1927,7 +1927,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 623,
       "reviewUrl": "cikm-2026/c26-096.html"
     },
@@ -1967,7 +1967,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 629,
       "reviewUrl": "cikm-2026/c26-098.html"
     },
@@ -2065,7 +2065,7 @@
       "priority": "normal",
       "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 647,
       "reviewUrl": "cikm-2026/c26-103.html"
     },
@@ -2125,7 +2125,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 784,
       "reviewUrl": "cikm-2026/c26-106.html"
     },
@@ -2206,7 +2206,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 788,
       "reviewUrl": "cikm-2026/c26-110.html"
     },
@@ -2270,7 +2270,7 @@
       "priority": "first",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 791,
       "reviewUrl": "cikm-2026/c26-113.html"
     },
@@ -2370,7 +2370,7 @@
       "priority": "normal",
       "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 800,
       "reviewUrl": "cikm-2026/c26-118.html"
     },
@@ -2430,7 +2430,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 808,
       "reviewUrl": "cikm-2026/c26-121.html"
     },
@@ -2470,7 +2470,7 @@
       "priority": "normal",
       "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
       "existingSummary": null,
-      "fullTextStatus": "abstract_only",
+      "fullTextStatus": "full_text_reviewed",
       "sourceIndex": 811,
       "reviewUrl": "cikm-2026/c26-123.html"
     },

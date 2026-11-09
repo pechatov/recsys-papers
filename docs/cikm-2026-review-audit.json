@@ -1,8 +1,8 @@
 {
   "checkedAt": "2026-11-09",
-  "fullTextReviewsChecked": 61,
-  "scope": "Title/author/version linkage, main method, key quantitative/protocol claims, limitations and four author questions, checked against the full source actually cited. Final proceedings versions were not independently retrieved when only a preprint or author PDF was available.",
-  "remainingAbstractOverviews": 38,
+  "fullTextReviewsChecked": 99,
+  "scope": "Title/author/version linkage, method, quantitative/protocol claims, limitations and four author questions checked against each cited full source. The 38 newly acquired papers use final publisher PDFs. The earlier 61 reviews retain their documented sources and preprint-version limitations; final proceedings versions are not claimed to have been read for those sources.",
+  "remainingAbstractOverviews": 0,
   "findings": [
     {
       "severity": "medium",
@@ -106,6 +106,66 @@
   },
   "coverage": [
     {
+      "selectionId": "C26-001",
+      "reviewPath": "src/content/cikm_2026/C26-001.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840905?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 11 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§2.2–2.6: two-level VQ, three branches, distribution fusion, goal-aware negatives",
+        "§3.1: temporal split, prefix augmentation, full catalog; P@K defined as hit",
+        "Table2: Diginetica PRISM55.25 CORE54.09; MRR19.59 LINK19.27",
+        "Tables3–4: without GCR Diginetica54.80; Table6 parameters1.36M,size5.4MB"
+      ],
+      "unresolvedConcerns": [
+        "Latent goal semantics not independently verified",
+        "Mixed cited/reproduced baseline protocol"
+      ],
+      "reviewSha256": "d4e0be160bbaa81e1489fb62b1472368d04119cb3a17acdca043dad350b5b701",
+      "publisherPdfSha256": "ff27e803203c6ea2ea1e0d056c94d675e07512501ce1f60901312527d8dbb576",
+      "publisherPages": 11
+    },
+    {
+      "selectionId": "C26-002",
+      "reviewPath": "src/content/cikm_2026/C26-002.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841166?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 11 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§3.3–3.6 masked full-length GRU, EMA proxies, binary cross-stream InfoNCE, asymmetric residual",
+        "Table3 Games NDCG.0650 vs.0570; Toys NDCG.0631 vs.0531, HR.1024 vs.1043; ML1M HR.3253 vs.3301",
+        "Table4 Games train26.21s vs Mamba18.90s, memory1.14 vs.97GB; ML1M210.12s/.43s",
+        "Table5 Games w/oCL NDCG.0638, w/oGRU.0422; Figure4 cos−.091 to−.385"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate sampling not explicitly specified in setup",
+        "Narrative fastest-training statement is not true on Games"
+      ],
+      "reviewSha256": "9f7d0326164a2cbcf09ba5586d85e7e9a4ec664be40696944eea0d094c5b2387",
+      "publisherPdfSha256": "596fec4250776cbc2f8e70f8c12e6f5ea88ab406cdaaf32159fa3c98b08dabc6",
+      "publisherPages": 11
+    },
+    {
+      "selectionId": "C26-003",
+      "reviewPath": "src/content/cikm_2026/C26-003.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840620?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 11 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§4.1 full ranking;64uniform train negatives;Llama2cached;3seeds;Cold training count≤5",
+        "Table2 Beauty HR.0545 vs.0438;Toys.0666 vs.0553;Sports NDCG.0240 vs.0241 and.0309 vs.0313",
+        "Table4 B2 overall.0668/cold.0479 vs B3.0661/.0495",
+        "Table5 total12.13M/trainable7.43M;predict.004071 GFLOPs vs SASRec.001680"
+      ],
+      "unresolvedConcerns": [
+        "Trust region bounds residual, not full final transformation",
+        "Main model and ablation values should not be conflated"
+      ],
+      "reviewSha256": "93741edc9525d8ecf6156f1273cbc7edc5767193f73d200962b482ed07a482db",
+      "publisherPdfSha256": "64546ff9cffcbd28492c97f18d3941a6429fb7c835564b0452a2b81ca4d2bfc8",
+      "publisherPages": 11
+    },
+    {
       "selectionId": "C26-004",
       "reviewPath": "src/content/cikm_2026/C26-004.md",
       "sourceUrl": "https://arxiv.org/html/2609.29815",
@@ -118,6 +178,46 @@
       ],
       "reviewSha256": "84a2433c50d22c6909ce792e95bb3f4c75e665060ebc00ef7a5047ee601f56dd",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-005",
+      "reviewPath": "src/content/cikm_2026/C26-005.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840822?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 12 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§2.1–2.5 next-session positives, M+2 steps, PSL only individual anchors",
+        "Table2 SessionRec KuaiSAR R10.1076 vs.0884;N10.0717 vs.0611;SASRec recall exceptions",
+        "Table3 base.0853/undirected.0533/context.0883/full.1085",
+        "§3.6 Table4 July2026 7days,5%each,coarse ranking;relative+.094%,+.101%,+.148%,+.139%"
+      ],
+      "unresolvedConcerns": [
+        "Offline session construction has two descriptions",
+        "No numerical serving latency or online confidence intervals"
+      ],
+      "reviewSha256": "bae4238c64dc12aa1a9eb1ac60ac2fd17a33e687ddadf6da8456d219756c321b",
+      "publisherPdfSha256": "c81d65e4129114e5702623c1ee88b955d47bdbd16d840bfe9799f263074c5dd2",
+      "publisherPages": 12
+    },
+    {
+      "selectionId": "C26-006",
+      "reviewPath": "src/content/cikm_2026/C26-006.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841137?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 12 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§3.2–3.6 FFT multi-state, calibrated phase, heat-wave subtraction,inertial mixer,CE",
+        "AppendixB wave PDE solution modified,global decay omitted",
+        "Table2 Beauty N10.0472 vs.0440;Sports.0272 vs.0246;ML1M.1881 vs Mamba.1897",
+        "Table4 Electronics MUFFIN.0288 vs.0274;ML1M STAR.1934 vs.1881;train171.99 vs47.22",
+        "Table3 ML1M47.22s,7.14GB vs SAS110.26s,20.85GB"
+      ],
+      "unresolvedConcerns": [
+        "Heavy SOTA quality exceptions; physics is inductive bias not literal generative process"
+      ],
+      "reviewSha256": "e4ccc3caecab6ed0ec468e3dccd28ac619557ae0036867ee9965cdc2a29961ee",
+      "publisherPdfSha256": "bfd722a6c7cfd0a21f5c2866218138852731f67b57b940ab59a7c99a300c30f7",
+      "publisherPages": 12
     },
     {
       "selectionId": "C26-007",
@@ -220,6 +320,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-016",
+      "reviewPath": "src/content/cikm_2026/C26-016.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840130?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 8 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "Equation2 continuous closeness;Equation4 weight differentiable;Algorithm1 all in-batch positive-negative pairs",
+        "Table1 DINKuai GAUC.6705 vs.6692,AUC.7501 vs.7494,Logloss.4325 vs.4292",
+        "Table2 same collapsed pair set CombinedPair:Kuai precision.6593→.6618 atτ.3",
+        "§5.2 .8%FLOPs/1%batchtime;§5.3 20%traffic;Table4 GMV+.8030%/+1.0625%"
+      ],
+      "unresolvedConcerns": [
+        "Offline split and online uncertainty incompletely disclosed",
+        "Not uniformly better calibrated than AdaptiveTriplet"
+      ],
+      "reviewSha256": "5ef82ead286ba0c32fb30e6b5aa4673cef2d98f28191b6087c308a5a579f1181",
+      "publisherPdfSha256": "6d635a8f535e3f493c4fd00fa94cd465b8e6885c972f60f2c08d8c8a7dfbf6d2",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-017",
       "reviewPath": "src/content/cikm_2026/C26-017.md",
       "sourceUrl": "https://arxiv.org/pdf/2508.14948",
@@ -276,6 +396,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-022",
+      "reviewPath": "src/content/cikm_2026/C26-022.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840164?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 8 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§3.3–3.6 frozen1.3B/BERT,3fields,categorycacheJ10,preimpression,zero fallback,boundedlogit",
+        "§4.1 temporalTaobao3weeks/6days/1day;Amazon category/time samplednegatives",
+        "Tables2–3 SIMAUC.8215→.8258;staticCoT.8230;BERT.8224;noavailgate.8247",
+        "Table5 14days10%each50Mimpressions8Musers;CTR2.48/CVR1.95/RPM2.12relative;avg42→48msP9954ms,hit78.3%,cache1.2GB"
+      ],
+      "unresolvedConcerns": [
+        "Grounding/explanations are not causal correctness",
+        "Async refresh excluded from latency; no long-horizon evidence"
+      ],
+      "reviewSha256": "e4d369042e2414a2894b43515dc5972c10b105a4a169adf1fb13403802ee7410",
+      "publisherPdfSha256": "7a4a317315de0f7bdb764ac4dd44f6127bd6fdf816eb264142e29592e2e30c18",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-023",
       "reviewPath": "src/content/cikm_2026/C26-023.md",
       "sourceUrl": "https://arxiv.org/pdf/2502.03041",
@@ -304,6 +444,28 @@
       "checks": "Title, all five authors and CIKM DOI match source PDF URLv2. Macro four primitives, previous-day target traffic versus30day average, personalized weights; time-gap sigmoid gate with learned threshold/fixed temperature supported. Decoder-only1block/8heads/64hidden + MLP click-scoring interpretation supported. History150/85-15split; IndustrialGAUC0.6982->0.7098;3weeks/two20%arms/CTR1.8/RPM3.0/p<.01/238params verified. Source itself says0.3% latency and15.4->15.5ms; review correctly identifies rounding mismatch. Four questions present.",
       "reviewSha256": "79781ddac3dcc6f194f34d1cc074bed0b21567fe80d3319438e46e3b3551c7bb",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-026",
+      "reviewPath": "src/content/cikm_2026/C26-026.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840122?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 8 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§4.1 firstSID=label,residualRQ,Swing;§4.2 hashSIDconcat,popgate,HSTUitemsampledsoftmax256negatives",
+        "§5.1 fullcatalogwithhistoryitems,lastitemtest;PixelRec feature recipe differs from genericCLIPdescription",
+        "Table2 IndustrialR10.1849vs.1650,N10.1052vs.0920;PixelRecR200.2948vs.2925",
+        "Table3 cold globalcount<3,R10.0510vsTIGER.0271",
+        "§5.3 7days25%traffic,44routes vs43,top300,like-rate+.6/+1.91/+3.04%"
+      ],
+      "unresolvedConcerns": [
+        "No explicit SID autoregressive decoding in method",
+        "Cold global frequency and feature encoder details ambiguous",
+        "Additional-route confound online"
+      ],
+      "reviewSha256": "bffaab3bc05f836a0f4f8c71cbd251dc4bef1eed7f2bcf0dcd0857a839521ba5",
+      "publisherPdfSha256": "349f11f4baaf347ea1df1396b8465e548dbb1864bec28dddd7b3b214f8a43c21",
+      "publisherPages": 8
     },
     {
       "selectionId": "C26-027",
@@ -336,6 +498,27 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-030",
+      "reviewPath": "src/content/cikm_2026/C26-030.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840128?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 8 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§3.1–3.4 firstday→7dayLTV,5attributesonetoken,RoFormer,ordinalprobabilities,NSBRnull=0,orthogonalitypenalty",
+        "Table1 IndustrialGini.933vsCORAL.925,RMSE942.11vsCCOR987.45;Criteo71.38vs76.92;ESBCabsentonCriteo",
+        "Table4 w/onullRMSE1008.51;w/oNSBR1108.37;Table5latency1.22vs1.15ms",
+        "§4.6 14days50/50;Table6ROI6.72→8.35%,ARPPU12.90→16.98USD,cost5.34→5.27"
+      ],
+      "unresolvedConcerns": [
+        "Soft regularization described as strict guarantee; monotonicity not explicit",
+        "Target log/raw scaling needs clarification",
+        "Offline split/production baseline not fully disclosed"
+      ],
+      "reviewSha256": "edc58aa2aaa9469cc11f118b3da9c6689a6de2b641745228ee565e601c7343fc",
+      "publisherPdfSha256": "d076542a191ad55c75767958a5a5138deece075fd33dcdf934652df95e1737af",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-031",
       "reviewPath": "src/content/cikm_2026/C26-031.md",
       "sourceUrl": "https://arxiv.org/pdf/2510.09393",
@@ -346,6 +529,48 @@
       "correctionApplied": "Disclosed7-author preprint vs8-author conference record, including absent Ning Tang."
     },
     {
+      "selectionId": "C26-032",
+      "reviewPath": "src/content/cikm_2026/C26-032.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840142?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 8 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§3.2 embeddingchange/warmup,DCNtop1%;§3.3 GPT4o6MstudentMSE,quality*interactionprobability",
+        "AppendixATables4–6 PAErecall.887precision.202,DCNAUC.968,labels94/88%,coldquality.802,action.713",
+        "§4.1 reversal/exclusion >14days;Table1viewer8.91/3.32/5.41derived,streamer9.65/6.79observed",
+        "Tables2–3 removalembeddingmonitorhotcount−18.8%,userrelativevalueVDR−30.2%"
+      ],
+      "unresolvedConcerns": [
+        "Viewer effects are indirectly estimated; not direct unified A/B uplift",
+        "No complete traffic/latency/confidence interval details"
+      ],
+      "reviewSha256": "6bf886b1681e21d6a1ecda1a4ea1a2ae2f540b37bb9169bf737920d90a9e6c1d",
+      "publisherPdfSha256": "c91db25c9982be34853603104043c3c154755ec1598f3528022244113a927f7e",
+      "publisherPages": 8
+    },
+    {
+      "selectionId": "C26-033",
+      "reviewPath": "src/content/cikm_2026/C26-033.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840977?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 10 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§3 shareditemspace,KGfrompublicattributes,SRGNN,encodergradientssignature;Algorithm1line14fullmodel+noisysignature upload",
+        "§4.1 10clientsDirichlet.5,Delicious/Gowalla/Foursquare;split/candidates not specified in setup",
+        "Table2 DeliciousHR10 40.43vs31.23%;Gowalla48.53vs36.44;Foursquare59.76vs50.27",
+        "Table3 noKASIDelicious24.97,Foursquare58.66;randomgraph34.33/56.63",
+        "§4.4 30%clientGaussianσ.5;Table4Laplace.1HR20 48.23vs49.75,.2→34.37"
+      ],
+      "unresolvedConcerns": [
+        "97% payload claim only signature calculation,fullmodel still uploaded",
+        "LDP formal accounting and protection of model parameters not established",
+        "Evaluation temporal/candidate protocol incompletely disclosed"
+      ],
+      "reviewSha256": "12b7b8660a5f9a51628c4e5b3d8a133d00c2dded17b01adeccc82faa2e55e182",
+      "publisherPdfSha256": "7a32c4e40572bfaa2d1fdd8be7ee7e20fe73ee0301bead9127621529efd0b55c",
+      "publisherPages": 10
+    },
+    {
       "selectionId": "C26-034",
       "reviewPath": "src/content/cikm_2026/C26-034.md",
       "sourceUrl": "https://arxiv.org/html/2608.10929",
@@ -354,6 +579,50 @@
       "checks": "Title and all five authors match. Frozen tokenizer, local CF reliability interface, shared/private experts and prototype aggregation supported. Six scenarios over five stated Amazon domains supported. Per-client per-round upload 5.1M/20.6MB vs 17.4MB; 4.3 vs 3.5 min; GBS target N@10=0.09 at 288MB vs435MB all verified. Review correctly distinguishes per-round cost from convergence communication and raw-log secrecy from formal privacy. Four questions present.",
       "reviewSha256": "8e52267b27c4c18a4d89f9d271983dfc6e3d517bcde72e670d35ebfd6820823a",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-035",
+      "reviewPath": "src/content/cikm_2026/C26-035.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840997?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 11 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§4.2–4.4 collaborationprojector,orderperturbation,Taylor+activation,globalwidth/layerpruning,physicalcompactfinalization,KLablation",
+        "§6.1 allAmazon inclIndustrial,history10,5core,timestamp8:1:1,teachersQwen.5B/1.5B",
+        "Table2 retention82.4/78.4/75.7%;nonembedding22vs357M;GamesHR20.1128vs.1198",
+        "Table3 retention72.4vs67.5%;nonembedding68/70vs1310M;OfficeSASRecallhigher",
+        "Figure5OfficeVRAM5.48→2.61GBthroughput3→7.51total1623.35→647.63s;CDs6.4→4.56GB1.21→1.55/s"
+      ],
+      "unresolvedConcerns": [
+        "Nonembedding parameter count is not full model size",
+        "Title/SID decoding evaluation details limited; no production A/B",
+        "Retention not quality preservation without loss"
+      ],
+      "reviewSha256": "a66e86f5a72a69f1dde5b5cf5fa8381548e38932c3b04087e4cea197c567d905",
+      "publisherPdfSha256": "c19dd24546f461c45758449abb6690f671f8354d18910dcde4151c61671a94e5",
+      "publisherPages": 11
+    },
+    {
+      "selectionId": "C26-036",
+      "reviewPath": "src/content/cikm_2026/C26-036.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841145?download=true",
+      "sourceLabel": "Окончательная публикация ACM CIKM 2026, PDF, 12 стр.",
+      "sourceVersion": "Окончательная конференционная публикация ACM CIKM 2026",
+      "checks": [
+        "§§3.2–3.5 1CF4semantic,maskedhistoricalqueries,futuremasked,fullcatalog+slot+reconstruction+auxFNR,mainnegativesunchanged",
+        "§4.1 Qwen2.5-1.5BLoRA,history20,metadata16,fullcataloglast2split",
+        "Table2BeautyR10.1042vsSET.0941,N10.0565vsEAGER.0525;SportsR20.0754vs.0675;ToysN5.04642vs.0464",
+        "Table3BeautyR10withoutMSA.0904,FNR.0941,CF.0886,semantic.0943;Figure4G4R10.070vsCoVE.050",
+        "Table4BeautycategorymacroF1semantic.786vsCF.398;Figure6latencychartnotexacttabulation"
+      ],
+      "unresolvedConcerns": [
+        "Tiny ToysNDCG5 difference relative to uncertainty",
+        "Fullcatalogsmallscale;multivectormemory/ANNscaling not validated",
+        "FNR does not remove negatives from main CE"
+      ],
+      "reviewSha256": "3782e11506fc2584fdb8c8400b85b8d7670658eb34815a2decab49a0fcc0a9a5",
+      "publisherPdfSha256": "d663f8ef28099a5d4d48d6fa3c4625bbd0ddaae070375ff110fc41f05267517e",
+      "publisherPages": 12
     },
     {
       "selectionId": "C26-037",
@@ -426,6 +695,45 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-046",
+      "reviewPath": "src/content/cikm_2026/C26-046.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840931?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3,§5.1: mixed chronological leave-one-out, future targets excluded",
+        "§4.3: top-3 semantic candidates; adaptive Gumbel selection; alignment and distillation",
+        "Table2 Phone HR .5457 vs .4023; Clothing NDCG .7714 vs .7210",
+        "Table4: 3.14M trainable params; 3.87s all-user inference; offline semantic extraction"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate pool unspecified in §5.1.4"
+      ],
+      "reviewSha256": "fa1580de671af1a5eda42251561f2b8f593bd1973b25d299cf1bf6ef322f6516",
+      "publisherPdfSha256": "4193299177de28ce2ba031671c883c6e5f05f5fb10b01215dcd54838f85e735f",
+      "publisherPages": 11
+    },
+    {
+      "selectionId": "C26-047",
+      "reviewPath": "src/content/cikm_2026/C26-047.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840965?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 12 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§4: low-rank domain-adapted DRQ, L=3 K=256; per-layer routing; HCL Lorentz; two stages",
+        "§5.1: 99 negatives sampled ranking, 5-core, maxlen50",
+        "Table2 Electronic HR .5791/.5289; NDCG .4220/.3775 vs LLM-EDT",
+        "Table3 Clothing full .8414; w/oID .7512; w/oDRQ .8123; w/oRouter .8265",
+        "§5.5 overlap25/50/75; §5.6 cold<10; Table4 12.07M/6.63s"
+      ],
+      "unresolvedConcerns": [
+        "No zero-overlap/full-catalog experiment shown"
+      ],
+      "reviewSha256": "13aab3665cd063a650e7fe020936a80f57ba01376fae0129afc5ad5dbfcfab95",
+      "publisherPdfSha256": "72ec6e385ba22674c4c198be2a37048a12af9d8106e748194380056468c9a4e9",
+      "publisherPages": 12
+    },
+    {
       "selectionId": "C26-060",
       "reviewPath": "src/content/cikm_2026/C26-060.md",
       "sourceUrl": "https://arxiv.org/pdf/2602.21009",
@@ -457,6 +765,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-062",
+      "reviewPath": "src/content/cikm_2026/C26-062.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840006?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3: deterministic same-user positive/full views, shared SASRec; BT annealing; inference positive-only",
+        "§4.1 Kion prefilter300sec, negative15%; §4.4 global80/10/10 warm mixed-feedback eval paired targets",
+        "Table2 ML HR .0742→.0919, NDCG .0388→.0486, HRratio .6086→.5441",
+        "Table2 Kion HR .1685→.1705, HRratio .5843→.5860 (slightly worse)",
+        "§3.4 two training passes, one inference pass"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate pool not explicit; warm mixed-feedback-only test population"
+      ],
+      "reviewSha256": "f159c2e293e68a6507922951526138dbcf542628c12485341db3f4a7d7166e6f",
+      "publisherPdfSha256": "f6ea0b6cad31c14e86c1450dcf8b3c4c227d3b4820368eb84c35a9988a85255a",
+      "publisherPages": 5
+    },
+    {
       "selectionId": "C26-063",
       "reviewPath": "src/content/cikm_2026/C26-063.md",
       "sourceUrl": "https://arxiv.org/html/2609.31253",
@@ -470,6 +798,25 @@
       ],
       "reviewSha256": "58e16ab3a06c03e6afe35a97ee3766f428975f66e4e1859abb5bc509f9069c85",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-064",
+      "reviewPath": "src/content/cikm_2026/C26-064.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839974?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 6 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§2.3/§3.1 GPT4o two-round Pref→Div final judgment; list selector only",
+        "§3.1 exposed6-item positive proxy +6 perturbed negatives; seven-list task",
+        "Table1 ML Acc .66 vs RankGPT .57; Kuaishou .65 vs PRM .57; NDCG3 .8672 vs FastDPP .8553",
+        "Table3 ML NDCG3 .8576/.7703/.9012; diversity .982/.598; PDF .5167"
+      ],
+      "unresolvedConcerns": [
+        "Controlled perturbed-list benchmark, no online user outcome; insufficient split/cost uncertainty detail"
+      ],
+      "reviewSha256": "2ecd9c7170e01b566db1374c0b8e26cbad7d2d9b2f632146628ebf6194340b4d",
+      "publisherPdfSha256": "a32057ce34c6c6ca6e89a9d0ec5ad2d1023848a8672fbfb20769ee31a8e7a7d4",
+      "publisherPages": 6
     },
     {
       "selectionId": "C26-065",
@@ -487,6 +834,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-066",
+      "reviewPath": "src/content/cikm_2026/C26-066.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840168?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 8 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3 action-item inputs, P-CAR shared/cascaded C-CAR, optional head union",
+        "§4.1 public full ranking + LOO; industrial LRecall two consecutive next targets",
+        "Table1 Yelp Recall20 P .0985 C .0965 HSTU .0935; Table2 QQRecall200 .4490/.4408 LRecall .4189/.4050",
+        "§4.6 oneweek 30%vs30% HSTU, p90<20ms; Table3 QQ +.57/+2.93; WeSing +2.16/+2.70",
+        "Table4 WeSing target switch watch2.16→1.39 following2.70→5.20"
+      ],
+      "unresolvedConcerns": [
+        "LRecall short multi-step proxy; online effect sizes relative, no precise intervals shown"
+      ],
+      "reviewSha256": "3c9ea0ee163eb0447b99e79a97bf8cb3e51257f5e84b7eb668a6cbfe27a3215b",
+      "publisherPdfSha256": "611aae87e86492f47f9ff478d4b19db3587d8cfe22a594edee9ca550fcee9b72",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-067",
       "reviewPath": "src/content/cikm_2026/C26-067.md",
       "sourceUrl": "https://arxiv.org/html/2606.08604",
@@ -495,6 +862,45 @@
       "checks": "Title and all five authors match. Shared encoder, SID generation and item scorer supported; same2048-SID pool 0.8209->0.8552 item Recall@1000 verified. Seven-day test, treatment4%, replacement of >15 candidate generators plus preranker, TLT +0.25% not statistically significant all supported. Review correctly avoids claiming proven engagement lift. Four questions present.",
       "reviewSha256": "b73b2ac3eb36b497ee116c806968e7bd633c6f3196d6bb3b91f78e8ac8853fc1",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-068",
+      "reviewPath": "src/content/cikm_2026/C26-068.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840009?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3 SAN mean uncertainty minus variance, nested masks; SUD unique partial states max-path",
+        "§4 SentenceT5 OPQ4x256, J2/4, lambda.01, Toys dim1024 vs256",
+        "Table2 Sports R10 .0584 vs .0550 N10 .0321 vs .0305; Toys R10 .0866<RPG .0869",
+        "Table3 Sports Base .0548 SAN .0577 SUD .0565 both .0584"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate pool not explicit; main baseline table partly prior-study values; no latency table"
+      ],
+      "reviewSha256": "ba402710bcbd2c03341a22300922e42d01125cfc11ec5d0c21e248c47f720af1",
+      "publisherPdfSha256": "83fdb4b83124f9a58b406ca744e648bf7ebedc2b1c276244db3c8f1f660058e3",
+      "publisherPages": 5
+    },
+    {
+      "selectionId": "C26-069",
+      "reviewPath": "src/content/cikm_2026/C26-069.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840061?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 6 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§2.1 deterministic category/brand + independent KMeans on PCA/raw embeddings (intro OPQ differs)",
+        "§2.3 progressive suffix masks and target expansion; §2.4 validity pair matrix +uniqueness",
+        "Table1 Sports R10 .0804 vs DiffGRM .0550; Toys .1021 vsRPG .0869",
+        "Table2 Toys full .102/.061/dup.092; noMask .088/.048/dup.267",
+        "Table4 Beauty uniqueness1 .0953 dup.0964, uniqueness10 .0880 dup.0649"
+      ],
+      "unresolvedConcerns": [
+        "Incomplete implementation/evaluation details; intro suffixOPQ vs §2.1 KMeans; code collisions unspecified"
+      ],
+      "reviewSha256": "4731176f17cf84a57bed76db9f3d983137a8c16af38cae0366d7147f50936863",
+      "publisherPdfSha256": "380ba440a3f87e4cc61fbfe45350a62bfdbeed7377bcacd94446b24c0be0fb78",
+      "publisherPages": 6
     },
     {
       "selectionId": "C26-070",
@@ -552,6 +958,84 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-075",
+      "reviewPath": "src/content/cikm_2026/C26-075.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840140?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 8 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§2 Seoul221users/1099POIs CA3957/9690; global80/10/10 warm-only; traffic60min/5min flooring",
+        "§3 multimodal alignment; STHGCN +Haversine candidates; Llama2longlora7B",
+        "Table2 SeoulAcc .6888 vs .6742; CA .2682 vs .2403; w/oTraffic .6659/.2613",
+        "Table4 CA noDistance .2434 noBoth .2311; Table3 H100 total253s/2929s"
+      ],
+      "unresolvedConcerns": [
+        "No online driving/route ETA outcome; partial literature baseline values; encoder/imputation temporal boundaries need verification"
+      ],
+      "reviewSha256": "b8642e0b18e34a52022d6daae8bb634c487c86d96ef0204f9f1ac0dd724bce64",
+      "publisherPdfSha256": "42b6ad62e8b991a59a6d39e9b4bc230e2e15df44a5de229bd6b28f34d8d98159",
+      "publisherPages": 8
+    },
+    {
+      "selectionId": "C26-076",
+      "reviewPath": "src/content/cikm_2026/C26-076.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840661?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 12 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3 ID-free text/image representations, CLIP frozen3layers; causal co-occurrence +modalityMoE+fusion",
+        "§3.5 inbatch negatives/popularity subtraction training-only; §3.6 context-average static item table/full catalog",
+        "Table2 Office HR10 .1233 vs PMM .0958 NDCG .0833/.0677; InstrumentN10 .0914/.0803",
+        "Figure5 Office191s IISAN184 LoRA371 full515; memory10.6/8.7/60.4GB"
+      ],
+      "unresolvedConcerns": [
+        "Exact split not specified in §4.1; training-only context bound for item precomputation needs verification"
+      ],
+      "reviewSha256": "66cea387d3ad38c6c172137f764b1e002d153b778db31b8e152aef00cab5e6ae",
+      "publisherPdfSha256": "a541d9531287fae15892b1d9b16ebfafa4f7962c435b3fa2a01525be6f8c7119",
+      "publisherPages": 12
+    },
+    {
+      "selectionId": "C26-077",
+      "reviewPath": "src/content/cikm_2026/C26-077.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840052?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 6 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3.4 orthogonal decomposition; frozen standardizedlogfreq prior; §3.6 gamma/b controllability",
+        "§3.7.3 final score normalized Base+OPD ensemble; full-vocabCE/optionalorthogonalCL",
+        "§4.1 LOO/fullcatalog, five-seed ownresults; Table1 SportsHR .0602±.0010 vsBase .0570±.0011 andICS .0566",
+        "Table3 tailSports cosine Base .067 vsOPDorth .022; Tables4/5 effective rank not uniformly improved",
+        "§3.8 D+1 module params, not complete ensemble cost"
+      ],
+      "unresolvedConcerns": [
+        "Single-axis orthogonality not statistical independence; total ensemble serving overhead not measured"
+      ],
+      "reviewSha256": "47344c418d9579a2eb652e586f3385ce69b5451bb5c438a5090276e1b57d7a5e",
+      "publisherPdfSha256": "4bddebca2ca9e1ed28f98cb81ee41d21a6235845f0fa4f31eb19abeaa1b8e3f1",
+      "publisherPages": 6
+    },
+    {
+      "selectionId": "C26-081",
+      "reviewPath": "src/content/cikm_2026/C26-081.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840028?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 6 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3 PlackettLuce withoutreplacement, GRFTL/R, PPO clipped +squaredlogratio not exactKL",
+        "§4.1 GTS .9 quantile unsampled filterseen; trainingfutureW1/10 only",
+        "Table2 Beer allN20 .0549→.0688; MLall .1487→.1787 Recall .0676→.0808; MLlast .1026→.1086",
+        "Table4 ML CEmp .1663 GRFTmp .1806; §4.1.4 H1001.7h vsCE8min",
+        "Figure3 fixedslatebudget intermediateG optimum vsfixedcontext risingcompute"
+      ],
+      "unresolvedConcerns": [
+        "No online effect; limited reward diversity and retrieval-pool scaling evidence"
+      ],
+      "reviewSha256": "83dff0f76fcd6b3416e9e06357efa85abf15ae270b2b925195651615ceb7cd43",
+      "publisherPdfSha256": "4ade977eb1598a638b619432333439131b264dfd444d0fa29704ff3b3c93ae2d",
+      "publisherPages": 6
+    },
+    {
       "selectionId": "C26-082",
       "reviewPath": "src/content/cikm_2026/C26-082.md",
       "sourceUrl": "https://cdn.amazon.science/db/e1/a5a526154cfdb5e29a0baaaa43c5/scipub-approval152129-48092713-basketformer-contrastive-masked-language-modeling-with-temporal-encoding-and-repeatexplore-gating-for-nextbasket-recommendation.pdf",
@@ -585,6 +1069,46 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-084",
+      "reviewPath": "src/content/cikm_2026/C26-084.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841008?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3 frozenSentenceT5table/projection, semantic continuous token target; synchronizedtargetpair noised, historyclean",
+        "§4.1 LOO/fullitemranking no samplednegatives, 32steps dimension128 maxlen50",
+        "Table2 BeautyHR10 .0831/.0789 N10 .0478/.0461 vsADRec; Sports .0436/.0426 vsCaDiRec",
+        "Table3 BeautyH5 full .0564 noCondition .0395 noSemLoss .0554 noMix .0540 noAlign .0564",
+        "AppendixA.2 Table4 DiffuRecBeautyN5 .0386→.0397 Sports .0199→.0212"
+      ],
+      "unresolvedConcerns": [
+        "No online evaluation; tSNE not sufficient collapse metric; projection initialization detail limited"
+      ],
+      "reviewSha256": "6577da51d3f89ff204eb0dad7150abf9d5aeddbac3225cdb49400f3e84c7512c",
+      "publisherPdfSha256": "ec74fe5c45e66e6b4af209b09416690db7e5ca9e4be4921e7be1bab020d182ae",
+      "publisherPages": 11
+    },
+    {
+      "selectionId": "C26-085",
+      "reviewPath": "src/content/cikm_2026/C26-085.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839844?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 страниц",
+      "sourceVersion": "Final ACM CIKM 2026 publisher PDF",
+      "checks": [
+        "§3.1 stochasticGaussian/categoricaltraining and deterministic posterior mean/argmax serving; decoder training-only",
+        "§3.2 SIDtextalignment/CPawareprediction200SID+50queries; fourtokens/no masking",
+        "§4.1 corpus330M sample10M; downstream1Musers70Minteractions; L4 K1024 dim32",
+        "Table1 industrialRMSE .4996→.6135 collision11.54→8.85 PAS.9636→.9676; baseline21.89% reduction vsRQK+11.33",
+        "Table2 single-runHR10 .239→.412 HR20 .262→.449; Table3 completion49.88→51.14(+1.26pp), skip40.20→39.34(-.86pp), play12.85→13.22min"
+      ],
+      "unresolvedConcerns": [
+        "Downstream split/candidate pool unspecified; no component ablations or confidence intervals; ELBO practical simplification not independently derived"
+      ],
+      "reviewSha256": "9428cb2b4285ba4601dadfe48ff2f7b8ac9714e0ce136b977ca5a88b3a7f73ff",
+      "publisherPdfSha256": "4dd741c744d50d0482c79b39602b6cfc08b0530186ec1b3be41c58e38c705e95",
+      "publisherPages": 5
+    },
+    {
       "selectionId": "C26-086",
       "reviewPath": "src/content/cikm_2026/C26-086.md",
       "sourceUrl": "https://arxiv.org/html/2605.25330",
@@ -593,6 +1117,25 @@
       "checks": "Title and all four authors match; CIKM DOI matches. CCE item-level collision correction and minimum-cost last-level reassignment with prefix-capacity condition supported. Four datasets/five tokenizers, max collision30.52%, max relative Hit@10 inflation103.36%, pairwise rank flips verified. Review correctly scopes guarantee and metric meaning; four questions present.",
       "reviewSha256": "58c211f357a79823b3376347ffcd098b5f604c5bb4b2e09b3d7bee858027eb68",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-087",
+      "reviewPath": "src/content/cikm_2026/C26-087.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840848?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3.2–3.3: LLaVA+LoRA collaborative-aware tokenization, PCA/OPQ and parallel modality heads",
+        "§4.1: 5-core, leave-one-out, LLaVA-v1.5-7B, codebook256",
+        "Table3: Toys HR5 .0708/.0573 RPG; MicroLens HR10 .0739/.0596; Sports HR10 .0502/.0494 UniSRec",
+        "Table4: AMTGRTV tokenizer training11767.29s,37.87G; rec inference6.71s vs RPGTV6.59s"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate pool/negative count not specified in §4.1.3; tokenizer setup cost is high and table4 inference seconds are aggregate experiment times, not request latency."
+      ],
+      "reviewSha256": "c2b23a118134bf97615a19bdb47b832b0c44967e14bb8170b2980d1ee577e151",
+      "publisherPdfSha256": "b517c14c4d9dc174e43046e578756dd4704052fb7f02a7ee01b8347da52f1e34",
+      "publisherPages": 11
     },
     {
       "selectionId": "C26-088",
@@ -615,6 +1158,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-090",
+      "reviewPath": "src/content/cikm_2026/C26-090.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839884?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3.2–3.3: target-conditioned stage construction, loss masked to target, final no-prefix stage",
+        "Table1: Tmall R10 54.19→57.81; Industrial24.63→26.54; N10 17.47→18.77",
+        "Table2: w/o no-prefix R10 23.66, w/o schedule24.95",
+        "Table3:18.1ms vs TIGER18.2, RCLRec25.8;training12.3h vs6.1h",
+        "§4.2 online: May12–19 2026,20%traffic,TIGER baseline,orders+3.52%,GMV+2.98%"
+      ],
+      "unresolvedConcerns": [
+        "Exact evaluation candidate pool, latency conditions, online confidence intervals and sustained retention are not disclosed."
+      ],
+      "reviewSha256": "39249639314149f0c811548e47ee2389e0a687d6d8be77d516a9bf71cd696804",
+      "publisherPdfSha256": "8b7789ac15fbfa7d5f2d7578eb08cdca0307fc5e4f1fb6dba3407310c3c64665",
+      "publisherPages": 5
+    },
+    {
       "selectionId": "C26-092",
       "reviewPath": "src/content/cikm_2026/C26-092.md",
       "sourceUrl": "https://arxiv.org/html/2610.36890",
@@ -628,6 +1191,45 @@
       ],
       "reviewSha256": "4eca9091ea6c0f4ab9795978c6834ae8e3eb30d31aa76c3a8cb2cdb46abc9f7d",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-094",
+      "reviewPath": "src/content/cikm_2026/C26-094.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839913?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3: generative probability contrastive scores; causal attention; layerwise tail states prepending",
+        "§4.1: six Amazon domains,5-core,LOO,maxlen10,Qwen2-.5B,2000SFT+1000GCL",
+        "Table1: GRU4Rec Baby R20 .0477 vs .0421,N20 .0213/.0185; SASRec Movies R20 .0871/.0831,N20 .0452/.0425",
+        "Table2 Movies GRU4Rec R20 .0523,.0581,.0611,.0652"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation negative/candidate pool and embedding extraction wall-clock cost not disclosed; out-of-domain evidence limited to another Amazon category."
+      ],
+      "reviewSha256": "40ff374d8b77b28fc70d8cc90d52283c4889702309f13137c09da793bc6899ba",
+      "publisherPdfSha256": "d4ce5e788f694a123319f33fbae3fc0033823dd4ffe81c2eb1c17c0c79669864",
+      "publisherPages": 5
+    },
+    {
+      "selectionId": "C26-096",
+      "reviewPath": "src/content/cikm_2026/C26-096.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841015?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§4.2–4.5: item/user adapters, shared SASRec,LLM-query source attention, Eq17 positive entropy +Eq18 loss sign ambiguity",
+        "§5.1: temporalLOO,1+99negatives,seeds42/44/45,DeepSeek7B",
+        "Table2:3domain Sport HR10 .5936/.4862;2domain Cloth .5342/.5605,N10 .4261/.4719",
+        "Table3 Tools HR10 .5617/.3825;Table5 uniform .5276,noLLMprofile .4836;Table4 Home N10 .3980 vs noWeighting .4001"
+      ],
+      "unresolvedConcerns": [
+        "Eq17 defines positive entropy and Eq18 adds it to minimized objective with positive lambda, contrary to textual smoothing motivation; implementation sign not verified.",
+        "Table2 two-domain Cloth below LLM4CDSR and Table4 Home NDCG better without weighting; do not claim universal improvement."
+      ],
+      "reviewSha256": "7211cbdd0a2d573e409748ad70962062cad3e9c1905198cada676d8af8550307",
+      "publisherPdfSha256": "e8a180a948a4203562fdba7f739bef69db9249abe7cfbdeafbe8907b02dfaadc",
+      "publisherPages": 11
     },
     {
       "selectionId": "C26-097",
@@ -644,6 +1246,28 @@
       ],
       "reviewSha256": "b8e2ce1ac12b5f2d825c913e9718e8ea070eaf516585f080de5b1c28e7fa8139",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-098",
+      "reviewPath": "src/content/cikm_2026/C26-098.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841142?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3.2–3.4:explicit STI/LTI/Pper,deterministic external updates,decision/reasondistillation,DCR",
+        "Table2 MicroLens MUSERAUC .8856 vs MUSE .8239 (7.49%) and MLLMMSR .7751;MoviesN10 .4795/.4296",
+        "Table4 MicroLens AUC .7751→.8364→.8856",
+        "Table3 Movies ROUGE1 .3688 vs LLaVA .3692;ROUGE2 .1010/.1017",
+        "§4.6:72.5ms vs185.5ms,UA offline/session-level"
+      ],
+      "unresolvedConcerns": [
+        "Evaluation candidate pool not specified; GPTScore/lexical overlap are proxies, not causal explanation fidelity.",
+        "MicroLens AUC Gain7.49% compares MUSE .8239, not MLLM-MSR .7751. MovieLens ROUGE1/2 slightly below LLaVA.",
+        "User Agent construction is excluded from online latency; no complete lifecycle cost or industrial A/B."
+      ],
+      "reviewSha256": "d775d68330c4740b0100fe33aad729f280fad80944bb8becf84d30a8d0cbc104",
+      "publisherPdfSha256": "f31e3f70ff3739a6fe813a229ddf458ad8ad839d815628344f1845f82e5029fe",
+      "publisherPages": 11
     },
     {
       "selectionId": "C26-099",
@@ -672,6 +1296,27 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-103",
+      "reviewPath": "src/content/cikm_2026/C26-103.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840127?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 8 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "Eq5 personalized multiplicative score;§3.3 retention90days and α[.4,.8];§5.1 daily cachedretention",
+        "§4.1:30Mrating14.6Musers2.5Mitems;20Mretention16.4Musers",
+        "§4.3 withinUserAUROC .658→.687;Table2 retention .756/.615newusers",
+        "Table5 stages incremental:NMV +.12% and+.35%;reportedcumulative+.47 vsnonpersonalizedquality,OutputNQD-.48pp",
+        "§5.3 2–3weeks2%traffic4M/group>150kratingsp<.05;§6 limitationsratingsselection/confounds"
+      ],
+      "unresolvedConcerns": [
+        "Ratings are selected feedback; retention90days remains confounded despite feature restrictions.",
+        "A/B reports NQD proxy and NMV over2–3weeks, not observed90day retention uplift; sequential controls differ by stage."
+      ],
+      "reviewSha256": "91c8135a152d87a1f39890836efd2a2b98fb7ff5a89e642d37eb60ddd8e59be3",
+      "publisherPdfSha256": "ff1ae4c21ecd7002163175741d067f2c36ca085511e6126c830b0bcc57332655",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-104",
       "reviewPath": "src/content/cikm_2026/C26-104.md",
       "sourceUrl": "https://eprints.gla.ac.uk/392429/2/392429.pdf",
@@ -697,6 +1342,26 @@
       ],
       "reviewSha256": "ee3fb0473d86f91cc8eb3036b24f38039517323316fdc6bbe3b49ed93c149c87",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-106",
+      "reviewPath": "src/content/cikm_2026/C26-106.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839973?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§2:frozenSASRec softprefix+intenttokens,MLP,crossattention,selfattention,maskedintentInfoNCE",
+        "§3.1:iterative5core,LOO,fullranking,maxlen50,200epochs",
+        "Table2 ToysR10 .0802/.0732 IOCRec,Yelp .0703/.0621;InstrumentsR20 .0828/.0788",
+        "Table3 Toys20%noise .0802→.0719 vs SASRec .0708→.0576",
+        "Fig2 Toys withoutLID .0708,withoutICR .0773"
+      ],
+      "unresolvedConcerns": [
+        "No measured end-to-end cost including frozen distiller pretraining; random20%replacement only one robustness regime."
+      ],
+      "reviewSha256": "deae1732260ddc68880e54d1033aeb41ece32ec089fa7aa0e45405132e518c46",
+      "publisherPdfSha256": "6727daecece0be29fb5fe6af59bbf344ad6d0c3b2aeab3a1019c3b6c8c6277ad",
+      "publisherPages": 5
     },
     {
       "selectionId": "C26-107",
@@ -730,6 +1395,26 @@
       "correctionApplied": "Identified arXiv v2/date and alternate title; disclosed extended32-author list containing all18conference authors."
     },
     {
+      "selectionId": "C26-110",
+      "reviewPath": "src/content/cikm_2026/C26-110.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840132?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 8 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3:30secondsegments aggregated productcard,behavioralhierarchyclick/pay/GMV,3levelRQ,GRPOretrieval,decoder",
+        "Table1 purchaseHR80 86.9%vsOneLive68.6%=18.3pp;noRPA81.6,noRPA/BGQ65.5",
+        "Table3 size256^3 SIDCR2.18%,authorCR4.62%",
+        "Table4/§4.2 14days,exposure+1.29%,orders+1.31%,buyers+2.72%,GMV+5.02%;control/trafficnotdisclosed"
+      ],
+      "unresolvedConcerns": [
+        "Table1 Imprv entries are percentage-point differences despite % labels; review explicitly distinguishes them.",
+        "Online A/B control,traffic share,confidence intervals not disclosed in §4.2;30sec extraction is not proven end-to-end refresh latency."
+      ],
+      "reviewSha256": "fc3a46a25c217d845a4a320c62412767e13707b240485b24b49895f6cd251da4",
+      "publisherPdfSha256": "4a23e16522acb2ab8b6337893e241c3cc656294d470fd440d14faa6076c54e72",
+      "publisherPages": 8
+    },
+    {
       "selectionId": "C26-111",
       "reviewPath": "src/content/cikm_2026/C26-111.md",
       "sourceUrl": "https://arxiv.org/html/2601.20199",
@@ -748,6 +1433,27 @@
       "checks": "Title and all six authors match. MLLM SFT -> RQ-VAE, CGAE individual/cluster components, asymmetric contrastive/activity gating and HFA/first-SID hard retrieval supported. Tmall36M users/~300M items; AUC relative+0.346%, GAUC+1.53%; two weeks, two10% traffic arms, CTR+2.76%, GMV+3.47%, tail-item threshold<10 exposures with95.8% items supported. Four questions present. arXiv source contains placeholder publication fields; review appropriately cites arXiv rather than claiming final-PDF inspection.",
       "reviewSha256": "c35fb9e231620bda676c7bbd0919327d7f414a7fe47d6bed525bfa1c6ee53067",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-113",
+      "reviewPath": "src/content/cikm_2026/C26-113.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840019?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 6 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3:sharedcontentadapterinSASRec+,fullcatalogCE,discardencoder,RQKMeans,deterministicsuffix",
+        "§4.1 globaltimeline .9quantile,5core,unsampled@5/10/100,controlledTIGER",
+        "Table2 SportsN10 .0163/.0134Content,R100 .1415/.1154;BeautyR100 .1881/.1664Content/.1805MSE",
+        "Table2 YambdaN10PA .0100 vsEmb .0116;BeautyN10PA .0255 vsMSE .0259,R10 .0495/.0504",
+        "Table3 AdjCSO@10 first3codes excludingdisambiguationsuffix"
+      ],
+      "unresolvedConcerns": [
+        "Only one RQKMeans/TIGER instantiation; no measured adaptation cost or true new-item cold-start test.",
+        "PA below MSE on Beauty@10 and below Emb at short Yambda cutoffs."
+      ],
+      "reviewSha256": "57249341a7fb0281513ad9b985daac60c03937ed0509cbb41d6cf40a9009b62b",
+      "publisherPdfSha256": "1788993f13c6f47f960bc796a30674822c56847b5e4520f329efc98283072208",
+      "publisherPages": 6
     },
     {
       "selectionId": "C26-114",
@@ -787,6 +1493,26 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-118",
+      "reviewPath": "src/content/cikm_2026/C26-118.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839990?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 5 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3 diagnostic title-onlyBM25,k1=1.5,b=.75,LOO,filterseen,nosamplednegatives,recent5unionnotonerankedlist",
+        "§3 lasttitle Beauty6.6/Sports3.6/Toys8.8%;recent5 12.8/7.8/14.4%;controls4.3/4.0%",
+        "§4 top50ID+BM25depth80,5anchors,validationfixedweight,scoreonlycontrol",
+        "Table2 BeautySASRecR10 4.83→6.02→8.10%;CE9.80→10.52→11.09%",
+        "Table3 BeautyCEretrievable30.20→44.63%;nonretrievable6.80→6.16%;§4 noncausalpartition caveat"
+      ],
+      "unresolvedConcerns": [
+        "BM25-defined regime is conservative and not causal proof of lexical mechanism; reference models are magnitude references rather than fully controlled leaderboard."
+      ],
+      "reviewSha256": "e00b3e3288ef7631f0502d6b1f5f6552403c16a65b4827e3f8268529aa84663b",
+      "publisherPdfSha256": "a6664d47c6e312db24bfe4b1a3ed3d41c5e2706f873172cf4a1432dae7d69f77",
+      "publisherPages": 5
+    },
+    {
       "selectionId": "C26-119",
       "reviewPath": "src/content/cikm_2026/C26-119.md",
       "sourceUrl": "https://arxiv.org/html/2609.28972",
@@ -812,6 +1538,27 @@
       "correctionApplied": null
     },
     {
+      "selectionId": "C26-121",
+      "reviewPath": "src/content/cikm_2026/C26-121.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841022?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 12 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§3:continuousMSI vectors,contrastivetarget/lastitem,AMFsigmoidgates,crossattn,2expertMoE,itemwise3channelweights",
+        "§4.1:Amazon5core,H&Muser15/item10,LOO,fullcatalog,maxlen50,FashionCLIP;§4.2five seeds",
+        "Table2 ClothR10 .0583/.0507MISSRec;H&MR10 .0403/.0301IISAN;HomeN10 .0279/.0225LRURec",
+        "Tables3/5 bottom10%trainingfrequency;ClothtailR10 .0178/.0141,noGen .0072",
+        "§4.2 H&Mbatch128 66.07ms/step6.31MvsIISAN3.82ms andHM4SR8.99ms"
+      ],
+      "unresolvedConcerns": [
+        "No missing-modality/new-item evaluation; step latency is experimental batch timing, not request latency.",
+        "Eq5–6 print positive log contrastive ratios while combined objective adds them; sign convention is not explained. Review describes intended contrastive alignment without asserting literal optimization sign."
+      ],
+      "reviewSha256": "0bf4bbe4ccb37c41c3b52e9750928331bbfa93a08b6e8d6a677cd13cf8c8a933",
+      "publisherPdfSha256": "a6783c977450a1146d23f4624a7adb7618419d30e78faf5c6cdbf02eec8cb7db",
+      "publisherPages": 12
+    },
+    {
       "selectionId": "C26-122",
       "reviewPath": "src/content/cikm_2026/C26-122.md",
       "sourceUrl": "https://arxiv.org/pdf/2608.22979",
@@ -820,6 +1567,27 @@
       "checks": "Header/v2/8pages/authors; §§3–4fixedTop-Ksupport,cosinecurriculum,MIR,signedcosineformula,byteaccounting,closeddata;tables1–4allcitednumbers,8byteprose/tablecontradiction,NTP/NDPdifferentlayout,andpeak1week10%onlinewithuncertaintywithheld.",
       "reviewSha256": "6e6b311a7f6d6ffd258252cd5b2f0e284557d7a9951ff4bf9c78bff50e63c5e0",
       "correctionApplied": null
+    },
+    {
+      "selectionId": "C26-123",
+      "reviewPath": "src/content/cikm_2026/C26-123.md",
+      "sourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841083?download=true",
+      "sourceLabel": "Финальная публикация ACM CIKM 2026; PDF, 11 стр.",
+      "sourceVersion": "Publisher final ACM CIKM 2026",
+      "checks": [
+        "§2.1populartop20%trainitems,tail80%;§3branchesandstudentdistillation,zscorecalibration,warmup,singlestudentinference",
+        "§4.1 ratings>=4,peruserchronological7:1:2,fullranking,fiveruns",
+        "Table2 ML1MR20 .2237/.1655DiffRec,N20 .1685/.1163;EpinionsR20 .0908/.0881CDAE",
+        "Table3 ML1MtailR20 .0689/.0217,pop .2772/.2246;Table4 ΔExp .4782/.8895,APLT .2609/.0552;L-DiffRecbetterML1MCoverageandEpinionsGini",
+        "Table5 noTailC R20 .2455/tail .0471/ΔExp .8057;noMPresR20 .2112/tail .1313"
+      ],
+      "unresolvedConcerns": [
+        "Multi-stage training overhead and million-item scaling not measured; full-space diffusion evaluated on modest catalogs.",
+        "Exposure measures inherit logged-rating selection and are not causal item-fairness proof; neither full model nor a component dominates all accuracy/exposure metrics."
+      ],
+      "reviewSha256": "e72d3e094813c6a852e0d4dcf563fedad0442f658e15091580059a8a2af283ad",
+      "publisherPdfSha256": "53b476e0d249460fcf0697d0d0f53fabfe5bfab844637b50b3339fdbdbe312c8",
+      "publisherPages": 11
     },
     {
       "selectionId": "C26-124",

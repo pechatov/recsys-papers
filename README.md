@@ -43,20 +43,36 @@ The separate CIKM 2026 collection is published at `cikm-2026.html`, with review
 pages under `cikm-2026/c26-XXX.html`. Its 99 approved papers are recorded in
 `docs/cikm-2026-selection.json` (`scope: main`) and
 `src/data/cikm-2026-papers.json`. Reviews live in `src/content/cikm_2026/` and
-include four questions for the authors. The `basis` field distinguishes a
-full-text review from an abstract-based overview; `sourceUrl` identifies the
-source actually read. Optional shortlist entries are excluded. New conference
-reviews do not enter the main paper catalog. The conference page initially shows
-full-text reviews; the source filter also exposes abstract-only overviews.
+include four questions for the authors. All 99 reviews are based on full texts;
+`sourceUrl` identifies the source actually read, and `sourceLabel` distinguishes
+publisher PDFs from preprint versions. Optional shortlist entries are excluded.
+New conference reviews do not enter the main paper catalog. The conference page
+shows all 99 reviews; its source filter is hidden when every review uses full text.
+The visit guide groups papers by day and editorial priority, with topic, day,
+rating and presentation-format filters. Each paper shows its rationale and three
+1–5 scores (interest, evidence, importance). Ratings are in
+`src/data/cikm-2026-ratings.json`; the explicit thresholds are in
+`src/data/cikm-2026-rating-rubric.json`. They guide visits within this shortlist
+and are not objective publication-quality judgments.
+
+`src/data/cikm-2026-schedule.json` records the official appearances, rooms,
+tracks and poster boards in `Europe/Rome`. The program lists 44 oral papers and
+55 poster-only papers; a poster is not assumed for an oral paper when none is
+listed. Oral intervals are session times, never inferred individual talk times.
+To refresh from a downloaded official program snapshot, run
+`python3 scripts/extract_cikm_2026_schedule.py --program path/to/program.html`.
 
 Run `npm run check:cikm` to verify selection coverage, review identity, source
-metadata, and the author questions. After building, run
+metadata, author questions, rating thresholds and presentation schedules. After building, run
 `python3 scripts/validate_cikm_2026.py --built` to check the conference pages and
 their local links. For a build using a path prefix, pass `--base=/recsys-papers/`.
 
 `docs/cikm-2026-fulltext-access.csv` lists the source actually read for each
-review. `docs/cikm-2026-missing-fulltexts.csv` contains the remaining papers and
-publisher PDF links for checking access. The alternative-source search audit in
+review. `docs/cikm-2026-missing-fulltexts.csv` is now header-only: all selected
+papers have a full-text review. `docs/cikm-2026-browser-acquisition.json` records
+the 38 publisher PDFs acquired after the browser fix, including page counts,
+identity checks and SHA256 hashes; downloaded PDFs remain outside Git.
+The alternative-source search audit in
 `docs/cikm-2026-acquisition-audit.json` records per-paper queries, author archives,
 API results, and rejected matches. Access errors and missing API records are
 recorded separately from the existence of the paper.

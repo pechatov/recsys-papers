@@ -1,0 +1,36 @@
+---
+import { ratingsById, scheduleById, grades, formats, dayLabel } from '../lib/cikm-2026';
+const { selectionId } = Astro.props;
+const rating = ratingsById.get(selectionId)!;
+const schedule = scheduleById.get(selectionId)!;
+if (!rating || !schedule) throw new Error(`Missing CIKM visit data: ${selectionId}`);
+---
+<div class="visit-info">
+  <p class="visit-grade"><strong class={`grade ${rating.group}`}>{grades[rating.group]}</strong> · {formats[schedule.presentation]}</p>
+  <p class="reason">{rating.reason}</p>
+  <details class="scores"><summary>Интерес {rating.interest}/5 · убедительность {rating.evidence}/5 · важность {rating.importance}/5</summary>
+    <p>Редакционная оценка для выбора визитов в рамках этой подборки. Убедительность отражает качество сравнений и протокола, важность — потенциальную пользу для рекомендательных систем.</p>
+  </details>
+  <ul class="appearances">
+    {schedule.appearances.map(appearance => <li data-appearance-date={appearance.date}>
+      <strong>{appearance.kind === 'oral' ? 'Доклад' : 'Постер'} · {dayLabel(appearance.date)} · {appearance.start}–{appearance.end}</strong>
+      {appearance.kind === 'oral' && appearance.timePrecision === 'session' && <span> — время сессии, точное время статьи не опубликовано</span>}
+      <br />
+      <a href={appearance.sourceUrl}>{appearance.sessionCode} · {appearance.sessionTitle}</a>
+      {appearance.track && <> · {appearance.track}</>}
+      {appearance.room && <> · {appearance.room}</>}
+      {appearance.board && <> · <strong>стенд {appearance.board}</strong></>}
+    </li>)}
+  </ul>
+</div>
+<style>
+  .visit-info { margin: .8rem 0; }
+  .visit-grade { margin-bottom: .45rem; }
+  .grade { display: inline-block; padding: .15rem .5rem; border: 1px solid var(--border); border-radius: 5px; }
+  .grade.strong { border-color: var(--link); }
+  .reason { margin: .4rem 0; }
+  .scores { font-size: .85rem; color: var(--muted); }
+  .scores summary { cursor: pointer; }
+  .appearances { padding-left: 1.15rem; font-size: .9rem; }
+  .appearances li { margin: .55rem 0; }
+</style>

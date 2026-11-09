@@ -1,0 +1,2439 @@
+{
+  "checkedAt": "2026-11-09",
+  "timezone": "Europe/Rome",
+  "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html",
+  "programSha256": "3eaa668b6aaf09a671d8a3e19a2889b9ab21afaa7ded013794afa94bf35281d6",
+  "guidelinesUrls": [
+    "https://cikm2026.diag.uniroma1.it/oral-presentation-guidelines/",
+    "https://cikm2026.diag.uniroma1.it/poster-instructions-and-printing/"
+  ],
+  "notes": [
+    "Время местное для Рима (Europe/Rome; CET, UTC+1 на даты конференции).",
+    "Для докладов опубликованы интервалы сессий. Индивидуальное время начала доклада не опубликовано; порядок выступлений не преобразуется в точные часы.",
+    "Формат определяется по фактической записи в устной или постерной сессии, а не по типу FULL/APPLIED/SHORT.",
+    "Из 99 выбранных статей в программе указаны: только доклад — 44, только постер — 55, оба формата — 0. Отсутствие отдельной постерной записи не доказывает запрета на постер.",
+    "Для постеров сохранён номер стенда, привязанный к конкретному дню: номера могут повторяться в разные дни."
+  ],
+  "papers": [
+    {
+      "selectionId": "C26-001",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 1
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-002",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 2
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-003",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 3
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-004",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 4
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-005",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 5
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-006",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-007",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 7
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-008",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "1B",
+          "sessionTitle": "Sequential Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+          "board": null,
+          "orderInSession": 8
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-009",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 1
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-010",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 2
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-011",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 3
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-012",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 4
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-013",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 5
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-014",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-015",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 7
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-016",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 8
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-017",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 9
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-018",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 10
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-019",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 11
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-020",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Petrassi",
+          "sessionCode": "1C",
+          "sessionTitle": "Industrial Recommender Systems I",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+          "board": null,
+          "orderInSession": 12
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-021",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 1
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-022",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 2
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-023",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 3
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-024",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 4
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-025",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 5
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-026",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-027",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 7
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-028",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 8
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-029",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 9
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-030",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 10
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-031",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 11
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-032",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "2A",
+          "sessionTitle": "Industrial Recommender Systems II",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+          "board": null,
+          "orderInSession": 12
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-033",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "2B",
+          "sessionTitle": "Federated Recommendation & Privacy",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-034",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "2B",
+          "sessionTitle": "Federated Recommendation & Privacy",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+          "board": null,
+          "orderInSession": 7
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-035",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "4A",
+          "sessionTitle": "Generative Recommendation & CTR Prediction",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+          "board": null,
+          "orderInSession": 1
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-036",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "4A",
+          "sessionTitle": "Generative Recommendation & CTR Prediction",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+          "board": null,
+          "orderInSession": 2
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-037",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "4A",
+          "sessionTitle": "Generative Recommendation & CTR Prediction",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+          "board": null,
+          "orderInSession": 3
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-038",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "4A",
+          "sessionTitle": "Generative Recommendation & CTR Prediction",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+          "board": null,
+          "orderInSession": 4
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-039",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "4A",
+          "sessionTitle": "Generative Recommendation & CTR Prediction",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+          "board": null,
+          "orderInSession": 5
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-043",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "16:00",
+          "end": "18:00",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "4B",
+          "sessionTitle": "Graph & Multimodal Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4B",
+          "board": null,
+          "orderInSession": 8
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-044",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "5A",
+          "sessionTitle": "Learning to Rank & Re-Ranking",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5A",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-045",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Teatro Studio",
+          "sessionCode": "5A",
+          "sessionTitle": "Learning to Rank & Re-Ranking",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5A",
+          "board": null,
+          "orderInSession": 7
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-046",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "5B",
+          "sessionTitle": "Cross-Domain Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+          "board": null,
+          "orderInSession": 5
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-047",
+      "presentation": "oral_only",
+      "presentationNote": "В программе указан доклад; отдельный постер не указан.",
+      "appearances": [
+        {
+          "kind": "oral",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "10:30",
+          "end": "12:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Sala Sinopoli",
+          "sessionCode": "5B",
+          "sessionTitle": "Cross-Domain Recommendation",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+          "board": null,
+          "orderInSession": 6
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-060",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A001"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-061",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A003"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-062",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A004"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-063",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A005"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-064",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A007"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-065",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A010"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-066",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A011"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-067",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A012"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-068",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A013"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-069",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A014"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-070",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A015"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-071",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A016"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-072",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A019"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-073",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A024"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-074",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A027"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-075",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A031"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-076",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A032"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-077",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-09",
+          "dayLabel": "Понедельник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P1",
+          "sessionTitle": "Poster & Demo Session 1 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+          "board": "A036"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-081",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A001"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-082",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A002"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-083",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A003"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-084",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A004"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-085",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A006"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-086",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A007"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-087",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A008"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-088",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A009"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-089",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A010"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-090",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A011"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-092",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A016"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-094",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A018"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-096",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A029"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-097",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A034"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-098",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A035"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-099",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A036"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-100",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A040"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-103",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-10",
+          "dayLabel": "Вторник",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P2",
+          "sessionTitle": "Poster & Demo Session 2 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+          "board": "A053"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-104",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A001"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-105",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A003"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-106",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A004"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-107",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A005"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-109",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A007"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-110",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A008"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-111",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A009"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-112",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A010"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-113",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A011"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-114",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A012"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-115",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Resources",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A013"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-116",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A014"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-118",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A020"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-119",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Short Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A021"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-120",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A022"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-121",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A028"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-122",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A029"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-123",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Full Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A032"
+        }
+      ]
+    },
+    {
+      "selectionId": "C26-124",
+      "presentation": "poster_only",
+      "presentationNote": "В программе указан только постер; доклад не указан.",
+      "appearances": [
+        {
+          "kind": "poster",
+          "date": "2026-11-11",
+          "dayLabel": "Среда",
+          "start": "14:00",
+          "end": "15:30",
+          "timePrecision": "session",
+          "individualStart": null,
+          "individualEnd": null,
+          "venue": "Auditorium Parco della Musica Ennio Morricone",
+          "room": "Poster Area",
+          "sessionCode": "P3",
+          "sessionTitle": "Poster & Demo Session 3 · Posters",
+          "track": "Applied Research",
+          "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+          "board": "A039"
+        }
+      ]
+    }
+  ]
+}

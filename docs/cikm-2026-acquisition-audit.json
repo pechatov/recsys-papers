@@ -1,9 +1,9 @@
 {
   "checkedAt": "2026-11-09",
   "inputPapers": 41,
-  "newFullTextReviews": 3,
-  "totalFullTextReviews": 61,
-  "remainingAbstractReviews": 38,
+  "newFullTextReviews": 41,
+  "totalFullTextReviews": 99,
+  "remainingAbstractReviews": 0,
   "notes": [
     "Не полученный полный текст не означает отсутствия публикации или открытого доступа.",
     "Полнотекстовый препринт может отличаться от окончательной версии CIKM; различия отмечены в обзоре.",
@@ -12,7 +12,10 @@
   "accessMethods": {
     "t3Browser": {
       "systemLibrariesInstalled": true,
-      "result": "Blocked by container sandbox: Chromium No usable sandbox; unshare Operation not permitted."
+      "previousResult": "Blocked by container sandbox: Chromium No usable sandbox; unshare Operation not permitted.",
+      "result": "Browser sandbox fixed; all 38 remaining publisher PDFs downloaded from ACM and verified by PDF signature, parsed pages, title and DOI.",
+      "newPublisherPdfs": 38,
+      "evidence": "docs/cikm-2026-browser-acquisition.json"
     },
     "crossrefTdm": {
       "requestedDois": 41,
@@ -72,9 +75,9 @@
     {
       "selectionId": "C26-001",
       "title": "The Prism of Interest: Refracting User Needs in Session-Based Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840905?download=true",
       "queries": [
         {
           "q": "\"The Prism of Interest: Refracting User Needs in Session-Based Recommendation\""
@@ -182,16 +185,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840905?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "ff27e803203c6ea2ea1e0d056c94d675e07512501ce1f60901312527d8dbb576"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-002",
       "title": "MAPLE: Mamba-Based Adaptive Prototype Learning for Intent Disentanglement in Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841166?download=true",
       "queries": [
         {
           "q": "\"MAPLE: Mamba-Based Adaptive Prototype Learning for Intent Disentanglement in Sequential Recommendation\""
@@ -238,16 +253,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841166?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "596fec4250776cbc2f8e70f8c12e6f5ea88ab406cdaaf32159fa3c98b08dabc6"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-003",
       "title": "DART: Residual Trust and Tail-Aware Dual-View Alignment for Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840620?download=true",
       "queries": [
         {
           "q": "\"DART: Residual Trust and Tail-Aware Dual-View Alignment for Sequential Recommendation\""
@@ -432,16 +459,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840620?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "64546ff9cffcbd28492c97f18d3941a6429fb7c835564b0452a2b81ca4d2bfc8"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-005",
       "title": "CaLR: Context-Aware Latent Reasoning for Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840822?download=true",
       "queries": [
         {
           "q": "\"CaLR: Context-Aware Latent Reasoning for Sequential Recommendation\""
@@ -488,16 +527,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840822?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "c81d65e4129114e5702623c1ee88b955d47bdbd16d840bfe9799f263074c5dd2"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-006",
       "title": "Building Sequential Recommendation Models upon Thermoelastic Spectral Operators",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841137?download=true",
       "queries": [
         {
           "q": "\"Building Sequential Recommendation Models upon Thermoelastic Spectral Operators\""
@@ -579,9 +630,21 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841137?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "bfd722a6c7cfd0a21f5c2866218138852731f67b57b940ab59a7c99a300c30f7"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-013",
@@ -774,9 +837,9 @@
     {
       "selectionId": "C26-016",
       "title": "Auxiliary Focal Discrimination for Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840130?download=true",
       "queries": [
         "\"Auxiliary Focal Discrimination for Recommendation\"",
         "\"10.1145/3799682.3840130\"",
@@ -818,16 +881,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840130?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "6d635a8f535e3f493c4fd00fa94cd465b8e6885c972f60f2c08d8c8a7dfbf6d2"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-022",
       "title": "Beyond End-to-End: A Low-Latency, Retrieval-Augmented Chain-of-Thought for Scalable and Explainable Industrial Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840164?download=true",
       "queries": [
         "\"Beyond End-to-End: A Low-Latency, Retrieval-Augmented Chain-of-Thought for Scalable and Explainable Industrial Recommendation\"",
         "\"10.1145/3799682.3840164\"",
@@ -873,16 +948,28 @@
           "status": "read",
           "results": [],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840164?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "7a4a317315de0f7bdb764ac4dd44f6127bd6fdf816eb264142e29592e2e30c18"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-026",
       "title": "LASER: Label-Anchored Semantic Encoding with Multimodal-Collaborative Signals Harmonization for Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840122?download=true",
       "queries": [
         "\"LASER\" \"Shiyu Song\" recommendation",
         "\"Label-Anchored Semantic Encoding\"",
@@ -1052,16 +1139,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://dongjingwang.github.io/publications/",
           "outcome": "Страница соавтора прочитана; устаревший список, LASER и PDF статьи не обнаружены."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840122?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "349f11f4baaf347ea1df1396b8465e548dbb1864bec28dddd7b3b214f8a43c21"
         }
       ],
-      "reason": "Независимые запросы по точному фрагменту названия, акрониму и авторам, GitHub/arXiv API и страница соавтора не дали проверяемый полный текст; это не утверждение об отсутствии статьи."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+        "reason": "Независимые запросы по точному фрагменту названия, акрониму и авторам, GitHub/arXiv API и страница соавтора не дали проверяемый полный текст; это не утверждение об отсутствии статьи."
+      }
     },
     {
       "selectionId": "C26-030",
       "title": "BasisLTV: Ordinal-Guided Basis Reconstruction for Long-Tailed Lifetime Value Prediction via Semantic Behavior Compression",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840128?download=true",
       "queries": [
         "\"BasisLTV: Ordinal-Guided Basis Reconstruction for Long-Tailed Lifetime Value Prediction via Semantic Behavior Compression\"",
         "\"10.1145/3799682.3840128\"",
@@ -1109,16 +1208,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840128?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "d076542a191ad55c75767958a5a5138deece075fd33dcdf934652df95e1737af"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-032",
       "title": "LIFT: A Learning-aware Intervention Framework for Cold-Start Recommendation on TikTok Live",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840142?download=true",
       "queries": [
         "\"LIFT: A Learning-aware Intervention Framework for Cold-Start Recommendation on TikTok Live\"",
         "\"10.1145/3799682.3840142\"",
@@ -1148,16 +1259,28 @@
           "status": "read",
           "results": [],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840142?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "c91db25c9982be34853603104043c3c154755ec1598f3528022244113a927f7e"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-033",
       "title": "Transcending the Semantic Chasm: Knowledge-Graph Guided Aggregation for Cross-Silo Federated Session Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840977?download=true",
       "queries": [
         {
           "q": "\"Transcending the Semantic Chasm: Knowledge-Graph Guided Aggregation for Cross-Silo Federated Session Recommendation\""
@@ -1204,16 +1327,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840977?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 10 pages; title and DOI match.",
+          "sha256": "7a32c4e40572bfaa2d1fdd8be7ee7e20fe73ee0301bead9127621529efd0b55c"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-035",
       "title": "Co-JDPRec: Collaborative Joint Dynamic Pruning for Efficient LLM-based Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840997?download=true",
       "queries": [
         "\"Co-JDPRec\"",
         "\"Joint Dynamic Pruning\" recommendation",
@@ -1358,16 +1493,28 @@
         {
           "id": "C26-035",
           "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840997?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "c19dd24546f461c45758449abb6690f671f8354d18910dcde4151c61671a94e5"
         }
       ],
-      "reason": "Проверены Co-JDPRec, Joint Dynamic Pruning и сочетания авторов через web/MCP/arXiv/GitHub; пригодного полного текста не найдено."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+        "reason": "Проверены Co-JDPRec, Joint Dynamic Pruning и сочетания авторов через web/MCP/arXiv/GitHub; пригодного полного текста не найдено."
+      }
     },
     {
       "selectionId": "C26-036",
       "title": "MISTRec: Masked Item-Slot Token Modeling for LLM-based Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841145?download=true",
       "queries": [
         "\"MISTRec\" recommendation",
         "\"Masked Item-Slot\"",
@@ -1561,16 +1708,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://chenglizhaochen.github.io/",
           "outcome": "Попытка сайта исследовательской группы;404, не источник статьи."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841145?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "d663f8ef28099a5d4d48d6fa3c4625bbd0ddaae070375ff110fc41f05267517e"
         }
       ],
-      "reason": "Поиск дал только программу, профили авторов и нерелевантный GitHub MISTRec. Последний отвергнут после чтенияREADME."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+        "reason": "Поиск дал только программу, профили авторов и нерелевантный GitHub MISTRec. Последний отвергнут после чтенияREADME."
+      }
     },
     {
       "selectionId": "C26-046",
       "title": "SGLP: Semantic-Guided Graph Structure Learning with LLM Structural Priors for Cross-Domain Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840931?download=true",
       "queries": [
         {
           "q": "\"SGLP: Semantic-Guided Graph Structure Learning with LLM Structural Priors for Cross-Domain Sequential Recommendation\""
@@ -1618,16 +1777,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840931?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "4193299177de28ce2ba031671c883c6e5f05f5fb10b01215dcd54838f85e735f"
         }
       ],
-      "reason": "Поиск по точному названию, акрониму и авторам через web/MCP, институциональные/репозиторные фильтры и открытые API не дал проверяемого полного текста. Аннотационный обзор оставлен без изменений."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+        "reason": "Поиск по точному названию, акрониму и авторам через web/MCP, институциональные/репозиторные фильтры и открытые API не дал проверяемого полного текста. Аннотационный обзор оставлен без изменений."
+      }
     },
     {
       "selectionId": "C26-047",
       "title": "Bridging the Domain Gap: Domain-Aware Hierarchical Semantic Representation for Cross-Domain Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840965?download=true",
       "queries": [
         {
           "q": "\"Bridging the Domain Gap: Domain-Aware Hierarchical Semantic Representation for Cross-Domain Sequential Recommendation\""
@@ -1674,16 +1845,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840965?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "72ec6e385ba22674c4c198be2a37048a12af9d8106e748194380056468c9a4e9"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-062",
       "title": "Mitigating Negative Feedback in Sequential Recommendations with Barlow Twins",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840006?download=true",
       "queries": [
         {
           "q": "\"Mitigating Negative Feedback in Sequential Recommendations with Barlow Twins\""
@@ -1738,16 +1921,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840006?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "f6ea0b6cad31c14e86c1450dcf8b3c4c227d3b4820368eb84c35a9988a85255a"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-064",
       "title": "Debate4Rec: Multi-Agent Debate for List-Level Feedback and Selection in Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839974?download=true",
       "queries": [
         "\"Debate4Rec\" pdf",
         "\"Debate4Rec\" github",
@@ -1889,16 +2084,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://linjianghao.com/coming_soon.html",
           "outcome": "Прочитанная страница сообщает Full version coming soon; PDF отсутствует."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839974?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 6 pages; title and DOI match.",
+          "sha256": "a32057ce34c6c6ca6e89a9d0ec5ad2d1023848a8672fbfb20769ee31a8e7a7d4"
         }
       ],
-      "reason": "На проверенном сайте соавтора ссылка с иконкойPDF ведёт на ComingSoon; открытый препринт и репозиторий не найдены."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "На проверенном сайте соавтора ссылка с иконкойPDF ведёт на ComingSoon; открытый препринт и репозиторий не найдены."
+      }
     },
     {
       "selectionId": "C26-066",
       "title": "Controllable Autoregressive Retrieval with Long-term Action Perception for Recommendations",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840168?download=true",
       "queries": [
         "\"Controllable Autoregressive Retrieval\"",
         "\"long-term action perception\"",
@@ -2039,16 +2246,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://he-xiuqiang.github.io/publications/",
           "outcome": "Отдельный путь404; основной homepage успешно прочитан."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840168?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "611aae87e86492f47f9ff478d4b19db3587d8cfe22a594edee9ca550fcee9b72"
         }
       ],
-      "reason": "Два сайта соавторов подтверждают точную запись, но не дают ссылки на текст; независимые запросы и API не дали авторскую версию."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Два сайта соавторов подтверждают точную запись, но не дают ссылки на текст; независимые запросы и API не дали авторскую версию."
+      }
     },
     {
       "selectionId": "C26-068",
       "title": "S²DGR: Stable-State Diffusion for Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840009?download=true",
       "queries": [
         "\"Stable-State Diffusion\" recommendation",
         "\"S2DGR\" \"recommendation\"",
@@ -2349,16 +2568,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://api.github.com/repos/havelhakimi/S2DGR/branches",
           "outcome": "Только main."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840009?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "83fdb4b83124f9a58b406ca744e648bf7ebedc2b1c276244db3c8f1f660058e3"
         }
       ],
-      "reason": "Найдена подтверждаемая открытая реализация S2DGR, но в единственной ветке и releases нет статьи. Код/README не принят за полный текст."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Найдена подтверждаемая открытая реализация S2DGR, но в единственной ветке и releases нет статьи. Код/README не принят за полный текст."
+      }
     },
     {
       "selectionId": "C26-069",
       "title": "GRID: Generative Recommendation via Inpainting Diffusion",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840061?download=true",
       "queries": [
         "\"GRID\" \"Jia Ma\" recommendation diffusion",
         "\"Generative Recommendation via Inpainting Diffusion\"",
@@ -2494,16 +2725,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://github.com/LikeACloud7/awesome-frontier-ai-papers/",
           "outcome": "Трекинговый список указывает conference metadata OpenAlex; полнотекстовой авторской версии не найдено."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840061?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 6 pages; title and DOI match.",
+          "sha256": "380ba440a3f87e4cc61fbfe45350a62bfdbeed7377bcacd94446b24c0be0fb78"
         }
       ],
-      "reason": "Не найден полный текст нужной Tencent работы. Одноимённый GRID от Snap отвергнут по названию/методу."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Не найден полный текст нужной Tencent работы. Одноимённый GRID от Snap отвергнут по названию/методу."
+      }
     },
     {
       "selectionId": "C26-075",
       "title": "LLM Meets Traffic: Traffic-Aware Large Language Models for Next POI Recommendation in Vehicle Navigation Interfaces",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840140?download=true",
       "queries": [
         "\"LLM Meets Traffic: Traffic-Aware Large Language Models for Next POI Recommendation in Vehicle Navigation Interfaces\"",
         "\"10.1145/3799682.3840140\"",
@@ -2564,16 +2807,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840140?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "42b6ad62e8b991a59a6d39e9b4bc230e2e15df44a5de229bd6b28f34d8d98159"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-076",
       "title": "Learning Semantic Co-occurrence and Personalized Focused Representations for Multimodal Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840661?download=true",
       "queries": [
         {
           "q": "\"Learning Semantic Co-occurrence and Personalized Focused Representations for Multimodal Sequential Recommendation\""
@@ -2621,16 +2876,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840661?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "a541d9531287fae15892b1d9b16ebfafa4f7962c435b3fa2a01525be6f8c7119"
         }
       ],
-      "reason": "Поиск по точному названию, акрониму и авторам через web/MCP, институциональные/репозиторные фильтры и открытые API не дал проверяемого полного текста. Аннотационный обзор оставлен без изменений."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Поиск по точному названию, акрониму и авторам через web/MCP, институциональные/репозиторные фильтры и открытые API не дал проверяемого полного текста. Аннотационный обзор оставлен без изменений."
+      }
     },
     {
       "selectionId": "C26-077",
       "title": "Orthogonal Popularity Decomposition for Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840052?download=true",
       "queries": [
         {
           "q": "\"Orthogonal Popularity Decomposition for Sequential Recommendation\""
@@ -2677,16 +2944,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840052?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 6 pages; title and DOI match.",
+          "sha256": "4bddebca2ca9e1ed28f98cb81ee41d21a6235845f0fa4f31eb19abeaa1b8e3f1"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-081",
       "title": "Group-Relative RL Post-Training for Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840028?download=true",
       "queries": [
         {
           "q": "\"Group-Relative RL Post-Training for Sequential Recommendation\""
@@ -2742,9 +3021,21 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840028?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 6 pages; title and DOI match.",
+          "sha256": "4ade977eb1598a638b619432333439131b264dfd444d0fa29704ff3b3c93ae2d"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-082",
@@ -2776,9 +3067,9 @@
     {
       "selectionId": "C26-084",
       "title": "SEDRec: Semantic Entanglement for Generative Diffusion-based Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841008?download=true",
       "queries": [
         "\"SEDRec\" Heo",
         "\"Semantic Entanglement\" \"recommendation\"",
@@ -2977,16 +3268,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://dramatic-samba-372.notion.site/api/v3/loadPageChunk",
           "outcome": "Попытка стандартного чтения публичной страницы без авторизации дала403; дальнейшего доступа не предпринималось."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841008?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "ec74fe5c45e66e6b4af209b09416690db7e5ca9e4be4921e7be1bab020d182ae"
         }
       ],
-      "reason": "Официальный профиль подтверждает работу; сайт лаборатории ведёт в публичную Notionстраницу, которую доступные web/API не смогли прочитать. Полноценный PDFнеполучен,403неприравненк отсутствию."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Официальный профиль подтверждает работу; сайт лаборатории ведёт в публичную Notionстраницу, которую доступные web/API не смогли прочитать. Полноценный PDFнеполучен,403неприравненк отсутствию."
+      }
     },
     {
       "selectionId": "C26-085",
       "title": "Leveraging Language Models for Music Recommendation with Bayesian Residual Quantization",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839844?download=true",
       "queries": [
         "\"Bayesian Residual\" music \"Tian\"",
         "\"BRQ-VAE\" recommendation",
@@ -3148,16 +3451,28 @@
         {
           "id": "C26-085",
           "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839844?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "4dd741c744d50d0482c79b39602b6cfc08b0530186ec1b3be41c58e38c705e95"
         }
       ],
-      "reason": "Проверены BRQ-VAE, Bayesian Residual Quantization, музыка и сочетания авторов; проверяемого PDF/HTML не обнаружено."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Проверены BRQ-VAE, Bayesian Residual Quantization, музыка и сочетания авторов; проверяемого PDF/HTML не обнаружено."
+      }
     },
     {
       "selectionId": "C26-087",
       "title": "Accumulative Modality Tokenization for Multimodal Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840848?download=true",
       "queries": [
         "\"AMTGR\" recommendation",
         "\"Accumulative Modality Tokenization\"",
@@ -3370,16 +3685,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://anonymous.4open.science/api/repo/AMTGR-27E8",
           "outcome": "Ссылка из официального README; API ответ401, дальнейшего доступа не предпринималось."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840848?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "b517c14c4d9dc174e43046e578756dd4704052fb7f02a7ee01b8347da52f1e34"
         }
       ],
-      "reason": "Найдены официальный сайт автора и реализация AMTGR, но PDF/HTML статьи отсутствует; анонимный endpoint401 не обходился."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Найдены официальный сайт автора и реализация AMTGR, но PDF/HTML статьи отсутствует; анонимный endpoint401 не обходился."
+      }
     },
     {
       "selectionId": "C26-090",
       "title": "SRCRec: Staged Reverse Curriculum Learning for Conversion-Oriented Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839884?download=true",
       "queries": [
         "\"SRCRec\" curriculum",
         "\"Staged Reverse Curriculum\"",
@@ -3567,16 +3894,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://arxiv.org/abs/2603.28124",
           "outcome": "Отклонено как другая работа RCLRec: Reverse Curriculum Learning for Modeling Sparse Conversions in Generative Recommendation.8авторов против5; одношаговый prefix curriculum и онлайн2.09%/1.86% против stagedподхода и3.52%/2.98% в SRCRec. Связь полного текста с конференционной работой не доказана."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839884?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "8b7789ac15fbfa7d5f2d7578eb08cdca0307fc5e4f1fb6dba3407310c3c64665"
         }
       ],
-      "reason": "Доступный RCLRec является другой/предшествующей работой с отличиями метода, авторов и результатов; SRCRec не обновлялся по неподтверждённому источнику."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Доступный RCLRec является другой/предшествующей работой с отличиями метода, авторов и результатов; SRCRec не обновлялся по неподтверждённому источнику."
+      }
     },
     {
       "selectionId": "C26-094",
       "title": "Learning Collaborative and Discriminative Embeddings with LLMs for Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839913?download=true",
       "queries": [
         "\"Learning Collaborative and Discriminative Embeddings with LLMs for Sequential Recommendation\"",
         "\"10.1145/3799682.3839913\"",
@@ -3614,16 +3953,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839913?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "d4ce5e788f694a123319f33fbae3fc0033823dd4ffe81c2eb1c17c0c79669864"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-096",
       "title": "Large Language Model-Guided Adaptive Source-Domain Weighting for Cross-Domain Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841015?download=true",
       "queries": [
         "\"Large Language Model-Guided Adaptive Source-Domain Weighting for Cross-Domain Sequential Recommendation\"",
         "\"10.1145/3799682.3841015\"",
@@ -3722,16 +4073,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841015?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "e8a180a948a4203562fdba7f739bef69db9249abe7cfbdeafbe8907b02dfaadc"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-098",
       "title": "MUSER: Memory-Augmented Multimodal Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841142?download=true",
       "queries": [
         "\"MUSER: Memory-Augmented Multimodal Sequential Recommendation\"",
         "\"10.1145/3799682.3841142\"",
@@ -3932,16 +4295,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841142?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "f31e3f70ff3739a6fe813a229ddf458ad8ad839d815628344f1845f82e5029fe"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. MuSeR 2609.23677, MUSE music и TeleMem имеют другие названия/авторов/задачи и отклонены как false matches."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. MuSeR 2609.23677, MUSE music и TeleMem имеют другие названия/авторов/задачи и отклонены как false matches."
+      }
     },
     {
       "selectionId": "C26-103",
       "title": "Personalized Quality-Aware Reranking for Long-Term User Retention in E-commerce",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840127?download=true",
       "queries": [
         "\"Personalized Quality-Aware Reranking for Long-Term User Retention in E-commerce\"",
         "\"10.1145/3799682.3840127\"",
@@ -3995,16 +4370,28 @@
           "status": "read",
           "results": [],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840127?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "ff1ae4c21ecd7002163175741d067f2c36ca085511e6126c830b0bcc57332655"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. Блог Meesho 2025 относится к предшествующей неперсонализированной системе."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. Блог Meesho 2025 относится к предшествующей неперсонализированной системе."
+      }
     },
     {
       "selectionId": "C26-106",
       "title": "Latent Intent Anchoring for Robust Sequential Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839973?download=true",
       "queries": [
         "\"Latent Intent Anchoring for Robust Sequential Recommendation\"",
         "\"10.1145/3799682.3839973\"",
@@ -4088,9 +4475,21 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839973?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "6727daecece0be29fb5fe6af59bbf344ad6d0c3b2aeab3a1019c3b6c8c6277ad"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. IGR-SR 2512.14034 не принят за переименованный IASRec без прямого доказательства."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract. IGR-SR 2512.14034 не принят за переименованный IASRec без прямого доказательства."
+      }
     },
     {
       "selectionId": "C26-107",
@@ -4121,9 +4520,9 @@
     {
       "selectionId": "C26-110",
       "title": "BAGEL: Behavior and Preference Alignment for Generative Live-Streaming Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840132?download=true",
       "queries": [
         "\"BAGEL\" \"Shuni Chen\"",
         "\"BAGEL\" \"Generative Live-Streaming\" pdf",
@@ -4336,16 +4735,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://arxiv.org/abs/2606.06260",
           "outcome": "Отклонено как OneReason Technical Report: содержит ShuniChen среди многих авторов, другое название и метод, не версия BAGEL."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840132?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 8 pages; title and DOI match.",
+          "sha256": "4a23e16522acb2ab8b6337893e241c3cc656294d470fd440d14faa6076c54e72"
         }
       ],
-      "reason": "Авторское Kudos-summary найдено и прочитано, но оно не содержит полный метод/таблицы; OneReason и другие BAGEL отвергнуты как другие работы."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Авторское Kudos-summary найдено и прочитано, но оно не содержит полный метод/таблицы; OneReason и другие BAGEL отвергнуты как другие работы."
+      }
     },
     {
       "selectionId": "C26-113",
       "title": "Preference-Aligned Semantic IDs for Generative Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840019?download=true",
       "queries": [
         "\"Valentin Tsaruk\" \"Semantic\"",
         "\"Preference-Aligned Semantic IDs\"",
@@ -4571,16 +4982,28 @@
           "type": "direct_source_read_or_request",
           "url": "https://arxiv.org/abs/2610.32980",
           "outcome": "Отклонено: Separating Thinking from Spelling for Efficient Generative Recommendation, другие название/метод/состав авторов; не доказанная версия нужной статьи."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3840019?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 6 pages; title and DOI match.",
+          "sha256": "1788993f13c6f47f960bc796a30674822c56847b5e4520f329efc98283072208"
         }
       ],
-      "reason": "Проверены варианты semantic IDs/identifiers, соавторы, публичные GitHub и исходники сайта; похожая работа Deco не принята за нужную статью."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Проверены варианты semantic IDs/identifiers, соавторы, публичные GitHub и исходники сайта; похожая работа Deco не принята за нужную статью."
+      }
     },
     {
       "selectionId": "C26-118",
       "title": "Diagnosing Lexical Text-Anchor Retrievability in Sequential Recommendation Benchmarks",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839990?download=true",
       "queries": [
         "\"Diagnosing Lexical Text-Anchor Retrievability in Sequential Recommendation Benchmarks\"",
         "\"10.1145/3799682.3839990\"",
@@ -4621,16 +5044,28 @@
             }
           ],
           "detail": "Проверены найденные заголовки; совпадение искомой публикации не подтверждено. Похожие работы не подменяют нужную."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3839990?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 5 pages; title and DOI match.",
+          "sha256": "a6664d47c6e312db24bfe4b1a3ed3d41c5e2706f873172cf4a1432dae7d69f77"
         }
       ],
-      "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Поиск по точному названию, полному DOI, акрониму/ключевым словам и авторам не дал проверенной полноценной копии. Проверены перечисленные авторские/институциональные/репозиторные пути и arXiv по авторам. Найденные метаданные либо родственные работы не приравниваются к полному тексту. Исходный обзор сохранён с basis=abstract."
+      }
     },
     {
       "selectionId": "C26-121",
       "title": "Generative Multimodal Intent Modeling with Adaptive Integration for Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841022?download=true",
       "queries": [
         {
           "q": "\"Generative Multimodal Intent Modeling with Adaptive Integration for Recommendation\""
@@ -4693,16 +5128,28 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841022?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 12 pages; title and DOI match.",
+          "sha256": "a6783c977450a1146d23f4624a7adb7618419d30e78faf5c6cdbf02eec8cb7db"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     },
     {
       "selectionId": "C26-123",
       "title": "Popularity-Aware Complementary Preference Distillation for Diffusion Recommendation",
-      "foundNewFullText": false,
-      "reviewBasis": "abstract",
-      "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "foundNewFullText": true,
+      "reviewBasis": "full_text",
+      "reviewSourceUrl": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841083?download=true",
       "queries": [
         {
           "q": "\"Popularity-Aware Complementary Preference Distillation for Diffusion Recommendation\""
@@ -4754,9 +5201,27 @@
           "url": "https://huggingface.co/datasets/yufan/recsys-papers-2025-2026/resolve/main/index.html",
           "kind": "full-text-library-index",
           "outcome": "Индекс библиотеки рекомендационных работ проверен по точным названиям/уникальным фрагментам и акронимам; совпадающей работы не найдено. Совпадения PRISM, SCaLRec и GRPO относятся к другим статьям."
+        },
+        {
+          "url": "https://dl.acm.org/doi/pdf/10.1145/3799682.3841083?download=true",
+          "kind": "t3-browser-publisher-pdf",
+          "outcome": "Downloaded and validated: 11 pages; title and DOI match.",
+          "sha256": "53b476e0d249460fcf0697d0d0f53fabfe5bfab844637b50b3339fdbdbe312c8"
         }
       ],
-      "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      "reason": "Publisher PDF acquired through the repaired shared browser; full-text review prepared and checked.",
+      "previousAttempt": {
+        "foundNewFullText": false,
+        "reviewBasis": "abstract",
+        "reviewSourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+        "reason": "Полный текст с проверяемым совпадением названия и авторов не найден в доступной выдаче, авторских/библиографических источниках и API. Найденные карточки и родственные статьи недостаточны для basis=full_text."
+      }
     }
-  ]
+  ],
+  "previousPassSummary": {
+    "inputPapers": 41,
+    "newFullTextReviews": 3,
+    "totalFullTextReviews": 61,
+    "remainingAbstractReviews": 38
+  }
 }

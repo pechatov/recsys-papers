@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import SummaryLayout from '../../layouts/SummaryLayout.astro';
+import CikmVisitInfo from '../../components/CikmVisitInfo.astro';
 import papers from '../../data/cikm-2026-papers.json';
 
 export async function getStaticPaths() {
@@ -26,6 +27,10 @@ const labels: Record<string, string> = {
     <p>Основа: <a href={entry.data.sourceUrl}>{entry.data.sourceLabel}</a>.
       {entry.data.basis === 'abstract' && ' Детали экспериментального протокола и полнота сравнений не проверены по полному тексту. Вопросы авторам помогают уточнить эти пробелы.'}
       Проверено 9 ноября 2026 года.</p>
+  </aside>
+  <aside class="source-note" aria-label="Оценка и расписание посещения">
+    <CikmVisitInfo selectionId={paper.selectionId} />
+    <p>Время местное для Рима: CET (UTC+1). Формат и расписание сверены с официальной программой 9 ноября 2026 года.</p>
   </aside>
   <Content />
 </SummaryLayout>
