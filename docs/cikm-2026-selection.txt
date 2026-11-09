@@ -1,0 +1,608 @@
+CIKM 2026: подтверждённая подборка статей
+Проверено: 2026-11-09
+Статус: основной набор подтверждён, 99 обзоров и 396 вопросов подготовлены
+Источник: https://cikm2026.diag.uniroma1.it/cikm-program/program.html
+
+Подтверждён основной набор из 99 статей. Для каждой подготовлен отдельный обзор и четыре вопроса авторам. Категории пересекаются; 25 смежных работ и 4 доклада Industry Day не включены. Все 99 обзоров основаны на полных текстах; версия источника указана на каждой странице.
+
+Обозначения: FIRST — первая очередь; EXISTING — найден разбор с совпадающим названием. Отсутствие EXISTING не гарантирует отсутствие разбора под другим названием. Актуальная основа обзоров: полные тексты — 99; официальные аннотации — 0.
+
+Семантические ID и токенизация — 23
+
+C26-024 HiGR: Industrial-Scale Hierarchical Generative Slate Recommendation Framework in Tencent [FIRST]
+  Темы: generative, semantic_ids, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840166
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-026 LASER: Label-Anchored Semantic Encoding with Multimodal-Collaborative Signals Harmonization for Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840122
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-027 Tlow: Flow-based Item Tokenizer for Recommendation [FIRST] [EXISTING]
+  Темы: generative, semantic_ids, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840087
+  Сессия: 2A · Industrial Recommender Systems II
+  Разбор в репозитории: src/content/paper_summaries/semantic_ids_tokenization_indexing/tlow_flow_based_item_tokenizer_for_recommendation_summary.md
+
+C26-034 FedCGR: Federated Cross-Domain Generative Recommendation [EXISTING]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840895
+  Сессия: 2B · Federated Recommendation & Privacy
+  Разбор в репозитории: src/content/paper_summaries/semantic_ids_tokenization_indexing/fedcgr_federated_cross_domain_generative_recommendation_summary.md
+
+C26-037 Rethinking Item Tokenization in Generative Recommenders: From Fixed Atoms to Semantic Subwords [FIRST] [EXISTING]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840979
+  Сессия: 4A · Generative Recommendation & CTR Prediction
+  Разбор в репозитории: src/content/paper_summaries/semantic_ids_tokenization_indexing/rethinking_item_tokenization_in_generative_recommenders_from_fixed_atoms_to_semantic_subwords_summary.md
+
+C26-038 Beyond Uniform Token Training: A Multi-Target Framework for Learning Token-Weighted Objectives in Generative Recommenders [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840604
+  Сессия: 4A · Generative Recommendation & CTR Prediction
+
+C26-039 Learning to Reflect and Correct: Towards Better Decoding Trajectories for Large-Scale Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840787
+  Сессия: 4A · Generative Recommendation & CTR Prediction
+
+C26-067 Gryphon: A Unified Architecture for Semantic-ID Generation and Item-Level Scoring in Industrial Recommendations [FIRST] [EXISTING]
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840005
+  Сессия: Poster & Demo Session 1 · Posters
+  Разбор в репозитории: src/content/paper_summaries/generative_retrieval/gryphon_unified_architecture_semantic_id_generation_item_level_scoring_summary.md
+
+C26-068 S²DGR: Stable-State Diffusion for Generative Recommendation
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840009
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-069 GRID: Generative Recommendation via Inpainting Diffusion [FIRST]
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840061
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-070 SPRIG: Semantic-ID-enhanced Paths for Knowledge Graph-based Generative Recommendation
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839870
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-071 Neither Black nor White: Balancing Semantic and Collaborative Signals with Graph-Informed Semantic IDs (GrIS) [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840883
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-085 Leveraging Language Models for Music Recommendation with Bayesian Residual Quantization
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839844
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-086 Faithful Evaluation of Semantic-ID Tokenizers for Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3841124
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-087 Accumulative Modality Tokenization for Multimodal Generative Recommendation
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840848
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-088 Personalized Context-Conditioned Tokenization for Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3841026
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-089 Learning from Unreachable Rewards: Hint-Conditioned Reinforcement Learning for Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids | Трек: FULL
+  https://doi.org/10.1145/3799682.3840842
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-104 Higher Capacity Transfer into JPQ Item Codes for Scalable Sequential Recommendation
+  Темы: semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839954
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-111 MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation [FIRST] [EXISTING]
+  Темы: generative, semantic_ids, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840083
+  Сессия: Poster & Demo Session 3 · Posters
+  Разбор в репозитории: src/content/paper_summaries/semantic_ids_tokenization_indexing/merge_next_generation_item_indexing_summary.md
+
+C26-112 From Head to Tail: Asymmetric Knowledge Transfer in Long-tail Recommendation with Generative Semantic IDs
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839993
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-113 Preference-Aligned Semantic IDs for Generative Recommendation [FIRST]
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840019
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-115 SIDInspector: A Mapping-First Diagnostic Resource for Semantic-ID Tokenizers [FIRST]
+  Темы: semantic_ids | Трек: RESOURCE
+  https://doi.org/10.1145/3799682.3840174
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-116 Do Recommenders Need to Think in Words? Latent Reasoning for Efficient LLM-Based Recommendation
+  Темы: generative, semantic_ids | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840048
+  Сессия: Poster & Demo Session 3 · Posters
+
+Генеративные рекомендации — 18
+
+C26-013 IntSR: A Deployed Generative System for Integrated Search and Recommendation at Amap [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840093
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-023 Large Language Model as Universal Retriever in Industrial-Scale Recommender System [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840090
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-025 Decoupled Temporal Encoding for Generative Recommendation [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840106
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-035 Co-JDPRec: Collaborative Joint Dynamic Pruning for Efficient LLM-based Generative Recommendation [FIRST]
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3840997
+  Сессия: 4A · Generative Recommendation & CTR Prediction
+
+C26-036 MISTRec: Masked Item-Slot Token Modeling for LLM-based Generative Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3841145
+  Сессия: 4A · Generative Recommendation & CTR Prediction
+
+C26-044 GloRank: Generative Reranking for Deep Recommender Systems via Global Identifier Generation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3840950
+  Сессия: 5A · Learning to Rank & Re-Ranking
+
+C26-045 SWIM: Step-Wise Integrated Measure for Session-supervised List Evaluation in Generative Re-ranking
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3840732
+  Сессия: 5A · Learning to Rank & Re-Ranking
+
+C26-064 Debate4Rec: Multi-Agent Debate for List-Level Feedback and Selection in Generative Recommendation
+  Темы: generative | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839974
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-065 Self-Evolving Memory for Generative Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3840721
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-066 Controllable Autoregressive Retrieval with Long-term Action Perception for Recommendations [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840168
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-084 SEDRec: Semantic Entanglement for Generative Diffusion-based Sequential Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3841008
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-090 SRCRec: Staged Reverse Curriculum Learning for Conversion-Oriented Generative Recommendation
+  Темы: generative | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839884
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-092 Latent Residual Reasoning for Ranking in Generative Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3841103
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-109 OneMall: One Architecture, More Scenarios — End-to-End Generative Recommender Family for E-commerce at Kuaishou [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840095
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-110 BAGEL: Behavior and Preference Alignment for Generative Live-Streaming Recommendation [FIRST]
+  Темы: generative, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840132
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-119 Cross-Country Code-Mixing for Generative Recommendation
+  Темы: generative | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839862
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-121 Generative Multimodal Intent Modeling with Adaptive Integration for Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3841022
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-123 Popularity-Aware Complementary Preference Distillation for Diffusion Recommendation
+  Темы: generative | Трек: FULL
+  https://doi.org/10.1145/3799682.3841083
+  Сессия: Poster & Demo Session 3 · Posters
+
+Sequential и session-based рекомендации — 33
+
+C26-001 The Prism of Interest: Refracting User Needs in Session-Based Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840905
+  Сессия: 1B · Sequential Recommendation
+
+C26-002 MAPLE: Mamba-Based Adaptive Prototype Learning for Intent Disentanglement in Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841166
+  Сессия: 1B · Sequential Recommendation
+
+C26-003 DART: Residual Trust and Tail-Aware Dual-View Alignment for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840620
+  Сессия: 1B · Sequential Recommendation
+
+C26-004 LSF-SR: Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841099
+  Сессия: 1B · Sequential Recommendation
+
+C26-005 CaLR: Context-Aware Latent Reasoning for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840822
+  Сессия: 1B · Sequential Recommendation
+
+C26-006 Building Sequential Recommendation Models upon Thermoelastic Spectral Operators
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841137
+  Сессия: 1B · Sequential Recommendation
+
+C26-007 Closing the Long-Short View Gap in Sequential Recommendation without Cached History
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841065
+  Сессия: 1B · Sequential Recommendation
+
+C26-008 GOD: Enhancing Generalization via Deep Grafting for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841117
+  Сессия: 1B · Sequential Recommendation
+
+C26-019 An Industrial-Scale Sequential Recommender for LinkedIn Feed Ranking [FIRST]
+  Темы: sequential, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840102
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-033 Transcending the Semantic Chasm: Knowledge-Graph Guided Aggregation for Cross-Silo Federated Session Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840977
+  Сессия: 2B · Federated Recommendation & Privacy
+
+C26-043 ViSalRec: Visual and Saliency-Informed Reward Augmentation for Sequential Recommender Systems
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840782
+  Сессия: 4B · Graph & Multimodal Recommendation
+
+C26-046 SGLP: Semantic-Guided Graph Structure Learning with LLM Structural Priors for Cross-Domain Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840931
+  Сессия: 5B · Cross-Domain Recommendation
+
+C26-047 Bridging the Domain Gap: Domain-Aware Hierarchical Semantic Representation for Cross-Domain Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840965
+  Сессия: 5B · Cross-Domain Recommendation
+
+C26-060 HiSAC: Hierarchical Sparse Activation Compression for Ultra-long Sequence Modeling in Recommendation Systems [FIRST]
+  Темы: sequential, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840124
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-061 RouteRec: Behavior-Guided Sparse Routing for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841104
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-062 Mitigating Negative Feedback in Sequential Recommendations with Barlow Twins
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840006
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-063 Enriching Sequential Recommendation with Graph Laplacian Positional Embeddings
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840042
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-073 A Dual-Expert Strategy Integrating LLMs to Mitigate Negative Transfer in Cross-Domain Sequential Recommendation [FIRST] [EXISTING]
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840999
+  Сессия: Poster & Demo Session 1 · Posters
+  Разбор в репозитории: src/content/paper_summaries/sequential_session_long_history/a_dual_expert_strategy_integrating_llms_to_mitigate_negative_transfer_in_cross_domain_sequential_recommendation_summary.md
+
+C26-076 Learning Semantic Co-occurrence and Personalized Focused Representations for Multimodal Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3840661
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-077 Orthogonal Popularity Decomposition for Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840052
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-081 Group-Relative RL Post-Training for Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840028
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-082 BasketFormer: Contrastive Masked Language Modeling with Temporal Encoding and Repeat-Explore Gating for Next-Basket Recommendation
+  Темы: sequential, industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840147
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-083 Retrieve-then-Adapt: Test-Time Retrieval-Augmentation for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841085
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-094 Learning Collaborative and Discriminative Embeddings with LLMs for Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839913
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-096 Large Language Model-Guided Adaptive Source-Domain Weighting for Cross-Domain Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841015
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-097 Sequential Modality Dropout for Robust Multi-Modal Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3840039
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-098 MUSER: Memory-Augmented Multimodal Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841142
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-100 Mitigating Popularity Bias in Sequential Recommendations with Sparse Prior-Regularized Objective
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841006
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-105 From Overlooked to Explored: Recovering Item Relations via Mixture of Perspectives for Sequential Recommendation
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841126
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-106 Latent Intent Anchoring for Robust Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839973
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-107 CoRe-Rec: Budgeted Consistency Policy Re-Rolling for Sequential Recommendation
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839853
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-114 Cross-Domain Sequential Recommendation with Representation-Level User Transfer
+  Темы: sequential | Трек: FULL
+  https://doi.org/10.1145/3799682.3841135
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-118 Diagnosing Lexical Text-Anchor Retrievability in Sequential Recommendation Benchmarks
+  Темы: sequential | Трек: SHORT
+  https://doi.org/10.1145/3799682.3839990
+  Сессия: Poster & Demo Session 3 · Posters
+
+Прикладные рекомендации и ранжирование — 25
+
+C26-009 Beyond Independent Predictions: Learning the Browsing Journey for Sequence-Level Re-ranking
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840169
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-010 SARM: LLM-Augmented Semantic Anchor for End-to-End Live-Streaming Ranking
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840099
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-011 Decomposing Staleness in Recommender Systems: A Dual-Filter Framework for Supersession and Decay
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840082
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-012 ELBO_TDS: Temporal Distribution Shift Generalization for Industry-Scale Recommender Systems
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840097
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-014 TransRetrieval: Scaling Up Transformer-Based Retrieval for Industrial Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840118
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-015 SORT: A Systematically Optimized Ranking Transformer for Industrial-scale Recommenders
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840109
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-016 Auxiliary Focal Discrimination for Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840130
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-017 LFM4Ads: Large Foundation Model for Ads Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840163
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-018 Task-Blind No MORE: Multi-Task Information Flow in Unified Ranking Backbones
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840113
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-020 Scaling Graph Neural Networks for Friend Recommendation: Multi-Hash User Embeddings and Temporal Neighbor Sampling
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840149
+  Сессия: 1C · Industrial Recommender Systems I
+
+C26-021 High Fidelity Textual User Representation over Heterogeneous Sources via Reinforcement Learning
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840151
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-022 Beyond End-to-End: A Low-Latency, Retrieval-Augmented Chain-of-Thought for Scalable and Explainable Industrial Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840164
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-028 LEMUR: Large scale End-to-end MUltimodal Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840084
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-029 Native Multimodal Representation Learning for Click-Through Rate Prediction in E-Commerce Scenarios
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840096
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-030 BasisLTV: Ordinal-Guided Basis Reconstruction for Long-Tailed Lifetime Value Prediction via Semantic Behavior Compression
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840128
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-031 ChoirRec: Semantic User Grouping via LLMs for Conversion Rate Prediction of Low-Activity Users
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840156
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-032 LIFT: A Learning-aware Intervention Framework for Cold-Start Recommendation on TikTok Live
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840142
+  Сессия: 2A · Industrial Recommender Systems II
+
+C26-072 TagLLM: A Fine-Grained Tag Generation Approach for Note Recommendation
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840088
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-074 ConnectionMind: Leveraging Social Networks and Large Language Models for Personalized Recommendation at Meta
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840157
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-075 LLM Meets Traffic: Traffic-Aware Large Language Models for Next POI Recommendation in Vehicle Navigation Interfaces
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840140
+  Сессия: Poster & Demo Session 1 · Posters
+
+C26-099 MUSE: A Simple Yet Effective Multimodal Search-Based Framework for Lifelong User Interest Modeling
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840125
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-103 Personalized Quality-Aware Reranking for Long-Term User Retention in E-commerce
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840127
+  Сессия: Poster & Demo Session 2 · Posters
+
+C26-120 LLM-based User-Product Relevance Evaluation for Dynamic Product Advertising
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840117
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-122 SA-RSQ:A Versatile Sparse Representation Framework for Multi-modal Recommender Systems
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840131
+  Сессия: Poster & Demo Session 3 · Posters
+
+C26-124 Generative Pseudo-Labeling for Pre-Ranking with Large Language Models
+  Темы: industrial | Трек: APPLIED
+  https://doi.org/10.1145/3799682.3840123
+  Сессия: Poster & Demo Session 3 · Posters
+
+Не включены: дополнительные работы по поиску, рекламе, CTR и смежным темам
+
+C26-040 RQ-Reg: A Residual-Quantization-Based Framework for Continuous Value Prediction in Recommender Systems
+  FULL | https://doi.org/10.1145/3799682.3840900
+
+C26-041 FAF: A Feature-Aware Adaptive Pre-training Framework for Bridging Gaps in CTR Prediction
+  FULL | https://doi.org/10.1145/3799682.3841158
+
+C26-042 FC-GNN: Unleashing Field Priors for Graph-based CTR Prediction
+  FULL | https://doi.org/10.1145/3799682.3840633
+
+C26-048 Jointly Optimizing Debiased CTR and Uplift for Coupons Marketing: A Unified Causal Framework
+  APPLIED | https://doi.org/10.1145/3799682.3840119
+
+C26-049 TUGB: A Two-stage Uncertainty-aware Generative Auto-Bidding Framework
+  APPLIED | https://doi.org/10.1145/3799682.3840154
+
+C26-050 HOB: A Holistically Optimized Bidding Strategy under Heterogeneous Bidding Environments
+  APPLIED | https://doi.org/10.1145/3799682.3840094
+
+C26-051 Bidding-Aware Retrieval for Multi-Stage Consistency in Online Advertising
+  APPLIED | https://doi.org/10.1145/3799682.3840091
+
+C26-052 Mine and Refine: Optimizing Graded Relevance in E-commerce Semantic Search Retrieval
+  APPLIED | https://doi.org/10.1145/3799682.3840139
+
+C26-053 Bridging Queries and Brands: Entity Linking for Large-Scale Product Search
+  APPLIED | https://doi.org/10.1145/3799682.3840092
+
+C26-054 SAM-D2Q: Aligning Multimodal Doc2Query with Search Demand and Conversion for E-commerce
+  APPLIED | https://doi.org/10.1145/3799682.3840121
+
+C26-055 LEAPS: An LLM-Empowered Adaptive Plugin in Taobao AI Search
+  APPLIED | https://doi.org/10.1145/3799682.3840100
+
+C26-056 Graph-GRPO: Dependency-Aware Credit Assignment for Generative E-commerce Search Relevance
+  APPLIED | https://doi.org/10.1145/3799682.3840144
+
+C26-057 Efficient Generative Retrieval for E-commerce Search with Semantic Cluster IDs and Expert-Guided RL
+  APPLIED | https://doi.org/10.1145/3799682.3840110
+
+C26-058 SSR-GRPO: Integrating Supervision and Semantic IDs into Reinforcement Learning for Dense Retrieval in E-commerce
+  APPLIED | https://doi.org/10.1145/3799682.3840101
+
+C26-059 Semantic Search At LinkedIn
+  APPLIED | https://doi.org/10.1145/3799682.3840152
+
+C26-078 Uncertainty-Triggered Test-Time Selective Inference for Click-Through Rate Prediction
+  FULL | https://doi.org/10.1145/3799682.3840575
+
+C26-079 Context-Aware User Intent Modeling for Relevant Recommendation in E-commerce
+  SHORT | https://doi.org/10.1145/3799682.3839889
+
+C26-080 Resolving Price-Segment Blindspot in Search Ranking for Value-Driven Marketplaces
+  APPLIED | https://doi.org/10.1145/3799682.3840129
+
+C26-091 Scaling Up Unified CTR Prediction via Dynamic Sequence-to-Feature Interaction
+  FULL | https://doi.org/10.1145/3799682.3841157
+
+C26-093 TAG-Rec: Grounding LLM-based Recommendation via Trigger-Anchored GRPO
+  FULL | https://doi.org/10.1145/3799682.3840735
+
+C26-095 Lossless Compression of Proximity Graph Indexes for Efficient Approximate Nearest Neighbors Search
+  APPLIED | https://doi.org/10.1145/3799682.3840116
+
+C26-101 The Role of User-Item Connectivity in CTR Prediction
+  FULL | https://doi.org/10.1145/3799682.3840916
+
+C26-102 Sequential Multimodal Evidence Optimization for Product Media Ranking in E-Commerce
+  APPLIED | https://doi.org/10.1145/3799682.3840133
+
+C26-108 PRISM: Pruning-Enhanced Intent Sampling for Recommendation Multi-List Generation
+  FULL | https://doi.org/10.1145/3799682.3840840
+
+C26-117 ClusterRec: Cluster-Aware Recommendation with Large Language Models for Efficient and Scalable Inference
+  FULL | https://doi.org/10.1145/3799682.3840613
+
+Не включены: Industry Day (доклады, наличие полной статьи не подтверждено)
+
+C26-125 Contextual Ranker in Production: Session-Aware Similar Item Ranking for Lower-Funnel E-Commerce
+  INDUSTRY | https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day
+
+C26-126 Rebuilding the Content Ranking Stack for Prime Video: Lessons Learned Building from Scratch
+  INDUSTRY | https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day
+
+C26-127 From Demo to Production: Generative Search Lessons from Alexa+
+  INDUSTRY | https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day
+
+C26-128 Temporal Moment Generation: A New Recommendation Task and Cost-Efficient Distillation for Outbound Marketing at Scale
+  POSTER | https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day

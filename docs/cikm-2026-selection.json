@@ -1,0 +1,2575 @@
+{
+  "conference": "CIKM 2026",
+  "checkedAt": "2026-11-09",
+  "status": "reviews_prepared",
+  "sourceUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html",
+  "scopeNote": "Подтверждён основной набор из 99 статей. Для каждой подготовлен отдельный обзор и четыре вопроса авторам. Категории пересекаются; 25 смежных работ и 4 доклада Industry Day не включены. Все 99 обзоров основаны на полных текстах; версия источника указана на каждой странице.",
+  "papers": [
+    {
+      "title": "The Prism of Interest: Refracting User Needs in Session-Based Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840905",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Yu Qing (University of Electronic Science and Technology of China) · Xiao Wang (University of Electronic Science and Technology of China) · Zhe Wang (University of Electronic Science and Technology of China) · Xiurui Xie (University of Electronic Science and Technology of China) · Ke Qin (University of Electronic Science and Technology of China) · Shuang Liang (University of Electronic Science and Technology of China)",
+      "programId": "cfp1742",
+      "selectionId": "C26-001",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 8,
+      "reviewUrl": "cikm-2026/c26-001.html"
+    },
+    {
+      "title": "MAPLE: Mamba-Based Adaptive Prototype Learning for Intent Disentanglement in Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841166",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Yue Xie (Soochow University) · Yan Zhang (Soochow University) · Guo Chen (Soochow University) · Li Zhang (Soochow University) · Lei Zhao (Soochow University)",
+      "programId": "cfp3224",
+      "selectionId": "C26-002",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 9,
+      "reviewUrl": "cikm-2026/c26-002.html"
+    },
+    {
+      "title": "DART: Residual Trust and Tail-Aware Dual-View Alignment for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840620",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Song Yu (Central South University) · Yanbo Wang (Central South University) · Lei Cao (Central South University) · Zhifang Liao (Central South University) · Yuelan Qi (Central South University)",
+      "programId": "cfp0199",
+      "selectionId": "C26-003",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 10,
+      "reviewUrl": "cikm-2026/c26-003.html"
+    },
+    {
+      "title": "LSF-SR: Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders",
+      "url": "https://doi.org/10.1145/3799682.3841099",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Shih-Hong Chen (National Yang Ming Chiao Tung University) · Josh Jia-Ching Ying (National Chung Hsing University) · Vincent S. Tseng (National Yang Ming Chiao Tung University)",
+      "programId": "cfp2850",
+      "selectionId": "C26-004",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 11,
+      "reviewUrl": "cikm-2026/c26-004.html"
+    },
+    {
+      "title": "CaLR: Context-Aware Latent Reasoning for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840822",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Minxuan Shan (University of Science and Technology of China) · Shuxian Bi (University of Science and Technology of China) · Ziye Zhang (Kuaishou Technology) · Sunhao Dai (Renmin University of China) · Chuyuan Wang (Kuaishou Technology) · Yu Li (Kuaishou Technology) · Xiaoshuang Chen (Kuaishou Technology) · Yongqi Liu (Kuaishou Technology) · Kaiqiao Zhan (Kuaishou Technology) · Wenjie Wang (University of Science and Technology of China)",
+      "programId": "cfp1336",
+      "selectionId": "C26-005",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 12,
+      "reviewUrl": "cikm-2026/c26-005.html"
+    },
+    {
+      "title": "Building Sequential Recommendation Models upon Thermoelastic Spectral Operators",
+      "url": "https://doi.org/10.1145/3799682.3841137",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Juntao Hu (Chongqing University) · Ruyue Dong (The Hong Kong Polytechnic University) · Xiao Du (Chongqing University) · Huayi Shen (Chongqing University) · Wei Zhou (Chongqing University) · Junhao Wen (Chongqing University)",
+      "programId": "cfp3043",
+      "selectionId": "C26-006",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 13,
+      "reviewUrl": "cikm-2026/c26-006.html"
+    },
+    {
+      "title": "Closing the Long-Short View Gap in Sequential Recommendation without Cached History",
+      "url": "https://doi.org/10.1145/3799682.3841065",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "Lingfeng Shi (Texas A&M University) · Chengkai Huang (University of New South Wales) · Lina Yao (University of New South Wales) · James Caverlee (Texas A&M University)",
+      "programId": "cfp2647",
+      "selectionId": "C26-007",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 14,
+      "reviewUrl": "cikm-2026/c26-007.html"
+    },
+    {
+      "title": "GOD: Enhancing Generalization via Deep Grafting for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841117",
+      "track": "FULL",
+      "session": "1B · Sequential Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1B",
+      "authors": "WooJoo Kim (Pohang University of Science and Technology) · JunYoung Kim (Pohang University of Science and Technology) · JaeHyung Lim (Pohang University of Science and Technology) · HwanJo Yu (Pohang University of Science and Technology)",
+      "programId": "cfp2964",
+      "selectionId": "C26-008",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 15,
+      "reviewUrl": "cikm-2026/c26-008.html"
+    },
+    {
+      "title": "Beyond Independent Predictions: Learning the Browsing Journey for Sequence-Level Re-ranking",
+      "url": "https://doi.org/10.1145/3799682.3840169",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Jiayi Zhang (Taobao & Tmall Group of Alibaba) · Jingxin Hai (Xi’an Jiaotong University) · Zhenjia Ma (Taobao & Tmall Group of Alibaba) · Hongbin Pei (Xi’an Jiaotong University) · Dagui Chen (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Jian Xu (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap3271",
+      "selectionId": "C26-009",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 16,
+      "reviewUrl": "cikm-2026/c26-009.html"
+    },
+    {
+      "title": "SARM: LLM-Augmented Semantic Anchor for End-to-End Live-Streaming Ranking",
+      "url": "https://doi.org/10.1145/3799682.3840099",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Ruochen Yang (Institute of Information Engineering, CAS; School of Cyber Security, University of CAS) · Yueyang Liu (Kuaishou Technology) · Zijie Zhuang (Kuaishou Technology) · Changxin Lao (Kuaishou Technology) · Yuhui Zhang (Kuaishou Technology) · Jiangxia Cao (Kuaishou Technology) · Jia Xu (Kuaishou Technology) · Xiang Chen (Kuaishou Technology) · Haoke Xiao (Kuaishou Technology) · Xiangyu Wu (Kuaishou Technology) · Xiaoyou Zhou (Kuaishou Technology) · Xiao Lv (Kuaishou Technology) · Shuang Yang (Kuaishou Technology) · Tingwen Liu (Institute of Information Engineering, CAS; School of Cyber Security, University of CAS) · Zhaojie Liu (Kuaishou Technology) · Han Li (Kuaishou Technology) · Kun Gai (Kuaishou Technology)",
+      "programId": "cap0578",
+      "selectionId": "C26-010",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 17,
+      "reviewUrl": "cikm-2026/c26-010.html"
+    },
+    {
+      "title": "Decomposing Staleness in Recommender Systems: A Dual-Filter Framework for Supersession and Decay",
+      "url": "https://doi.org/10.1145/3799682.3840082",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Di Bai (Google LLC) · Feng Han (Google LLC) · Zhenwei Tang (Google LLC) · Jintao Liu (Google LLC) · Luoshu Wang (Google LLC) · Jialu Liu (Google LLC)",
+      "programId": "cap0029",
+      "selectionId": "C26-011",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 18,
+      "reviewUrl": "cikm-2026/c26-011.html"
+    },
+    {
+      "title": "ELBO_TDS: Temporal Distribution Shift Generalization for Industry-Scale Recommender Systems",
+      "url": "https://doi.org/10.1145/3799682.3840097",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Yuxuan Zhu (Shopee) · Cong Fu (Shopee) · Yabo Ni (Nanyang Technological University) · Anxiang Zeng (Nanyang Technological University) · Yuan Fang (Singapore Management University)",
+      "programId": "cap0543",
+      "selectionId": "C26-012",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 19,
+      "reviewUrl": "cikm-2026/c26-012.html"
+    },
+    {
+      "title": "IntSR: A Deployed Generative System for Integrated Search and Recommendation at Amap",
+      "url": "https://doi.org/10.1145/3799682.3840093",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Huimin Yan (Alibaba Group) · Longfei Xu (Alibaba Group) · Junjie Sun (Alibaba Group) · Ni Ou (Alibaba Group) · Wei Luo (Alibaba Group) · Xing Tan (Alibaba Group) · Ran Cheng (Alibaba Group) · Kaikui Liu (Alibaba Group) · Xiangxiang Chu (Alibaba Group)",
+      "programId": "cap0351",
+      "selectionId": "C26-013",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 20,
+      "reviewUrl": "cikm-2026/c26-013.html"
+    },
+    {
+      "title": "TransRetrieval: Scaling Up Transformer-Based Retrieval for Industrial Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840118",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Zhifei Zheng (Renmin University of China) · Yunfei Liu (Taobao & Tmall Group of Alibaba) · Bin Liu (Taobao & Tmall Group of Alibaba) · Qiren Zhu (Renmin University of China) · Hanbing Liu (Renmin University of China) · Ziru Xu (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Jian Xu (Taobao & Tmall Group of Alibaba) · Qi Qi (Renmin University of China) · Bo Zheng (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap1151",
+      "selectionId": "C26-014",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 21,
+      "reviewUrl": "cikm-2026/c26-014.html"
+    },
+    {
+      "title": "SORT: A Systematically Optimized Ranking Transformer for Industrial-scale Recommenders",
+      "url": "https://doi.org/10.1145/3799682.3840109",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Chunqi Wang (Alibaba International Digital Commercial Group) · Bingchao Wu (Alibaba International Digital Commercial Group) · Taotian Pang (Alibaba International Digital Commercial Group) · Jiahao Wang (Alibaba International Digital Commercial Group) · Jie Yang (Alibaba International Digital Commercial Group) · Jia Liu (Alibaba International Digital Commercial Group) · Hao Zhang (Alibaba International Digital Commercial Group) · Hai Zhu (Alibaba International Digital Commercial Group) · Lei Shen (Alibaba International Digital Commercial Group) · Shizhun Wang (Alibaba International Digital Commercial Group) · Bing Wang (Alibaba International Digital Commercial Group) · Xiaoyi Zeng (Alibaba International Digital Commercial Group)",
+      "programId": "cap0907",
+      "selectionId": "C26-015",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 22,
+      "reviewUrl": "cikm-2026/c26-015.html"
+    },
+    {
+      "title": "Auxiliary Focal Discrimination for Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840130",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Kaiyi Liu (Tencent Inc.) · Hongda Hu (Tencent Inc.) · Xinyan Lu (Tencent Inc.) · Jin Chen (Tencent Inc.) · Junwei Pan (Tencent Inc.) · Shudong Huang (Tencent Inc.) · Lijie Wang (Tencent Inc.) · Lifeng Wang (Tencent Inc.) · Lei Xiao (Tencent Inc.) · Haijie Gu (Tencent Inc.) · Jie Jiang (Tencent Inc.)",
+      "programId": "cap1532",
+      "selectionId": "C26-016",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 23,
+      "reviewUrl": "cikm-2026/c26-016.html"
+    },
+    {
+      "title": "LFM4Ads: Large Foundation Model for Ads Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840163",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Jie Jiang (Tencent) · Shangyu Zhang (Tencent) · Shijie Quan (Tencent) · Zhongren Wang (Tsinghua University) · Tianqu Zhuang (Tsinghua University) · Junwei Pan (Tencent) · Bo Fu (Tencent) · Yilong Sun (Tencent) · Jieying Lin (Tencent) · Jushuo Chen (Tencent) · Xiaotian Li (Tencent) · Wenjie Li (Tsinghua University) · Zhixiang Feng (Tencent) · Xian Hu (Tencent) · Huiting Deng (Tencent) · Hua Lu (Tencent) · Jinpeng Wang (Tsinghua University) · Boqi Dai (Tencent) · Xiaoyu Chen (Tencent) · Bin Hu (Tencent) · Lili Huang (Tencent) · Yanwen Wu (Tencent) · Yeshou Cai (Tencent) · Qi Zhou (Tencent) · Huang Tang (Tencent) · Chunfeng Yang (Tencent) · Chengguo Yin (Tencent) · Tingyu Jiang (Tencent) · Lifeng Wang (Tencent) · Shudong Huang (Tencent) · Dapeng Liu (Tencent) · Yuekui Yang (Tencent) · Shu-Tao Xia (Tsinghua University) · Lei Xiao (Tencent) · Haijie Gu (Tencent)",
+      "programId": "cap3013",
+      "selectionId": "C26-017",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 24,
+      "reviewUrl": "cikm-2026/c26-017.html"
+    },
+    {
+      "title": "Task-Blind No MORE: Multi-Task Information Flow in Unified Ranking Backbones",
+      "url": "https://doi.org/10.1145/3799682.3840113",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Yuchen Wang (Hello Group) · Feng Niu (University of Science and Technology of China) · Qing Tan (Institute of Software, Chinese Academy of Sciences) · Junting Lu (Beijing Information Science and Technology University) · Baoxin Wu (Hello Group) · Jun Gao (Hello Group)",
+      "programId": "cap1013",
+      "selectionId": "C26-018",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 25,
+      "reviewUrl": "cikm-2026/c26-018.html"
+    },
+    {
+      "title": "An Industrial-Scale Sequential Recommender for LinkedIn Feed Ranking",
+      "url": "https://doi.org/10.1145/3799682.3840102",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Lars Hertel (Linkedin) · Gaurav Srivastava (Linkedin) · Syed Ali Naqvi (Linkedin) · Satyam Kumar (Linkedin) · Yue Zhang (Linkedin) · Borja Ocejo (Linkedin) · Benjamin Zelditch (Linkedin) · Adrian Englhardt (Linkedin) · Hailing Cheng (Linkedin) · Andy Hu (Linkedin) · Antonio Alonso (Linkedin) · Daming Li (Linkedin) · Siddharth Dangi (Linkedin) · Chen Zhu (Linkedin) · Mingzhou Zhou (Linkedin) · Wanning Li (Linkedin) · Tao Huang (Linkedin) · Fedor Borisyuk (Linkedin) · Ganesh Parameswan (Linkedin) · Birjodh Tiwana (Linkedin) · Sriram Sankar (Linkedin) · Qing Lan (Linkedin) · Julie Choi (Linkedin) · Souvik Ghosh (Linkedin)",
+      "programId": "cap0652",
+      "selectionId": "C26-019",
+      "scope": "main",
+      "categories": [
+        "sequential",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 26,
+      "reviewUrl": "cikm-2026/c26-019.html"
+    },
+    {
+      "title": "Scaling Graph Neural Networks for Friend Recommendation: Multi-Hash User Embeddings and Temporal Neighbor Sampling",
+      "url": "https://doi.org/10.1145/3799682.3840149",
+      "track": "APPLIED",
+      "session": "1C · Industrial Recommender Systems I",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-1C",
+      "authors": "Maksim Utushkin (AI VK) · Andrei Ovsiannikov (AI VK) · Alexander D'yakonov (AI VK)",
+      "programId": "cap2553",
+      "selectionId": "C26-020",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 27,
+      "reviewUrl": "cikm-2026/c26-020.html"
+    },
+    {
+      "title": "High Fidelity Textual User Representation over Heterogeneous Sources via Reinforcement Learning",
+      "url": "https://doi.org/10.1145/3799682.3840151",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Rajat Arora (Linkedin) · Ye Tao (LinkedIn) · Jianqiang Shen (Linkedin) · Ping Liu (Linkedin) · Muchen Wu (Linkedin) · Qianqi Shen (Linkedin) · Benjamin Le (LinkedIn) · Fedor Borisyuk (LinkedIn) · Jingwei Wu (Linkedin) · Wenjing Zhang (Linkedin)",
+      "programId": "cap2653",
+      "selectionId": "C26-021",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 68,
+      "reviewUrl": "cikm-2026/c26-021.html"
+    },
+    {
+      "title": "Beyond End-to-End: A Low-Latency, Retrieval-Augmented Chain-of-Thought for Scalable and Explainable Industrial Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840164",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Wanjie Tao (Mashang Consumer Finance Co., Ltd) · Zhumei Gou (Alibaba Group) · Zulong Chen (Alibaba Group) · Qun Dai (Nanjing University of Aeronautics and Astronautics) · Quan Lu (Mashang Consumer Finance Co., Ltd) · Ning Jiang (Mashang Consumer Finance Co., Ltd)",
+      "programId": "cap3031",
+      "selectionId": "C26-022",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 69,
+      "reviewUrl": "cikm-2026/c26-022.html"
+    },
+    {
+      "title": "Large Language Model as Universal Retriever in Industrial-Scale Recommender System",
+      "url": "https://doi.org/10.1145/3799682.3840090",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Junguang Jiang (Taobao & Tmall Group of Alibaba) · Yanwen Huang (Taobao & Tmall Group of Alibaba) · Bin Liu (Taobao & Tmall Group of Alibaba) · Xiaoyu Kong (Taobao & Tmall Group of Alibaba) · Xinhang Li (Taobao & Tmall Group of Alibaba) · Ziru Xu (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Jian Xu (Taobao & Tmall Group of Alibaba) · Bo Zheng (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap0287",
+      "selectionId": "C26-023",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 70,
+      "reviewUrl": "cikm-2026/c26-023.html"
+    },
+    {
+      "title": "HiGR: Industrial-Scale Hierarchical Generative Slate Recommendation Framework in Tencent",
+      "url": "https://doi.org/10.1145/3799682.3840166",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Yunsheng Pang (Tencent) · Zijian Liu (Tencent) · Yudong Li (Tencent) · Shaojie Zhu (Tencent) · Zijian Luo (Sun Yat-sen University) · Chenyun Yu (Sun Yat-sen University) · Sikai Wu (Tencent) · Shichen Shen (Tencent) · Cong Xu (Tencent) · Bin Wang (Tencent) · Kai Jiang (Tencent) · Chengxiang Zhuo (Tencent) · Zang Li (Tencent)",
+      "programId": "cap3122",
+      "selectionId": "C26-024",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 71,
+      "reviewUrl": "cikm-2026/c26-024.html"
+    },
+    {
+      "title": "Decoupled Temporal Encoding for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840106",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Pengfei Jia (Rajax Network Techology (Taobao Shangou of Alibaba)) · Jingjian Wang (Rajax Network Techology (Taobao Shangou of Alibaba)) · Jingmao Li (Department of Biostatistics, Yale School of Public Health) · Ge Zhang (Rajax Network Techology (Taobao Shangou of Alibaba)) · Feng Shi (Rajax Network Techology (Taobao Shangou of Alibaba))",
+      "programId": "cap0718",
+      "selectionId": "C26-025",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 72,
+      "reviewUrl": "cikm-2026/c26-025.html"
+    },
+    {
+      "title": "LASER: Label-Anchored Semantic Encoding with Multimodal-Collaborative Signals Harmonization for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840122",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Shiyu Song (Hangzhou Dianzi University) · Xiaofei Ding (NetEase Fuxi AI lab) · Jie Gao (Hangzhou Dianzi University) · Yile Liang (NetEase Fuxi AI lab) · Dongjing Wang (Hangzhou Dianzi University) · Xudong Shen (NetEase Fuxi AI Lab) · Xin Zhang (Hangzhou Dianzi University) · Tangjie Lv (NetEase Fuxi AI lab) · Runze Wu (NetEase Fuxi AI Lab)",
+      "programId": "cap1407",
+      "selectionId": "C26-026",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 73,
+      "reviewUrl": "cikm-2026/c26-026.html"
+    },
+    {
+      "title": "Tlow: Flow-based Item Tokenizer for Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840087",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Nian Li (Tsinghua University) · Chonggang Song (Tencent Inc.) · Jingtao Ding (Tsinghua University) · Lingling Yi (Tencent Inc.) · Yong Li (Tsinghua University) · Qingmin Liao (Shenzhen International Graduate School, Tsinghua University)",
+      "programId": "cap0216",
+      "selectionId": "C26-027",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": "src/content/paper_summaries/semantic_ids_tokenization_indexing/tlow_flow_based_item_tokenizer_for_recommendation_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 74,
+      "reviewUrl": "cikm-2026/c26-027.html"
+    },
+    {
+      "title": "LEMUR: Large scale End-to-end MUltimodal Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840084",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Xintian Han (ByteDance) · Honggang Chen (ByteDance) · Quan Lin (ByteDance) · Jingyue Gao (ByteDance) · Xiangyuan Ren (ByteDance) · Lifei Zhu (ByteDance) · Zhisheng Ye (ByteDance) · Shikang Wu (ByteDance) · Xionghang Xie (ByteDance) · Xiaochu Gan (ByteDance) · Bingzheng Wei (ByteDance) · Peng Xu (ByteDance) · Zhe Wang (ByteDance) · Yuchao Zheng (ByteDance) · Jingjian Lin (ByteDance) · Di Wu (ByteDance) · Junfeng Ge (ByteDance)",
+      "programId": "cap0052",
+      "selectionId": "C26-028",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 75,
+      "reviewUrl": "cikm-2026/c26-028.html"
+    },
+    {
+      "title": "Native Multimodal Representation Learning for Click-Through Rate Prediction in E-Commerce Scenarios",
+      "url": "https://doi.org/10.1145/3799682.3840096",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Chao Yi (Taobao & Tmall Group of Alibaba) · Feifan Yang (Taobao & Tmall Group of Alibaba) · Jiawei Feng (University of Science and Technology of China) · Sishuo Chen (Taobao & Tmall Group of Alibaba) · Zhangming Chan (Taobao & Tmall Group of Alibaba) · Xiang-Rong Sheng (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap0537",
+      "selectionId": "C26-029",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 76,
+      "reviewUrl": "cikm-2026/c26-029.html"
+    },
+    {
+      "title": "BasisLTV: Ordinal-Guided Basis Reconstruction for Long-Tailed Lifetime Value Prediction via Semantic Behavior Compression",
+      "url": "https://doi.org/10.1145/3799682.3840128",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Xiaoqi Bai (Nanjing University) · Shuaiqi Chen (Bilibili Inc.) · Chun Tang (Hohai University) · Guodong Liu (Bilibili Inc.) · Lei Wang (Bilibili Inc.)",
+      "programId": "cap1462",
+      "selectionId": "C26-030",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 77,
+      "reviewUrl": "cikm-2026/c26-030.html"
+    },
+    {
+      "title": "ChoirRec: Semantic User Grouping via LLMs for Conversion Rate Prediction of Low-Activity Users",
+      "url": "https://doi.org/10.1145/3799682.3840156",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Dakai Zhai (Taobao & Tmall Group of Alibaba) · Jiong Gao (Taobao & Tmall Group of Alibaba) · Boya Du (Taobao & Tmall Group of Alibaba) · Ning Tang (Taobao & Tmall Group of Alibaba) · Junwei Xu (Shenzhen International Graduate School, Tsinghua University) · Qijie Shen (Taobao & Tmall Group of Alibaba) · Jialin Zhu (Taobao & Tmall Group of Alibaba) · Yuning Jiang (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap2906",
+      "selectionId": "C26-031",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 78,
+      "reviewUrl": "cikm-2026/c26-031.html"
+    },
+    {
+      "title": "LIFT: A Learning-aware Intervention Framework for Cold-Start Recommendation on TikTok Live",
+      "url": "https://doi.org/10.1145/3799682.3840142",
+      "track": "APPLIED",
+      "session": "2A · Industrial Recommender Systems II",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2A",
+      "authors": "Zhili Tang (Bytedance) · Qiyu Fang (Bytedance) · Qingyu Bing (Bytedance) · Qi Wang (Bytedance) · Yuhan Li (Bytedance) · Runze Yu (Bytedance) · Zhuang Cai (Bytedance) · Qinglei Wang (Bytedance) · Zuotao Liu (Bytedance)",
+      "programId": "cap2144",
+      "selectionId": "C26-032",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 79,
+      "reviewUrl": "cikm-2026/c26-032.html"
+    },
+    {
+      "title": "Transcending the Semantic Chasm: Knowledge-Graph Guided Aggregation for Cross-Silo Federated Session Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840977",
+      "track": "FULL",
+      "session": "2B · Federated Recommendation & Privacy",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+      "authors": "Changjie Wang (Nanjing University of Aeronautics and Astronautics) · Bohan Li (Nanjing University of Aeronautics and Astronautics) · Wenlong Wu (Nanjing University of Aeronautics and Astronautics) · Meng Ma (Nanjing University of Aeronautics and Astronautics) · Yuanyang Zhang (Nanjing University of Aeronautics and Astronautics) · Yuhang Dai (Nanjing University of Aeronautics and Astronautics) · Chenhui Feng (Nanjing University of Aeronautics and Astronautics) · Liang Liu (Nankai University) · Hua Dai (Nanjing University of Posts and Telecommunications) · Haofen Wang (TongJi University)",
+      "programId": "cfp2148",
+      "selectionId": "C26-033",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 85,
+      "reviewUrl": "cikm-2026/c26-033.html"
+    },
+    {
+      "title": "FedCGR: Federated Cross-Domain Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840895",
+      "track": "FULL",
+      "session": "2B · Federated Recommendation & Privacy",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-2B",
+      "authors": "Zhuodong Liu (Beijing Jiaotong University) · Hugen Lv (Beijing Jiaotong University) · Xiangyu Li (Shanghai Jiao Tong University) · Bohan Guo (University of Malaya) · Peiyu Hu (Xi'an Jiaotong-Liverpool University)",
+      "programId": "cfp1673",
+      "selectionId": "C26-034",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": "src/content/paper_summaries/semantic_ids_tokenization_indexing/fedcgr_federated_cross_domain_generative_recommendation_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 86,
+      "reviewUrl": "cikm-2026/c26-034.html"
+    },
+    {
+      "title": "Co-JDPRec: Collaborative Joint Dynamic Pruning for Efficient LLM-based Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840997",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Shunhang Zheng (Hangzhou Dianzi University) · Pengfei Jiao (Hangzhou Dianzi University) · Pinlong Zhao (Hangzhou Dianzi University) · Haocheng Yang (Tsinghua Shenzhen International Graduate School) · Dalin Zhang (Hangzhou Dianzi University) · Yuling Wang (Hangzhou Dianzi University)",
+      "programId": "cfp2248",
+      "selectionId": "C26-035",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 204,
+      "reviewUrl": "cikm-2026/c26-035.html"
+    },
+    {
+      "title": "MISTRec: Masked Item-Slot Token Modeling for LLM-based Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841145",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Huaye Zhang (China University of Petroleum (East China)) · Tingting Chen (China University of Petroleum (East China)) · Shaojun Wang (China University of Petroleum (East China)) · Diqiong Jiang (China University of Petroleum (East China))",
+      "programId": "cfp3088",
+      "selectionId": "C26-036",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 205,
+      "reviewUrl": "cikm-2026/c26-036.html"
+    },
+    {
+      "title": "Rethinking Item Tokenization in Generative Recommenders: From Fixed Atoms to Semantic Subwords",
+      "url": "https://doi.org/10.1145/3799682.3840979",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Xinrui Miao (University of Science and Technology of China) · Mingjia Yin (University of Science and Technology of China) · Jiaqing Zhang (University of Science and Technology of China) · Wei Guo (Huawei Technologies) · Yong Liu (Huawei Technologies) · Yuyang Ye (University of Science and Technology of China) · Hao Wang (University of Science and Technology of China) · Enhong Chen (University of Science and Technology of China)",
+      "programId": "cfp2153",
+      "selectionId": "C26-037",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": "src/content/paper_summaries/semantic_ids_tokenization_indexing/rethinking_item_tokenization_in_generative_recommenders_from_fixed_atoms_to_semantic_subwords_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 206,
+      "reviewUrl": "cikm-2026/c26-037.html"
+    },
+    {
+      "title": "Beyond Uniform Token Training: A Multi-Target Framework for Learning Token-Weighted Objectives in Generative Recommenders",
+      "url": "https://doi.org/10.1145/3799682.3840604",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Wei-Ning Chiu (Carnegie Mellon University) · Song-Duo Ma (National Taiwan University) · Han-Jay Shu (National Tsing Hua University) · Chuan-Ju Wang (Academia Sinica) · Pu-Jen Cheng (National Taiwan University)",
+      "programId": "cfp0344",
+      "selectionId": "C26-038",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 207,
+      "reviewUrl": "cikm-2026/c26-038.html"
+    },
+    {
+      "title": "Learning to Reflect and Correct: Towards Better Decoding Trajectories for Large-Scale Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840787",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Haibo Xing (Alibaba International Digital Commerce Group) · Hao Deng (Alibaba International Digital Commerce Group) · Lingyu Mu (Alibaba International Digital Commerce Group) · Jinxin Hu (Alibaba International Digital Commerce Group) · Yu Zhang (Alibaba International Digital Commerce Group) · Xiaoyi Zeng (Alibaba International Digital Commerce Group) · Jing Zhang (Wuhan University, School of Computer Science)",
+      "programId": "cfp1118",
+      "selectionId": "C26-039",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 208,
+      "reviewUrl": "cikm-2026/c26-039.html"
+    },
+    {
+      "title": "RQ-Reg: A Residual-Quantization-Based Framework for Continuous Value Prediction in Recommender Systems",
+      "url": "https://doi.org/10.1145/3799682.3840900",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Runpeng Cui (Kuaishou Technology) · Zhipeng Sun (Kuaishou Technology) · Chi Lu (Kuaishou Technology) · Peng Jiang (Kuaishou Technology)",
+      "programId": "cfp1708",
+      "selectionId": "C26-040",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 209
+    },
+    {
+      "title": "FAF: A Feature-Aware Adaptive Pre-training Framework for Bridging Gaps in CTR Prediction",
+      "url": "https://doi.org/10.1145/3799682.3841158",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Kai Cheng (University of Science and Technology of China) · Hao Wang (University of Science and Technology of China) · Kefan Wang (University of Science and Technology of China) · Luankang Zhang (University of Science and Technology of China) · Yiquan Lee (HUAWEI TECHNOLOGIES CO.LTD) · Wei Guo (HUAWEI TECHNOLOGIES CO.LTD) · Yong Liu (HUAWEI TECHNOLOGIES CO.LTD) · Yuyang Ye (University of Science and Technology of China) · Enhong Chen (University of Science and Technology of China)",
+      "programId": "cfp3165",
+      "selectionId": "C26-041",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 210
+    },
+    {
+      "title": "FC-GNN: Unleashing Field Priors for Graph-based CTR Prediction",
+      "url": "https://doi.org/10.1145/3799682.3840633",
+      "track": "FULL",
+      "session": "4A · Generative Recommendation & CTR Prediction",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4A",
+      "authors": "Huanyu Liu (Huazhong University of Science and Technology) · Hui Liu (Huazhong University of Science and Technology) · Hengjie Xie (Huazhong University of Science and Technology) · Wenyi Hu (Huazhong University of Science and Technology) · Zengyang Li (Central China Normal University)",
+      "programId": "cfp0705",
+      "selectionId": "C26-042",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 211
+    },
+    {
+      "title": "ViSalRec: Visual and Saliency-Informed Reward Augmentation for Sequential Recommender Systems",
+      "url": "https://doi.org/10.1145/3799682.3840782",
+      "track": "FULL",
+      "session": "4B · Graph & Multimodal Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-4B",
+      "authors": "Georgios Koutroumpas (Telefónica Scientific Research) · Jie Wang (University of Glasgow) · Sergi Abadal (Universitat Politècnica de Catalunya) · Joemon M. Jose (University of Glasgow) · Ioannis Arapakis (Telefónica Scientific Research)",
+      "programId": "cfp1106",
+      "selectionId": "C26-043",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 219,
+      "reviewUrl": "cikm-2026/c26-043.html"
+    },
+    {
+      "title": "GloRank: Generative Reranking for Deep Recommender Systems via Global Identifier Generation",
+      "url": "https://doi.org/10.1145/3799682.3840950",
+      "track": "FULL",
+      "session": "5A · Learning to Rank & Re-Ranking",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5A",
+      "authors": "Pengyue Jia (City University of Hong Kong) · Xiaobei Wang (Kuaishou Technology) · Yingyi Zhang (City University of Hong Kong) · Shuchang Liu (Kuaishou Technology) · Yupeng Hou (University of California San Diego) · Hailan Yang (Kuaishou Technology) · Xu Gao (Kuaishou Technology) · Xiaopeng Li (City University of Hong Kong) · Yejing Wang (City University of Hong Kong) · Julian McAuley (University of California San Diego) · Xiang Li (Kuaishou Technology) · Lantao Hu (Kuaishou Technology) · Yongqi Liu (Kuaishou technology) · Kaiqiao Zhan (Kuaishou Technology) · Han Li (Kuaishou Technology) · Kun Gai (Kuaishou Technology) · Xiangyu Zhao (City University of Hong Kong)",
+      "programId": "cfp2010",
+      "selectionId": "C26-044",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 282,
+      "reviewUrl": "cikm-2026/c26-044.html"
+    },
+    {
+      "title": "SWIM: Step-Wise Integrated Measure for Session-supervised List Evaluation in Generative Re-ranking",
+      "url": "https://doi.org/10.1145/3799682.3840732",
+      "track": "FULL",
+      "session": "5A · Learning to Rank & Re-Ranking",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5A",
+      "authors": "Yuanhao Pu (University of Science and Technology of China) · Chenghao Zhang (Kuaishou Technology) · Chao Feng (Kuaishou Technology) · Xunyong Yang (Kuaishou Technology) · Xiang Li (Kuaishou Technology) · Yongqi Liu (Kuaishou Technology) · Defu Lian (University of Science and Technology of China) · Kaiqiao Zhan (Kuaishou Technology) · Kun Gai (Unaffiliated)",
+      "programId": "cfp0554",
+      "selectionId": "C26-045",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 283,
+      "reviewUrl": "cikm-2026/c26-045.html"
+    },
+    {
+      "title": "SGLP: Semantic-Guided Graph Structure Learning with LLM Structural Priors for Cross-Domain Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840931",
+      "track": "FULL",
+      "session": "5B · Cross-Domain Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+      "authors": "Jingwei Ma (Shandong Normal University) · Yulin Tao (Shandong Normal University) · Mingyang Zhong (Southwest University) · Jiahui Wen (Defense Innovation Institute)",
+      "programId": "cfp1930",
+      "selectionId": "C26-046",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 289,
+      "reviewUrl": "cikm-2026/c26-046.html"
+    },
+    {
+      "title": "Bridging the Domain Gap: Domain-Aware Hierarchical Semantic Representation for Cross-Domain Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840965",
+      "track": "FULL",
+      "session": "5B · Cross-Domain Recommendation",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5B",
+      "authors": "Xinzhuo Wu (Zhejiang University) · Weihai Lu (Peking University) · Zhejun Zhao (Peking University)",
+      "programId": "cfp2088",
+      "selectionId": "C26-047",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 290,
+      "reviewUrl": "cikm-2026/c26-047.html"
+    },
+    {
+      "title": "Jointly Optimizing Debiased CTR and Uplift for Coupons Marketing: A Unified Causal Framework",
+      "url": "https://doi.org/10.1145/3799682.3840119",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Siyun Yang (Kuaishou Technology) · Shixiao Yang (Beijing Institute of Technology) · Jian Wang (Kuaishou Technology) · Di Fan (Kuaishou Technology) · Kehe Cai (Kuaishou Technology) · Haoyan Fu (Beijing Institute of Technology) · Jiaming Zhang (Kuaishou Technology) · Wenjin Wu (Kuaishou Technology) · Peng Jiang (Independent Researcher)",
+      "programId": "cap1188",
+      "selectionId": "C26-048",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 293
+    },
+    {
+      "title": "TUGB: A Two-stage Uncertainty-aware Generative Auto-Bidding Framework",
+      "url": "https://doi.org/10.1145/3799682.3840154",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Luzhan Yuan (JD.com) · Chao Mi (JD.com) · Xiahao Shi (JD.com) · Yi Mao (JD.com) · Shengsheng Niu (JD.com) · Xin Zhu (JD.com) · Jie He (JD.com) · Zhangang Lin (JD.com) · Ching Law (JD.com)",
+      "programId": "cap2722",
+      "selectionId": "C26-049",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 294
+    },
+    {
+      "title": "HOB: A Holistically Optimized Bidding Strategy under Heterogeneous Bidding Environments",
+      "url": "https://doi.org/10.1145/3799682.3840094",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Qi Li (Alibaba Group) · Wendong Huang (Tsinghua University) · Qichen Ye (Alibaba Group) · Wutong Xu (Tsinghua University) · Rongquan Bai (Alibaba Group) · Cheems Wang (Tsinghua University) · Wei Yuan (Alibaba Group) · Miao Xu (Alibaba Group) · Zhiyu Mou (Alibaba Group) · Guan Wang (Alibaba Group) · Chuan Yu (Alibaba Group) · Jian Xu (Alibaba Group)",
+      "programId": "cap0476",
+      "selectionId": "C26-050",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 295
+    },
+    {
+      "title": "Bidding-Aware Retrieval for Multi-Stage Consistency in Online Advertising",
+      "url": "https://doi.org/10.1145/3799682.3840091",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Bin Liu (Taobao & Tmall Group of Alibaba) · Yunfei Liu (Taobao & Tmall Group of Alibaba) · Ziru Xu (Taobao & Tmall Group of Alibaba) · Zhi Kou (Taobao & Tmall Group of Alibaba) · Yeqiu Yang (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Jian Xu (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap0288",
+      "selectionId": "C26-051",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 296
+    },
+    {
+      "title": "Mine and Refine: Optimizing Graded Relevance in E-commerce Semantic Search Retrieval",
+      "url": "https://doi.org/10.1145/3799682.3840139",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Jiaqi Xi (DoorDash Inc.) · Raghav Saboo (DoorDash Inc.) · Luming Chen (DoorDash Inc.) · Johny Rufus (DoorDash Inc.) · Aditya Dodda (DoorDash Inc.) · Ved Sampath (DoorDash Inc.) · Kenny Chi (DoorDash Inc.) · Elyse Winer (DoorDash Inc.) · Akshad Viswanathan (DoorDash Inc.) · Martin Wang (DoorDash Inc.) · Sudeep Das (DoorDash Inc.)",
+      "programId": "cap1898",
+      "selectionId": "C26-052",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 297
+    },
+    {
+      "title": "Bridging Queries and Brands: Entity Linking for Large-Scale Product Search",
+      "url": "https://doi.org/10.1145/3799682.3840092",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Dong Liu (Amazon) · Sreyashi Nag (Amazon)",
+      "programId": "cap0300",
+      "selectionId": "C26-053",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 298
+    },
+    {
+      "title": "SAM-D2Q: Aligning Multimodal Doc2Query with Search Demand and Conversion for E-commerce",
+      "url": "https://doi.org/10.1145/3799682.3840121",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Hui Zhou (Alibaba International Digital Commerce Group) · Jian Hui Ji (Alibaba International Digital Commerce Group) · Lei Ma (Alibaba International Digital Commerce Group) · Rong Xiao (Alibaba International Digital Commerce Group) · Xiaoyi Zeng (Alibaba International Digital Commerce Group)",
+      "programId": "cap1389",
+      "selectionId": "C26-054",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 299
+    },
+    {
+      "title": "LEAPS: An LLM-Empowered Adaptive Plugin in Taobao AI Search",
+      "url": "https://doi.org/10.1145/3799682.3840100",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Lei Wang (Taobao & Tmall Group, Alibaba) · Jinhang Wu (Taobao & Tmall Group, Alibaba) · Zhibin Wang (Taobao & Tmall Group, Alibaba) · Biye Li (Taobao & Tmall Group, Alibaba)",
+      "programId": "cap0585",
+      "selectionId": "C26-055",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 300
+    },
+    {
+      "title": "Graph-GRPO: Dependency-Aware Credit Assignment for Generative E-commerce Search Relevance",
+      "url": "https://doi.org/10.1145/3799682.3840144",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Jiarui Che (Nankai University) · Yifei Chen (JD.COM) · Zhixing Tian (JD.COM) · Chenyang Wang (JD.COM) · Ziguang Cheng (JD.COM)",
+      "programId": "cap2200",
+      "selectionId": "C26-056",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 301
+    },
+    {
+      "title": "Efficient Generative Retrieval for E-commerce Search with Semantic Cluster IDs and Expert-Guided RL",
+      "url": "https://doi.org/10.1145/3799682.3840110",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Jianbo Zhu (Taobao & Tmall Group of Alibaba) · Xing Fang (Taobao & Tmall Group of Alibaba) · Jing Wang (Taobao & Tmall Group of Alibaba) · Mingmin Jin (Taobao & Tmall Group of Alibaba) · Bokang Wang (Taobao & Tmall Group of Alibaba) · Guangxin Song (Taobao & Tmall Group of Alibaba) · Zhenyu Xie (Taobao & Tmall Group of Alibaba) · Junjie Bai (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap0924",
+      "selectionId": "C26-057",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 302
+    },
+    {
+      "title": "SSR-GRPO: Integrating Supervision and Semantic IDs into Reinforcement Learning for Dense Retrieval in E-commerce",
+      "url": "https://doi.org/10.1145/3799682.3840101",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Guangxin Song (Alibaba Group) · Xing Fang (Alibaba Group) · Mingming Jin (Alibaba Group) · Jing Wang (Alibaba Group) · Bokang Wang (Alibaba Group) · Zhentao Song (Alibaba Group) · Junjie Bai (Alibaba Group) · Jianbo Zhu (Alibaba Group)",
+      "programId": "cap0614",
+      "selectionId": "C26-058",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 303
+    },
+    {
+      "title": "Semantic Search At LinkedIn",
+      "url": "https://doi.org/10.1145/3799682.3840152",
+      "track": "APPLIED",
+      "session": "5C · Industrial Search & Advertising",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#s-5C",
+      "authors": "Fedor Borisyuk (LinkedIn) · Sriram Vasudevan (LinkedIn) · Muchen Wu (LinkedIn) · Guoyao Li (LinkedIn) · Benjamin Le (LinkedIn) · Shaobo Zhang (LinkedIn) · Qianqi Kay Shen (LinkedIn) · Yuchin Juan (LinkedIn) · Kayhan Behdin (LinkedIn) · Liming Dong (LinkedIn) · Kaixu Yang (LinkedIn) · Shusen Jing (LinkedIn) · Ravi Pothamsetty (LinkedIn) · Rajat Arora (LinkedIn) · Sophie Yanying Sheng (LinkedIn) · Vitaly Abdrashitov (LinkedIn) · Yang Zhao (LinkedIn) · Lin Su (LinkedIn) · Xiaoqing Wang (LinkedIn) · Chujie Zheng (LinkedIn) · Sarang Metkar (LinkedIn) · Rupesh Gupta (LinkedIn) · Igor Lapchuk (LinkedIn) · David N. Racca (LinkedIn) · Madhumitha Mohan (LinkedIn) · Yanbo Li (LinkedIn) · Haojun Li (LinkedIn) · Saloni Gandhi (LinkedIn) · Xueying Lu (LinkedIn) · Chetan Bhole (LinkedIn) · Ali Hooshmand (LinkedIn) · Xin Yang (LinkedIn) · Raghavan Muthuregunathan (LinkedIn) · Jiajun Zhang (LinkedIn) · Mathew Teoh (LinkedIn) · Adam Coler (LinkedIn) · Abhinav Gupta (LinkedIn) · Xiaojing Ma (LinkedIn) · Sundara Raman Ramachandran (LinkedIn) · Morteza Ramezani (LinkedIn) · Yubo Wang (LinkedIn) · Lijuan Zhang (LinkedIn) · Richard Li (LinkedIn) · Jian Sheng (LinkedIn) · Chanh Nguyen (LinkedIn) · Yen-Chi Chen (LinkedIn) · Chuanrui Zhu (LinkedIn) · Claire Zhang (LinkedIn) · Jiahao Xu (LinkedIn) · Deepti Kulkarni (LinkedIn) · Qing Lan (LinkedIn) · Arvind Subramaniam (LinkedIn) · Ata Fatahibaarzi (LinkedIn) · Steven Shimizu (LinkedIn) · Yanning Chen (LinkedIn) · Zhipeng Wang (LinkedIn) · Ran He (LinkedIn) · Zhengze Zhou (LinkedIn) · Qingquan Song (LinkedIn) · Yun Dai (LinkedIn) · Caleb Johnson (LinkedIn) · Ping Liu (LinkedIn) · Shaghayegh Gharghabi (LinkedIn) · Gokulraj Mohanasundaram (LinkedIn) · Juan Bottaro (LinkedIn) · Santhosh Sachindran (LinkedIn) · Qi Guo (LinkedIn) · Yunxiang Ren (LinkedIn) · Chengming Jiang (LinkedIn) · Di Mo (LinkedIn) · Luke Simon (LinkedIn) · Jianqiang Shen (LinkedIn) · Jingwei Wu (LinkedIn) · Wenjing Zhang (LinkedIn)",
+      "programId": "cap2692",
+      "selectionId": "C26-059",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 304
+    },
+    {
+      "title": "HiSAC: Hierarchical Sparse Activation Compression for Ultra-long Sequence Modeling in Recommendation Systems",
+      "url": "https://doi.org/10.1145/3799682.3840124",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Kun Yuan (Taobao & Tmall Group of Alibaba) · Junyu Bi (Taobao & Tmall Group of Alibaba) · Daixuan Cheng (Renmin University) · Changfa Wu (Taobao & Tmall Group of Alibaba) · Shuwen Xiao (Taobao & Tmall Group of Alibaba) · Binbin Cao (Taobao & Tmall Group of Alibaba) · Jian Wu (Taobao & Tmall Group of Alibaba) · Yuning Jiang (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap1419",
+      "selectionId": "C26-060",
+      "scope": "main",
+      "categories": [
+        "sequential",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 412,
+      "reviewUrl": "cikm-2026/c26-060.html"
+    },
+    {
+      "title": "RouteRec: Behavior-Guided Sparse Routing for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841104",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Junyeong Song (Korea Advanced Institute of Science and Technology) · Jaemin Yoo (Seoul National University)",
+      "programId": "cfp2864",
+      "selectionId": "C26-061",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 414,
+      "reviewUrl": "cikm-2026/c26-061.html"
+    },
+    {
+      "title": "Mitigating Negative Feedback in Sequential Recommendations with Barlow Twins",
+      "url": "https://doi.org/10.1145/3799682.3840006",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Veronika Ivanova (Yandex) · Evgeny Frolov (AXXX)",
+      "programId": "csp4009",
+      "selectionId": "C26-062",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 415,
+      "reviewUrl": "cikm-2026/c26-062.html"
+    },
+    {
+      "title": "Enriching Sequential Recommendation with Graph Laplacian Positional Embeddings",
+      "url": "https://doi.org/10.1145/3799682.3840042",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Ekaterina Trushkova (HSE University) · Artur Gimranov (HSE University) · Anton Lysenko (HSE University)",
+      "programId": "csp4199",
+      "selectionId": "C26-063",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 416,
+      "reviewUrl": "cikm-2026/c26-063.html"
+    },
+    {
+      "title": "Debate4Rec: Multi-Agent Debate for List-Level Feedback and Selection in Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839974",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Yiyang Li (Shanghai Jiao Tong University) · Zheli Zhou (Shanghai Jiao Tong University) · Weiwen Liu (Shanghai Jiao Tong University) · Bo Chen (Kuaishou Technology) · Jianghao Lin (Shanghai Jiao Tong University) · Weinan Zhang (Shanghai Jiao Tong University) · Chaoyi Ma (Kuaishou Technology) · Ruiming Tang (Kuaishou Technology) · Han Li (Kuaishou Technology) · Kun Gai (Kuaishou Technology)",
+      "programId": "csp3870",
+      "selectionId": "C26-064",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 418,
+      "reviewUrl": "cikm-2026/c26-064.html"
+    },
+    {
+      "title": "Self-Evolving Memory for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840721",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Xinyu Lin (National University of Singapore) · Zhuosong Jiang (National University of Singapore) · Zixiao Suo (National University of Singapore) · Siqin Wang (National University of Singapore) · Hanqing Zeng (Meta AI) · Hanchao Yu (Meta AI) · Yinglong Xia (Meta AI) · Jiang Zhang (Meta AI) · Aashu Singh (Meta AI) · Fei Liu (Meta AI) · Wenjie Wang (National University of Singapore) · Fuli Feng (National University of Singapore) · Yang Song (Meta AI) · Qifan Wang (Meta AI) · Tat-Seng Chua (National University of Singapore)",
+      "programId": "cfp0631",
+      "selectionId": "C26-065",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 421,
+      "reviewUrl": "cikm-2026/c26-065.html"
+    },
+    {
+      "title": "Controllable Autoregressive Retrieval with Long-term Action Perception for Recommendations",
+      "url": "https://doi.org/10.1145/3799682.3840168",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Jinwei Luo (Tencent Music Entertainment) · Dugang Liu (Shenzhen University) · Xing Tang (Shenzhen Technology University) · Xiuqiang He (Shenzhen Technology University) · Renjie Wei (Tencent Music Entertainment) · Zhe Wu (Tencent Music Entertainment) · Xin Huang (Tencent Music Entertainment) · Siliang Huang (Tencent Music Entertainment) · Hongcheng Fu (Tencent Music Entertainment)",
+      "programId": "cap3203",
+      "selectionId": "C26-066",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 422,
+      "reviewUrl": "cikm-2026/c26-066.html"
+    },
+    {
+      "title": "Gryphon: A Unified Architecture for Semantic-ID Generation and Item-Level Scoring in Industrial Recommendations",
+      "url": "https://doi.org/10.1145/3799682.3840005",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Daria Tikhonovich (Yandex) · Oleg Sorokin (Yandex) · Vladislav Dodonov (Yandex) · Mariia Ulianova (Yandex) · Ilya Murzin (Yandex)",
+      "programId": "csp4006",
+      "selectionId": "C26-067",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": "src/content/paper_summaries/generative_retrieval/gryphon_unified_architecture_semantic_id_generation_item_level_scoring_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 423,
+      "reviewUrl": "cikm-2026/c26-067.html"
+    },
+    {
+      "title": "S²DGR: Stable-State Diffusion for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840009",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Ashish Kumar (Indian Institute of Technology Roorkee) · Prashant Kumar (Bennett University)",
+      "programId": "csp4025",
+      "selectionId": "C26-068",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 424,
+      "reviewUrl": "cikm-2026/c26-068.html"
+    },
+    {
+      "title": "GRID: Generative Recommendation via Inpainting Diffusion",
+      "url": "https://doi.org/10.1145/3799682.3840061",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Jia Ma (Tencent) · Jun Cheng (Tencent) · Kangyi Lin (Tencent)",
+      "programId": "csp4313",
+      "selectionId": "C26-069",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 425,
+      "reviewUrl": "cikm-2026/c26-069.html"
+    },
+    {
+      "title": "SPRIG: Semantic-ID-enhanced Paths for Knowledge Graph-based Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839870",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Justin Hangöbl (Johannes Kepler University) · Marta Moscati (Johannes Kepler University) · Alessandro B. Melchiorre (Criteo AI Lab) · Shah Nawaz (Johannes Kepler University) · Markus Schedl (Johannes Kepler University)",
+      "programId": "csp3379",
+      "selectionId": "C26-070",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 426,
+      "reviewUrl": "cikm-2026/c26-070.html"
+    },
+    {
+      "title": "Neither Black nor White: Balancing Semantic and Collaborative Signals with Graph-Informed Semantic IDs (GrIS)",
+      "url": "https://doi.org/10.1145/3799682.3840883",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Aleksei Medvedev (Huawei Ireland Research Centre) · Alejandro Ariza-Casabona (Huawei Ireland Research Centre) · Steven Derby (Huawei Ireland Research Centre) · Gonzalo Fiz Pontiveros (Huawei Ireland Research Centre) · Xinyang Shao (Huawei Ireland Research Centre) · Florian Spiess (Huawei Ireland Research Centre)",
+      "programId": "cfp1618",
+      "selectionId": "C26-071",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 427,
+      "reviewUrl": "cikm-2026/c26-071.html"
+    },
+    {
+      "title": "TagLLM: A Fine-Grained Tag Generation Approach for Note Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840088",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Zhijian Chen (Tongji University) · Likai Wang (Dewu) · Lei Chen (Dewu) · Yaguang Dou (Dewu) · Jialiang Shi (Dewu) · Tian Qi (Dewu) · Dongdong Hao (Dewu) · Mengying Lu (Tsinghua University) · Cheng Ye (Dewu) · Chao Wei (Dewu)",
+      "programId": "cap0240",
+      "selectionId": "C26-072",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 430,
+      "reviewUrl": "cikm-2026/c26-072.html"
+    },
+    {
+      "title": "A Dual-Expert Strategy Integrating LLMs to Mitigate Negative Transfer in Cross-Domain Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840999",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Hyeongjun Yun (SK Telecom) · Kihyuk Song (SK Telecom) · Jaegul Choo (Korea Advanced Institute of Science and Technology (KAIST)) · Chung Park (SK Telecom)",
+      "programId": "cfp2276",
+      "selectionId": "C26-073",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "first",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": "src/content/paper_summaries/sequential_session_long_history/a_dual_expert_strategy_integrating_llms_to_mitigate_negative_transfer_in_cross_domain_sequential_recommendation_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 435,
+      "reviewUrl": "cikm-2026/c26-073.html"
+    },
+    {
+      "title": "ConnectionMind: Leveraging Social Networks and Large Language Models for Personalized Recommendation at Meta",
+      "url": "https://doi.org/10.1145/3799682.3840157",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Haoyu Han (Michigan State University) · Yuming Liu (Meta Platforms,Inc.) · Lei Huang (Meta Platforms, Inc.) · Lizhu Zhang (Meta Platforms, Inc.) · Jiliang Tang (Michigan State University) · Xiangjun Fan (Meta Platforms, Inc.)",
+      "programId": "cap2925",
+      "selectionId": "C26-074",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 438,
+      "reviewUrl": "cikm-2026/c26-074.html"
+    },
+    {
+      "title": "LLM Meets Traffic: Traffic-Aware Large Language Models for Next POI Recommendation in Vehicle Navigation Interfaces",
+      "url": "https://doi.org/10.1145/3799682.3840140",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Jongsoo Lee (Hanyang University) · Minwook Kim (Hanyang University) · Namhyuk Kim (Hyundai Motor Company) · Dong-Kyu Chae (Hanyang University)",
+      "programId": "cap1983",
+      "selectionId": "C26-075",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 442,
+      "reviewUrl": "cikm-2026/c26-075.html"
+    },
+    {
+      "title": "Learning Semantic Co-occurrence and Personalized Focused Representations for Multimodal Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840661",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Shujie Li (The University of Hong Kong) · Guanghu Yuan (South China University of Technology) · Jinfeng Xu (The University of Hong Kong) · Chengming Li (Shenzhen MSU-BIT University) · Feng Liang (Shenzhen MSU-BIT University) · Runhao Zeng (Shenzhen MSU-BIT University) · Edith C. H. Ngai (The University of Hong Kong) · Xiping Hu (Shenzhen MSU-BIT University)",
+      "programId": "cfp0607",
+      "selectionId": "C26-076",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 443,
+      "reviewUrl": "cikm-2026/c26-076.html"
+    },
+    {
+      "title": "Orthogonal Popularity Decomposition for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840052",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Chen Yi Xu (The Chinese University of Hong Kong) · Hengyu Zhang (The Chinese University of Hong Kong) · Hong Cheng (The Chinese University of Hong Kong)",
+      "programId": "csp4246",
+      "selectionId": "C26-077",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 447,
+      "reviewUrl": "cikm-2026/c26-077.html"
+    },
+    {
+      "title": "Uncertainty-Triggered Test-Time Selective Inference for Click-Through Rate Prediction",
+      "url": "https://doi.org/10.1145/3799682.3840575",
+      "track": "FULL",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Moyu Zhang (Alibaba Group) · Yun Chen (Alibaba Group) · Yujun Jin (Alibaba Group) · Jinxin Hu (Alibaba Group) · Yu Zhang (Alibaba Group) · Xiaoyi Zeng (Alibaba Group)",
+      "programId": "cfp0068",
+      "selectionId": "C26-078",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 451
+    },
+    {
+      "title": "Context-Aware User Intent Modeling for Relevant Recommendation in E-commerce",
+      "url": "https://doi.org/10.1145/3799682.3839889",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Dike Sun (Alibaba Group) · Zheng Zou (Alibaba Group) · Jingtong Zang (Alibaba Group) · Zhu Jiahui (Alibaba Group) · Qi Sun (Alibaba Group) · Rui Ma (Alibaba Group) · Huaipeng Zhao (Alibaba Group) · Tao Luo (Alibaba Group) · Xiaoyi Zeng (Alibaba Group)",
+      "programId": "csp3501",
+      "selectionId": "C26-079",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 452
+    },
+    {
+      "title": "Resolving Price-Segment Blindspot in Search Ranking for Value-Driven Marketplaces",
+      "url": "https://doi.org/10.1145/3799682.3840129",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 1 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-1",
+      "authors": "Shubhendu Pandey (Meesho) · Satyendra Yadav (Meesho) · Virri Pranav (Meesho) · Sagnik Sarkar (Meesho) · Bhavuk Singhal (Meesho) · Abhay Shukla (Meesho) · Ravindra Kumar Yadav (Meesho) · Debdoot Mukherjee (Meesho)",
+      "programId": "cap1466",
+      "selectionId": "C26-080",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 453
+    },
+    {
+      "title": "Group-Relative RL Post-Training for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840028",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Danil Gusak (AXXX) · Evgeny Frolov (AXXX)",
+      "programId": "csp4120",
+      "selectionId": "C26-081",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 595,
+      "reviewUrl": "cikm-2026/c26-081.html"
+    },
+    {
+      "title": "BasketFormer: Contrastive Masked Language Modeling with Temporal Encoding and Repeat-Explore Gating for Next-Basket Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840147",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Akshay Verma (Amazon) · Sambit Das (Amazon) · Siddharth Pillai (Amazon) · Deepak Gupta (Amazon)",
+      "programId": "cap2460",
+      "selectionId": "C26-082",
+      "scope": "main",
+      "categories": [
+        "sequential",
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 596,
+      "reviewUrl": "cikm-2026/c26-082.html"
+    },
+    {
+      "title": "Retrieve-then-Adapt: Test-Time Retrieval-Augmentation for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841085",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Xing Tang (Shenzhen Technology University) · Jingyang Bin (Shenzhen Technology University) · Ziqiang Cui (City University of Hong Kong) · Xiaokun Zhang (City University of Hong Kong) · Fuyuan Lyu (McGill University) · Jingyan Jiang (Shenzhen Technology University) · Dugang Liu (Shenzhen University) · Chen Ma (City University of Hong Kong) · Ruiming Tang (Kuaishou Technology) · Xiuqiang He (Shenzhen Technology University)",
+      "programId": "cfp2775",
+      "selectionId": "C26-083",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 597,
+      "reviewUrl": "cikm-2026/c26-083.html"
+    },
+    {
+      "title": "SEDRec: Semantic Entanglement for Generative Diffusion-based Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841008",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Byungmoon Heo (Sungkyunkwan University) · Jaekwang Kim (Sungkyunkwan University)",
+      "programId": "cfp2309",
+      "selectionId": "C26-084",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 598,
+      "reviewUrl": "cikm-2026/c26-084.html"
+    },
+    {
+      "title": "Leveraging Language Models for Music Recommendation with Bayesian Residual Quantization",
+      "url": "https://doi.org/10.1145/3799682.3839844",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Yi Tian (Xi'an Jiaotong University) · Jian Zhang (Xiaomi Company) · Junjie Wu (Xiaomi Company) · Hongyu Xu (Peking University) · Yajie Wang (Xiaomi Company) · Jinnan Huang (Xi'an Jiaotong University) · Jiapeng Liu (Xi'an Jiaotong University)",
+      "programId": "csp0193",
+      "selectionId": "C26-085",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 600,
+      "reviewUrl": "cikm-2026/c26-085.html"
+    },
+    {
+      "title": "Faithful Evaluation of Semantic-ID Tokenizers for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841124",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Qian Zhang (University of Otago) · Lech Szymanski (University of Otago) · Jeremiah Deng (University of Otago) · Haibo Zhang (University of New South Wales)",
+      "programId": "cfp2986",
+      "selectionId": "C26-086",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 601,
+      "reviewUrl": "cikm-2026/c26-086.html"
+    },
+    {
+      "title": "Accumulative Modality Tokenization for Multimodal Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840848",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Shenghao Yang (DCST, Tsinghua University; Quan Cheng Laboratory) · Zhiqiang Guo (Quan Cheng Laboratory; DCST, Tsinghua University) · Weizhi Ma (AIR, Tsinghua University) · Min Zhang (DCST, Tsinghua University) · Lei Wang (Meituan)",
+      "programId": "cfp1460",
+      "selectionId": "C26-087",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 602,
+      "reviewUrl": "cikm-2026/c26-087.html"
+    },
+    {
+      "title": "Personalized Context-Conditioned Tokenization for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841026",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Qiyong Zhong (Zhejiang University) · Jiajie Su (Zhejiang University) · Yunshan Ma (Singapore Management University) · Julian McAuley (University of California San Diego) · Yupeng Hou (University of California San Diego)",
+      "programId": "cfp2386",
+      "selectionId": "C26-088",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 603,
+      "reviewUrl": "cikm-2026/c26-088.html"
+    },
+    {
+      "title": "Learning from Unreachable Rewards: Hint-Conditioned Reinforcement Learning for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840842",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Kangning Zhang (Shanghai Jiao Tong University) · Haotian Fang (Shanghai Jiao Tong University) · Xukun Luo (Mei Tuan) · Hao Yin (Mei Tuan) · Yang Gao (Mei Tuan) · Peng Yan (Mei Tuan) · Weiwen Liu (Shanghai Jiao Tong University) · Weinan Zhang (Shanghai Jiao Tong University) · Yong Yu (Shanghai Jiao Tong University)",
+      "programId": "cfp1414",
+      "selectionId": "C26-089",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 604,
+      "reviewUrl": "cikm-2026/c26-089.html"
+    },
+    {
+      "title": "SRCRec: Staged Reverse Curriculum Learning for Conversion-Oriented Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839884",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Yulei Huang (Alibaba International Digital Commerce Group) · Hao Deng (Alibaba International Digital Commerce Group) · Jinxin Hu (Alibaba International Digital Commerce Group) · Yu Zhang (Alibaba International Digital Commerce Group) · Xiaoyi Zeng (Alibaba International Digital Commerce Group)",
+      "programId": "csp3460",
+      "selectionId": "C26-090",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 605,
+      "reviewUrl": "cikm-2026/c26-090.html"
+    },
+    {
+      "title": "Scaling Up Unified CTR Prediction via Dynamic Sequence-to-Feature Interaction",
+      "url": "https://doi.org/10.1145/3799682.3841157",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Kai Cheng (University of Science and Technology of China) · Wei Guo (HUAWEI TECHNOLOGIES CO.LTD) · Guoyuan An (HUAWEI TECHNOLOGIES CO.LTD) · Luankang Zhang (University of Science and Technology of China) · Yuyang Ye (University of Science and Technology of China) · Yong Liu (HUAWEI TECHNOLOGIES CO.LTD) · Hao Wang (University of Science and Technology of China) · Enhong Chen (University of Science and Technology of China)",
+      "programId": "cfp3161",
+      "selectionId": "C26-091",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 608
+    },
+    {
+      "title": "Latent Residual Reasoning for Ranking in Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841103",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Haihan Shi (University of Science and Technology of China) · Ruidong Han (Meituan) · Wenjie Wang (University of Science and Technology of China) · Shangyu Chen (Meituan) · Sunhao Dai (Renmin University of China) · Yongqi Li (The Hong Kong Polytechnic University) · Yangyang Li (Academy of Cyber) · Fei Jiang (Meituan) · Wei Lin (Meituan) · Fuli Feng (University of Science and Technology of China) · Xiangnan He (University of Science and Technology of China)",
+      "programId": "cfp2860",
+      "selectionId": "C26-092",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 610,
+      "reviewUrl": "cikm-2026/c26-092.html"
+    },
+    {
+      "title": "TAG-Rec: Grounding LLM-based Recommendation via Trigger-Anchored GRPO",
+      "url": "https://doi.org/10.1145/3799682.3840735",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Donghee Han (Korea Advanced Institute of Science and Technology) · Jiwon Jeong (Korea Advanced Institute of Science and Technology) · Hwanjun Song (Korea Advanced Institute of Science and Technology) · Mun Yong Yi (Korea Advanced Institute of Science and Technology)",
+      "programId": "cfp0542",
+      "selectionId": "C26-093",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 611
+    },
+    {
+      "title": "Learning Collaborative and Discriminative Embeddings with LLMs for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839913",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Sijin Lu (Beijing Jiaotong University) · Jun Wu (Beijing Jiaotong University)",
+      "programId": "csp3616",
+      "selectionId": "C26-094",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 612,
+      "reviewUrl": "cikm-2026/c26-094.html"
+    },
+    {
+      "title": "Lossless Compression of Proximity Graph Indexes for Efficient Approximate Nearest Neighbors Search",
+      "url": "https://doi.org/10.1145/3799682.3840116",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Francesco Benocci (ISTI-CNR) · Leonard Dahlmann (eBay Inc.) · Francesco Gargiulo (University of Pisa) · Tobias Heuer (eBay Inc.) · Silvio Martinico (University of Pisa & ISTI-CNR) · Franco Maria Nardini (ISTI-CNR) · Cosimo Rulli (ISTI-CNR) · Rossano Venturini (University of Pisa)",
+      "programId": "cap1109",
+      "selectionId": "C26-095",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 620
+    },
+    {
+      "title": "Large Language Model-Guided Adaptive Source-Domain Weighting for Cross-Domain Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841015",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Yujie Jia (Donghua University) · Guohao Sun (Donghua University) · Xiu Fang (Donghua University) · Ge Zhang (Donghua University) · Jinhu Lu (Fuyang Normal University)",
+      "programId": "cfp2352",
+      "selectionId": "C26-096",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 623,
+      "reviewUrl": "cikm-2026/c26-096.html"
+    },
+    {
+      "title": "Sequential Modality Dropout for Robust Multi-Modal Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840039",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Guanqun Yang (Stevens Institute of Technology) · Wenlong Zhang (Stevens Institute of Technology)",
+      "programId": "csp4192",
+      "selectionId": "C26-097",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 628,
+      "reviewUrl": "cikm-2026/c26-097.html"
+    },
+    {
+      "title": "MUSER: Memory-Augmented Multimodal Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841142",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Ziyi Cao (Beihang University) · Rui Liu (Beihang University) · Jiajun Lin (Beihang University) · Yi Gu (Midea AI Research Center) · Yong Chen (Beijing University of Posts and Telecommunications) · Dell Zhang (Institute of Artificial Intelligence (TeleAI), China Telecom)",
+      "programId": "cfp3079",
+      "selectionId": "C26-098",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 629,
+      "reviewUrl": "cikm-2026/c26-098.html"
+    },
+    {
+      "title": "MUSE: A Simple Yet Effective Multimodal Search-Based Framework for Lifelong User Interest Modeling",
+      "url": "https://doi.org/10.1145/3799682.3840125",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Bin Wu (Wuhan University) · Feifan Yang (Taobao & Tmall Group of Alibaba) · Zhangming Chan (Taobao & Tmall Group of Alibaba) · Yu-Ran Gu (Taobao & Tmall Group of Alibaba) · Jiawei Feng (Taobao & Tmall Group of Alibaba) · Chao Yi (Taobao & Tmall Group of Alibaba) · Xiang-Rong Sheng (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Jian Xu (Taobao & Tmall Group of Alibaba) · Mang Ye (Wuhan University) · Bo Zheng (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap1422",
+      "selectionId": "C26-099",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 630,
+      "reviewUrl": "cikm-2026/c26-099.html"
+    },
+    {
+      "title": "Mitigating Popularity Bias in Sequential Recommendations with Sparse Prior-Regularized Objective",
+      "url": "https://doi.org/10.1145/3799682.3841006",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Anton Pembek (Sber AI Lab) · Anton Klenitskiy (Sber AI Lab) · Alexander Savchenko (Lomonosov Moscow State University (MSU)) · Alexey Vasilev (Sber AI Lab)",
+      "programId": "cfp2303",
+      "selectionId": "C26-100",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 634,
+      "reviewUrl": "cikm-2026/c26-100.html"
+    },
+    {
+      "title": "The Role of User-Item Connectivity in CTR Prediction",
+      "url": "https://doi.org/10.1145/3799682.3840916",
+      "track": "FULL",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Zhongyu Ouyang (Dartmouth College) · Chunhui Zhang (Dartmouth College) · Xingjian Diao (Dartmouth College) · Yijun Tian (University of Notre Dame) · Soroush Vosoughi (Dartmouth College)",
+      "programId": "cfp1800",
+      "selectionId": "C26-101",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 636
+    },
+    {
+      "title": "Sequential Multimodal Evidence Optimization for Product Media Ranking in E-Commerce",
+      "url": "https://doi.org/10.1145/3799682.3840133",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Prasenjit Dey (Amazon.com Inc.) · Frank McIntyre (Amazon.com Inc.) · Arnab Sinha (Amazon.com Inc.)",
+      "programId": "cap1632",
+      "selectionId": "C26-102",
+      "scope": "adjacent_optional",
+      "categories": [
+        "industrial_search_ads"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: промышленный поиск, реклама или инфраструктура retrieval.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 638
+    },
+    {
+      "title": "Personalized Quality-Aware Reranking for Long-Term User Retention in E-commerce",
+      "url": "https://doi.org/10.1145/3799682.3840127",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 2 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-2",
+      "authors": "Siddhant Doshi (Meesho) · Krish Rupapara (Meesho) · Bhavuk Singhal (Meesho) · Abhay Shukla (Meesho) · Ravindra Kumar Yadav (Meesho) · Debdoot Mukherjee (Meesho)",
+      "programId": "cap1457",
+      "selectionId": "C26-103",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 647,
+      "reviewUrl": "cikm-2026/c26-103.html"
+    },
+    {
+      "title": "Higher Capacity Transfer into JPQ Item Codes for Scalable Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839954",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Sharare Zolghadr (University of Glasgow) · Richard Mccreadie (University of Glasgow) · Craig Macdonald (University of Glasgow)",
+      "programId": "csp3764",
+      "selectionId": "C26-104",
+      "scope": "main",
+      "categories": [
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 781,
+      "reviewUrl": "cikm-2026/c26-104.html"
+    },
+    {
+      "title": "From Overlooked to Explored: Recovering Item Relations via Mixture of Perspectives for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841126",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Junyoung Kim (Pohang University of Science and Technology) · Wonbin Kweon (Sungkyunkwan University) · Woojoo Kim (Pohang University of Science and Technology) · Jaehyung Lim (Pohang University of Science and Technology) · Dongha Kim (Pohang University of Science and Technology) · Hwanjo Yu (Pohang University of Science and Technology)",
+      "programId": "cfp2994",
+      "selectionId": "C26-105",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 783,
+      "reviewUrl": "cikm-2026/c26-105.html"
+    },
+    {
+      "title": "Latent Intent Anchoring for Robust Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839973",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Yifan Shao (The Chinese University of Hong Kong) · Peilin Zhou (New York University, Abu Dhabi) · Shoujin Wang (University of Technology Sydney) · Tuka Alhanai (New York University, Abu Dhabi)",
+      "programId": "csp3869",
+      "selectionId": "C26-106",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 784,
+      "reviewUrl": "cikm-2026/c26-106.html"
+    },
+    {
+      "title": "CoRe-Rec: Budgeted Consistency Policy Re-Rolling for Sequential Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839853",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Zhiyuan Zhang (The Hong Kong University of Science and Technology (Guangzhou)) · Yuxin He (The Hong Kong University of Science and Technology (Guangzhou)) · Yong Sun (The Hong Kong University of Science and Technology (Guangzhou)) · Lijiang Liu (The Hong Kong University of Science and Technology (Guangzhou)) · Junyu Shi (The Hong Kong University of Science and Technology (Guangzhou)) · Zhengjie Zhang (The Hong Kong University of Science and Technology (Guangzhou)) · Minxue Fang (Peking University) · Danqi Yan (The Hong Kong University of Science and Technology (Guangzhou)) · Qiang Nie (The Hong Kong University of Science and Technology (Guangzhou))",
+      "programId": "csp2244",
+      "selectionId": "C26-107",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 785,
+      "reviewUrl": "cikm-2026/c26-107.html"
+    },
+    {
+      "title": "PRISM: Pruning-Enhanced Intent Sampling for Recommendation Multi-List Generation",
+      "url": "https://doi.org/10.1145/3799682.3840840",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Zheli Zhou (Shanghai Jiao Tong University) · Si Dong (Kuaishou Technology) · Weiwen Liu (Shanghai Jiao Tong University) · Bo Chen (Kuaishou Technology) · Jianghao Lin (Shanghai Jiao Tong University) · Weinan Zhang (Shanghai Jiao Tong University) · Chaoyi Ma (Kuaishou Technology) · Ruiming Tang (Kuaishou Technology) · Han Li (Kuaishou Technology) · Kun Gai (Kuaishou Technology)",
+      "programId": "cfp1405",
+      "selectionId": "C26-108",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 786
+    },
+    {
+      "title": "OneMall: One Architecture, More Scenarios — End-to-End Generative Recommender Family for E-commerce at Kuaishou",
+      "url": "https://doi.org/10.1145/3799682.3840095",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Kun Zhang (Kuaishou Technology) · Jingming Zhang (Kuaishou Technology) · Wei Cheng (Kuaishou Technology) · Yansong Cheng (Kuaishou Technology) · Jiaqi Zhang (Kuaishou Technology) · Jiangxia Cao (Kuaishou) · Hao Lu (Kuaishou Technology) · Xu Zhang (Kuaishou Technology) · Haixiang Gan (Kuaishou Technology) · Tenglong Wang (Kuaishou Technology) · Ximing Zhang (Kuaishou Technology) · Boyang Xia (Kuaishou Technology) · Kuo Cai (Kuaishou Technology) · Hongjian Dou (Kuaishou Technology) · Jinkai Yu (Kuaishou Technology) · Mingxing Wen (Kuaishou Technology) · Qiang Luo (Kuaishou Technology) · Zhaojie Liu (Kuaishou Technology)",
+      "programId": "cap0528",
+      "selectionId": "C26-109",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 787,
+      "reviewUrl": "cikm-2026/c26-109.html"
+    },
+    {
+      "title": "BAGEL: Behavior and Preference Alignment for Generative Live-Streaming Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840132",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Shuni Chen (Kuaishou Technology) · Anjie Zhu (Kuaishou Technology) · Peilin Song (Kuaishou Technology) · Xuming Wang (Kuaishou Technology) · Fei Pan (Kuaishou Technology) · Peng Jiang (Kuaishou Technology)",
+      "programId": "cap1567",
+      "selectionId": "C26-110",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 788,
+      "reviewUrl": "cikm-2026/c26-110.html"
+    },
+    {
+      "title": "MERGE: Next-Generation Item Indexing Paradigm for Large-Scale Streaming Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840083",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Jing Yan (Bytedance) · Yimeng Bai (Bytedance) · Zongyu Liu (Bytedance) · Yahui Liu (Bytedance) · Junwei Wang (Bytedance) · Jingze Huang (Bytedance) · Haoda Li (Bytedance) · Sihao Ding (ByteDance) · Shaohui Ruan (ByteDance) · Yang Zhang (National University of Singapore)",
+      "programId": "cap0031",
+      "selectionId": "C26-111",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids",
+        "industrial"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров. Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": "src/content/paper_summaries/semantic_ids_tokenization_indexing/merge_next_generation_item_indexing_summary.md",
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 789,
+      "reviewUrl": "cikm-2026/c26-111.html"
+    },
+    {
+      "title": "From Head to Tail: Asymmetric Knowledge Transfer in Long-tail Recommendation with Generative Semantic IDs",
+      "url": "https://doi.org/10.1145/3799682.3839993",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Chenyi Yan (Alibaba Group) · Ruocong Tang (Alibaba Group) · Xing Fang (Alibaba Group) · Yang Huang (Alibaba Group) · He Guo (Peking University) · Jing Wang (Alibaba Group)",
+      "programId": "csp3971",
+      "selectionId": "C26-112",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 790,
+      "reviewUrl": "cikm-2026/c26-112.html"
+    },
+    {
+      "title": "Preference-Aligned Semantic IDs for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840019",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Valentin Tsaruk (MIRAI) · Danil Gusak (AXXX) · Rostislav Korst (MIRAI) · Evgeny Frolov (AXXX)",
+      "programId": "csp4092",
+      "selectionId": "C26-113",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 791,
+      "reviewUrl": "cikm-2026/c26-113.html"
+    },
+    {
+      "title": "Cross-Domain Sequential Recommendation with Representation-Level User Transfer",
+      "url": "https://doi.org/10.1145/3799682.3841135",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Abdulaziz Samra (Skolkovo Institute of Science and Technology) · Nikita Sukhorukov (AXXX) · Alexey Grishanov (Sber AI Lab) · Alexey Vasilev (Sber AI Lab) · Evgeny Frolov (AXXX)",
+      "programId": "cfp3039",
+      "selectionId": "C26-114",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 792,
+      "reviewUrl": "cikm-2026/c26-114.html"
+    },
+    {
+      "title": "SIDInspector: A Mapping-First Diagnostic Resource for Semantic-ID Tokenizers",
+      "url": "https://doi.org/10.1145/3799682.3840174",
+      "track": "RESOURCE",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Jiandong Ding (Huawei Technologies Co., Ltd.) · Heng Chang (Huawei Technologies Co., Ltd.) · Huijie Qin (Huawei Technologies Co., Ltd.) · Tianying Liu (Huawei Technologies Co., Ltd.)",
+      "programId": "crp3316",
+      "selectionId": "C26-115",
+      "scope": "main",
+      "categories": [
+        "semantic_ids"
+      ],
+      "priority": "first",
+      "reason": "Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 793,
+      "reviewUrl": "cikm-2026/c26-115.html"
+    },
+    {
+      "title": "Do Recommenders Need to Think in Words? Latent Reasoning for Efficient LLM-Based Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3840048",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Hongyang Su (Tencent) · Beibei Kong (Tencent) · Lei Cheng (Tencent) · Chengxiang Zhuo (Tencent) · Zang Li (Tencent)",
+      "programId": "csp4229",
+      "selectionId": "C26-116",
+      "scope": "main",
+      "categories": [
+        "generative",
+        "semantic_ids"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking. Построение, обучение или оценка дискретных кодов товаров.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 794,
+      "reviewUrl": "cikm-2026/c26-116.html"
+    },
+    {
+      "title": "ClusterRec: Cluster-Aware Recommendation with Large Language Models for Efficient and Scalable Inference",
+      "url": "https://doi.org/10.1145/3799682.3840613",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Jingzhe Yuan (Tsinghua University) · Yongjian Zhou (School of Big Data and Software Engineering, Chongqing University) · Changxi Wen (Tsinghua University) · Shicheng Liu (Tsinghua University) · Bin Liu (Taobao & Tmall Group of Alibaba) · Ziru Xu (Taobao & Tmall Group of Alibaba) · Han Zhu (Taobao & Tmall Group of Alibaba) · Yue Wang (Department of Electronic Engineering, Tsinghua University) · Wei Zhou (School of Big Data and Software Engineering, Chongqing University) · Chen Gao (BNRist, Tsinghua University) · Yong Li (BNRist, Tsinghua University)",
+      "programId": "cfp0495",
+      "selectionId": "C26-117",
+      "scope": "adjacent_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 795
+    },
+    {
+      "title": "Diagnosing Lexical Text-Anchor Retrievability in Sequential Recommendation Benchmarks",
+      "url": "https://doi.org/10.1145/3799682.3839990",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Keito Kozaki (Hokkaido University) · Keigo Sakurai (Hokkaido University) · Ren Togo (Hokkaido University) · Takahiro Ogawa (Hokkaido University) · Miki Haseyama (Hokkaido University)",
+      "programId": "csp3945",
+      "selectionId": "C26-118",
+      "scope": "main",
+      "categories": [
+        "sequential"
+      ],
+      "priority": "normal",
+      "reason": "Моделирование истории взаимодействий, сессий или next-item/next-basket задачи.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 800,
+      "reviewUrl": "cikm-2026/c26-118.html"
+    },
+    {
+      "title": "Cross-Country Code-Mixing for Generative Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3839862",
+      "track": "SHORT",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Yuan Gao (Alibaba International Digital Commerce Group) · Hao Deng (Alibaba International Digital Commerce Group) · Haibo Xing (Alibaba International Digital Commerce Group) · Yi Xu (Alibaba International Digital Commerce Group) · Lingyu Mu (Alibaba International Digital Commerce Group) · Jinxin Hu (Alibaba International Digital Commerce Group) · Yu Zhang (Alibaba International Digital Commerce Group) · Xiaoyi Zeng (Alibaba International Digital Commerce Group)",
+      "programId": "csp3308",
+      "selectionId": "C26-119",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 801,
+      "reviewUrl": "cikm-2026/c26-119.html"
+    },
+    {
+      "title": "LLM-based User-Product Relevance Evaluation for Dynamic Product Advertising",
+      "url": "https://doi.org/10.1145/3799682.3840117",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Wen Zhang (Snap Inc.) · Xiao Bai (Snap Inc.) · Hsiang-Wei Chao (Snap Inc.) · Mengfan Zhu (Snap Inc.) · Tong Zhao (Snap Inc.) · Mingxuan Ju (Snap. Inc) · Xiaodong Liu (Snap Inc.) · Congfei Zhang (Snap Inc.) · Yunzhi Zhou (Snap Inc.) · Yajun Wang (Snap Inc.) · Jinchao Li (Snap Inc.) · Yu Zhang (Snap Inc.)",
+      "programId": "cap1140",
+      "selectionId": "C26-120",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 802,
+      "reviewUrl": "cikm-2026/c26-120.html"
+    },
+    {
+      "title": "Generative Multimodal Intent Modeling with Adaptive Integration for Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841022",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Chanmi Kang (Pusan National University) · Bongguk Son (Pusan National University) · Junsu Cho (Pusan National University)",
+      "programId": "cfp2378",
+      "selectionId": "C26-121",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 808,
+      "reviewUrl": "cikm-2026/c26-121.html"
+    },
+    {
+      "title": "SA-RSQ:A Versatile Sparse Representation Framework for Multi-modal Recommender Systems",
+      "url": "https://doi.org/10.1145/3799682.3840131",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Xiang Wang (Tianjin University) · Shigang Quan (Meituan) · Tingzhen Chang (Meituan) · Kang Yang (Meituan) · Sitong Chen (Meituan) · Yabo Fan (Meituan) · Xingxing Wang (Meituan) · Zhaodian He (Institute of Software Chinese Academy of Sciences)",
+      "programId": "cap1535",
+      "selectionId": "C26-122",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 809,
+      "reviewUrl": "cikm-2026/c26-122.html"
+    },
+    {
+      "title": "Popularity-Aware Complementary Preference Distillation for Diffusion Recommendation",
+      "url": "https://doi.org/10.1145/3799682.3841083",
+      "track": "FULL",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Meng Kang (University of Electronic Science and Technology of China) · Fan Li (University of Electronic Science and Technology of China) · Ping Kuang (University of Electronic Science and Technology of China)",
+      "programId": "cfp2757",
+      "selectionId": "C26-123",
+      "scope": "main",
+      "categories": [
+        "generative"
+      ],
+      "priority": "normal",
+      "reason": "Генеративная модель рекомендаций, retrieval или reranking.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 811,
+      "reviewUrl": "cikm-2026/c26-123.html"
+    },
+    {
+      "title": "Generative Pseudo-Labeling for Pre-Ranking with Large Language Models",
+      "url": "https://doi.org/10.1145/3799682.3840123",
+      "track": "APPLIED",
+      "session": "Poster & Demo Session 3 · Posters",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#p-3",
+      "authors": "Junyu Bi (Taobao & Tmall Group of Alibaba) · Xinting Niu (Taobao & Tmall Group of Alibaba) · Daixuan Cheng (Renmin University) · Kun Yuan (Taobao & Tmall Group of Alibaba) · Tao Wang (Taobao & Tmall Group of Alibaba) · Binbin Cao (Taobao & Tmall Group of Alibaba) · Jian Wu (Taobao & Tmall Group of Alibaba) · Yuning Jiang (Taobao & Tmall Group of Alibaba)",
+      "programId": "cap1416",
+      "selectionId": "C26-124",
+      "scope": "main",
+      "categories": [
+        "industrial"
+      ],
+      "priority": "normal",
+      "reason": "Прикладная работа о рекомендациях, ранжировании или пользовательских представлениях.",
+      "existingSummary": null,
+      "fullTextStatus": "full_text_reviewed",
+      "sourceIndex": 818,
+      "reviewUrl": "cikm-2026/c26-124.html"
+    },
+    {
+      "title": "Contextual Ranker in Production: Session-Aware Similar Item Ranking for Lower-Funnel E-Commerce",
+      "url": null,
+      "track": "INDUSTRY",
+      "session": "Industry Day",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day",
+      "authors": "Yuchen Guo (eBay Inc.) · Prudhvi Raj Dachapally (eBay Inc.)",
+      "programId": null,
+      "selectionId": "C26-125",
+      "scope": "industry_day_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 1028
+    },
+    {
+      "title": "Rebuilding the Content Ranking Stack for Prime Video: Lessons Learned Building from Scratch",
+      "url": null,
+      "track": "INDUSTRY",
+      "session": "Industry Day",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day",
+      "authors": "Zhengxiang Yi (Amazon) · Fan Yang (Amazon) · Juntao Yao (Amazon) · Yinchuan Yu (Amazon) · Qisheng He (Amazon) · Songqian Chen (Amazon) · Weiming Wu (Amazon) · Lianjiang He (Amazon) · Ziwei Fan (Amazon) · Yuntian Deng (Amazon) · Zhi Zhu (Amazon) · Qilin Qi (Amazon)",
+      "programId": null,
+      "selectionId": "C26-126",
+      "scope": "industry_day_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 1029
+    },
+    {
+      "title": "From Demo to Production: Generative Search Lessons from Alexa+",
+      "url": null,
+      "track": "INDUSTRY",
+      "session": "Industry Day",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day",
+      "authors": "Jitesh Mehta (Amazon) · Rahul Joshi (Amazon) · Adarshan Naiynar Sivashunmugam (Amazon)",
+      "programId": null,
+      "selectionId": "C26-127",
+      "scope": "industry_day_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 1032
+    },
+    {
+      "title": "Temporal Moment Generation: A New Recommendation Task and Cost-Efficient Distillation for Outbound Marketing at Scale",
+      "url": null,
+      "track": "POSTER",
+      "session": "Industry Day",
+      "sessionUrl": "https://cikm2026.diag.uniroma1.it/cikm-program/program.html#pre-industry-day",
+      "authors": "Badari Udupi Bindumadhav (Amazon)",
+      "programId": null,
+      "selectionId": "C26-128",
+      "scope": "industry_day_optional",
+      "categories": [
+        "adjacent"
+      ],
+      "priority": "normal",
+      "reason": "Дополнение: смежная тема; включать по согласованию.",
+      "existingSummary": null,
+      "fullTextStatus": "not_checked",
+      "sourceIndex": 1044
+    }
+  ],
+  "approvedScope": "99 main papers; optional papers excluded"
+}

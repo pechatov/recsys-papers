@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import SummaryLayout from '../../layouts/SummaryLayout.astro';
+import CikmVisitInfo from '../../components/CikmVisitInfo.astro';
+import papers from '../../data/cikm-2026-papers.json';
+
+export async function getStaticPaths() {
+  return (await getCollection('cikm2026')).map(entry => ({
+    params: { id: entry.data.selectionId.toLowerCase() }, props: { entry }
+  }));
+}
+const { entry } = Astro.props;
+const paper = papers.find(p => p.selectionId === entry.data.selectionId)!;
+const { Content } = await render(entry);
+const backHref = `${import.meta.env.BASE_URL}cikm-2026.html#${paper.selectionId}`;
+const labels: Record<string, string> = {
+  generative: 'Генеративные рекомендации', semantic_ids: 'Семантические ID',
+  sequential: 'Sequential', industrial: 'Индустриальные системы'
+};
+---
+<SummaryLayout title={entry.data.title} paperUrl={paper.url ?? undefined} catalogId={paper.selectionId} backHref={backHref} backLabel="← К подборке CIKM 2026">
+  <p>{paper.selectionId} · CIKM 2026 · {paper.track} · {paper.categories.map(c => labels[c]).join(' / ')}</p>
+  <p>{paper.authors}</p>
+  <p><a href={paper.url ?? paper.sessionUrl}>Статья</a> · <a href={paper.sessionUrl}>{paper.session}</a></p>
+  <aside class="source-note">
+    <strong>{entry.data.basis === 'full_text' ? 'Разбор по полному тексту' : 'Обзор по аннотации'}</strong>
+    <p>Основа: <a href={entry.data.sourceUrl}>{entry.data.sourceLabel}</a>.
+      {entry.data.basis === 'abstract' && ' Детали экспериментального протокола и полнота сравнений не проверены по полному тексту. Вопросы авторам помогают уточнить эти пробелы.'}
+      Проверено 9 ноября 2026 года.</p>
+  </aside>
+  <aside class="source-note" aria-label="Оценка и расписание посещения">
+    <CikmVisitInfo selectionId={paper.selectionId} />
+    <p>Время местное для Рима: CET (UTC+1). Формат и расписание сверены с официальной программой 9 ноября 2026 года.</p>
+  </aside>
+  <Content />
+</SummaryLayout>
+<style>
+  .source-note { padding: 1rem; border: 1px solid var(--border); background: var(--soft); border-radius: 8px; margin: 1.5rem 0; }
+  .source-note p { margin-bottom: 0; }
+</style>

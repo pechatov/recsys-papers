@@ -1,0 +1,794 @@
+[
+  {
+    "selectionId": "C26-001",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Иерархия намерений проверена на трёх session-based наборах, но прирост умеренный, а смысл «целей» не подтверждён независимой разметкой."
+  },
+  {
+    "selectionId": "C26-002",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Полезное разделение краткого и длительного интереса с абляциями; улучшение NDCG сопровождается проигрышем HR и неоднозначной экономией вычислений."
+  },
+  {
+    "selectionId": "C26-003",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Контролируемая адаптация семантики с сильными full-ranking сравнениями и отдельным анализом хвоста. Стоит обсудить компромисс cold/overall качества и границы trust-region."
+  },
+  {
+    "selectionId": "C26-004",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Вероятностное слияние ID и семантики — разумная альтернатива детерминированной проекции. Для высокого приоритета не хватает убедительного отделения вклада flows от дополнительной ёмкости."
+  },
+  {
+    "selectionId": "C26-005",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Интересный next-session подход: контекст и направленная supervision устраняют деградацию неуправляемого reasoning. Есть online проверка, хотя приросты малы и стоимость дополнительных шагов раскрыта неполно."
+  },
+  {
+    "selectionId": "C26-006",
+    "interest": 3,
+    "evidence": 4,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Хорошо показан компромисс качества и эффективности спектрального backbone. Сильнейшие тяжёлые baseline выигрывают часть метрик, а физическая интерпретация остаётся inductive bias."
+  },
+  {
+    "selectionId": "C26-007",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Практически важный отказ от персонального cache с детальными контролями обучения и short-view адаптации. Полезно выяснить цену потери давних интересов и перенос с sampled на full ranking."
+  },
+  {
+    "selectionId": "C26-008",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Компонентный grafting делает distillation более адресной без teacher на serving. Дополнительные обучающие проходы и совместимость пространств пока ограничивают практический вывод."
+  },
+  {
+    "selectionId": "C26-009",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Сильная постановка list evaluator через фактическую видимость и конкуренцию кликов. A/B с фиксированным генератором и малым добавочным временем помогает отделить вклад evaluator."
+  },
+  {
+    "selectionId": "C26-010",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Содержательная схема semantic anchors и компактного обучаемого интерфейса подтверждена промышленными A/B. Главные вопросы для обсуждения — ошибки MLLM, свежесть описаний и совместимость cache."
+  },
+  {
+    "selectionId": "C26-011",
+    "interest": 5,
+    "evidence": 5,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Особенно убедительное разложение устаревания контента: human-rated оценка, длительный holdback и отдельный учёт стоимости. Практические выводы шире конкретной архитектуры Discover."
+  },
+  {
+    "selectionId": "C26-012",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Переносимый training-only подход к временным сдвигам с несколькими наборами, абляциями и online проверкой. Важны границы label-preserving augmentation и отличие прочитанного препринта от финальной версии."
+  },
+  {
+    "selectionId": "C26-013",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Объединение поиска и рекомендаций интересно само по себе, а временно корректные negatives можно переносить отдельно. Sampled публичная оценка и неполный online-протокол ограничивают силу общих выводов."
+  },
+  {
+    "selectionId": "C26-014",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Масштабирование retrieval связано с реальным serving и месячным A/B, включая честно показанное падение QPS на engine. Полезная встреча для обсуждения полной цены, а не только latency."
+  },
+  {
+    "selectionId": "C26-015",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Сильная системная работа о ranking scaling: pretraining/freeze, request sharing, pruning и kernels с большой production проверкой. Онлайн-эффект относится ко всему пакету изменений, а не одному компоненту."
+  },
+  {
+    "selectionId": "C26-016",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Простой loss без нового serving-модуля проверен и офлайн, и в Weixin Ads при фиксированном backbone. Нужно учитывать, что выигрыш ranking не сопровождается улучшением Logloss во всех сравнениях."
+  },
+  {
+    "selectionId": "C26-017",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 5,
+    "group": "solid",
+    "reason": "Ценен полный жизненный цикл переиспользуемых user/item/cross representations, включая refresh и rollback. Совокупные launches и отличия препринта не дают трактовать общий GMV как один чистый A/B эффект."
+  },
+  {
+    "selectionId": "C26-018",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Task-aware информация входит внутрь backbone, а не только в головы; есть архитектурные абляции и промышленный A/B. Неясное соответствие числа задач и anchors стоит уточнить у авторов."
+  },
+  {
+    "selectionId": "C26-019",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Подробный опыт production sequential ranking LinkedIn с контролем train–serve leakage и специализированным serving. Сильный практический приоритет, хотя вклад отдельных частей общего A/B пакета не разделён."
+  },
+  {
+    "selectionId": "C26-020",
+    "interest": 4,
+    "evidence": 5,
+    "importance": 4,
+    "group": "strong",
+    "reason": "Убедительное сочетание памяти, временной корректности и production качества: сопоставимые sampling-контроли, большой граф и A/B. Особенно полезны обсуждение multi-hash и временных признаков snapshot."
+  },
+  {
+    "selectionId": "C26-021",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Очень полезный результат о reward hacking при обучении текстового профиля: более «богатый» reward оказывается хуже простого. Есть downstream контроли и online проверка, но генерация остаётся дорогой и требует factual monitoring."
+  },
+  {
+    "selectionId": "C26-022",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Контролируемая интеграция кэшированных LLM-сигналов с fallback и ограниченным влиянием на logit. Временной replay и A/B с интервалами делают инженерный вывод убедительным; async стоимость следует учитывать отдельно."
+  },
+  {
+    "selectionId": "C26-023",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Высокий интерес для универсального retrieval: multi-query, ID/content factorization и проверка разных целей. Практический смысл подтверждён промышленным тестом, но асинхронность и дорогой backbone существенно ограничивают serving."
+  },
+  {
+    "selectionId": "C26-024",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Иерархическое планирование slate вместе с SID и listwise alignment прямо попадает в тему generative recommendation. Есть production эффект, но заявленное ускорение без KV-cache требует сравнения при реалистичном serving budget."
+  },
+  {
+    "selectionId": "C26-025",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Небольшой temporal-модуль с трёхнедельным A/B и конкретными абляциями легко примерить к существующему ranker. Важно отличать click scoring от SID-generation и проверить зависимость от target-side статистик."
+  },
+  {
+    "selectionId": "C26-026",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Label-anchored SID и collaborative alignment интересны для редких товаров. Онлайн выигрыш получен добавлением recall route, поэтому tokenizer и фиксированный candidate budget пока не изолированы."
+  },
+  {
+    "selectionId": "C26-027",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Независимое кодирование после flow — важная альтернатива последовательному residual quantization, с несколькими сценариями и production проверкой. Нужно обсуждать сохранение соседств и обновление tokenizer при дрейфе."
+  },
+  {
+    "selectionId": "C26-028",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Полезная инженерия joint content/ranking training: memory bank и sampling показывают явную кривую цена–качество. Неоднозначность online метрики и зависимость от силы frozen baseline снижают убедительность общих выводов."
+  },
+  {
+    "selectionId": "C26-029",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Сильный контрпример тезису «end-to-end всегда лучше»: есть хороший frozen baseline, gradient diagnostics и человеческая проверка mined triplets. Практически важен как более дешёвая адаптация сильного encoder."
+  },
+  {
+    "selectionId": "C26-030",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Интересное сочетание behavior compression и LTV regression с онлайн postback эффектом. Монотонность ordinal probabilities, ортогональность и game-specific priors требуют уточнения перед переносом."
+  },
+  {
+    "selectionId": "C26-031",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Полезное разделение group/personal каналов для малоактивной аудитории с абляциями и 21-дневным A/B. Сегментный выигрыш не смешивается с общеплатформенным; стоит обсудить редкие интересы внутри групп."
+  },
+  {
+    "selectionId": "C26-032",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Важный взгляд на cold-start как управление двусторонним feedback loop эфира. Доказательства viewer-side эффекта косвенные, через exclusion/reversal, поэтому headline не равен прямому обычному A/B lift."
+  },
+  {
+    "selectionId": "C26-033",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 3,
+    "group": "weaker",
+    "reason": "Идея personalized federated aggregation разумна, но split раскрыт неполно, а privacy и 97% экономии не подтверждены для полного обмена сообщениями. При ограниченном времени уступает более прозрачным работам."
+  },
+  {
+    "selectionId": "C26-034",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Разделение общего SID-языка и локальной collaborative адаптации полезно для cross-domain federation. Коммуникационный выигрыш зависит от числа раундов до выбранного качества, а формальной защиты параметров нет."
+  },
+  {
+    "selectionId": "C26-035",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Task-aware pruning даёт измеримую экономию памяти и throughput, сохраняя статичный student. Цена качества заметна, а преимущество над хорошо подобранными компактными архитектурами при одинаковой latency ещё нужно уточнить."
+  },
+  {
+    "selectionId": "C26-036",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Непрерывные CF/semantic slots — содержательная альтернатива discrete SID с full-catalog проверкой и probes. Несколько векторов на item и user-dependent scoring оставляют открытой масштабируемость retrieval."
+  },
+  {
+    "selectionId": "C26-037",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "History-side semantic subwords позволяют менять сжатие без перестройки target decoding. Идея полезна для SID pipelines, но эксперименты с историей всего из 20 событий ограничивают выводы об ultra-long serving."
+  },
+  {
+    "selectionId": "C26-038",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Изменение весов SID-токенов не требует нового serving и напрямую адресует prefix errors и хвост. Нужно отделить пользу curriculum и нескольких objectives от дополнительного tuning budget."
+  },
+  {
+    "selectionId": "C26-039",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Рефлексия над уже готовым SID — интересный способ расходовать decoding budget, с промышленной проверкой. Неизолированное сравнение с большим beam и различия результатов версий оставляют важные вопросы."
+  },
+  {
+    "selectionId": "C26-043",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 2,
+    "group": "weaker",
+    "reason": "Плотные визуальные reward-proxy любопытны, но лучший бинарный training-control превосходит ключевые усиленные варианты. Небольшие поднаборы и косвенная связь saliency с реальными предпочтениями пока делают пользу неубедительной."
+  },
+  {
+    "selectionId": "C26-044",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 4,
+    "group": "strong",
+    "reason": "Глобальные SID для reranking дают ясную постановку action space, хорошие контроли этапов и реальный online тест. При обсуждении важны сравнение с permutation-equivariant local model и разрешение SID-коллизий."
+  },
+  {
+    "selectionId": "C26-045",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Session survival — полезная замена сумме независимых item scores; онлайн замена только evaluator делает направление практичным. Для уверенного переноса нужны калибровка, цензурирование и поведение вне logging distribution."
+  },
+  {
+    "selectionId": "C26-046",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "LLM как prior для обучаемых графовых рёбер — конкретный механизм cross-domain переноса с абляциями. Неуказанный evaluation pool и ограничение retrieval top-3 не позволяют уверенно обобщить большие приросты."
+  },
+  {
+    "selectionId": "C26-047",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Доменно-адаптивная иерархия проверена с общими semantic models и отдельными абляциями. Но sampled ranking, ненулевой overlap и усложнённый serving ограничивают практический приоритет."
+  },
+  {
+    "selectionId": "C26-060",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 5,
+    "group": "strong",
+    "reason": "SID используются для персональной компрессии 10k-истории, что связывает семантику с реальным ограничением serving. Есть A/B и раздельные замеры оптимизаций, хотя test split и свежесть agents требуют уточнения."
+  },
+  {
+    "selectionId": "C26-061",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Наблюдаемые поведенческие cues делают routing MoE более предметным, чем выбор только по latent state. Средние ранги не заменяют matched-capacity сравнения и проверки load balancing при дрейфе."
+  },
+  {
+    "selectionId": "C26-062",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Простой training-only способ использовать отрицательный feedback с глобальным временным split и десятью запусками. Специальный mixed-feedback протокол и неоднозначный результат Kion ограничивают перенос."
+  },
+  {
+    "selectionId": "C26-063",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Дешёвый serving-сигнал из train-only co-occurrence graph полезен как baseline и ablation. Замена временных позиций структурой item и ухудшение coverage оставляют более узкий вклад, чем универсальное улучшение sequential modeling."
+  },
+  {
+    "selectionId": "C26-064",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 2,
+    "group": "weaker",
+    "reason": "Debate-selector проверен на искусственно испорченных списках, где показанная сессия считается правильной. Без независимой пользовательской оценки, ясного split и token-cost пока слабо подтверждена ценность дорогого multi-agent выбора."
+  },
+  {
+    "selectionId": "C26-065",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Sparse memory для continual generative adaptation — интересный способ локализовать конфликт обновлений. Перенос на другие backbone и полная цена full-history query пока не установлены."
+  },
+  {
+    "selectionId": "C26-066",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Управление бизнес-целью через action token проверено на двух продуктах и в A/B; полезно для промышленного retrieval. Длительный эффект и выигрыш при одинаковой ёмкости моделей ещё требуют проверки."
+  },
+  {
+    "selectionId": "C26-067",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Разделение SID likelihood и item-level scoring решает фундаментальную проблему генеративного retrieval, с контролем одного candidate pool. Замена многих production-компонентов особенно интересна, хотя роста engagement онлайн статистически не показано."
+  },
+  {
+    "selectionId": "C26-068",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Дедупликация состояний beam и более устойчивое маскирование — понятные локальные улучшения diffusion decoder. Прирост умеренный, а полный evaluation и вычислительный бюджет раскрыты не полностью."
+  },
+  {
+    "selectionId": "C26-069",
+    "interest": 4,
+    "evidence": 2,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Совместная генерация сетки будущих товаров интересна как альтернатива next-item beam. Большой выигрыш пока трудно интерпретировать из-за неполного протокола, неясного разрешения коллизий и различий training/evaluation targets."
+  },
+  {
+    "selectionId": "C26-070",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Связь semantic IDs с KG-путями даёт содержательную точку пересечения генеративных рекомендаций и объяснений. Польза зависит от качества графа; допустимый путь сам по себе не подтверждает достоверность объяснения."
+  },
+  {
+    "selectionId": "C26-071",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Формулировка токенизации как иерархического разбиения графа помогает отдельно исследовать контент и collaborative-связи. Для практического переноса остаются ограничения масштаба RecDMoN и обновления SID при дрейфе графа."
+  },
+  {
+    "selectionId": "C26-072",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Есть полный цикл от handbook и distillation до проверки judge и production-эффекта; полезно для мультимодального enrichment. Теги всё ещё ошибаются, а часть retrieval-выигрыша необходимо отделять от смены самого канала."
+  },
+  {
+    "selectionId": "C26-073",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Два item-aware эксперта дают понятный механизм ограничения negative transfer и имеют онлайн-проверку. Цена 242 мс против 105 мс у SASRec и адаптированная production-конфигурация ограничивают перенос headline CTR lift."
+  },
+  {
+    "selectionId": "C26-074",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Выбор явных social paths и перенос их в Student GNN соединяют исследовательскую идею с реальным масштабированием. Стоит обсудить потери subgraph sampling и вклад дорогой LLM-ветви отдельно от студента."
+  },
+  {
+    "selectionId": "C26-075",
+    "interest": 3,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Интересная интеграция traffic, GPS и behavioral retrieval для next-POI. Небольшая автомобильная выборка, warm-only протокол и отсутствие проверки ETA пока не подтверждают пользу для реальной навигации."
+  },
+  {
+    "selectionId": "C26-076",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 3,
+    "group": "weaker",
+    "reason": "Семантическое co-occurrence обучение выглядит полезным, но точный split и временные границы усреднения item embeddings не раскрыты. Эти пробелы мешают надёжно оценить крупный офлайн-прирост и перенос в serving."
+  },
+  {
+    "selectionId": "C26-077",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Явное отделение popularity prior даёт удобную ручку accuracy–exposure trade-off, с full-ranking и несколькими seed. Основные результаты включают ensemble с Base, поэтому стоимость и вклад самого OPD нужно обсуждать отдельно."
+  },
+  {
+    "selectionId": "C26-081",
+    "interest": 5,
+    "evidence": 5,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Сильная контролируемая проверка group-relative RL поверх обычного SASRec, включая multi-positive CE и shuffled rewards. Особенно полезна для понимания, когда post-training действительно окупается и почему all-items эффект больше next-item эффекта."
+  },
+  {
+    "selectionId": "C26-082",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 3,
+    "group": "weaker",
+    "reason": "Простой repeat/explore gate практически интересен для корзинных покупок. Но связь прочитанной версии с CIKM, протокол customer split и выбор сильнейшего baseline требуют уточнений, поэтому приоритет ниже."
+  },
+  {
+    "selectionId": "C26-083",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Retrieval-память добавляется к замороженному backbone без online gradient updates; проверка включает full-ranking, десять запусков и абляции. Индекс и второе scoring-распределение создают реальную цену, которую важно оценить на большом сервисе."
+  },
+  {
+    "selectionId": "C26-084",
+    "interest": 3,
+    "evidence": 4,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Семантическая denoising-цель проверена при полном ранжировании и на дополнительном diffusion backbone. Это скорее аккуратное развитие существующего подхода: прирост небольшой, а 32 шага генерации остаются."
+  },
+  {
+    "selectionId": "C26-085",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Вероятностный quantizer и детерминированные SID полезны для неоднозначного музыкального каталога, есть изолированная online замена SID. Уверенность ограничивают single-run downstream-оценка и отсутствие компонентных абляций."
+  },
+  {
+    "selectionId": "C26-086",
+    "interest": 5,
+    "evidence": 5,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Проверка коллизий показывает, как SID-level метрика может завышать реальное item-level качество и менять порядок tokenizer. Это обязательная методическая проверка перед дорогими экспериментами с генеративными рекомендациями."
+  },
+  {
+    "selectionId": "C26-087",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Совместная мультимодальная токенизация и параллельное предсказание кодов непосредственно относятся к выбору SID. Дорогой MLLM и дополнительная supervision затрудняют отделение архитектурного выигрыша от бюджета подготовки."
+  },
+  {
+    "selectionId": "C26-088",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Несколько контекстных адресов одного item ставят важный вопрос о границах глобального SID. Идея заслуживает обсуждения, но нужно контролировать дополнительный beam budget и калибровку вероятностей нескольких кодов."
+  },
+  {
+    "selectionId": "C26-089",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 4,
+    "group": "strong",
+    "reason": "Hints адресуют конкретную причину вырождения GRPO — группы с нулевым advantage; сравнения стартуют из одного checkpoint и выравнивают post-training условия. Важный открытый вопрос — полная стоимость диагностики достижимости."
+  },
+  {
+    "selectionId": "C26-090",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Curriculum переносит сложность в обучение и возвращает стандартное no-prefix serving; есть абляции, latency и online orders/GMV. Дополнительные training-часы и отсутствие онлайн-интервалов остаются существенными оговорками."
+  },
+  {
+    "selectionId": "C26-092",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 3,
+    "group": "weaker",
+    "reason": "Residual refinement удобен как надстройка замороженного ranker, но публичная оценка выбирает между двумя товарами. Это слабая проверка переноса на настоящие ranking-пулы при дополнительной inference-стоимости."
+  },
+  {
+    "selectionId": "C26-094",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Generative contrastive learning и tail-token prepending дают конкретную альтернативу обычной подготовке item embeddings. Нужны более явный ranking-протокол и бюджет пересчёта каталога, чтобы оценить практическую выгоду."
+  },
+  {
+    "selectionId": "C26-096",
+    "interest": 3,
+    "evidence": 2,
+    "importance": 3,
+    "group": "weaker",
+    "reason": "Персональное взвешивание source domains полезно по постановке, но не выигрывает на каждой паре доменов. Неоднозначный знак entropy-loss, sampled-ranking и отсутствие измеренного overhead снижают убедительность переноса."
+  },
+  {
+    "selectionId": "C26-097",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Простая маска модальности на всю историю решает реальную проблему неполных признаков без новой serving-модели. Контролируемые отключения показывают пользу, но выбирать вариант нужно по абсолютному качеству, а не одному retention ratio."
+  },
+  {
+    "selectionId": "C26-098",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Разделение обновления памяти и мультимодального ranking даёт содержательную архитектуру пользовательского состояния. Крупный teacher, неясный candidate pool и LLM-оценка объяснений пока ограничивают убедительность больших улучшений."
+  },
+  {
+    "selectionId": "C26-099",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Полезный промышленный разбор того, где расходовать бюджет длинной истории: простой GSU и сильный ESU вместо усложнения поиска. Практическая ценность высока, но масштаб 100K и стоимость GPU-cache нельзя выводить из основной таблицы 5K."
+  },
+  {
+    "selectionId": "C26-100",
+    "interest": 4,
+    "evidence": 5,
+    "importance": 4,
+    "group": "strong",
+    "reason": "Изменение training objective проверяется на двух backbone, нескольких доменах и явной Pareto-кривой relevance/coverage. Serving сохраняется, а ограничения и отрицательные результаты помогают выбирать реальный operating point."
+  },
+  {
+    "selectionId": "C26-103",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Простая production-схема персонального quality-штрафа подтверждена последовательными крупными A/B и измеренным serving overhead. Стоит идти за инженерными деталями, помня, что рост 90-дневного retention напрямую не показан."
+  },
+  {
+    "selectionId": "C26-104",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Работа показывает, что качество компактных item codes может ограничивать bootstrap, а не sequence backbone. Полезно для compressed recommendation, хотя один seed и неизвестная полная preprocessing-стоимость ослабляют обобщение."
+  },
+  {
+    "selectionId": "C26-105",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Моделирование overlooked relations проверено на семи наборах, full-ranking и parameter-matched контроле. Это содержательная архитектурная гипотеза, но дополнительные attention operations заметно увеличивают training и память."
+  },
+  {
+    "selectionId": "C26-106",
+    "interest": 3,
+    "evidence": 4,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Аккуратная intent-надстройка с full-ranking, сильными baseline и контролируемым тестом шума. Вклад скорее локальный: случайная подмена событий не подтверждает устойчивость к реальной смене интересов."
+  },
+  {
+    "selectionId": "C26-107",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Budgeted re-rolling связывает качество списка с явным latency budget и показывает зависимость от надёжности оценщика. Интересно для RL serving, но убедительность пока ограничена симуляторами пользовательского отклика."
+  },
+  {
+    "selectionId": "C26-109",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Семейство generative retrieval для трёх коммерческих сценариев — важный ориентир по совместной настройке tokenizer, MoE и reward. Большие GMV-эффекты относятся к конкретному препринту и не изолируют вклад каждого компонента."
+  },
+  {
+    "selectionId": "C26-110",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 5,
+    "group": "solid",
+    "reason": "Динамические сегменты эфира и поведенчески выровненные SID решают важную индустриальную проблему freshness. Есть online-проверка, но её control, интервалы и полная стоимость переиндексации раскрыты ограниченно."
+  },
+  {
+    "selectionId": "C26-111",
+    "interest": 5,
+    "evidence": 3,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Развивающийся индекс вместо фиксированного codebook напрямую важен для живого каталога. Главная причина посетить обсуждение — совместимость SID с генератором и code churn, которые не покрываются одной хорошей occupancy."
+  },
+  {
+    "selectionId": "C26-112",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Асимметричный перенос head→tail проверен на большом промышленном наборе и в двухнедельном A/B. Практически важно выяснить, какие сегменты выигрывают и как схема переживает переход товара из tail в head."
+  },
+  {
+    "selectionId": "C26-113",
+    "interest": 4,
+    "evidence": 5,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Чистый эксперимент с геометрией до квантования: tokenizer и downstream TIGER фиксированы, протокол temporal и unsampled. Убедительная отправная точка для SID-пилота, даже без победы по каждому cutoff и домену."
+  },
+  {
+    "selectionId": "C26-114",
+    "interest": 4,
+    "evidence": 5,
+    "importance": 4,
+    "group": "strong",
+    "reason": "Реалистичный контракт переноса user embeddings и сильная абляция показывают, что почти весь выигрыш может остаться без online source lookup. Это полезный вывод для архитектуры CDSR; заявленной privacy-защиты у метода нет."
+  },
+  {
+    "selectionId": "C26-115",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Mapping-first диагностика позволяет проверить адресуемость и поведенческие соседства до обучения генератора. Полезный инструмент для команды SID, если не превращать малую коллекцию артефактов в универсальный рейтинг tokenizer."
+  },
+  {
+    "selectionId": "C26-116",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Разделение training supervision и inference reasoning ставит ключевой вопрос об окупаемости «мышления» рекомендателя. Удаление thought-модуля на serving особенно интересно, хотя проверена ограниченная комбинация backbone и teacher."
+  },
+  {
+    "selectionId": "C26-118",
+    "interest": 5,
+    "evidence": 5,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Простой лексический probe выявляет, где именно появляется benchmark-прирост и где качество остальных случаев падает. Методический приоритет для сравнения ID, text-enhanced и generative моделей; авторы аккуратно ограничивают причинные выводы."
+  },
+  {
+    "selectionId": "C26-119",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Code-mixing даёт содержательный путь переноса между странами без общих user/item ID и имеет industrial-проверку. Нужны локальные срезы и контроль самооценки синтетических примеров, чтобы не скрыть negative transfer."
+  },
+  {
+    "selectionId": "C26-120",
+    "interest": 5,
+    "evidence": 4,
+    "importance": 5,
+    "group": "strong",
+    "reason": "Практически важная попытка построить проверяемый offline relevance gate для DPA, с human audit и несколькими A/B. Сильную корреляцию по источникам важно отличать от умеренной временной связи с online outcomes."
+  },
+  {
+    "selectionId": "C26-121",
+    "interest": 4,
+    "evidence": 4,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Генерация modality vectors проверена при full-ranking, пяти seed и отдельной long-tail оценке. Полезна для мультимодальных экспериментов, но существенно более дорогой шаг и полный catalog scoring сдерживают промышленный приоритет."
+  },
+  {
+    "selectionId": "C26-122",
+    "interest": 4,
+    "evidence": 2,
+    "importance": 4,
+    "group": "solid",
+    "reason": "Sparse tuples дают интересный контроль памяти и показывают расхождение reconstruction и recommendation quality. Однако конфликт конфигураций, best-configuration online selection и предварительная NDP-оценка требуют авторских уточнений."
+  },
+  {
+    "selectionId": "C26-123",
+    "interest": 3,
+    "evidence": 4,
+    "importance": 3,
+    "group": "solid",
+    "reason": "Хорошо раскрыт компромисс mainstream/tail: метрики, групповые срезы и абляции не скрывают потери по отдельным целям. Это полезное развитие diffusion CF, но многосоставное обучение и небольшие каталоги ограничивают важность для масштабного serving."
+  },
+  {
+    "selectionId": "C26-124",
+    "interest": 4,
+    "evidence": 3,
+    "importance": 5,
+    "group": "solid",
+    "reason": "Offline interest anchors расширяют supervision pre-ranker без блокирующей LLM на запросе; показана необходимость сохранять реальные labels. Важная промышленная идея, но pseudo-labels не устраняют автоматически bias исторической политики."
+  }
+]

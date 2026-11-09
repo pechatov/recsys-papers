@@ -15,5 +15,16 @@ const paperSummaries = defineCollection({
 });
 
 export const collections = {
-  paperSummaries
+  paperSummaries,
+  cikm2026: defineCollection({
+    loader: glob({ pattern: '*.md', base: './src/content/cikm_2026' }),
+    schema: z.object({
+      title: z.string(),
+      selectionId: z.string(),
+      basis: z.enum(['full_text', 'abstract']),
+      sourceUrl: z.string().url(),
+      sourceLabel: z.string(),
+      takeaway: z.string()
+    })
+  })
 };
