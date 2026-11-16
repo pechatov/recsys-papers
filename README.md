@@ -100,7 +100,7 @@ The archive is published at `conferences.html` and covers 17 venues from the
 recsys.info tracker for 2024–2026. The small manifest lives in
 `src/data/conference-archive.json`; paper metadata is split by venue/year under
 `public/data/conference-papers/` and loaded on demand. This keeps search and
-pagination responsive: 7,705 selected papers retain provenance for 55,012
+pagination responsive: 8,775 selected papers retain provenance for 56,082
 source records.
 
 RecSys, CIKM, KDD, SIGIR, ECIR, and UMAP are treated as profile venues and kept
@@ -111,7 +111,11 @@ source count and the selected count for every edition.
 
 ACM RecSys records come from its official Accepted Contributions pages. ICDE,
 ICML, IJCAI-ECAI, and SIGIR 2026 use their official accepted-paper catalogs;
-published editions for the other venues use DBLP's structured proceedings
+CIKM 2026 includes all 1,008 papers from the official program across Full, Short,
+Applied, Resource and Demo tracks, including poster-only papers. RecSys 2026
+contains 260 unique papers across nine tracks (three repeated DOI entries in the
+official list are counted once).
+Published editions for the other venues use DBLP's structured proceedings
 tables of contents. The importer preserves each source's section/category split
 and links to canonical DOI, publisher, OpenReview, PMLR, or official program
 pages. Main and official companion/adjunct volumes are included; standalone
@@ -125,6 +129,14 @@ To refresh the data after an official list changes:
 ```bash
 python3 -m pip install beautifulsoup4 requests
 npm run update:conferences
+```
+
+To update specific editions while preserving other editions and the existing
+filter preferences, run (refresh RecSys source data with `npm run update:recsys`
+first when needed):
+
+```bash
+python3 scripts/update_conference_archive.py --editions cikm-2026 recsys-2026 --refresh
 ```
 
 The updater downloads the official accepted-paper exports where configured,

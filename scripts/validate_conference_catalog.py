@@ -17,10 +17,10 @@ EXPECTED_VENUES = {
     "icdm", "icml", "ijcai", "kdd", "neurips", "sigir", "umap", "wsdm", "www",
 }
 EXPECTED_SOURCE_COUNTS = {
-    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 198,
+    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 260,
     "aaai-2024": 2866, "aaai-2025": 3486, "aaai-2026": 4920,
     "chi-2024": 1705, "chi-2025": 2169, "chi-2026": 2707,
-    "cikm-2024": 697, "cikm-2025": 852,
+    "cikm-2024": 697, "cikm-2025": 852, "cikm-2026": 1008,
     "ecai-2024": 606, "ecai-2025": 696,
     "ecir-2024": 210, "ecir-2025": 206, "ecir-2026": 209,
     "ecml-pkdd-2024": 272, "ecml-pkdd-2025": 317,
@@ -36,10 +36,10 @@ EXPECTED_SOURCE_COUNTS = {
     "www-2024": 778, "www-2025": 978, "www-2026": 1191,
 }
 EXPECTED_COUNTS = {
-    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 198,
+    "recsys-2024": 190, "recsys-2025": 216, "recsys-2026": 260,
     "aaai-2024": 52, "aaai-2025": 86, "aaai-2026": 106,
     "chi-2024": 8, "chi-2025": 16, "chi-2026": 14,
-    "cikm-2024": 697, "cikm-2025": 852,
+    "cikm-2024": 697, "cikm-2025": 852, "cikm-2026": 1008,
     "ecai-2024": 7, "ecai-2025": 3,
     "ecir-2024": 210, "ecir-2025": 206, "ecir-2026": 209,
     "ecml-pkdd-2024": 12, "ecml-pkdd-2025": 14,
@@ -55,11 +55,10 @@ EXPECTED_COUNTS = {
     "www-2024": 147, "www-2025": 143, "www-2026": 176,
 }
 EXPECTED_PENDING = {
-    "cikm-2026", "ecai-2026", "ecml-pkdd-2026",
+    "ecai-2026", "ecml-pkdd-2026",
     "icdm-2026", "neurips-2026",
 }
 EXPECTED_PENDING_PUBLICATION_DATES = {
-    "cikm-2026": "2026-11-07",
     "ecai-2026": "2026-08-15",
     "ecml-pkdd-2026": "2026-09-07",
     "icdm-2026": "2026-11-12",
@@ -135,7 +134,7 @@ def main() -> int:
             f"got {actual_pending_publication_dates}"
         )
     partial = {edition["id"] for edition in editions if edition["status"] == "partial"}
-    if partial != {"kdd-2026", "recsys-2026"}:
+    if partial != {"kdd-2026"}:
         errors.append(f"unexpected partial edition set: {sorted(partial)}")
 
     seen_ids: set[str] = set()
@@ -185,6 +184,19 @@ def main() -> int:
         document = json.loads(path.read_text(encoding="utf-8"))
         if document.get("id") != edition_id:
             errors.append(f"{edition_id}: data file id differs")
+
+        if edition_id == "cikm-2026":
+            papers_by_doi = {paper.get("doiUrl"): paper for category in document["categories"] for paper in category["papers"]}
+            approved = json.loads((ROOT / "src/data/cikm-2026-papers.json").read_text())
+            for selected in approved:
+                paper = papers_by_doi.get(selected["url"])
+                if paper is None or paper.get("programId") != selected["programId"]:
+                    errors.append(f"CIKM archive is missing approved paper {selected['selectionId']}")
+            expected_tracks = {"Full Research Papers": 596, "Short Research Papers": 234,
+                               "Applied Research Papers": 86, "Resource Papers": 46, "Demo Papers": 46}
+            actual_tracks = {category["name"]: len(category["papers"]) for category in document["categories"]}
+            if actual_tracks != expected_tracks:
+                errors.append(f"CIKM track coverage differs: {actual_tracks}")
 
         category_counts = []
         edition_count = 0

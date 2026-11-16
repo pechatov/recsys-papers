@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Build the ACM RecSys conference archive from the official accepted lists.
 
-The generated JSON intentionally stores compact, paraphrased catalog notes rather
-than copying the official abstracts.  Abstracts are used only while deriving
-topic tags and high-level description signals.
+The generated JSON stores official abstracts, topic tags and compact catalog
+notes. Duplicate DOI entries across tracks are retained only once.
 
 This is a maintainer command, not part of the site build.  It requires
 Beautiful Soup (`python3 -m pip install beautifulsoup4`).
@@ -39,14 +38,7 @@ CONFERENCES = {
         "location": "Миннеаполис, Миннесота, США",
         "acceptedUrl": "https://recsys.acm.org/recsys26/contributions/",
         "proceedingsUrl": None,
-        "status": "partial",
-        "statusLabel": "предварительный список",
-        "statusDetail": "окончательный список — ближе к октябрю",
-        "statusNote": (
-            "Сейчас опубликован предварительный список принятых работ по основным "
-            "трекам. Он ещё не полный; окончательный список ожидается ближе к "
-            "октябрю 2026 года."
-        ),
+        "status": "published",
         "trackNames": [
             "Long Papers",
             "Short Papers",
@@ -54,6 +46,9 @@ CONFERENCES = {
             "Reproducibility",
             "Resource Papers",
             "Industry",
+            "Research and Practice Notes",
+            "Demos",
+            "Doctoral",
         ],
     },
     2024: {
@@ -343,6 +338,9 @@ def parse_conference(year: int, html: str) -> dict:
             doi_key = doi_url.lower() if doi_url else None
             title_key = title.casefold()
             if doi_key and doi_key in seen_dois:
+                # The official 2026 list repeats three papers across tracks.
+                if year == 2026:
+                    continue
                 raise ValueError(f"RecSys {year}: duplicate DOI {doi_url}")
             if title_key in seen_titles:
                 raise ValueError(f"RecSys {year}: duplicate title {title}")
@@ -362,6 +360,7 @@ def parse_conference(year: int, html: str) -> dict:
                 "doiUrl": doi_url,
                 "tags": tags,
                 "takeaway": build_takeaway(abstract, tags, track_name),
+                "abstract": abstract or None,
             }
             if year == 2026:
                 paper["paperUrl"] = paper_url
@@ -438,9 +437,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     catalog = build_catalog(args.source_dir, args.verified)
-    if catalog["paperCount"] != 604:
+    if catalog["paperCount"] != 666:
         raise SystemExit(
-            f"Completeness guard failed: expected 604 published papers, got {catalog['paperCount']}"
+            f"Completeness guard failed: expected 666 published papers, got {catalog['paperCount']}"
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

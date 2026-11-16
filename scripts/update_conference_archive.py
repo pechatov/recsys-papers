@@ -632,7 +632,7 @@ def apply_cached_abstracts(edition: dict, cache: dict[str, dict]) -> dict:
             paper_count += 1
             record = cache.get(paper["id"])
             paper.pop("takeaway", None)
-            paper["abstract"] = record.get("abstract") if record else None
+            paper["abstract"] = paper.get("abstract") or (record.get("abstract") if record else None)
             if paper["abstract"]:
                 abstract_count += 1
     edition["abstractCount"] = abstract_count
@@ -715,6 +715,7 @@ def convert_recsys_edition(conference: dict) -> dict:
                 "doiUrl": paper.get("doiUrl"),
                 "tags": paper["tags"],
                 "metadataSource": "Official RecSys accepted list",
+                "abstract": paper.get("abstract"),
             }
             if paper.get("preprintUrl"):
                 converted["preprintUrl"] = paper["preprintUrl"]
@@ -1151,7 +1152,68 @@ def build_sigir_2026_edition(downloader: OfficialDownloader, venue_id: str, venu
     }
 
 
+CIKM_2026_TRACKS = OrderedDict([
+    ("FULL", "Full Research Papers"),
+    ("SHORT", "Short Research Papers"),
+    ("APPLIED", "Applied Research Papers"),
+    ("RESOURCE", "Resource Papers"),
+    ("DEMO", "Demo Papers"),
+])
+
+
+def build_cikm_2026_edition(downloader: OfficialDownloader, venue_id: str, venue: dict) -> dict:
+    """Import every paper from the program, including poster-only papers."""
+    edition_id = "cikm-2026"
+    source_url = "https://cikm2026.diag.uniroma1.it/cikm-program/program.html"
+    soup = BeautifulSoup(downloader.get(source_url, "cikm-2026-program.html"), "html.parser")
+    by_track = OrderedDict((code, []) for code in CIKM_2026_TRACKS)
+    seen = {}
+    for node in soup.select(".paper[data-pid]"):
+        anchor = node.select_one("a.ptitle")
+        badge = node.select_one(".badge")
+        if anchor is None or badge is None:
+            raise ValueError("CIKM program paper is missing title or track")
+        code = badge.get_text(strip=True)
+        if code not in by_track:
+            raise ValueError(f"Unknown CIKM track: {code}")
+        url = anchor["href"]
+        title = anchor.get_text(" ", strip=True)
+        identity = (node["data-pid"], title, code)
+        # A paper may appear in both an oral session and a poster session.
+        if url in seen:
+            if seen[url] != identity:
+                raise ValueError(f"Conflicting CIKM program entries: {url}")
+            continue
+        seen[url] = identity
+        abstract_node = node.select_one(".abstxt")
+        abstract = abstract_node.get_text(" ", strip=True) if abstract_node else None
+        paper = make_official_paper(
+            edition_id, CIKM_2026_TRACKS[code], title,
+            [author.get_text(" ", strip=True) for author in node.select(".au")],
+            [aff.get_text(" ", strip=True).removeprefix("(").removesuffix(")")
+             for aff in node.select(".aff")],
+            url, "Official CIKM conference program", abstract or "",
+        )
+        paper["abstract"] = abstract
+        paper["programId"] = node["data-pid"]
+        by_track[code].append(paper)
+    if not seen or any(not papers for papers in by_track.values()):
+        raise ValueError("CIKM program is empty or missing a paper track")
+    return {
+        "schemaVersion": 1, "id": edition_id, "venueId": venue_id,
+        "conference": "CIKM 2026", "year": 2026, "status": "published",
+        "sourceUrl": source_url,
+        "volumeSources": [{"title": "CIKM 2026 official program", "publisherUrls": [source_url]}],
+        "categories": [
+            {"id": f"{edition_id}-{slugify(CIKM_2026_TRACKS[code])}",
+             "name": CIKM_2026_TRACKS[code], "papers": papers}
+            for code, papers in by_track.items()
+        ],
+    }
+
+
 OFFICIAL_EDITION_BUILDERS = {
+    ("cikm", 2026): build_cikm_2026_edition,
     ("icde", 2026): build_icde_2026_edition,
     ("icml", 2026): build_icml_2026_edition,
     ("ijcai", 2026): build_ijcai_2026_edition,
@@ -1302,12 +1364,30 @@ def parse_args() -> argparse.Namespace:
         choices=[*VENUES, "recsys"],
         help="Build only selected venues (useful while developing).",
     )
+    parser.add_argument("--editions", nargs="+", help="Update only these edition IDs, preserving the rest of the archive.")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     selected = set(args.venues or [*VENUES, "recsys"])
+    existing = json.loads(MANIFEST_PATH.read_text()) if MANIFEST_PATH.exists() else {}
+    previous = existing if args.editions else None
+    targets = set(args.editions or [])
+    if previous:
+        known = {edition["id"] for edition in previous["editions"]}
+        if targets - known:
+            raise SystemExit(f"Unknown editions: {sorted(targets - known)}")
+        if args.venues:
+            raise SystemExit("Use either --venues or --editions")
+        selected = {edition["venueId"] for edition in previous["editions"] if edition["id"] in targets}
+    previous_urls = {}
+    if previous:
+        for edition in previous["editions"]:
+            if edition["id"] in targets and edition["file"]:
+                document = json.loads((OUTPUT_DIR / edition["file"]).read_text())
+                previous_urls.update((paper["id"], paper["paperUrl"])
+                                     for category in document["categories"] for paper in category["papers"])
     downloader = DblpDownloader(DBLP_CACHE_DIR, refresh=args.refresh)
     official_downloader = OfficialDownloader(OFFICIAL_CACHE_DIR, refresh=args.refresh)
     manifest_editions: list[dict] = []
@@ -1335,6 +1415,8 @@ def main() -> int:
             },
         }
         for year in YEARS:
+            if targets and f"recsys-{year}" not in targets:
+                continue
             edition = apply_cached_abstracts(
                 apply_topic_selection(recsys_editions[year]), abstract_cache
             )
@@ -1356,9 +1438,13 @@ def main() -> int:
             continue
         index_relative = f"db/conf/{venue['stream']}/index.xml"
         print(f"Reading venue index: {venue['name']}", flush=True)
-        index_html = downloader.get(index_relative)
-        for year in YEARS:
-            volumes = proceedings_from_index(index_html, venue, year)
+        needed_years = [year for year in YEARS if not targets or f"{venue_id}-{year}" in targets]
+        # Official-only targeted updates need no unrelated DBLP download.
+        index_html = downloader.get(index_relative) if any(
+            (venue_id, year) not in OFFICIAL_EDITION_BUILDERS for year in needed_years
+        ) else ""
+        for year in needed_years:
+            volumes = proceedings_from_index(index_html, venue, year) if index_html else []
             official_builder = OFFICIAL_EDITION_BUILDERS.get((venue_id, year))
             if volumes:
                 edition = build_dblp_edition(downloader, venue_id, venue, year, volumes)
@@ -1435,13 +1521,35 @@ def main() -> int:
         "abstractCount": abstract_total,
         "missingAbstractCount": paper_total - abstract_total,
     }
+    if existing.get("readingStatusAliases"):
+        manifest["readingStatusAliases"] = existing["readingStatusAliases"]
+    if previous:
+        updated = {edition["id"]: edition for edition in manifest_editions}
+        manifest["editions"] = [updated.get(edition["id"], edition) for edition in previous["editions"]]
+        manifest["venues"] = previous["venues"]
+        manifest["selectionPolicy"] = previous["selectionPolicy"]
+        search_rows = []
+        aliases = dict(previous.get("readingStatusAliases", {}))
+        for edition in manifest["editions"]:
+            if edition["file"]:
+                document = json.loads((OUTPUT_DIR / edition["file"]).read_text())
+                search_rows.extend(edition_search_rows(document))
+                for category in document["categories"]:
+                    for paper in category["papers"]:
+                        old_url = previous_urls.get(paper["id"])
+                        if old_url and old_url != paper["paperUrl"]:
+                            aliases[paper["paperUrl"]] = aliases.get(old_url, old_url)
+        if aliases:
+            manifest["readingStatusAliases"] = aliases
+        for field in ("paperCount", "sourcePaperCount", "abstractCount", "missingAbstractCount"):
+            manifest[field] = sum(edition[field] for edition in manifest["editions"])
     json_dump(MANIFEST_PATH, manifest, pretty=True)
     json_dump(
         OUTPUT_DIR / "search-index.json",
         {"schemaVersion": 1, "papers": search_rows},
     )
     print(
-        f"Wrote {manifest['paperCount']} papers across {len(manifest_editions)} editions; "
+        f"Wrote {manifest['paperCount']} papers across {len(manifest['editions'])} editions; "
         f"global search index has {len(search_rows)} rows.",
         flush=True,
     )
