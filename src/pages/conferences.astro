@@ -499,9 +499,11 @@ const pluralRu = (value: number, one: string, few: string, many: string) => {
         const selectedReadStatus = () => readInputs.find((input) => input.checked)?.value || 'all';
         const normalizeStatus = (value) => value === '1' || value === 'read' ? 'read' : value === 'reading' ? 'reading' : 'unread';
         const paperStatus = (key) => {
+          key = manifest.readingStatusAliases?.[key] || key;
           try { return normalizeStatus(localStorage.getItem(`${storagePrefix}${key}`)); } catch (_) { return 'unread'; }
         };
         const persistStatus = (key, status) => {
+          key = manifest.readingStatusAliases?.[key] || key;
           try {
             if (status === 'read') localStorage.setItem(`${storagePrefix}${key}`, '1');
             else if (status === 'reading') localStorage.setItem(`${storagePrefix}${key}`, 'reading');
