@@ -1290,9 +1290,10 @@
         "Positive training logprior adjustment then prior removal on inference correct; p-y gradient belongs matched FYloss, not log sparse probability.",
         "Global90%temporal split/5core/train max128/50Ktrainingnegatives Tmall/3seeds/alpha1.5 match.",
         "SASRecML1M0.047→.058 coverage.463→.600, GRUTmall.216→.291 and negative N@100 cases match.",
-        "Approximately20%entmax overhead vsCE and noextraPRoverhead supported."
+        "Approximately20%entmax overhead vsCE and noextraPRoverhead supported.",
+        "2026-11-18: added and verified the relative link to the detailed PR-entmax review; conference review claims unchanged."
       ],
-      "reviewSha256": "bfa89b15dd7e45ed725fc9684be3889b57395e42820747fe61e35d7bf5c86de4",
+      "reviewSha256": "dd04c7c60122db998d8ca25054e9cedb8e02975b3dacfeb263a56cf9b168c75a",
       "correctionApplied": null
     },
     {

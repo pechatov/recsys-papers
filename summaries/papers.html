@@ -174,7 +174,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 </label>
 </div>
 <div class="control-meta">
-<div class="read-stats" id="read-stats">Прочитано: 0 из 431</div>
+<div class="read-stats" id="read-stats">Прочитано: 0 из 447</div>
 </div>
 </div>
 <p class="empty-state" id="empty-state">Нет статей для выбранных фильтров.</p>
@@ -187,7 +187,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <tr><td><a href="#category-multimodal">Multimodal, content-aware и cold-start recommendation</a></td><td>25</td></tr>
 <tr><td><a href="#category-graph">Graph, knowledge-aware, cross-domain и multi-behavior recommendation</a></td><td>15</td></tr>
 <tr><td><a href="#category-ranking">Ranking, alignment, decoding, CTR, ads и industrial infrastructure</a></td><td>49</td></tr>
-<tr><td><a href="#category-fairness">Fairness, privacy, robustness, debiasing и evaluation</a></td><td>18</td></tr>
+<tr><td><a href="#category-fairness">Fairness, privacy, robustness, debiasing и evaluation</a></td><td>20</td></tr>
 <tr><td><a href="#category-foundations">Обзоры и базовые работы</a></td><td>16</td></tr>
 </tbody></table>
 <h2 id="category-semantic-ids">Semantic IDs, tokenization и indexing (132)</h2>
@@ -3604,7 +3604,7 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2609.07175">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div>Работа исследует инфраструктуру serving для генеративных рекомендаций: High-Bandwidth Flash хранит больше пользовательских KV-кэшей, а admission-controlled LRU-K не записывает в кэш пользователей с низким повторным использованием. В экспериментах HBF даёт в 3,8–4,7 раза большую пропускную способность, чем HBM-only, а LRU-K увеличивает расчётный срок службы flash примерно с одного года до более чем шести лет при K=10 без потери throughput.</div></div></li>
 </ul>
-<h2 id="category-fairness">Fairness, privacy, robustness, debiasing и evaluation (18)</h2>
+<h2 id="category-fairness">Fairness, privacy, robustness, debiasing и evaluation (20)</h2>
 <ol start="1"><li><strong><a href="https://sigir.org/sigir2023/program/accepted-papers/short-papers/">Popularity Debiasing from Exposure to Interaction in Collaborative Filtering</a></strong></li></ol>
 <ul>
 <li><strong>Дата публикации:</strong> 2023-07-18</li>
@@ -3753,6 +3753,24 @@ main > ol[start]:has(+ ul .read-status-control[data-status="read"]) > li > stron
 <li><strong>Теги:</strong> <span class="badge">LLM evaluation</span> <span class="badge">preference modeling</span> <span class="badge">offline evaluation</span> <span class="badge">Top-N</span> <span class="badge">relevance judgments</span> <span class="badge summary-missing">саммари пропущено</span></li>
 <li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2607.11354">открыть статью</a></li>
 <li><strong>Выжимка:</strong><div class="takeaway"><div><strong>Abstract:</strong> Offline evaluation is the standard methodology for comparing top-N recommender systems, yet it relies on incomplete relevance information. In most benchmark datasets, only a small subset of user--item preferences is observed, and unjudged items are commonly treated as non-relevant. This missing-as-negative assumption can bias evaluation, penalize plausible recommendations with no recorded feedback, and favour algorithms that concentrate on popular or highly exposed items. We propose an LLM-based framework to expand relevance judgements for offline recommender evaluation. Our approach uses large language models in two complementary roles. First, a preference induction stage summarizes each user&#x27;s historical interactions into a textual profile that captures their tastes and interests. Second, conditioned on this profile, an LLM acts as a relevance judge for candidate recommended items that lack observed labels in the original test data. To make this process tractable and evaluation-focused, we apply judgement expansion to a pooled candidate set built from the top-ranked outputs of multiple recommenders. The resulting enriched judgements provide additional relevance evidence for previously unobserved user--item pairs, enabling ranking metrics to be computed on a more complete basis. Experimental results show that this approach is a promising strategy for improving the robustness of offline top-N evaluation and mitigating the popularity-sensitive distortions caused by sparse feedback.</div></div></li>
+</ul>
+<ol id="paper-gd_ssm_norm_removed_bias_remains_summary" start="19"><li><strong><a href="paper_summaries/fairness_privacy_robustness_debiasing_evaluation/gd_ssm_norm_removed_bias_remains_summary.html">Norm Removed, Bias Remains: Gradient-Decoupled Sampled Softmax for Collaborative Filtering</a></strong></li></ol>
+<ul>
+<li><strong>Дата публикации:</strong> 2026-11-06</li>
+<li><strong>Дата добавления:</strong> 2026-11-18</li>
+<li><strong>Аффилиации:</strong> <span class="industry">WATCHA Inc.</span>; <span class="university">Chung-Ang University</span></li>
+<li><strong>Теги:</strong> <span class="badge">popularity bias</span> <span class="badge">collaborative filtering</span> <span class="badge">sampled softmax</span> <span class="badge">gradient analysis</span></li>
+<li><strong>Статья:</strong> <a class="paper-link" href="https://doi.org/10.1145/3799682.3840081">открыть статью</a></li>
+<li><strong>Выжимка:</strong><div class="takeaway">GD-SSM сочетает проекцию user/item embeddings на единичную сферу с фиксированным degree prior только для positive. Полный разбор по PDF: формулы, пять таблиц, head/tail результаты и ограничения exposure-модели; код пока не опубликован.</div></li>
+</ul>
+<ol id="paper-pr_entmax_sparse_prior_regularized_objective_summary" start="20"><li><strong><a href="paper_summaries/fairness_privacy_robustness_debiasing_evaluation/pr_entmax_sparse_prior_regularized_objective_summary.html">Mitigating Popularity Bias in Sequential Recommendations with Sparse Prior-Regularized Objective</a></strong></li></ol>
+<ul>
+<li><strong>Дата публикации:</strong> 2026-11-06</li>
+<li><strong>Дата добавления:</strong> 2026-11-18</li>
+<li><strong>Аффилиации:</strong> <span class="industry">Sber AI Lab</span>; <span class="university">Lomonosov Moscow State University; HSE University</span></li>
+<li><strong>Теги:</strong> <span class="badge">popularity bias</span> <span class="badge">sequential recommendation</span> <span class="badge">entmax</span> <span class="badge">logit adjustment</span></li>
+<li><strong>Статья:</strong> <a class="paper-link" href="https://arxiv.org/abs/2610.17823">открыть статью</a></li>
+<li><strong>Выжимка:</strong><div class="takeaway">PR-entmax добавляет popularity prior перед разреженным entmax: prior меняет состав активных отрицательных конкурентов. SASRec и GRU4Rec на пяти датасетах; разобраны trade-off качества, абляции, расхождения таблиц и замечания к коду.</div></li>
 </ul>
 <h2 id="category-foundations">Обзоры и базовые работы (16)</h2>
 <ol start="1"><li><strong><a href="https://dl.acm.org/doi/10.1145/3589335.3641239">Recent Advances in Generative Information Retrieval</a></strong></li></ol>
